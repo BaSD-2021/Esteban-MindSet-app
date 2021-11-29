@@ -125,9 +125,9 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2>Form</h2>
+        <h2>Interview</h2>
         <label>
-          <span>Postulant Id</span>
+          <span>Postulant Name</span>
         </label>
         <select
           id="postulantId"

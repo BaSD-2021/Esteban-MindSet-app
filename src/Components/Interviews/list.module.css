@@ -19,12 +19,14 @@ thead td {
   text-align: center;
   font-weight: bolder;
   color: #002147;
-  /* border-left: 1px solid black; */
   padding: 10px;
 }
 td {
   text-align: center;
   color: #002147;
+}
+tbody tr{
+  cursor: pointer;
 }
 button {
   margin: 10px;
