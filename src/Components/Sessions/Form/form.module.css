@@ -32,12 +32,17 @@ label {
 }
 
 .button {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
+  margin: 20px;
+  height: 56px;
+  border: none;
+  padding: 0 20px;
+  background: #FDC800;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
 }
+
 .msg-error {
   display: block;
   color: red;

@@ -8,7 +8,19 @@ function Modal(props) {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
-        <h3>You are deleting the selected session</h3>
+        <h3>{props.title}</h3>
+        <div>
+          <button
+            disabled={props.isLoading}
+            onClick={props.onClose}
+            className={`${styles.button} ${styles.cancel}`}
+          >
+            Cancel
+          </button>
+          <button disabled={props.isLoading} onClick={props.onConfirm} className={styles.button}>
+            Confirm
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,10 @@
+.select {
+  display: inline;
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid rgb(167, 167, 167);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
