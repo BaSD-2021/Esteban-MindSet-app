@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './form.module.css';
+
+const params = new URLSearchParams(window.location.search);
+const postulantId = params.get('_id');
 
 function PostulantsForm() {
   const [firstNameValue, setFirstNameValue] = useState('');
@@ -34,6 +37,76 @@ function PostulantsForm() {
   const [workExperienceSDValue, setWorkExperienceSDValue] = useState('');
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
+
+  if (postulantId) {
+    useEffect(() => {
+      fetch(`${process.env.REACT_APP_API}/postulants?_id=${postulantId}`)
+        .then((response) => response.json())
+        .then((response) => {
+          autoFill(response);
+        });
+    }, []);
+  }
+
+  const autoFill = (data) => {
+    const fillData = data.data[0];
+    const fillPrimStudy = data.data[0].studies.primaryStudies;
+    const fillSecStudy = data.data[0].studies.secondaryStudies;
+    const fillTerStudy = data.data[0].studies.tertiaryStudies[0];
+    const fillUniStudies = data.data[0].studies.universityStudies[0];
+    const fillInfStudies = data.data[0].studies.informalStudies[0];
+    const fillWorkExp = data.data[0].workExperience[0];
+
+    console.log(fillData.available);
+
+    let from = fillData.contactRange?.from.toString();
+    let to = fillData.contactRange?.to.toString();
+    from = `${from.slice(0, 2)}:${from.slice(2)}`;
+    to = `${to.slice(0, 2)}:${to.slice(2)}`;
+    console.log('data', fillData.contactRange.from);
+    setFirstNameValue(fillData.firstName || '');
+    setLastNameValue(fillData.lastName || '');
+    setEmailValue(fillData.email || '');
+    setPasswordValue(fillData.password || '');
+    setContactFromValue(from || '');
+    setContactToValue(to || '');
+    setAdressValue(fillData.address || '');
+    setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
+    setAvailableValue(fillData.available == true ? 'checked' : '');
+    setPhoneValue(fillData.phone || '');
+
+    setPrimarySDValue(fillPrimStudy.startDate == null ? '' : fillPrimStudy.startDate.slice(0, 10));
+    setPrimaryEDValue(fillPrimStudy.endDate == null ? '' : fillPrimStudy.endDate.slice(0, 10));
+    setPrimarySchoolValue(fillPrimStudy.school || '');
+
+    setSecondarySDValue(fillSecStudy.startDate == null ? '' : fillSecStudy.startDate.slice(0, 10));
+    setSecondaryEDValue(fillSecStudy.endDate == null ? '' : fillSecStudy.endDate.slice(0, 10));
+    setSecondarySchoolValue(fillSecStudy.school || '');
+
+    setTertiarySDValue(fillTerStudy.startDate == null ? '' : fillTerStudy.startDate.slice(0, 10));
+    setTertiaryEDValue(fillTerStudy.endDate == null ? '' : fillTerStudy.endDate.slice(0, 10));
+    setTertiaryDescriptionValue(fillTerStudy.description || '');
+    setTertiaryInstituteValue(fillTerStudy.institution || '');
+
+    // eslint-disable-next-line prettier/prettier
+    setUniversitySDValue(fillUniStudies.startDate == null ? '' : fillUniStudies.startDate.slice(0, 10));
+    setUniversityEDValue(fillUniStudies.endDate == null ? '' : fillUniStudies.endDate.slice(0, 10));
+    setUniversityDescriptionValue(fillUniStudies.description || '');
+    setUniversityInsituteValue(fillUniStudies.institution || '');
+
+    // eslint-disable-next-line prettier/prettier
+    setInformalSDValue(fillInfStudies.startDate == null ? '' : fillInfStudies.startDate.slice(0, 10));
+    setInformalEDValue(fillInfStudies.endDate == null ? '' : fillInfStudies.endDate.slice(0, 10));
+    setInformalDescriptionValue(fillInfStudies.description || '');
+    setInformalInstituteValue(fillInfStudies.institution || '');
+
+    setWorkExperienceCompanyValue(fillWorkExp.company || '');
+    // eslint-disable-next-line prettier/prettier
+    setWorkExperienceSDValue(fillWorkExp.startDate == null ? '' : fillWorkExp.startDate.slice(0, 10));
+    // eslint-disable-next-line prettier/prettier
+    setWorkExperienceEDValue(fillWorkExp.endDate == null ? '' : fillWorkExp.endDate.slice(0, 10));
+    setWorkExperienceDescriptionValue(fillWorkExp.description || '');
+  };
 
   const onChangeFirstNameInput = (event) => {
     setFirstNameValue(event.target.value);
@@ -227,11 +300,19 @@ function PostulantsForm() {
     return workExperience;
   };
 
+  // if (postulantId) {
+  //   const useEffect(() => {
+  //     fetch(`${process.env.REACT_APP_API}/postulants/${postulantId}`)
+  //       .then((response) => response.json())
+  //       .then((response) => {
+  //         setPostulantData(response);
+  //         setPostulantData({ firstName: response.firstName, lastName: response.lastName });
+  //       });
+  //   });
+  // }
+
   const onSubmit = (event) => {
     event.preventDefault();
-
-    const params = new URLSearchParams(window.location.search);
-    const postulantId = params.get('_id');
     // saveButton.disables = !!params.get('id');
 
     let url = '';
@@ -290,11 +371,11 @@ function PostulantsForm() {
       <form onSubmit={onSubmit}>
         <h2>Form</h2>
         <input
+          value={firstNameValue}
           className={styles.input}
           id="firstName"
           name="firstName"
           placeholder="First Name"
-          value={firstNameValue}
           onChange={onChangeFirstNameInput}
           type="text"
           required
