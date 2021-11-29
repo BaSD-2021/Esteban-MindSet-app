@@ -553,7 +553,6 @@ function PostulantsForm() {
             value={tertiarySDValue}
             onChange={onChangeTertiarySDValue}
             type="date"
-            required
           />
           <input
             className={styles.input}
@@ -563,7 +562,6 @@ function PostulantsForm() {
             value={tertiaryEDValue}
             onChange={onChangeTertiaryEDValue}
             type="date"
-            required
           />
           <textarea
             className={styles.input}
@@ -574,7 +572,6 @@ function PostulantsForm() {
             onChange={onChangeTertiaryDescriptionValueInput}
             rows="5"
             cols="33"
-            required
           />
           <input
             className={styles.input}
@@ -584,7 +581,6 @@ function PostulantsForm() {
             value={tertiaryInstituteValue}
             onChange={onChangeTertiaryInstituteValueInput}
             type="text"
-            required
           />
         </div>
         <h3>University Studies</h3>
@@ -597,7 +593,6 @@ function PostulantsForm() {
             value={universitySDValue}
             onChange={onChangeUniversitySDValue}
             type="date"
-            required
           />
           <input
             className={styles.input}
@@ -607,7 +602,6 @@ function PostulantsForm() {
             value={universityEDValue}
             onChange={onChangeUniversityEDValue}
             type="date"
-            required
           />
           <textarea
             className={styles.input}
@@ -618,7 +612,6 @@ function PostulantsForm() {
             onChange={onChangeUniversityDescriptionValueInput}
             rows="5"
             cols="33"
-            required
           />
           <input
             className={styles.input}
@@ -628,7 +621,6 @@ function PostulantsForm() {
             value={universityInstituteValue}
             onChange={onChangeUniversityInstituteValueInput}
             type="text"
-            required
           />
         </div>
         <h3>Informal Studies</h3>
@@ -641,7 +633,6 @@ function PostulantsForm() {
             value={informalSDValue}
             onChange={onChangeInformalSDValue}
             type="date"
-            required
           />
           <input
             className={styles.input}
@@ -651,7 +642,6 @@ function PostulantsForm() {
             value={informalEDValue}
             onChange={onChangeInformalEDValue}
             type="date"
-            required
           />
           <textarea
             className={styles.input}
@@ -662,7 +652,6 @@ function PostulantsForm() {
             onChange={onChangeInformalDescriptionValueInput}
             rows="5"
             cols="33"
-            required
           />
           <input
             className={styles.input}
@@ -672,7 +661,6 @@ function PostulantsForm() {
             value={informalInstituteValue}
             onChange={onChangeInformalInstituteValueInput}
             type="text"
-            required
           />
         </div>
         <h3>Work Experience</h3>
@@ -685,7 +673,6 @@ function PostulantsForm() {
             value={workExperienceCompanyValue}
             onChange={onChangeWorkExperienceCompanyValueInput}
             type="text"
-            required
           />
           <input
             className={styles.input}
@@ -695,7 +682,6 @@ function PostulantsForm() {
             value={workExperienceSDValue}
             onChange={onChangeWorkExperienceSDValue}
             type="date"
-            required
           />
           <input
             className={styles.input}
@@ -705,7 +691,6 @@ function PostulantsForm() {
             value={workExperienceEDValue}
             onChange={onChangeWorkExperienceEDValue}
             type="date"
-            required
           />
           <textarea
             className={styles.input}
@@ -716,7 +701,6 @@ function PostulantsForm() {
             onChange={onChangeWorkExperienceDescriptionValueInput}
             rows="5"
             cols="33"
-            required
           />
         </div>
         <button type="submit" id="saveButton">
