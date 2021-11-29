@@ -29,8 +29,7 @@ tbody tr{
   cursor: pointer;
 }
 button {
-  margin: 10px;
-  width: auto;
+  width: 200px;
   height: 30px;
   padding: 5px;
   border: none;

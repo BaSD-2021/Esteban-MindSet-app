@@ -27,7 +27,7 @@ label{
 }
 button {
   margin: 10px;
-  width: 20%;
+  width: auto;
   height: 30px;
   padding: 5px;
   border: none;

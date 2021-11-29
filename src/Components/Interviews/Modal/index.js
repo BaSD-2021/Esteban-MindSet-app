@@ -1,26 +1,31 @@
 import React from 'react';
+import styles from './modal.module.css';
 
 function Modal(props) {
   if (!props.show) {
     return null;
   }
+
+  const onCloseModal = (id) => {
+    props.closeModal();
+    props.function(id);
+  };
+
   return (
-    <section id="modal-section" className="modal-display-off">
-      <div id="modal-content">
-        <span id="modal-close-button" onClick={props.closeModal}>
-          &times;
-        </span>
-        <h1 id="modal-title"></h1>
+    <section id="modal-section" className={styles.container}>
+      <div id="modal-content" className={styles.modal}>
+        <h2 id="modal-title">Caution</h2>
+        <p> You are about to delete an interview</p>
         <div id="modal-data-inputs"></div>
         <div id="error_message"></div>
-        <div id="modal-buttons">
+        <div id="modal-buttons" className={styles.buttonContainer}>
           <button id="cancel-button" onClick={props.closeModal}>
             CANCEL
           </button>
           <button
             id="proceed-button"
             onClick={() => {
-              props.function(props.id);
+              onCloseModal(props.id);
             }}
           >
             CONFIRM

@@ -74,18 +74,18 @@ function Form() {
     const url = interviewId
       ? `${process.env.REACT_APP_API}/interviews/${interviewId}`
       : `${process.env.REACT_APP_API}/interviews/`;
-    console.log(url);
 
     fetch(url, options)
       .then((response) => {
-        console.log('entre aca');
         if (response.status !== 200 && response.status !== 201) {
           return response.json().then(({ message }) => {
             throw new Error(message);
           });
         }
-        console.log('response', response);
         return response.json();
+      })
+      .then(() => {
+        window.location.href = `${window.location.origin}/interviews`;
       })
       .then((res) => {
         console.log('res', res);
@@ -117,7 +117,6 @@ function Form() {
       fetch(url1)
         .then((response) => response.json())
         .then((res) => {
-          console.log('res linea 7', res);
           onLoading(res);
         });
     }

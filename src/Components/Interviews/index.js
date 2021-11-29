@@ -11,8 +11,6 @@ function Interviews() {
   };
 
   const deleteInterview = (id) => {
-    console.log('delete id', id);
-
     const url = `${process.env.REACT_APP_API}/interviews/${id}`;
     fetch(url, {
       method: 'DELETE'
