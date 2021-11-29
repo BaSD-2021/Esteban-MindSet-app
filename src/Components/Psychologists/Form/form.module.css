@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.availabilityForm{
+  flex-direction: row;
+  justify-content: space-between;
+}
+.availabilityForm label{
+  display: inline-block;
+  width: 10vw;
+}
+.availabilityInput{
+  margin:2px
+}
