@@ -9,6 +9,7 @@ import Postulants from '../Postulants/index';
 import Profiles from '../Profiles/index';
 import Psychologists from '../Psychologists/index';
 import Sessions from '../Sessions/index';
+import SessionsForm from '../Sessions/Form';
 import Home from '../Home/index';
 import styles from './layout.module.css';
 
@@ -41,6 +42,9 @@ function Layout() {
       break;
     case '/sessions':
       currentScreen = <Sessions />;
+      break;
+    case '/sessions/form':
+      currentScreen = <SessionsForm />;
       break;
     default:
       break;

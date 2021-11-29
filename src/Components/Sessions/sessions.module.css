@@ -1,6 +1,29 @@
 .container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
+}
+
+.table {
+  margin: 15px;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.table th {
+  padding: 15px;
+  border-top: 0px;
+  border: 15px solid  white;
+  border-bottom: 1px solid black;
+  background-color: #002147;
+  color: #f0f4f9;
+  font-weight: bold;
+}
+.table td {
+  text-align: center;
+  /* border-left: 1px solid black; */
+  border-bottom: 1px solid black;
 }
