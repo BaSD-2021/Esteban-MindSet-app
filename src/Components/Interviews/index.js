@@ -61,7 +61,7 @@ function Interviews() {
           {interviews.map((interview) => {
             return (
               <tr
-                onClick={() => (window.location.href = `/interviews/form?id=${interview._id}`)}
+                onClick={() => (window.location.href = `/interviews/form?_id=${interview._id}`)}
                 key={interview._id}
               >
                 <td>{interview.postulant?.firstName || '-'}</td>

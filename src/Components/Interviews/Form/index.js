@@ -6,15 +6,19 @@ function Form() {
   const [clientIdValue, setClientIdValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
   const [dateValue, setDateValue] = useState('');
-  const [applicationIdValue, setApplicationValue] = useState('');
+  const [applicationIdValue, setApplicationIdValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
   const [postulantsValue, setPostulantsValue] = useState([]);
   const [clientsValue, setClientsValue] = useState([]);
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
-    setPostulantIdValue(dat.data[0].postulant._id);
-    setClientIdValue(dat.data[0].client._id);
+    setPostulantIdValue(dat.data[0].postulant._id || '');
+    setClientIdValue(dat.data[0].client._id || '');
+    setStatusValue(dat.data[0].status || '');
+    setDateValue(dat.data[0].date || '');
+    setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
+    setNotesValue(dat.data[0].notes || '');
   };
 
   const onChangePostulantId = (event) => {
@@ -34,7 +38,7 @@ function Form() {
   };
 
   const onChangeApplication = (event) => {
-    setApplicationValue(event.target.value);
+    setApplicationIdValue(event.target.value);
   };
 
   const onChangeNotes = (event) => {
@@ -43,7 +47,7 @@ function Form() {
 
   const params = new URLSearchParams(window.location.search);
   const interviewId = params.get('_id');
-  const url1 = `${process.env.REACT_APP_API}/interviews/${interviewId}`;
+  const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
 
   if (interviewId) {
     fetchMethod = 'PUT';
@@ -113,6 +117,7 @@ function Form() {
       fetch(url1)
         .then((response) => response.json())
         .then((res) => {
+          console.log('res linea 7', res);
           onLoading(res);
         });
     }
@@ -135,13 +140,13 @@ function Form() {
           {postulantsValue.map((postulant) => {
             return (
               <option value={postulant._id} key={postulant._id}>
-                {postulant.firstName}
+                {postulant.firstName + ' ' + postulant.lastName}
               </option>
             );
           })}
         </select>
         <label>
-          <span>Client Id</span>
+          <span>Client Name</span>
         </label>
         <select
           id="clientId"
