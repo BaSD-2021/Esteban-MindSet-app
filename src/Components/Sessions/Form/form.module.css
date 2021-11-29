@@ -1,0 +1,29 @@
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  margin: 20px;
+  height: 56px;
+  border: none;
+  padding: 0 20px;
+  background: #FDC800;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error {
+  color: #f00;
+  font-weight: bold;
+  font-size: 18px;
+}
