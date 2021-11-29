@@ -117,7 +117,6 @@ function Form() {
         });
     }
   }, []);
-  console.log('postulants', postulantsValue);
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
