@@ -73,12 +73,12 @@ function Psychologists() {
       });
   };
 
-  const ToggleFormDisplay = () => {
+  const toggleFormDisplay = () => {
     setToggleForm(!toggleForm);
     setItemOnEdit(itemOnEditInitialState);
   };
 
-  const ToggleModal = (e, psychologist) => {
+  const toggleModal = (e, psychologist) => {
     if (!showModal) {
       e.stopPropagation();
       setPsychologistAvailability(psychologist.availability);
@@ -89,7 +89,7 @@ function Psychologists() {
   };
 
   const handleEdit = (psychologist) => {
-    ToggleFormDisplay();
+    toggleFormDisplay();
     setItemOnEdit(psychologist);
     setIsEditing(true);
   };
@@ -201,7 +201,7 @@ function Psychologists() {
           <Form
             inputs={PSYCHOLOGIST_FORM}
             availability={PSYCHOLOGIST_AVAILABILITY}
-            ToggleFormDisplay={ToggleFormDisplay}
+            toggleFormDisplay={toggleFormDisplay}
             itemOnEdit={itemOnEdit}
             onChange={onChange}
             handleSubmit={handleSubmit}
@@ -211,12 +211,12 @@ function Psychologists() {
             psychologists={psychologists}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
-            ToggleFormDisplay={ToggleFormDisplay}
-            ToggleModal={ToggleModal}
+            toggleFormDisplay={toggleFormDisplay}
+            toggleModal={toggleModal}
           />
         )}
         {showModal && (
-          <Modal ToggleModal={ToggleModal} title="Availability">
+          <Modal toggleModal={toggleModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
           </Modal>
         )}

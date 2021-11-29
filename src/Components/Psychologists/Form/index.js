@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './form.module.css';
 
-const Form = ({ inputs, availability, ToggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
+const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
   return (
     <form className={styles.form} onSubmit={(e) => handleSubmit(itemOnEdit, e)}>
       {inputs.map((input) => (
@@ -49,7 +49,7 @@ const Form = ({ inputs, availability, ToggleFormDisplay, itemOnEdit, onChange, h
       ))}
 
       <input type="submit" value="Submit" name="submit"></input>
-      <input type="button" value="Cancel" name="cancel" onClick={ToggleFormDisplay}></input>
+      <input type="button" value="Cancel" name="cancel" onClick={toggleFormDisplay}></input>
     </form>
   );
 };

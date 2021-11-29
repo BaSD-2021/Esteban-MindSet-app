@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './psychologistItem.module.css';
 
-const PsychologistItem = ({ psychologist, handleEdit, handleDelete, ToggleModal }) => {
+const PsychologistItem = ({ psychologist, handleEdit, handleDelete, toggleModal }) => {
   const { firstName, lastName, username, password, email, phone, address, _id } = psychologist;
   return (
     <tr className={styles.tr} onClick={() => handleEdit(psychologist)}>
@@ -11,7 +11,7 @@ const PsychologistItem = ({ psychologist, handleEdit, handleDelete, ToggleModal 
       <td>{username}</td>
       <td>{password}</td>
       <td>
-        <button onClick={(e) => ToggleModal(e, psychologist)}>Click to see</button>
+        <button onClick={(e) => toggleModal(e, psychologist)}>Click to see</button>
       </td>
       <td>{email}</td>
       <td>{phone}</td>

@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './modal.module.css';
 
-const Modal = ({ title, children, confirmButton, cancelButton, ToggleModal }) => {
+const Modal = ({ title, children, confirmButton, cancelButton, toggleModal }) => {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h3 className={styles.title}>{title}</h3>
-          <button onClick={ToggleModal}>X</button>
+          <button onClick={toggleModal}>X</button>
         </div>
         <div className={styles.content}>{children}</div>
         <div>
