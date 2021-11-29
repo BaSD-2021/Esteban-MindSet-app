@@ -57,13 +57,10 @@ function PostulantsForm() {
     const fillInfStudies = data.data[0].studies.informalStudies[0];
     const fillWorkExp = data.data[0].workExperience[0];
 
-    console.log(fillData.available);
-
     let from = fillData.contactRange?.from.toString();
     let to = fillData.contactRange?.to.toString();
     from = `${from.slice(0, 2)}:${from.slice(2)}`;
     to = `${to.slice(0, 2)}:${to.slice(2)}`;
-    console.log('data', fillData.contactRange.from);
     setFirstNameValue(fillData.firstName || '');
     setLastNameValue(fillData.lastName || '');
     setEmailValue(fillData.email || '');
@@ -72,7 +69,7 @@ function PostulantsForm() {
     setContactToValue(to || '');
     setAdressValue(fillData.address || '');
     setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
-    setAvailableValue(fillData.available == true ? 'checked' : '');
+    setAvailableValue(fillData.available || '');
     setPhoneValue(fillData.phone || '');
 
     setPrimarySDValue(fillPrimStudy.startDate == null ? '' : fillPrimStudy.startDate.slice(0, 10));
@@ -86,19 +83,19 @@ function PostulantsForm() {
     setTertiarySDValue(fillTerStudy.startDate == null ? '' : fillTerStudy.startDate.slice(0, 10));
     setTertiaryEDValue(fillTerStudy.endDate == null ? '' : fillTerStudy.endDate.slice(0, 10));
     setTertiaryDescriptionValue(fillTerStudy.description || '');
-    setTertiaryInstituteValue(fillTerStudy.institution || '');
+    setTertiaryInstituteValue(fillTerStudy.institute || '');
 
     // eslint-disable-next-line prettier/prettier
     setUniversitySDValue(fillUniStudies.startDate == null ? '' : fillUniStudies.startDate.slice(0, 10));
     setUniversityEDValue(fillUniStudies.endDate == null ? '' : fillUniStudies.endDate.slice(0, 10));
     setUniversityDescriptionValue(fillUniStudies.description || '');
-    setUniversityInsituteValue(fillUniStudies.institution || '');
+    setUniversityInsituteValue(fillUniStudies.institute || '');
 
     // eslint-disable-next-line prettier/prettier
     setInformalSDValue(fillInfStudies.startDate == null ? '' : fillInfStudies.startDate.slice(0, 10));
     setInformalEDValue(fillInfStudies.endDate == null ? '' : fillInfStudies.endDate.slice(0, 10));
     setInformalDescriptionValue(fillInfStudies.description || '');
-    setInformalInstituteValue(fillInfStudies.institution || '');
+    setInformalInstituteValue(fillInfStudies.institute || '');
 
     setWorkExperienceCompanyValue(fillWorkExp.company || '');
     // eslint-disable-next-line prettier/prettier
@@ -295,21 +292,8 @@ function PostulantsForm() {
       }
     ];
 
-    console.log('exp', workExperience);
-
     return workExperience;
   };
-
-  // if (postulantId) {
-  //   const useEffect(() => {
-  //     fetch(`${process.env.REACT_APP_API}/postulants/${postulantId}`)
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         setPostulantData(response);
-  //         setPostulantData({ firstName: response.firstName, lastName: response.lastName });
-  //       });
-  //   });
-  // }
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -369,47 +353,56 @@ function PostulantsForm() {
   return (
     <div className={styles.container}>
       <form onSubmit={onSubmit}>
-        <h2>Form</h2>
-        <input
-          value={firstNameValue}
-          className={styles.input}
-          id="firstName"
-          name="firstName"
-          placeholder="First Name"
-          onChange={onChangeFirstNameInput}
-          type="text"
-          required
-        />
-        <input
-          className={styles.input}
-          id="lastName"
-          name="lastName"
-          placeholder="Last Name"
-          value={lastNameValue}
-          onChange={onChangeLastNameInput}
-          type="text"
-          required
-        />
-        <input
-          className={styles.input}
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={emailValue}
-          onChange={onChangeEmailInput}
-          type="email"
-          required
-        />
-        <input
-          className={styles.input}
-          id="password"
-          name="password"
-          placeholder="Password"
-          value={passwordValue}
-          onChange={onChangePasswordInput}
-          type="password"
-          required
-        />
+        <h2>Postulation</h2>
+        <div>
+          <h3>Full name</h3>
+          <input
+            value={firstNameValue}
+            className={styles.input}
+            id="firstName"
+            name="firstName"
+            placeholder="First Name"
+            onChange={onChangeFirstNameInput}
+            type="text"
+            required
+          />
+          <input
+            className={styles.input}
+            id="lastName"
+            name="lastName"
+            placeholder="Last Name"
+            value={lastNameValue}
+            onChange={onChangeLastNameInput}
+            type="text"
+            required
+          />
+        </div>
+        <div>
+          <h3>Email</h3>
+          <input
+            className={styles.input}
+            id="email"
+            name="email"
+            placeholder="Email"
+            value={emailValue}
+            onChange={onChangeEmailInput}
+            type="email"
+            required
+          />
+        </div>
+        <div>
+          <h3>Password</h3>
+          <input
+            className={styles.input}
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={passwordValue}
+            onChange={onChangePasswordInput}
+            type="password"
+            required
+          />
+        </div>
         <div>
           <h3>Contact Range</h3>
           <input
@@ -433,16 +426,19 @@ function PostulantsForm() {
             required
           />
         </div>
-        <input
-          className={styles.input}
-          id="adress"
-          name="adress"
-          placeholder="Adress"
-          value={adressValue}
-          onChange={onChangeAdressInput}
-          type="text"
-          required
-        />
+        <div>
+          <h3>Adress</h3>
+          <input
+            className={styles.input}
+            id="adress"
+            name="adress"
+            placeholder="Adress"
+            value={adressValue}
+            onChange={onChangeAdressInput}
+            type="text"
+            required
+          />
+        </div>
         <div>
           <h3>Birthday</h3>
           <input
@@ -462,7 +458,7 @@ function PostulantsForm() {
             className={styles.input}
             id="available"
             name="available"
-            value={availableValue}
+            checked={availableValue}
             onChange={onChangeAvailableInput}
             type="checkbox"
             required
@@ -481,8 +477,8 @@ function PostulantsForm() {
             required
           />
         </div>
+        <h3>Primary Studies</h3>
         <div>
-          <h3>Primary Studies</h3>
           <input
             className={styles.input}
             id="primarySD"
@@ -491,6 +487,7 @@ function PostulantsForm() {
             value={primarySDValue}
             onChange={onChangePrimarySDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -500,6 +497,7 @@ function PostulantsForm() {
             value={primaryEDValue}
             onChange={onChangePrimaryEDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -509,10 +507,11 @@ function PostulantsForm() {
             value={primarySchoolValue}
             onChange={onChangePrimarySchoolValueInput}
             type="text"
+            required
           />
         </div>
+        <h3>Secondary Studies</h3>
         <div>
-          <h3>Secondary Studies</h3>
           <input
             className={styles.input}
             id="secondarySD"
@@ -521,6 +520,7 @@ function PostulantsForm() {
             value={secondarySDValue}
             onChange={onChangeSecondarySDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -530,6 +530,7 @@ function PostulantsForm() {
             value={secondaryEDValue}
             onChange={onChangeSecondaryEDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -539,10 +540,11 @@ function PostulantsForm() {
             value={secondarySchoolValue}
             onChange={onChangeSecondarySchoolValueInput}
             type="text"
+            required
           />
         </div>
+        <h3>Tertiary Studies</h3>
         <div>
-          <h3>Tertiary Studies</h3>
           <input
             className={styles.input}
             id="tertiarySD"
@@ -551,6 +553,7 @@ function PostulantsForm() {
             value={tertiarySDValue}
             onChange={onChangeTertiarySDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -560,6 +563,7 @@ function PostulantsForm() {
             value={tertiaryEDValue}
             onChange={onChangeTertiaryEDValue}
             type="date"
+            required
           />
           <textarea
             className={styles.input}
@@ -570,6 +574,7 @@ function PostulantsForm() {
             onChange={onChangeTertiaryDescriptionValueInput}
             rows="5"
             cols="33"
+            required
           />
           <input
             className={styles.input}
@@ -579,10 +584,11 @@ function PostulantsForm() {
             value={tertiaryInstituteValue}
             onChange={onChangeTertiaryInstituteValueInput}
             type="text"
+            required
           />
         </div>
+        <h3>University Studies</h3>
         <div>
-          <h3>University Studies</h3>
           <input
             className={styles.input}
             id="universitySD"
@@ -591,6 +597,7 @@ function PostulantsForm() {
             value={universitySDValue}
             onChange={onChangeUniversitySDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -600,6 +607,7 @@ function PostulantsForm() {
             value={universityEDValue}
             onChange={onChangeUniversityEDValue}
             type="date"
+            required
           />
           <textarea
             className={styles.input}
@@ -610,6 +618,7 @@ function PostulantsForm() {
             onChange={onChangeUniversityDescriptionValueInput}
             rows="5"
             cols="33"
+            required
           />
           <input
             className={styles.input}
@@ -619,10 +628,11 @@ function PostulantsForm() {
             value={universityInstituteValue}
             onChange={onChangeUniversityInstituteValueInput}
             type="text"
+            required
           />
         </div>
+        <h3>Informal Studies</h3>
         <div>
-          <h3>Informal Studies</h3>
           <input
             className={styles.input}
             id="informalSD"
@@ -631,6 +641,7 @@ function PostulantsForm() {
             value={informalSDValue}
             onChange={onChangeInformalSDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -640,6 +651,7 @@ function PostulantsForm() {
             value={informalEDValue}
             onChange={onChangeInformalEDValue}
             type="date"
+            required
           />
           <textarea
             className={styles.input}
@@ -650,6 +662,7 @@ function PostulantsForm() {
             onChange={onChangeInformalDescriptionValueInput}
             rows="5"
             cols="33"
+            required
           />
           <input
             className={styles.input}
@@ -659,10 +672,11 @@ function PostulantsForm() {
             value={informalInstituteValue}
             onChange={onChangeInformalInstituteValueInput}
             type="text"
+            required
           />
         </div>
+        <h3>Work Experience</h3>
         <div>
-          <h3>Work Experience</h3>
           <input
             className={styles.input}
             id="company"
@@ -671,6 +685,7 @@ function PostulantsForm() {
             value={workExperienceCompanyValue}
             onChange={onChangeWorkExperienceCompanyValueInput}
             type="text"
+            required
           />
           <input
             className={styles.input}
@@ -680,6 +695,7 @@ function PostulantsForm() {
             value={workExperienceSDValue}
             onChange={onChangeWorkExperienceSDValue}
             type="date"
+            required
           />
           <input
             className={styles.input}
@@ -689,6 +705,7 @@ function PostulantsForm() {
             value={workExperienceEDValue}
             onChange={onChangeWorkExperienceEDValue}
             type="date"
+            required
           />
           <textarea
             className={styles.input}
@@ -699,6 +716,7 @@ function PostulantsForm() {
             onChange={onChangeWorkExperienceDescriptionValueInput}
             rows="5"
             cols="33"
+            required
           />
         </div>
         <button type="submit" id="saveButton">

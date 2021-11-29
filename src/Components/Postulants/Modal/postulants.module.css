@@ -1,5 +1,5 @@
 .container{
-  position:absolute;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,10 +11,19 @@
 .modal{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 400px;
   height: 200px;
   background-color: #fff;
-  border-radius: 5pc;
+  border-radius: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons button {
+  margin: 20px;
 }

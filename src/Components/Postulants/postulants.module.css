@@ -4,3 +4,44 @@
   justify-content: center;
   align-items: center;
 }
+
+a {
+  text-decoration: none;
+  color: #002147;
+}
+
+a:hover{
+  color: #005cc6;
+  cursor: pointer;
+}
+
+table {
+  background-color: #F0F4F9;
+  padding: 10px;
+  margin: 25px 10px 30px 10px;
+  border-radius: 10px;
+}
+
+tr {
+  color: #002147;
+}
+
+td {
+  padding: 0 20px 0 20px;
+}
+
+button {
+  margin: auto;
+  width: auto;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fdc800;
+  font-size: 15px;
+  color: #002147;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #ffd027;
+}
