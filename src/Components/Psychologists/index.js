@@ -58,11 +58,13 @@ function Psychologists() {
   const [toggleForm, setToggleForm] = useState(false);
   const [itemOnEdit, setItemOnEdit] = useState(itemOnEditInitialState);
   const [isEditing, setIsEditing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [psychologistAvailability, setPsychologistAvailability] = useState({});
 
   useEffect(() => {
     getPsychologists();
+    console.log(psychologists);
   }, []);
 
   const getPsychologists = () => {
@@ -78,13 +80,24 @@ function Psychologists() {
     setItemOnEdit(itemOnEditInitialState);
   };
 
-  const toggleModal = (e, psychologist) => {
-    if (!showModal) {
+  const toggleAvailabilityModal = (e, psychologist) => {
+    if (!showAvailabilityModal) {
       e.stopPropagation();
       setPsychologistAvailability(psychologist.availability);
-      setShowModal(!showModal);
+      setShowAvailabilityModal(!showAvailabilityModal);
     } else {
-      setShowModal(!showModal);
+      setShowAvailabilityModal(!showAvailabilityModal);
+    }
+  };
+
+  const toggleConfirmModal = (e, psychologist) => {
+    if (!showConfirmModal) {
+      e.stopPropagation();
+      setItemOnEdit(psychologist);
+      setShowConfirmModal(true);
+    } else {
+      setItemOnEdit(itemOnEditInitialState);
+      setShowConfirmModal(false);
     }
   };
 
@@ -173,9 +186,8 @@ function Psychologists() {
     setIsEditing(false);
   };
 
-  const handleDelete = (e, id) => {
-    e.stopPropagation();
-    const url = `${process.env.REACT_APP_API}/psychologists/${id}`;
+  const handleDelete = () => {
+    const url = `${process.env.REACT_APP_API}/psychologists/${itemOnEdit._id}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -188,6 +200,7 @@ function Psychologists() {
             throw new Error(message);
           });
         }
+        toggleConfirmModal();
         getPsychologists();
       })
       .catch((error) => error);
@@ -210,14 +223,28 @@ function Psychologists() {
           <List
             psychologists={psychologists}
             handleEdit={handleEdit}
-            handleDelete={handleDelete}
             toggleFormDisplay={toggleFormDisplay}
-            toggleModal={toggleModal}
+            toggleAvailabilityModal={toggleAvailabilityModal}
+            toggleConfirmModal={toggleConfirmModal}
           />
         )}
-        {showModal && (
-          <Modal toggleModal={toggleModal} title="Availability">
+        {showAvailabilityModal && (
+          <Modal toggleModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
+          </Modal>
+        )}
+        {showConfirmModal && (
+          <Modal
+            toggleModal={toggleConfirmModal}
+            title="Delete Psychologist"
+            confirmButton="Confirm"
+            cancelButton="Cancel"
+            handleConfirm={handleDelete}
+            handleCancel={toggleConfirmModal}
+          >
+            <div>
+              <p>Are you sure you want to Delete this user?</p>
+            </div>
           </Modal>
         )}
       </div>

@@ -1,7 +1,15 @@
 import React from 'react';
 import styles from './modal.module.css';
 
-const Modal = ({ title, children, confirmButton, cancelButton, toggleModal }) => {
+const Modal = ({
+  title,
+  children,
+  confirmButton,
+  cancelButton,
+  toggleModal,
+  handleConfirm,
+  handleCancel
+}) => {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -11,8 +19,8 @@ const Modal = ({ title, children, confirmButton, cancelButton, toggleModal }) =>
         </div>
         <div className={styles.content}>{children}</div>
         <div>
-          {confirmButton && <button>{confirmButton}</button>}
-          {cancelButton && <button>{cancelButton}</button>}
+          {confirmButton && <button onClick={handleConfirm}>{confirmButton}</button>}
+          {cancelButton && <button onClick={handleCancel}>{cancelButton}</button>}
         </div>
       </div>
     </div>

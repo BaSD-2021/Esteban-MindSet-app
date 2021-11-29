@@ -3,7 +3,13 @@ import TableHeader from '../TableHeader';
 import PSYCHOLOGISTS_TABLE_HEADERS from '../utils/table-headers-utils';
 import PsychologistItem from '../PsychologistItem';
 
-const List = ({ psychologists, toggleFormDisplay, handleEdit, handleDelete, toggleModal }) => {
+const List = ({
+  psychologists,
+  toggleFormDisplay,
+  handleEdit,
+  toggleAvailabilityModal,
+  toggleConfirmModal
+}) => {
   return (
     <div>
       <table>
@@ -14,8 +20,8 @@ const List = ({ psychologists, toggleFormDisplay, handleEdit, handleDelete, togg
               key={i}
               psychologist={psychologist}
               handleEdit={handleEdit}
-              handleDelete={handleDelete}
-              toggleModal={toggleModal}
+              toggleConfirmModal={toggleConfirmModal}
+              toggleAvailabilityModal={toggleAvailabilityModal}
             />
           ))}
         </tbody>
