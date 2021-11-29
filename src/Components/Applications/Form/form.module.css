@@ -1,0 +1,38 @@
+.container{
+ display: flex;
+ flex-direction: column;
+ width: 50%;
+ margin: auto;
+}
+
+.container h2 {
+ font-size: 30px;
+ margin:auto;
+}
+.container label {
+ font-size: 20px;
+ font-weight: 600;
+ color: #002147;
+ margin-top: 10px;
+ margin-bottom: 10px;
+}
+
+.container input,
+.container select {
+height: 40px;
+border-radius: 3px;
+border-color: #909090;
+color: #002147;
+font-size: 15px;
+}
+
+.container button {
+ margin: 30px auto;
+ width: 30%;
+ height: 50px;
+ border: none;
+ border-radius: 3px;
+ background-color: #fdc800;
+ font-size: 15px;
+ color: #002147;
+}
