@@ -89,6 +89,13 @@ function Postulants() {
           );
         })}
       </table>
+      <button
+        onClick={() => {
+          window.location.href = `${window.location.origin}/postulants/form`;
+        }}
+      >
+        Create New Postulation
+      </button>
     </section>
   );
 }
