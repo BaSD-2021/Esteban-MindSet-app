@@ -19,6 +19,9 @@ function Interviews() {
         .then((response) => response.json())
         .then((response) => {
           saveInterviews(response.data);
+        })
+        .catch((error) => {
+          console.log('err', error);
         });
     });
   };
@@ -28,6 +31,9 @@ function Interviews() {
       .then((response) => response.json())
       .then((response) => {
         saveInterviews(response.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
   }, []);
 
@@ -46,32 +52,33 @@ function Interviews() {
     <section className={styles.container}>
       <h2>Interviews</h2>
       <table className={styles.table}>
-        <thead>
+        <thead className={styles.thead}>
           <tr>
-            <td>Postulant</td>
-            <td>Client</td>
-            <td>Status</td>
-            <td>Date</td>
-            <td>Delete</td>
+            <td className={styles.td}>Postulant</td>
+            <td className={styles.td}>Client</td>
+            <td className={styles.td}>Status</td>
+            <td className={styles.td}>Date</td>
+            <td className={styles.td}>Delete</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {interviews.map((interview) => {
             return (
               <tr
                 onClick={() => (window.location.href = `/interviews/form?_id=${interview._id}`)}
                 key={interview._id}
               >
-                <td>{interview.postulant?.firstName || '-'}</td>
-                <td>{interview.client?.name || '-'}</td>
-                <td>{interview.status}</td>
-                <td>{interview.date}</td>
-                <td>
+                <td className={styles.td}>{interview.postulant?.firstName || '-'}</td>
+                <td className={styles.td}>{interview.client?.name || '-'}</td>
+                <td className={styles.td}>{interview.status}</td>
+                <td className={styles.td}>{interview.date}</td>
+                <td className={styles.td}>
                   <button
                     type="button"
                     onClick={(e) => {
                       preventAndShow(e, interview._id);
                     }}
+                    className={styles.deleteButton}
                   >
                     Delete
                   </button>
@@ -82,7 +89,7 @@ function Interviews() {
         </tbody>
       </table>
       <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} />
-      <button type="button" onClick={goToForm}>
+      <button type="button" onClick={goToForm} className={styles.button}>
         Add interview
       </button>
     </section>

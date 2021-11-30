@@ -99,12 +99,18 @@ function Form() {
       .then((response) => response.json())
       .then((res) => {
         setPostulantsValue(res.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
         setClientsValue(res.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
 
     if (interviewId) {
@@ -112,6 +118,9 @@ function Form() {
         .then((response) => response.json())
         .then((res) => {
           onLoading(res);
+        })
+        .catch((error) => {
+          console.log('err', error);
         });
     }
   }, []);
@@ -119,8 +128,8 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2>Interview</h2>
-        <label>
-          <span>Postulant Name</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Postulant Name</span>
         </label>
         <select
           id="postulantId"
@@ -129,6 +138,7 @@ function Form() {
           required
           value={postulantIdValue}
           onChange={onChangePostulantId}
+          className={styles.input}
         >
           <option value={''} disabled>
             {'Select one'}
@@ -136,13 +146,13 @@ function Form() {
           {postulantsValue.map((postulant) => {
             return (
               <option value={postulant._id} key={postulant._id}>
-                {postulant.firstName + ' ' + postulant.lastName}
+                {`${postulant.firstName} + ' ' + ${postulant.lastName}`}
               </option>
             );
           })}
         </select>
-        <label>
-          <span>Client Name</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Client Name</span>
         </label>
         <select
           id="clientId"
@@ -151,6 +161,7 @@ function Form() {
           required
           value={clientIdValue}
           onChange={onChangeClientId}
+          className={styles.input}
         >
           <option value={''} disabled>
             {'Select one'}
@@ -164,8 +175,8 @@ function Form() {
           })}
           ;
         </select>
-        <label>
-          <span>Status</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Status</span>
         </label>
         <select
           id="status"
@@ -174,6 +185,7 @@ function Form() {
           required
           value={statusValue}
           onChange={onChangeStatus}
+          className={styles.input}
         >
           <option value={''} disabled>
             {'Select one'}
@@ -184,8 +196,8 @@ function Form() {
           <option value="assigned">Assigned</option>
           <option value="confirmed">Confirmed</option>
         </select>
-        <label>
-          <span>Date</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Date</span>
         </label>
         <input
           id="date"
@@ -194,9 +206,10 @@ function Form() {
           required
           value={dateValue}
           onChange={onChangeDate}
+          className={styles.input}
         />
-        <label>
-          <span>Application Id</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Application Id</span>
         </label>
         <input
           id="application"
@@ -205,9 +218,10 @@ function Form() {
           required
           value={applicationIdValue}
           onChange={onChangeApplication}
+          className={styles.input}
         />
-        <label>
-          <span>Notes</span>
+        <label className={styles.label}>
+          <span className={styles.span}>Notes</span>
         </label>
         <input
           id="notes"
@@ -216,8 +230,9 @@ function Form() {
           required
           value={notesValue}
           onChange={onChangeNotes}
+          className={styles.input}
         />
-        <button id="saveButton" type="submit">
+        <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
       </form>

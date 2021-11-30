@@ -6,29 +6,35 @@
   align-items: center;
   margin-bottom: 30px;
 }
+
 .table {
   background-color: #F0F4F9;
   padding: 10px;
   margin: 25px 10px 30px 10px;
   border-radius: 2px;
 }
-thead tr {
+
+.thead tr {
   padding: 30px;
 }
-thead td {
+
+.thead td {
   text-align: center;
   font-weight: bolder;
   color: #002147;
   padding: 10px;
 }
-td {
+
+.td {
   text-align: center;
   color: #002147;
 }
-tbody tr{
+
+.tbody tr{
   cursor: pointer;
 }
-button {
+
+.button {
   width: 200px;
   height: 30px;
   padding: 5px;
@@ -40,7 +46,24 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+.button:hover {
+  cursor: pointer;
+  background-color: #ffd027;
+}
+
+.deleteButton {
+  width: 100px;
+  height: 30px;
+  padding: 5px;
+  border: none;
+  border-radius: 2px;
+  background-color: #fdc800;
+  font-size: 15px;
+  color: #002147;
+  font-weight: bold;
+}
+
+.deleteButton:hover {
   cursor: pointer;
   background-color: #ffd027;
 }

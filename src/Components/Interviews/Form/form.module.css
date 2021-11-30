@@ -5,7 +5,8 @@
   justify-content: space-between;
   align-items: center;
 }
-select, input{
+
+.input{
   display: flex;
   width: 30%;
   height: 30px;
@@ -16,16 +17,18 @@ select, input{
   font-size: medium;
 }
 
-span{
+.span{
   text-align: center;
   font-weight: bolder;
   color: #002147;
   padding: 10px;
 }
-label{
+
+.label{
   margin: 10px;
 }
-button {
+
+.button {
   margin: 10px;
   width: auto;
   height: 30px;
@@ -38,7 +41,7 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+.button:hover {
   cursor: pointer;
   background-color: #ffd027;
 }
