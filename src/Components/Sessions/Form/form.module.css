@@ -7,28 +7,9 @@
   margin-bottom: 30px;
 }
 
-.form-subscription {
-  padding: 0px 40px 40px 40px;
-}
-.form-subscription li {
-  padding: 10px;
-}
 .form {
   display: flex;
   flex-direction: column;
-}
-label {
-  display: block;
-  padding: 10px 5px;
-  font-weight: bold;
-}
-.form input, .select {
-  display: inline;
-  width: 100%;
-  padding: 10px 20px;
-  border: 1px solid rgb(167, 167, 167);
-  border-radius: 5px;
-  margin-bottom: 15px;
 }
 
 .button {
@@ -42,28 +23,8 @@ label {
   border-radius: 4px;
   cursor: pointer;
 }
-
-.msg-error {
-  display: block;
-  color: red;
-  padding: 2px;
-  font-size: 12px;
-}
-
-.hide {
-  display: none;
-}
-
-.input-error {
-  border-color: red;
-  color: red;
-}
-.submit{
-  border: 1px solid #28a745;
-  border-radius: 8px;
-  color: #28a745;
-  cursor: pointer;
+.error {
+  color: #f00;
   font-weight: bold;
-  padding: 5px;
-  margin: 40px
+  font-size: 18px;
 }
