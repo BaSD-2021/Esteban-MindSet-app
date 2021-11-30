@@ -31,8 +31,6 @@ const PSYCHOLOGIST_FORM = [
   }
 ];
 
-//input label is going to be capitalize by css and it is used for nested object access
-// input inputName is going to be used for object access.
 const PSYCHOLOGIST_AVAILABILITY = [
   {
     label: 'monday',

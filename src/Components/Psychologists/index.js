@@ -208,7 +208,7 @@ function Psychologists() {
 
   return (
     <section className={styles.container}>
-      <h2>Psychologists</h2>
+      <h2 className={styles.title}>Psychologists</h2>
       <div className={styles.formContainer}>
         {toggleForm ? (
           <Form

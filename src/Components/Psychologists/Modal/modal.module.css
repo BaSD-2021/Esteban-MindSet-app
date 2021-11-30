@@ -18,18 +18,58 @@
   display: flex;
   flex-direction: column;
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 10% auto;
   padding: 30px 40px;
   border: 1px solid #888;
   max-width: 60%;
+  border-radius: 5px;
 }
 .modalHeader {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }
 .title {
-  flex: 1;
+  margin: auto;
 }
 .content{
   align-self: center;
+}
+.closeBtn{
+  font-size: 1.3rem;
+  border: 0px;
+  background-color: #FEFEFE;
+  cursor: pointer;
+}
+.confirmBtn{
+  padding: 6px 9px;
+  margin:6px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 2px solid #003877;
+  background-color:#fff;
+  color: #003877;
+  font-weight: 600;
+}
+.confirmBtn:hover{
+  background-color: #003877;
+  color: #fff;
+}
+.cancelBtn{
+  padding: 6px 9px;
+  margin:6px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 1px solid #c50000;
+  background-color: #c50000;
+  color: #fff;
+  font-weight: 600;
+}
+.cancelBtn:hover{
+  background-color: #ad0000;
+}
+.btnContainer{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }

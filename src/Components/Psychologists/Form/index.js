@@ -6,6 +6,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
     <form className={styles.form} onSubmit={(e) => handleSubmit(itemOnEdit, e)}>
       {inputs.map((input) => (
         <input
+          className={styles.dataInput}
           key={input.inputName}
           type={input.type}
           name={input.inputName}
@@ -14,10 +15,12 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           onChange={onChange}
         />
       ))}
-      <h3>Availability</h3>
+      <h3 className={styles.availabilityHeading}>Availability</h3>
       {availability.map((item, i) => (
         <div className={styles.availabilityForm} key={i}>
-          <label key={item.label}>{item.label}</label>
+          <label key={item.label} className={styles.availabilityLabel}>
+            {item.label}
+          </label>
           <input
             key={item.day.inputName}
             type={item.day.type}
@@ -47,9 +50,16 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           />
         </div>
       ))}
-
-      <input type="submit" value="Submit" name="submit"></input>
-      <input type="button" value="Cancel" name="cancel" onClick={toggleFormDisplay}></input>
+      <div className={styles.buttonContainer}>
+        <input className={styles.submitBtn} type="submit" value="Submit" name="submit"></input>
+        <input
+          className={styles.cancelBtn}
+          type="button"
+          value="Cancel"
+          name="cancel"
+          onClick={toggleFormDisplay}
+        ></input>
+      </div>
     </form>
   );
 };

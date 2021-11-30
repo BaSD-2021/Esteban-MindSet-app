@@ -9,20 +9,27 @@ const PsychologistItem = ({
 }) => {
   const { firstName, lastName, username, password, email, phone, address } = psychologist;
   return (
-    <tr className={styles.tr} onClick={() => handleEdit(psychologist)}>
+    <tr className={styles.row} onClick={() => handleEdit(psychologist)}>
       <td>
         {firstName} {lastName}
       </td>
       <td>{username}</td>
       <td>{password}</td>
       <td>
-        <button onClick={(e) => toggleAvailabilityModal(e, psychologist)}>Click to see</button>
+        <button
+          className={styles.availabilityBtn}
+          onClick={(e) => toggleAvailabilityModal(e, psychologist)}
+        >
+          Click to see
+        </button>
       </td>
       <td>{email}</td>
       <td>{phone}</td>
       <td>{address}</td>
       <td>
-        <button onClick={(e) => toggleConfirmModal(e, psychologist)}>Delete</button>
+        <button className={styles.deleteBtn} onClick={(e) => toggleConfirmModal(e, psychologist)}>
+          Delete
+        </button>
       </td>
     </tr>
   );

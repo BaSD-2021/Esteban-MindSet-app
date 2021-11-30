@@ -15,12 +15,22 @@ const Modal = ({
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h3 className={styles.title}>{title}</h3>
-          <button onClick={toggleModal}>X</button>
+          <button className={styles.closeBtn} onClick={toggleModal}>
+            X
+          </button>
         </div>
         <div className={styles.content}>{children}</div>
-        <div>
-          {confirmButton && <button onClick={handleConfirm}>{confirmButton}</button>}
-          {cancelButton && <button onClick={handleCancel}>{cancelButton}</button>}
+        <div className={styles.btnContainer}>
+          {confirmButton && (
+            <button className={styles.confirmBtn} onClick={handleConfirm}>
+              {confirmButton}
+            </button>
+          )}
+          {cancelButton && (
+            <button className={styles.cancelBtn} onClick={handleCancel}>
+              {cancelButton}
+            </button>
+          )}
         </div>
       </div>
     </div>

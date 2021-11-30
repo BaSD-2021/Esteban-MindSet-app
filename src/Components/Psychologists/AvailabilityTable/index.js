@@ -3,7 +3,7 @@ import styles from './availabilityTable.module.css';
 
 const AvailabilityTable = ({ availability }) => {
   return (
-    <table>
+    <table className={styles.table}>
       <thead className={styles.header}>
         <tr>
           <th>Day</th>
@@ -14,9 +14,9 @@ const AvailabilityTable = ({ availability }) => {
       <tbody className={styles.body}>
         {Object.keys(availability).map((day, i) => (
           <tr key={i}>
-            <td>{day}</td>
-            <td>{availability[day].from}</td>
-            <td>{availability[day].to}</td>
+            <td className={styles.tableContent}>{day}</td>
+            <td className={styles.tableContent}>{availability[day].from}</td>
+            <td className={styles.tableContent}>{availability[day].to}</td>
           </tr>
         ))}
       </tbody>
