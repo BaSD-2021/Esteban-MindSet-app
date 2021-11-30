@@ -82,7 +82,7 @@ function profilesForm() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <div className={styles.formField}>
+        <div>
           <h2>Profile Form</h2>
           <Input
             name="profile"
@@ -93,7 +93,7 @@ function profilesForm() {
             required
           />
         </div>
-        <button disabled={isLoading} type="submit" className={styles.button}>
+        <button type="submit" className={styles.button}>
           Save
         </button>
         <div className={styles.error}>{error}</div>
