@@ -13,8 +13,8 @@ function Form() {
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
-    setPostulantIdValue(dat.data[0].postulant._id || '');
-    setClientIdValue(dat.data[0].client._id || '');
+    setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
+    setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
     setStatusValue(dat.data[0].status || '');
     setDateValue(dat.data[0].date || '');
     setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
@@ -99,18 +99,12 @@ function Form() {
       .then((response) => response.json())
       .then((res) => {
         setPostulantsValue(res.data);
-        if (!interviewId) {
-          setPostulantIdValue(res.data[0]._id);
-        }
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
         setClientsValue(res.data);
-        if (!interviewId) {
-          setClientIdValue(res.data[0]._id);
-        }
       });
 
     if (interviewId) {
@@ -136,6 +130,9 @@ function Form() {
           value={postulantIdValue}
           onChange={onChangePostulantId}
         >
+          <option value={''} disabled>
+            {'Select one'}
+          </option>
           {postulantsValue.map((postulant) => {
             return (
               <option value={postulant._id} key={postulant._id}>
@@ -155,6 +152,9 @@ function Form() {
           value={clientIdValue}
           onChange={onChangeClientId}
         >
+          <option value={''} disabled>
+            {'Select one'}
+          </option>
           {clientsValue.map((client) => {
             return (
               <option value={client._id} key={client._id}>
@@ -175,6 +175,9 @@ function Form() {
           value={statusValue}
           onChange={onChangeStatus}
         >
+          <option value={''} disabled>
+            {'Select one'}
+          </option>
           <option value="successful">Successful</option>
           <option value="failed">Failed</option>
           <option value="cancelled">Cancelled</option>
