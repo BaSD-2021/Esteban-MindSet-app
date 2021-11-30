@@ -12,7 +12,7 @@ function Form() {
   const [passwordValue, setPasswordValue] = useState('');
 
   const getAdminById = () => {
-    fetch(`${process.env.REACT_APP_API}/admins/${adminId}`)
+    fetch(`${process.env.REACT_APP_API}/admins?_id=${adminId}`)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           return response.json().then(({ message }) => {
@@ -22,7 +22,7 @@ function Form() {
         return response.json();
       })
       .then((response) => {
-        const { name, username, password } = response.data;
+        const { name, username, password } = response.data[0];
         setNameValue(name);
         setUsernameValue(username);
         setPasswordValue(password);
