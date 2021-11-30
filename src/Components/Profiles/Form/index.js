@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-// import Select from '../Select';
-// import TextArea from '../TextArea';
 import Input from '../Input';
 import styles from './form.module.css';
 

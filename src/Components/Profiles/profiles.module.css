@@ -32,6 +32,12 @@
   cursor: pointer;
 }
 
+.error {
+  color: #f00;
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .button {
   margin: 20px;
   height: 56px;
