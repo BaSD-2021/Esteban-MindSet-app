@@ -13,6 +13,10 @@ a {
   padding: 5px 10px;
 }
 
+table {
+  margin-top: 20px;
+}
+
 thead {
   background-color: #002147;
 }
@@ -28,15 +32,17 @@ td {
   border-bottom: 1px solid #BDBDBD;
 }
 
-button {
+button, .btn {
   border-radius: 4px;
   background-color: #FDC800;
   color: #002147;
   border: none;
-  font-weight: 16px;
+  font-weight: 18px;
   padding: 5px 15px;
   font-weight: bold;
+  cursor: pointer;
 }
+
 .row {
   display: flex;
   flex-direction: row;
