@@ -19,6 +19,9 @@ function Positions() {
         .then((response) => response.json())
         .then((response) => {
           savePositions(response.data);
+        })
+        .catch((error) => {
+          console.log('err', error);
         });
     });
   };
@@ -28,6 +31,9 @@ function Positions() {
       .then((response) => response.json())
       .then((response) => {
         savePositions(response.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
   }, []);
 
@@ -74,6 +80,7 @@ function Positions() {
                     onClick={(e) => {
                       preventAndShow(e, position._id);
                     }}
+                    className={styles.deleteButton}
                   >
                     Delete
                   </button>
@@ -84,7 +91,7 @@ function Positions() {
         </tbody>
       </table>
       <Modal id={idToDelete} function={deletePosition} show={showModal} closeModal={closeModal} />
-      <button type="button" onClick={goToForm}>
+      <button type="button" onClick={goToForm} className={styles.button}>
         Add position
       </button>
     </section>

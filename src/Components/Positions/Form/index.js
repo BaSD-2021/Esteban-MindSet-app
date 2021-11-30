@@ -82,9 +82,6 @@ function Form() {
       .then(() => {
         window.location.href = `${window.location.origin}/positions`;
       })
-      .then((res) => {
-        console.log('res', res);
-      })
       .catch((error) => {
         console.log('err', error);
       });
@@ -94,12 +91,18 @@ function Form() {
       .then((response) => response.json())
       .then((res) => {
         setProfessionalProfilesValue(res.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
         setClientsValue(res.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
 
     if (positionId) {
@@ -107,6 +110,9 @@ function Form() {
         .then((response) => response.json())
         .then((res) => {
           onLoading(res);
+        })
+        .catch((error) => {
+          console.log('err', error);
         });
     }
   }, []);
@@ -114,8 +120,8 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2>Position</h2>
-        <label>
-          <span>Client Name</span>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Client Name</span>
         </label>
         <select
           id="clientId"
@@ -124,6 +130,7 @@ function Form() {
           required
           value={clientIdValue}
           onChange={onChangeClientId}
+          className={styles.input}
         >
           <option value={''} disabled>
             {'Select one'}
@@ -136,8 +143,8 @@ function Form() {
             );
           })}
         </select>
-        <label>
-          <span>Job Description</span>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Job Description</span>
         </label>
         <input
           id="jobDescription"
@@ -146,9 +153,10 @@ function Form() {
           required
           value={jobDescriptionValue}
           onChange={onChangeJobDescription}
+          className={styles.input}
         />
-        <label>
-          <span>Vacancy</span>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Vacancy</span>
         </label>
         <input
           id="vacancy"
@@ -157,9 +165,10 @@ function Form() {
           required
           value={vacancyValue}
           onChange={onChangeVacancy}
+          className={styles.input}
         />
-        <label>
-          <span>Professional Profile</span>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Professional Profile</span>
         </label>
         <select
           id="professionalProfileId"
@@ -168,6 +177,7 @@ function Form() {
           required
           value={professionalProfileIdValue}
           onChange={onChangeProfessionalProfileId}
+          className={styles.input}
         >
           <option value={''} disabled>
             {'Select one'}
@@ -180,8 +190,8 @@ function Form() {
             );
           })}
         </select>
-        <label>
-          <span>Is Open</span>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Is Open</span>
         </label>
         <select
           id="isOpen"
@@ -190,14 +200,15 @@ function Form() {
           required
           value={isOpenValue}
           onChange={onChangeIsOpen}
+          className={styles.input}
         >
           <option value={''} disabled>
-            {'Select onexs'}
+            {'Select one'}
           </option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <button id="saveButton" type="submit">
+        <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
       </form>
