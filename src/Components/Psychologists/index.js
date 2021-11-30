@@ -72,7 +72,8 @@ function Psychologists() {
       .then((response) => response.json())
       .then((response) => {
         setPsychologist(response.data);
-      });
+      })
+      .catch((error) => error);
   };
 
   const toggleFormDisplay = () => {
@@ -158,11 +159,9 @@ function Psychologists() {
     };
 
     if (isEditing) {
-      console.log('yes');
       options.method = 'PUT';
       url = `${process.env.REACT_APP_API}/psychologists/${item._id}`;
     } else {
-      console.log('no');
       options.method = 'POST';
       url = `${process.env.REACT_APP_API}/psychologists`;
     }
@@ -180,10 +179,8 @@ function Psychologists() {
         getPsychologists();
         setToggleForm(!toggleForm);
       })
-      .catch((error) => {
-        console.log(error);
-      });
-    setIsEditing(false);
+      .catch((error) => error)
+      .finally(() => setIsEditing(false));
   };
 
   const handleDelete = () => {
