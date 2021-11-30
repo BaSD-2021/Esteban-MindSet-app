@@ -5,3 +5,30 @@
   justify-content: center;
   align-items: center;
 }
+
+label {
+  color: #002147;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+input {
+  border: 1px solid #BDBDBD;
+  border-radius: 4px;
+  padding: 12px;
+  width: 270px;
+}
+
+button {
+  margin: 15px;
+  padding: 20px;
+  width: 300px;
+  cursor: pointer;
+}
+
+.inputCnt {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}

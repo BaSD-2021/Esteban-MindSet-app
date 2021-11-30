@@ -1,16 +1,28 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
+import Modal from './modal/modal';
 
 const Admins = () => {
   const [admins, setAdmins] = useState([]);
+  const [modal, setModal] = useState(false);
 
   console.log('admins', admins);
 
   const getAdmins = () => {
     fetch(`${process.env.REACT_APP_API}/admins`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((response) => {
         setAdmins(response.data);
+      })
+      .catch((error) => {
+        console.log('err', error);
       });
   };
 
@@ -18,19 +30,27 @@ const Admins = () => {
     getAdmins();
   }, []);
 
-  const updateAdmin = () => {
-    window.location.pathname = `/admins/Form`;
+  const updateAdmin = (id) => {
+    window.location.href = `/admins/form?_id=${id}`;
   };
 
   const deleteAdmin = (id) => {
     fetch(`${process.env.REACT_APP_API}/admins/${id}`, { method: 'DELETE' }).then(() => {
+      setModal(true);
       getAdmins();
     });
+  };
+
+  const handleClose = () => {
+    setModal(false);
   };
 
   return (
     <section className={styles.container}>
       <h2>Admins</h2>
+      <a href="/admins/form" className={styles.btn}>
+        ADD ADMIN
+      </a>
       <div>
         <table>
           <thead>
@@ -43,7 +63,7 @@ const Admins = () => {
           <tbody>
             {admins.map((admin, index) => {
               return (
-                <tr onClick={updateAdmin} key={index}>
+                <tr onClick={() => updateAdmin(admin._id)} key={index}>
                   <td>{admin.name}</td>
                   <td>{admin.username}</td>
                   <td>
@@ -62,6 +82,7 @@ const Admins = () => {
           </tbody>
         </table>
       </div>
+      {modal && <Modal handleClose={handleClose} />}
     </section>
   );
 };
