@@ -126,7 +126,7 @@ function Form() {
           onChange={onChangeClientId}
         >
           <option value={''} disabled>
-            {'--Select an Option--'}
+            {'Select one'}
           </option>
           {clientsValue.map((client) => {
             return (
@@ -170,7 +170,7 @@ function Form() {
           onChange={onChangeProfessionalProfileId}
         >
           <option value={''} disabled>
-            {'--Select an Option--'}
+            {'Select one'}
           </option>
           {professionalProfilesValue.map((professionalProfile) => {
             return (
@@ -192,7 +192,7 @@ function Form() {
           onChange={onChangeIsOpen}
         >
           <option value={''} disabled>
-            {'--Select an Option--'}
+            {'Select onexs'}
           </option>
           <option value="true">Yes</option>
           <option value="false">No</option>
