@@ -53,6 +53,7 @@ function Positions() {
             <td>Vacancy</td>
             <td>Professional profile</td>
             <td>Is Open</td>
+            <td>Delete</td>
           </tr>
         </thead>
         <tbody>
@@ -66,6 +67,7 @@ function Positions() {
                 <td>{position.jobDescription}</td>
                 <td>{position.vacancy}</td>
                 <td>{position.professionalProfile?.name || '-'}</td>
+                <td>{position.isOpen.toString()}</td>
                 <td>
                   <button
                     type="button"
