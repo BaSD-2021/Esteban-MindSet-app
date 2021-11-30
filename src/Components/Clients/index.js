@@ -6,21 +6,31 @@ function Clients() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [clients, setClients] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const deleteClient = (event, id) => {
-    event.preventDefault();
-    event.stopPropagation();
     const url = `${process.env.REACT_APP_API}/clients/${id}`;
     fetch(url, {
       method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/clients`)
-        .then((response) => response.json())
-        .then((response) => {
-          setClients(response.data);
-          window.location.href = `/clients`;
-        });
-    });
+    })
+      .then(() => {
+        fetch(`${process.env.REACT_APP_API}/clients`)
+          .then((response) => {
+            if (response.status !== 200) {
+              return response.json().then(({ message }) => {
+                throw new Error(message);
+              });
+            }
+            return response.json();
+          })
+          .then((response) => {
+            setClients(response.data);
+            window.location.href = `/clients`;
+          });
+      })
+      .catch((err) => {
+        setErrorMessage(err);
+      });
   };
 
   const goToForm = () => {
@@ -40,9 +50,19 @@ function Clients() {
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/clients`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((response) => {
         setClients(response.data);
+      })
+      .catch((err) => {
+        setErrorMessage(err);
       });
   }, []);
 
@@ -51,7 +71,7 @@ function Clients() {
       <h2 className={styles.subtitle}>Clients</h2>
       <table className={styles.tableData}>
         <thead className={styles.tableHeader}>
-          <tr>
+          <tr className={styles.tdStyles}>
             <th>Name</th>
             <th>Phone</th>
             <th>Actions</th>
@@ -63,10 +83,11 @@ function Clients() {
               <tr
                 onClick={() => (window.location.href = `/clients/form?_id=${client._id}`)}
                 key={client._id}
+                className={styles.trStyles}
               >
-                <td>{client.name ? client.name : '-'}</td>
-                <td>{client.phone ? client.phone : '-'}</td>
-                <td>
+                <td className={styles.tdStyles}>{client.name ? client.name : '-'}</td>
+                <td className={styles.tdStyles}>{client.phone ? client.phone : '-'}</td>
+                <td className={styles.tdStyles}>
                   <button
                     type="button"
                     onClick={(e) => {
@@ -82,6 +103,7 @@ function Clients() {
           })}
         </tbody>
       </table>
+      <div className={styles.errorMessage}>{errorMessage.message}</div>
       <Modal id={idToDelete} function={deleteClient} show={showModal} closeModal={closeModal} />
       <button type="button" onClick={goToForm} className={styles.buttonCreate}>
         Add client

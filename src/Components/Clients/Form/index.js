@@ -9,6 +9,7 @@ function Form() {
   const [address, setAddress] = useState('');
   const [logo, setLogo] = useState('');
   const [description, setDescription] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const params = new URLSearchParams(window.location.search);
   const clientId = params.get('_id');
@@ -91,17 +92,27 @@ function Form() {
       .then(() => {
         window.location.href = '/clients';
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((err) => {
+        setErrorMessage(err);
       });
   };
 
   useEffect(() => {
     if (clientId) {
       fetch(`${process.env.REACT_APP_API}/clients?_id=${clientId}`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status !== 200) {
+            return response.json().then(({ message }) => {
+              throw new Error(message);
+            });
+          }
+          return response.json();
+        })
         .then((res) => {
           onLoading(res);
+        })
+        .catch((err) => {
+          setErrorMessage(err);
         });
     }
   }, []);
@@ -109,12 +120,20 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2>Form</h2>
-        <label>
+        <h2 className={styles.subtitle}>Form</h2>
+        <label className={styles.label}>
           <span>Name</span>
         </label>
-        <input id="name" name="name" type="text" required value={name} onChange={onChangeName} />
-        <label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          value={name}
+          onChange={onChangeName}
+          className={styles.inputStyle}
+        />
+        <label className={styles.label}>
           <span>Phone</span>
         </label>
         <input
@@ -124,8 +143,9 @@ function Form() {
           required
           value={phone}
           onChange={onChangePhone}
+          className={styles.inputStyle}
         />
-        <label>
+        <label className={styles.label}>
           <span>Country</span>
         </label>
         <input
@@ -135,8 +155,9 @@ function Form() {
           required
           value={country}
           onChange={onChangeCountry}
+          className={styles.inputStyle}
         />
-        <label>
+        <label className={styles.label}>
           <span>State</span>
         </label>
         <input
@@ -146,12 +167,21 @@ function Form() {
           required
           value={state}
           onChange={onChangeState}
+          className={styles.inputStyle}
         />
-        <label>
+        <label className={styles.label}>
           <span>City</span>
         </label>
-        <input id="city" name="city" required type="text" value={city} onChange={onChangeCity} />
-        <label>
+        <input
+          id="city"
+          name="city"
+          required
+          type="text"
+          value={city}
+          onChange={onChangeCity}
+          className={styles.inputStyle}
+        />
+        <label className={styles.label}>
           <span>Address</span>
         </label>
         <input
@@ -161,12 +191,20 @@ function Form() {
           type="text"
           value={address}
           onChange={onChangeAddress}
+          className={styles.inputStyle}
         />
-        <label>
+        <label className={styles.label}>
           <span>Logo</span>
         </label>
-        <input id="logo" name="logo" type="text" value={logo} onChange={onChangeLogo} />
-        <label>
+        <input
+          id="logo"
+          name="logo"
+          type="text"
+          value={logo}
+          onChange={onChangeLogo}
+          className={styles.inputStyle}
+        />
+        <label className={styles.label}>
           <span>Description</span>
         </label>
         <input
@@ -175,11 +213,15 @@ function Form() {
           type="text"
           value={description}
           onChange={onChangeDescription}
+          className={styles.inputStyle}
         />
-        <button id="saveButton" type="submit">
+        <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
       </form>
+      <div id="error_message" className={styles.errorMessage}>
+        {errorMessage.message}
+      </div>
     </div>
   );
 }

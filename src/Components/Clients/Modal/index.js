@@ -11,7 +11,7 @@ function Modal(props) {
         <h2 id="modal-title">Delete item</h2>
         <p>YOU ARE ABOUT TO DELETE A CLIENT</p>
         <div className={styles.buttonContainer}>
-          <button id="cancel-button" onClick={props.closeModal}>
+          <button id="cancel-button" onClick={props.closeModal} className={styles.modalButton}>
             Cancel
           </button>
           <button
@@ -19,6 +19,7 @@ function Modal(props) {
             onClick={(event) => {
               props.function(event, props.id);
             }}
+            className={styles.modalButton}
           >
             Confirm
           </button>

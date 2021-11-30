@@ -25,11 +25,12 @@
  width: 30%;
 }
 
-.buttonContainer button{
+.modalButton{
  padding: 8px;
  border: none;
  border-radius: 3px;
  background-color: #fdc800;
  font-size: 15px;
  color: #002147;
+ cursor: pointer;
 }

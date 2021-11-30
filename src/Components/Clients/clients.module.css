@@ -23,12 +23,12 @@
   border-bottom: 1px #909090 solid;
 }
 
-.container tr{
+.trStyles{
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-tbody td{
+.tdStyles{
   color: #002147;
   font-size: 16px;
 }
@@ -40,6 +40,7 @@ tbody td{
   background-color: #fdc800;
   font-size: 15px;
   color: #002147;
+  cursor: pointer;
 }
 
 .buttonCreate{
@@ -51,4 +52,11 @@ tbody td{
   background-color: #fdc800;
   font-size: 15px;
   color: #002147;
+  cursor: pointer;
 }
+
+.errorMessage{
+  margin: 10px auto;
+  font-size: 15px;
+  color: #002147;
+ }
