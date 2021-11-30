@@ -8,16 +8,16 @@ function Form() {
   const [positions, setPositions] = useState([]);
   const [postulants, setPostulants] = useState([]);
   const [interviews, setInterviews] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const params = new URLSearchParams(window.location.search);
   const applicationId = params.get('_id');
   let fetchMethod = 'POST';
-  let disableButton = false;
 
   const onLoading = (data) => {
     setPostulantId(data.data[0].postulants ? data.data[0].postulants._id : '');
     setPositionId(data.data[0].positions ? data.data[0].positions._id : '');
-    setDate(data.data[0].interview ? data.data[0].interview.date : '');
+    setDate(data.data[0].interview ? data.data[0].interview._id : '');
     setResult(data.data[0].result);
   };
   const onChangePositionId = (event) => {
@@ -35,7 +35,6 @@ function Form() {
 
   if (applicationId) {
     fetchMethod = 'PUT';
-    disableButton = true;
   }
 
   const onSubmit = (event) => {
@@ -71,31 +70,71 @@ function Form() {
         window.location.href = '/applications';
       })
       .catch((error) => {
-        console.log('err', error);
+        setErrorMessage(error);
       });
   };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/positions`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((res) => {
         setPositions(res.data);
+      })
+      .catch((err) => {
+        setErrorMessage(err);
       });
     fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((res) => {
         setPostulants(res.data);
+      })
+      .catch((err) => {
+        setErrorMessage(err);
       });
     fetch(`${process.env.REACT_APP_API}/interviews`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((res) => {
         setInterviews(res.data);
+      })
+      .catch((err) => {
+        setErrorMessage(err);
       });
     if (applicationId) {
       fetch(`${process.env.REACT_APP_API}/applications?_id=${applicationId}`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status !== 200) {
+            return response.json().then(({ message }) => {
+              throw new Error(message);
+            });
+          }
+          return response.json();
+        })
         .then((res) => {
           onLoading(res);
+        })
+        .catch((err) => {
+          setErrorMessage(err);
         });
     }
   }, []);
@@ -103,18 +142,21 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2>Form</h2>
-        <label>
+        <h2 className={styles.subtitle}>Form</h2>
+        <label className={styles.label}>
           <span>Position</span>
         </label>
         <select
           id="positionId"
           name="positionId"
-          type="text"
           required
           value={positionId}
           onChange={onChangePositionId}
+          className={styles.selectInput}
         >
+          <option value={''} disabled>
+            {'--Select an Option--'}
+          </option>
           {positions.map((position) => {
             return (
               <option value={position._id} key={position._id}>
@@ -123,17 +165,20 @@ function Form() {
             );
           })}
         </select>
-        <label>
+        <label className={styles.label}>
           <span>Postulant</span>
         </label>
         <select
           id="clientId"
           name="clientId"
-          type="text"
           required
           value={postulantId}
           onChange={onChangePostulantId}
+          className={styles.selectInput}
         >
+          <option value={''} disabled>
+            {'--Select an Option--'}
+          </option>
           {postulants.map((postulant) => {
             return (
               <option value={postulant._id} key={postulant._id}>
@@ -142,10 +187,19 @@ function Form() {
             );
           })}
         </select>
-        <label>
+        <label className={styles.label}>
           <span>Interview</span>
         </label>
-        <select id="interview" name="interview" type="text" value={date} onChange={onChangeDate}>
+        <select
+          id="interview"
+          name="interview"
+          value={date}
+          onChange={onChangeDate}
+          className={styles.selectInput}
+        >
+          <option value={''} disabled>
+            {'--Select an Option--'}
+          </option>
           {interviews.map((interview) => {
             return (
               <option value={interview._id} key={interview._id}>
@@ -154,7 +208,7 @@ function Form() {
             );
           })}
         </select>
-        <label>
+        <label className={styles.label}>
           <span>Result</span>
         </label>
         <input
@@ -164,8 +218,12 @@ function Form() {
           required
           value={result}
           onChange={onChangeResult}
+          className={styles.selectInput}
         />
-        <button id="saveButton" type="submit" disabled={disableButton}>
+        <div id="error_message" className={styles.errorMessage}>
+          {errorMessage.message}
+        </div>
+        <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
       </form>

@@ -11,14 +11,15 @@ function Modal(props) {
         <h2 id="modal-title">Delete item</h2>
         <p>YOU ARE ABOUT TO DELETE AN APPLICATION</p>
         <div className={styles.buttonContainer}>
-          <button id="cancel-button" onClick={props.closeModal}>
+          <button id="cancel-button" onClick={props.closeModal} className={styles.modalButton}>
             Cancel
           </button>
           <button
             id="proceed-button"
-            onClick={(event) => {
-              props.function(event, props.id);
+            onClick={() => {
+              props.function(props.id);
             }}
+            className={styles.modalButton}
           >
             Confirm
           </button>

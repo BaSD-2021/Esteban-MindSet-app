@@ -6,19 +6,28 @@ function Applications() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [applications, setApplications] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const deleteApplication = (event, id) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const deleteApplication = (id) => {
     const url = `${process.env.REACT_APP_API}/applications/${id}`;
     fetch(url, {
       method: 'DELETE'
     }).then(() => {
       fetch(`${process.env.REACT_APP_API}/applications`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status !== 200) {
+            return response.json().then(({ message }) => {
+              throw new Error(message);
+            });
+          }
+          return response.json();
+        })
         .then((response) => {
           setApplications(response.data);
           window.location.href = `/applications`;
+        })
+        .catch((error) => {
+          setErrorMessage(error);
         });
     });
   };
@@ -40,9 +49,19 @@ function Applications() {
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/applications`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
       .then((response) => {
         setApplications(response.data);
+      })
+      .catch((error) => {
+        setErrorMessage(error);
       });
   }, []);
 
@@ -51,7 +70,7 @@ function Applications() {
       <h2 className={styles.subtitle}>Applications</h2>
       <table className={styles.tableData}>
         <thead className={styles.tableHeader}>
-          <tr>
+          <tr className={styles.trStyles}>
             <th>Job Description</th>
             <th>Postulant</th>
             <th>Interview</th>
@@ -65,20 +84,21 @@ function Applications() {
               <tr
                 onClick={() => (window.location.href = `/applications/form?_id=${application._id}`)}
                 key={application._id}
+                className={styles.trStyles}
               >
-                <td>
-                  {application.positions.jobDescription
-                    ? application.positions.jobDescription
-                    : '-'}
+                <td className={styles.tdStyles}>
+                  {application.positions ? application.positions.jobDescription : '-'}
                 </td>
-                <td>
+                <td className={styles.tdStyles}>
                   {application.postulants
                     ? application.postulants.firstName + ' ' + application.postulants.lastName
                     : '-'}
                 </td>
-                <td>{application.interview ? application.interview.date.substr(0, 10) : '-'}</td>
-                <td>{application.result ? application.result : '-'}</td>
-                <td>
+                <td className={styles.tdStyles}>
+                  {application.interview ? application.interview.date.substr(0, 10) : '-'}
+                </td>
+                <td className={styles.tdStyles}>{application.result ? application.result : '-'}</td>
+                <td className={styles.tdStyles}>
                   <button
                     type="button"
                     onClick={(e) => {
@@ -94,6 +114,9 @@ function Applications() {
           })}
         </tbody>
       </table>
+      <div id="error_message" className={styles.errorMessage}>
+        {errorMessage.message}
+      </div>
       <Modal
         id={idToDelete}
         function={deleteApplication}
