@@ -6,12 +6,16 @@ function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
   const [itemOnDelete, setItemOnDelete] = useState({});
+  const [showError, setShowError] = useState('');
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
         setPostulants(response.data);
+      })
+      .catch((err) => {
+        setShowError(err);
       });
   }, []);
 
@@ -22,9 +26,13 @@ function Postulants() {
       headers: {
         'Content-type': 'application/json'
       }
-    }).then(() => {
-      window.location.href = `${window.location.origin}/postulants`;
-    });
+    })
+      .then(() => {
+        window.location.href = `${window.location.origin}/postulants`;
+      })
+      .catch((err) => {
+        setShowError(err);
+      });
   };
 
   const closeModal = () => {
@@ -45,7 +53,7 @@ function Postulants() {
         itemOnDelete={itemOnDelete}
       />
       <h2>Postulants</h2>
-      <table>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>First Name</th>
@@ -89,6 +97,7 @@ function Postulants() {
           );
         })}
       </table>
+      <div className={styles.showError}>{showError.message}</div>
       <button
         onClick={() => {
           window.location.href = `${window.location.origin}/postulants/form`;

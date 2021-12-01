@@ -3,6 +3,7 @@ import styles from './form.module.css';
 
 const params = new URLSearchParams(window.location.search);
 const postulantId = params.get('_id');
+const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
 function PostulantsForm() {
   const [firstNameValue, setFirstNameValue] = useState('');
@@ -37,6 +38,7 @@ function PostulantsForm() {
   const [workExperienceSDValue, setWorkExperienceSDValue] = useState('');
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
+  const [showError, setShowError] = useState('');
 
   if (postulantId) {
     useEffect(() => {
@@ -44,29 +46,30 @@ function PostulantsForm() {
         .then((response) => response.json())
         .then((response) => {
           autoFill(response);
+        })
+        .catch((err) => {
+          setShowError(err);
         });
     }, []);
   }
 
   const autoFill = (data) => {
     const fillData = data.data[0];
-    const fillPrimStudy = data.data[0].studies.primaryStudies;
-    const fillSecStudy = data.data[0].studies.secondaryStudies;
-    const fillTerStudy = data.data[0].studies.tertiaryStudies[0];
-    const fillUniStudies = data.data[0].studies.universityStudies[0];
-    const fillInfStudies = data.data[0].studies.informalStudies[0];
-    const fillWorkExp = data.data[0].workExperience[0];
+    const fillPrimStudy = fillData.studies.primaryStudies;
+    const fillSecStudy = fillData.studies.secondaryStudies;
+    const fillTerStudy = fillData.studies.tertiaryStudies[0];
+    const fillUniStudies = fillData.studies.universityStudies[0];
+    const fillInfStudies = fillData.studies.informalStudies[0];
+    const fillWorkExp = fillData.workExperience[0];
+    const contactFrom = fillData.contactRange.from;
+    const contactTo = fillData.contactRange.to;
 
-    let from = fillData.contactRange?.from.toString();
-    let to = fillData.contactRange?.to.toString();
-    from = `${from.slice(0, 2)}:${from.slice(2)}`;
-    to = `${to.slice(0, 2)}:${to.slice(2)}`;
     setFirstNameValue(fillData.firstName || '');
     setLastNameValue(fillData.lastName || '');
     setEmailValue(fillData.email || '');
     setPasswordValue(fillData.password || '');
-    setContactFromValue(from || '');
-    setContactToValue(to || '');
+    setContactFromValue(contactFrom || '');
+    setContactToValue(contactTo || '');
     setAdressValue(fillData.address || '');
     setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
     setAvailableValue(fillData.available || '');
@@ -316,8 +319,12 @@ function PostulantsForm() {
         phone: phoneValue,
         profiles: undefined /* profilesBodyContructor() */,
         contactRange: {
-          from: contactFromValue.replace(':', ''),
-          to: contactToValue.replace(':', '')
+          from: contactFromValue.match(hoursRegEx)
+            ? contactFromValue
+            : setShowError('Hours must have HH:MM format'),
+          to: contactToValue.match(hoursRegEx)
+            ? contactToValue
+            : setShowError('Hours must have HH:MM format')
         },
         studies: studiesBodyConstructor(),
         workExperience: workExperienceBodyConstructor()
@@ -345,8 +352,8 @@ function PostulantsForm() {
       .then(() => {
         window.location.href = `${window.location.origin}/postulants`;
       })
-      .catch((error) => {
-        console.log(JSON.stringify(error));
+      .catch((err) => {
+        setShowError(err);
       });
   };
 
@@ -707,6 +714,7 @@ function PostulantsForm() {
           Save
         </button>
       </form>
+      <div className={styles.showError}>{showError.message}</div>
     </div>
   );
 }
