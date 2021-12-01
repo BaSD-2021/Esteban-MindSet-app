@@ -10,6 +10,7 @@ function Form() {
   const [notesValue, setNotesValue] = useState('');
   const [postulantsValue, setPostulantsValue] = useState([]);
   const [clientsValue, setClientsValue] = useState([]);
+  const [errorValue, setError] = useState('');
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
@@ -87,11 +88,8 @@ function Form() {
       .then(() => {
         window.location.href = `${window.location.origin}/interviews`;
       })
-      .then((res) => {
-        console.log('res', res);
-      })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
   };
   useEffect(() => {
@@ -100,8 +98,8 @@ function Form() {
       .then((res) => {
         setPostulantsValue(res.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
@@ -109,8 +107,8 @@ function Form() {
       .then((res) => {
         setClientsValue(res.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
 
     if (interviewId) {
@@ -119,8 +117,8 @@ function Form() {
         .then((res) => {
           onLoading(res);
         })
-        .catch((error) => {
-          console.log('err', error);
+        .catch((errorValue) => {
+          setError(errorValue.toString());
         });
     }
   }, []);
@@ -141,12 +139,12 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           {postulantsValue.map((postulant) => {
             return (
               <option value={postulant._id} key={postulant._id}>
-                {`${postulant.firstName} + ' ' + ${postulant.lastName}`}
+                {`${postulant.firstName} ${postulant.lastName}`}
               </option>
             );
           })}
@@ -164,7 +162,7 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           {clientsValue.map((client) => {
             return (
@@ -188,7 +186,7 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           <option value="successful">Successful</option>
           <option value="failed">Failed</option>
@@ -227,7 +225,6 @@ function Form() {
           id="notes"
           name="notes"
           type="text"
-          required
           value={notesValue}
           onChange={onChangeNotes}
           className={styles.input}
@@ -235,6 +232,7 @@ function Form() {
         <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
+        <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
   );
