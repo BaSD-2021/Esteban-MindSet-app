@@ -9,6 +9,7 @@ function Form() {
   const [isOpenValue, setIsOpenValue] = useState('');
   const [clientsValue, setClientsValue] = useState([]);
   const [professionalProfilesValue, setProfessionalProfilesValue] = useState([]);
+  const [errorValue, setError] = useState('');
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
@@ -82,8 +83,8 @@ function Form() {
       .then(() => {
         window.location.href = `${window.location.origin}/positions`;
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
   };
   useEffect(() => {
@@ -92,8 +93,8 @@ function Form() {
       .then((res) => {
         setProfessionalProfilesValue(res.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
@@ -101,8 +102,8 @@ function Form() {
       .then((res) => {
         setClientsValue(res.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
 
     if (positionId) {
@@ -111,8 +112,8 @@ function Form() {
         .then((res) => {
           onLoading(res);
         })
-        .catch((error) => {
-          console.log('err', error);
+        .catch((errorValue) => {
+          setError(errorValue.toString());
         });
     }
   }, []);
@@ -133,7 +134,7 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           {clientsValue.map((client) => {
             return (
@@ -180,7 +181,7 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           {professionalProfilesValue.map((professionalProfile) => {
             return (
@@ -203,7 +204,7 @@ function Form() {
           className={styles.input}
         >
           <option value={''} disabled>
-            {'Select one'}
+            Select one
           </option>
           <option value="true">Yes</option>
           <option value="false">No</option>
@@ -211,6 +212,7 @@ function Form() {
         <button id="saveButton" type="submit" className={styles.button}>
           Save
         </button>
+        <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
   );
