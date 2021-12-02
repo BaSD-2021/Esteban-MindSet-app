@@ -8,6 +8,7 @@ import ClientsForm from '../Clients/Form';
 import Interviews from '../Interviews/index';
 import InterviewsForm from '../Interviews/Form';
 import Positions from '../Positions/index';
+import PositionsForm from '../Positions/Form';
 import Postulants from '../Postulants/index';
 import Profiles from '../Profiles/index';
 import Psychologists from '../Psychologists/index';
@@ -41,6 +42,9 @@ function Layout() {
       break;
     case '/positions':
       currentScreen = <Positions />;
+      break;
+    case '/positions/form':
+      currentScreen = <PositionsForm />;
       break;
     case '/postulants':
       currentScreen = <Postulants />;
