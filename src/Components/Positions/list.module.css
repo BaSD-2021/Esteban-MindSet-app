@@ -12,20 +12,20 @@
   margin: 25px 10px 30px 10px;
   border-radius: 2px;
 }
-thead tr {
+.thead tr {
   padding: 30px;
 }
-thead td {
+.thead td {
   text-align: center;
   font-weight: bolder;
   color: #002147;
   padding: 10px;
 }
-td {
+.tbody td {
   text-align: center;
   color: #002147;
 }
-tbody tr{
+.tbody tr{
   cursor: pointer;
 }
 .button {

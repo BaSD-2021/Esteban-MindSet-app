@@ -53,7 +53,7 @@ function Positions() {
     <section className={styles.container}>
       <h2>Positions</h2>
       <table className={styles.table}>
-        <thead>
+        <thead className={styles.thead}>
           <tr>
             <td>Client</td>
             <td>Job Description</td>
@@ -63,7 +63,7 @@ function Positions() {
             <td>Delete</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {positions.map((position) => {
             return (
               <tr
