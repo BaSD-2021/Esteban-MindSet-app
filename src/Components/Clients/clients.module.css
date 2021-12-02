@@ -5,3 +5,58 @@
   justify-content: center;
   align-items: center;
 }
+
+.subtitle {
+  font-size: 30px;
+ }
+
+ .tableData {
+   width: 60%;
+   border: 1px #909090 solid;
+   border-radius: 5px;
+   padding: 5px;
+   text-align: center;
+ }
+
+.tableHeader {
+  font-size: 20px;
+  border-bottom: 1px #909090 solid;
+}
+
+.trStyles{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.tdStyles{
+  color: #002147;
+  font-size: 16px;
+}
+
+.buttonDelete{
+  height: 25px;
+  border: none;
+  border-radius: 3px;
+  background-color: #fdc800;
+  font-size: 15px;
+  color: #002147;
+  cursor: pointer;
+}
+
+.buttonCreate{
+  margin: 30px auto;
+  width: 15%;
+  height: 50px;
+  border: none;
+  border-radius: 3px;
+  background-color: #fdc800;
+  font-size: 15px;
+  color: #002147;
+  cursor: pointer;
+}
+
+.errorMessage{
+  margin: 10px auto;
+  font-size: 15px;
+  color: #002147;
+ }
