@@ -30,7 +30,7 @@
   padding: 0 20px 0 20px;
 }
 
-button {
+.container button {
   margin: auto;
   width: auto;
   height: 30px;
@@ -41,7 +41,7 @@ button {
   color: #002147;
 }
 
-button:hover {
+.container button:hover {
   cursor: pointer;
   background-color: #ffd027;
 }
