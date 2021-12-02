@@ -6,6 +6,7 @@ function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
+  const [errorValue, setError] = useState('');
   const goToForm = () => {
     window.location.href = `/positions/form`;
   };
@@ -20,8 +21,8 @@ function Positions() {
         .then((response) => {
           savePositions(response.data);
         })
-        .catch((error) => {
-          console.log('err', error);
+        .catch((errorValue) => {
+          setError(errorValue.toString());
         });
     });
   };
@@ -32,8 +33,8 @@ function Positions() {
       .then((response) => {
         savePositions(response.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
   }, []);
 
@@ -94,6 +95,7 @@ function Positions() {
       <button type="button" onClick={goToForm} className={styles.button}>
         Add position
       </button>
+      <div className={styles.error}>{errorValue}</div>
     </section>
   );
 }

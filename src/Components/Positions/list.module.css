@@ -61,3 +61,9 @@ tbody tr{
   cursor: pointer;
   background-color: #ffd027;
 }
+
+.error {
+  color: #f00;
+  font-weight: bold;
+  font-size: 18px;
+}
