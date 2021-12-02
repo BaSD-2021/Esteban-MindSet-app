@@ -1,0 +1,45 @@
+.container{
+ display: flex;
+ flex-direction: column;
+ width: 50%;
+ margin: auto;
+}
+
+.subtitle {
+ font-size: 30px;
+ margin:auto;
+}
+
+.label {
+ font-size: 20px;
+ font-weight: 600;
+ color: #002147;
+ margin-top: 10px;
+ margin-bottom: 10px;
+}
+
+.inputStyle{
+height: 40px;
+border-radius: 3px;
+border-color: #909090;
+color: #002147;
+font-size: 15px;
+}
+
+.button {
+ margin: 30px auto;
+ width: 30%;
+ height: 50px;
+ border: none;
+ border-radius: 3px;
+ background-color: #fdc800;
+ font-size: 15px;
+ color: #002147;
+ cursor: pointer;
+}
+
+.errorMessage{
+ margin: 10px auto;
+ font-size: 15px;
+ color: #002147;
+}
