@@ -25,6 +25,11 @@ const PSYCHOLOGIST_FORM = [
     placeholder: 'Insert Email'
   },
   {
+    inputName: 'phone',
+    type: 'text',
+    placeholder: 'Insert Phone'
+  },
+  {
     inputName: 'address',
     type: 'text',
     placeholder: 'Insert Address'

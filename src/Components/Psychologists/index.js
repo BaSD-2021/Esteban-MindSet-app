@@ -61,10 +61,11 @@ function Psychologists() {
   const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [psychologistAvailability, setPsychologistAvailability] = useState({});
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getPsychologists();
-    console.log(psychologists);
   }, []);
 
   const getPsychologists = () => {
@@ -73,7 +74,12 @@ function Psychologists() {
       .then((response) => {
         setPsychologist(response.data);
       })
-      .catch((error) => error);
+      .catch(() => getError('There has been an error while retrieving psychologists'));
+  };
+
+  const getError = (error) => {
+    setError(error);
+    setShowError(true);
   };
 
   const toggleFormDisplay = () => {
@@ -109,7 +115,7 @@ function Psychologists() {
   };
 
   const onChange = (e) => {
-    if (e.target.name.match(/^(firstName|lastName|username|password|email|address)$/)) {
+    if (e.target.name.match(/^(firstName|lastName|username|password|email|phone|address)$/)) {
       setItemOnEdit({
         ...itemOnEdit,
         [e.target.name]: e.target.value
@@ -131,8 +137,8 @@ function Psychologists() {
 
   const handleSubmit = (item, e) => {
     e.preventDefault();
+    console.log(item);
 
-    // format values before sending to server as input set value type to string
     const formattedAvailability = Object.keys(item.availability).reduce(
       (attrs, day) => ({
         ...attrs,
@@ -149,15 +155,15 @@ function Psychologists() {
       }),
       {}
     );
+    const formattedPhone = parseInt(item.phone);
 
     let url;
     const options = {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ ...item, availability: formattedAvailability })
+      body: JSON.stringify({ ...item, phone: formattedPhone, availability: formattedAvailability })
     };
-
     if (isEditing) {
       options.method = 'PUT';
       url = `${process.env.REACT_APP_API}/psychologists/${item._id}`;
@@ -242,6 +248,11 @@ function Psychologists() {
             <div>
               <p>Are you sure you want to Delete this user?</p>
             </div>
+          </Modal>
+        )}
+        {showError && (
+          <Modal toggleModal={() => setShowError(!showError)}>
+            <div>{error}</div>
           </Modal>
         )}
       </div>
