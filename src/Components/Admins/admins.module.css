@@ -4,43 +4,40 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 50px auto;
 }
 
-a {
-  text-decoration: none;
-  color: #002147;
-  font-size: 16px;
-  padding: 5px 10px;
-}
-
-table {
+.table {
   margin-top: 20px;
 }
 
-thead {
+.thead {
   background-color: #002147;
 }
 
-th {
+.thead th {
   color: #F0F4F9;
   font-size: 21px;
   padding: 5px 40px;
 }
 
-td {
+.tableRow {
   text-align: center;
   border-bottom: 1px solid #BDBDBD;
+  padding: 5px 40px;
 }
 
-button, .btn {
+.button {
   border-radius: 4px;
   background-color: #FDC800;
   color: #002147;
   border: none;
   font-weight: 18px;
-  padding: 5px 15px;
+  font-size: 16px;
+  padding: 5px 35px;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .row {

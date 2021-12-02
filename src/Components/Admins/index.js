@@ -4,9 +4,8 @@ import Modal from './modal/modal';
 
 const Admins = () => {
   const [admins, setAdmins] = useState([]);
-  const [modal, setModal] = useState(false);
-
-  console.log('admins', admins);
+  const [adminToDelete, setAdminToDelete] = useState(false);
+  const [error, setError] = useState(false);
 
   const getAdmins = () => {
     fetch(`${process.env.REACT_APP_API}/admins`)
@@ -21,8 +20,8 @@ const Admins = () => {
       .then((response) => {
         setAdmins(response.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((err) => {
+        setError(err);
       });
   };
 
@@ -34,26 +33,33 @@ const Admins = () => {
     window.location.href = `/admins/form?_id=${id}`;
   };
 
-  const deleteAdmin = (id) => {
-    fetch(`${process.env.REACT_APP_API}/admins/${id}`, { method: 'DELETE' }).then(() => {
-      setModal(true);
-      getAdmins();
-    });
+  const deleteAdmin = (admin) => {
+    setAdminToDelete(admin);
   };
 
-  const handleClose = () => {
-    setModal(false);
+  const handleDelete = () => {
+    setAdminToDelete(false);
+    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
+      .then((response) => {
+        if (response.status !== 204) {
+          throw 'There was an error while deleting this admin.';
+        }
+        getAdmins();
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   return (
     <section className={styles.container}>
       <h2>Admins</h2>
-      <a href="/admins/form" className={styles.btn}>
+      <a href="/admins/form" className={styles.button}>
         ADD ADMIN
       </a>
       <div>
-        <table>
-          <thead>
+        <table className={styles.table}>
+          <thead className={styles.thead}>
             <tr>
               <th>Name</th>
               <th>User Name</th>
@@ -64,13 +70,14 @@ const Admins = () => {
             {admins.map((admin, index) => {
               return (
                 <tr onClick={() => updateAdmin(admin._id)} key={index}>
-                  <td>{admin.name}</td>
-                  <td>{admin.username}</td>
-                  <td>
+                  <td className={styles.tableRow}>{admin.name}</td>
+                  <td className={styles.tableRow}>{admin.username}</td>
+                  <td className={styles.tableRow}>
                     <button
+                      className={styles.button}
                       onClick={(e) => {
                         e.stopPropagation();
-                        deleteAdmin(admin._id);
+                        deleteAdmin(admin);
                       }}
                     >
                       Delete
@@ -82,7 +89,25 @@ const Admins = () => {
           </tbody>
         </table>
       </div>
-      {modal && <Modal handleClose={handleClose} />}
+      {adminToDelete && (
+        <Modal>
+          Are you sure you want to delete
+          <button className={styles.button} onClick={() => setAdminToDelete(false)}>
+            Close
+          </button>
+          <button className={styles.button} onClick={handleDelete}>
+            Delete
+          </button>
+        </Modal>
+      )}
+      {error && (
+        <Modal>
+          {error}
+          <button className={styles.button} onClick={() => setError(false)}>
+            Close
+          </button>
+        </Modal>
+      )}
     </section>
   );
 };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './form.module.css';
+import Modal from '../modal/modal';
 
 const params = new URLSearchParams(window.location.search);
 const adminId = params.get('_id');
@@ -10,6 +11,7 @@ function Form() {
   const [nameValue, setNameValue] = useState('');
   const [usernameValue, setUsernameValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [error, setError] = useState(false);
 
   const getAdminById = () => {
     fetch(`${process.env.REACT_APP_API}/admins?_id=${adminId}`)
@@ -61,8 +63,8 @@ function Form() {
         }
         window.location.href = '/admins';
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((err) => {
+        setError(err);
       });
   };
 
@@ -70,8 +72,9 @@ function Form() {
     <form className={styles.container} onSubmit={save}>
       <h2>Form</h2>
       <div className={styles.inputCnt}>
-        <label>Name</label>
+        <label className={styles.labelTitle}>Name</label>
         <input
+          className={styles.inputBox}
           type="text"
           name="name"
           placeholder="Paul"
@@ -81,8 +84,9 @@ function Form() {
         ></input>
       </div>
       <div className={styles.inputCnt}>
-        <label>User Name</label>
+        <label className={styles.labelTitle}>User Name</label>
         <input
+          className={styles.inputBox}
           type="text"
           name="username"
           placeholder="Paul.Walker"
@@ -92,8 +96,9 @@ function Form() {
         ></input>
       </div>
       <div className={styles.inputCnt}>
-        <label>Password</label>
+        <label className={styles.labelTitle}>Password</label>
         <input
+          className={styles.inputBox}
           type="text"
           name="name"
           value={passwordValue}
@@ -101,7 +106,17 @@ function Form() {
           required
         ></input>
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" className={styles.button}>
+        Register
+      </button>
+      {error && (
+        <Modal>
+          {error}
+          <button className={styles.button} onClick={() => setError(false)}>
+            Close
+          </button>
+        </Modal>
+      )}
     </form>
   );
 }
