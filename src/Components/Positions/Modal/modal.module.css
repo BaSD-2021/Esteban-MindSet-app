@@ -1,0 +1,37 @@
+.container{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 30%;
+  width: 30%;
+  background-color: #ffffff;
+}
+.buttonContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 30%;
+ }
+ .buttonContainer button{
+  padding: 8px;
+  border: none;
+  border-radius: 3px;
+  background-color: #fdc800;
+  font-size: 15px;
+  color: #002147;
+ }
+
+ .closeButtonDiv{
+   display: flex;
+   justify-content: flex-end;
+ }

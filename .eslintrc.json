@@ -1,7 +1,7 @@
 {
     "settings": {
         "react": {
-          "version": "detect"
+        "version": "detect"
         }
     },
     "env": {
@@ -26,9 +26,11 @@
         "prettier/prettier": [
             "error",
             {
-              "endOfLine": "auto"
+            "endOfLine": "auto"
             }
-          ],
-        "react/prop-types": 0
+        ],
+        "react/prop-types": 0,
+        "no-unused-vars": "warn",
+        "no-console": "warn"
     }
 }
