@@ -28,7 +28,7 @@ function Profiles() {
   }, []);
 
   const redirectToForm = (profile) => {
-    profile ? history.push(`/form?id=${profile}`) : history.push(`/form`);
+    profile ? history.push(`/profiles/form?id=${profile}`) : history.push(`/profiles/form`);
   };
 
   const handleDelete = (event, profile) => {
