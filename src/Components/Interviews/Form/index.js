@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 
 function Form() {
@@ -11,6 +13,9 @@ function Form() {
   const [postulantsValue, setPostulantsValue] = useState([]);
   const [clientsValue, setClientsValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const query = useQuery();
+  const history = useHistory();
+
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
@@ -46,8 +51,8 @@ function Form() {
     setNotesValue(event.target.value);
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const interviewId = params.get('_id');
+  // const params = new URLSearchParams(window.location.search);
+  const interviewId = query.get('_id');
   const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
 
   if (interviewId) {
@@ -86,7 +91,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        window.location.href = `${window.location.origin}/interviews`;
+        history.push(`/interviews`);
       })
       .catch((errorValue) => {
         setError(errorValue.toString());

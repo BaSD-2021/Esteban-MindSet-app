@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from './Modal';
 
@@ -6,9 +7,7 @@ function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  const goToForm = () => {
-    window.location.href = `/interviews/form`;
-  };
+  const history = useHistory();
 
   const deleteInterview = (id) => {
     const url = `${process.env.REACT_APP_API}/interviews/${id}`;
@@ -65,7 +64,7 @@ function Interviews() {
           {interviews.map((interview) => {
             return (
               <tr
-                onClick={() => (window.location.href = `/interviews/form?_id=${interview._id}`)}
+                onClick={() => history.push(`/interviews/form?_id=${interview._id}`)}
                 key={interview._id}
               >
                 <td className={styles.td}>{interview.postulant?.firstName || '-'}</td>
@@ -89,9 +88,9 @@ function Interviews() {
         </tbody>
       </table>
       <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} />
-      <button type="button" onClick={goToForm} className={styles.button}>
-        Add interview
-      </button>
+      <Link to="/Interviews/Form" className={styles.button}>
+        ADD INTERVIEW
+      </Link>
     </section>
   );
 }
