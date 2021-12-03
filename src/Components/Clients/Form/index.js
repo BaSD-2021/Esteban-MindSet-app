@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+
 function Form() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -10,9 +13,10 @@ function Form() {
   const [logo, setLogo] = useState('');
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const query = useQuery();
+  const history = useHistory();
 
-  const params = new URLSearchParams(window.location.search);
-  const clientId = params.get('_id');
+  const clientId = query.get('_id');
   let fetchMethod = 'POST';
 
   const onLoading = (data) => {
@@ -57,8 +61,8 @@ function Form() {
   const onSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const params = new URLSearchParams(window.location.search);
-    const clientId = params.get('_id');
+    // const params = new URLSearchParams(window.location.search);
+    // const clientId = params.get('_id');
     const options = {
       method: fetchMethod,
       headers: {
@@ -90,7 +94,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        window.location.href = '/clients';
+        history.push('/clients');
       })
       .catch((err) => {
         setErrorMessage(err);
