@@ -1,0 +1,15 @@
+.table{
+  border-collapse: collapse;
+}
+.header tr th{
+padding: 10px 30px;
+border-bottom: 1px solid #353535;
+}
+.body tr td{
+  padding:  3 30px;
+}
+.tableContent{
+  padding: 3px 30px;
+  text-transform: capitalize;
+  border-bottom: 1px solid #353535;
+}

@@ -1,0 +1,31 @@
+.row{
+  cursor: pointer;
+  border-bottom: 1px solid #00000060;
+}
+.row td {
+  padding: 6px;
+  color: #2c2c2c;
+}
+.availabilityBtn {
+  padding: 4px;
+  border: 2px solid #FEC800;
+  border-radius: 5px;
+  background-color: #eeeeee;
+  color: #002146;
+  font-weight: 600;
+}
+.availabilityBtn:hover{
+  background-color: #f3f3f3;
+  color: #004391;
+}
+.deleteBtn {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c50000;
+  background-color: #c50000;
+  color: #fff;
+  font-weight: 600;
+}
+.deleteBtn:hover {
+  background-color: #ad0000;
+}

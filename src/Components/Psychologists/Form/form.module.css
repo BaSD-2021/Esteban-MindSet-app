@@ -1,0 +1,78 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+}
+.availabilityForm{
+  flex-direction: row;
+  justify-content: space-between;
+}
+.availabilityForm label{
+  display: inline-block;
+  width: 10vw;
+}
+.availabilityInput{
+  margin:2px;
+  padding:4px;
+  border: 1.8px solid #FEC800;
+  border-radius: 3px;
+  background-color: rgb(247, 247, 247);
+}
+.dataInput{
+  margin: 4px 0;
+  padding: 6px;
+  width: 90%;
+  align-self: center;
+  border: 1.8px solid #FEC800;
+  border-radius: 3px;
+  background-color: rgb(247, 247, 247);
+}
+.dataInput:focus, .availabilityInput:hover{
+  border-color: #0022e2;
+  background-color: #fff;
+}
+.availabilityHeading{
+  margin:12px;
+  align-self: center;
+  color: #353535;
+}
+.availabilityLabel{
+  margin: 2px 12px 2px 2px;
+  color: #353535;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.buttonContainer{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.submitBtn{
+  padding: 6px 9px;
+  margin:6px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 2px solid #003877;
+  background-color:#fff;
+  color: #003877;
+  font-weight: 600;
+}
+.submitBtn:hover{
+  background-color: #003877;
+  color: #fff;
+}
+.cancelBtn{
+  padding: 6px 9px;
+  margin:6px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 1px solid #c50000;
+  background-color: #c50000;
+  color: #fff;
+  font-weight: 600;
+}
+.cancelBtn:hover{
+  background-color: #ad0000;
+}
