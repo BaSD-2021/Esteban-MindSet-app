@@ -7,11 +7,16 @@ import ApplicationsForm from '../Applications/Form';
 import Clients from '../Clients/index';
 import ClientsForm from '../Clients/Form';
 import Interviews from '../Interviews/index';
+import InterviewsForm from '../Interviews/Form';
 import Positions from '../Positions/index';
+import PositionsForm from '../Positions/Form';
 import Postulants from '../Postulants/index';
+import PostulantsForm from '../Postulants/Form';
 import Profiles from '../Profiles/index';
+import ProfilesForm from '../Profiles/Form';
 import Psychologists from '../Psychologists/index';
 import Sessions from '../Sessions/index';
+import SessionsForm from '../Sessions/Form';
 import Home from '../Home/index';
 import styles from './layout.module.css';
 
@@ -39,20 +44,35 @@ function Layout() {
     case '/interviews':
       currentScreen = <Interviews />;
       break;
+    case '/interviews/form':
+      currentScreen = <InterviewsForm />;
+      break;
     case '/positions':
       currentScreen = <Positions />;
+      break;
+    case '/positions/form':
+      currentScreen = <PositionsForm />;
       break;
     case '/postulants':
       currentScreen = <Postulants />;
       break;
+    case '/postulants/form':
+      currentScreen = <PostulantsForm />;
+      break;
     case '/profiles':
       currentScreen = <Profiles />;
+      break;
+    case '/profiles/form':
+      currentScreen = <ProfilesForm />;
       break;
     case '/psychologists':
       currentScreen = <Psychologists />;
       break;
     case '/sessions':
       currentScreen = <Sessions />;
+      break;
+    case '/sessions/form':
+      currentScreen = <SessionsForm />;
       break;
     default:
       break;
