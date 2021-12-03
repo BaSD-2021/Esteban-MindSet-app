@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from './Modal';
+import { Link, useHistory } from 'react-router-dom';
 
 function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [errorValue, setError] = useState('');
-  const goToForm = () => {
-    window.location.href = `/positions/form`;
-  };
+  const history = useHistory();
+
+  // const goToForm = () => {
+  //   window.location.href = `/positions/form`;
+  // };
 
   const deletePosition = (id) => {
     const url = `${process.env.REACT_APP_API}/positions/${id}`;
@@ -67,7 +70,7 @@ function Positions() {
           {positions.map((position) => {
             return (
               <tr
-                onClick={() => (window.location.href = `/positions/form?_id=${position._id}`)}
+                onClick={() => history.push(`/positions/form?_id=${position._id}`)}
                 key={position._id}
               >
                 <td>{position.client?.name || '-'}</td>
@@ -92,9 +95,9 @@ function Positions() {
         </tbody>
       </table>
       <Modal id={idToDelete} function={deletePosition} show={showModal} closeModal={closeModal} />
-      <button type="button" onClick={goToForm} className={styles.button}>
-        Add position
-      </button>
+      <Link to="/Positions/Form" className={styles.button}>
+        ADD POSITION
+      </Link>
       <div className={styles.error}>{errorValue}</div>
     </section>
   );
