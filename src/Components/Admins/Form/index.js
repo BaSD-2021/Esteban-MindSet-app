@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Modal from '../modal/modal';
 
-const params = new URLSearchParams(window.location.search);
-const adminId = params.get('_id');
 let fetchMethod = 'POST';
 
 function Form() {
@@ -12,9 +12,11 @@ function Form() {
   const [passwordValue, setPasswordValue] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const query = useQuery();
+  const history = useHistory();
 
   const getAdminById = () => {
-    fetch(`${process.env.REACT_APP_API}/admins?_id=${adminId}`)
+    fetch(`${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           return response.json().then(({ message }) => {
@@ -36,8 +38,8 @@ function Form() {
 
   let url;
   useEffect(() => {
-    if (adminId) {
-      url = `${process.env.REACT_APP_API}/admins?_id=${adminId}`;
+    if (query.get('_id')) {
+      url = `${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`;
       fetchMethod = 'PUT';
       getAdminById();
     }
@@ -58,9 +60,9 @@ function Form() {
       })
     };
 
-    if (adminId) {
+    if (query.get('_id')) {
       fetchMethod = 'PUT';
-      url = `${process.env.REACT_APP_API}/admins/${adminId}`;
+      url = `${process.env.REACT_APP_API}/admins/${query.get('_id')}`;
       getAdminById();
     } else {
       fetchMethod = 'POST';
@@ -79,7 +81,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        window.location.href = '/admins';
+        history.push('/admins');
       })
       .catch((err) => {
         setError(err);
