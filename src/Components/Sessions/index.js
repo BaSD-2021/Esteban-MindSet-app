@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './sessions.module.css';
+import { Link, useHistory } from 'react-router-dom';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);
@@ -8,6 +9,7 @@ function Sessions() {
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     setLoading(true);
@@ -26,9 +28,7 @@ function Sessions() {
   }, []);
 
   const redirectToForm = (session) => {
-    session
-      ? (window.location.href = `${window.location.pathname}/form?id=${session}`)
-      : (window.location.href = `${window.location.pathname}/form`);
+    session ? history.push(`/Sessions/form?id=${session}`) : history.push(`/Sessions/Form`);
   };
 
   const handleDelete = (event, session) => {
@@ -106,7 +106,11 @@ function Sessions() {
                   <td>{session.date.replace('T', ' ')}</td>
                   <td>{session.status}</td>
                   <td>
-                    <button type="delete" onClick={(event) => handleDelete(event, session)}>
+                    <button
+                      type="delete"
+                      onClick={(event) => handleDelete(event, session)}
+                      className={styles.button}
+                    >
                       Delete
                     </button>
                   </td>
@@ -117,14 +121,9 @@ function Sessions() {
         </table>
       </div>
       <div className={styles.error}>{error}</div>
-      <button
-        type="add"
-        className={styles.button}
-        disabled={isLoading}
-        onClick={() => redirectToForm()}
-      >
-        Add Session
-      </button>
+      <Link to="/Sessions/Form" className={styles.button}>
+        ADD SESSION
+      </Link>
     </section>
   );
 }

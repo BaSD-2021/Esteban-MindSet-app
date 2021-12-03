@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import Select from '../Select';
 import TextArea from '../TextArea';
 import Input from '../Input';
@@ -14,6 +16,8 @@ function sessionsForm() {
   const [psychologists, setPsychologists] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const query = useQuery();
+  const history = useHistory();
 
   const onChangeDateInput = (event) => {
     setDateValue(event.target.value);
@@ -36,8 +40,7 @@ function sessionsForm() {
 
   useEffect(() => {
     setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('id');
+    const sessionId = query.get('id');
     if (sessionId) {
       fetch(`${process.env.REACT_APP_API}/sessions?_id=${sessionId}`)
         .then((response) => {
@@ -109,8 +112,7 @@ function sessionsForm() {
   const onSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('id');
+    const sessionId = query.get('id');
 
     let url;
     const options = {
@@ -144,7 +146,7 @@ function sessionsForm() {
         return response.json();
       })
       .then(() => {
-        window.location.href = '/sessions';
+        history.push('/sessions');
       })
       .catch((error) => {
         setError(error.toString());
