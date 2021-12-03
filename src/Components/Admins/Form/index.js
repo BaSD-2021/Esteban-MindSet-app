@@ -11,7 +11,7 @@ function Form() {
   const [usernameValue, setUsernameValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [error, setError] = useState(false);
-  // const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const getAdminById = () => {
     fetch(`${process.env.REACT_APP_API}/admins?_id=${adminId}`)
@@ -61,11 +61,14 @@ function Form() {
     if (adminId) {
       fetchMethod = 'PUT';
       url = `${process.env.REACT_APP_API}/admins/${adminId}`;
+      getAdminById();
     } else {
       fetchMethod = 'POST';
       url = `${process.env.REACT_APP_API}/admins`;
-      getAdminById();
     }
+
+    setLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -77,10 +80,12 @@ function Form() {
       })
       .then(() => {
         window.location.href = '/admins';
-        getAdminById();
       })
       .catch((err) => {
         setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -91,6 +96,7 @@ function Form() {
         <label className={styles.labelTitle}>Name</label>
         <input
           className={styles.inputBox}
+          disabled={isLoading}
           type="text"
           name="name"
           placeholder="Paul"
@@ -103,6 +109,7 @@ function Form() {
         <label className={styles.labelTitle}>User Name</label>
         <input
           className={styles.inputBox}
+          disabled={isLoading}
           type="text"
           name="username"
           placeholder="Paul.Walker"
@@ -115,14 +122,15 @@ function Form() {
         <label className={styles.labelTitle}>Password</label>
         <input
           className={styles.inputBox}
-          type="text"
+          disabled={isLoading}
+          type="password"
           name="name"
           value={passwordValue}
           onChange={(e) => setPasswordValue(e.target.value)}
           required
         ></input>
       </div>
-      <button type="submit" className={styles.button}>
+      <button type="submit" disabled={isLoading} className={styles.button}>
         Register
       </button>
       {error && (

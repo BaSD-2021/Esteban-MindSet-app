@@ -6,8 +6,10 @@ const Admins = () => {
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const getAdmins = () => {
+    setLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins`)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -22,6 +24,9 @@ const Admins = () => {
       })
       .catch((err) => {
         setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -38,16 +43,20 @@ const Admins = () => {
   };
 
   const handleDelete = () => {
-    setAdminToDelete(false);
+    setLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
           throw 'There was an error while deleting this admin.';
         }
+        setAdminToDelete(false);
         getAdmins();
       })
       .catch((err) => {
         setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -57,6 +66,7 @@ const Admins = () => {
       <a href="/admins/form" className={styles.button}>
         ADD ADMIN
       </a>
+      {isLoading && 'Loading...'}
       <div>
         <table className={styles.table}>
           <thead className={styles.thead}>
@@ -91,11 +101,11 @@ const Admins = () => {
       </div>
       {adminToDelete && (
         <Modal>
-          Are you sure you want to delete
+          Are you sure you want to delete user: {adminToDelete.username}?
           <button className={styles.button} onClick={() => setAdminToDelete(false)}>
             Close
           </button>
-          <button className={styles.button} onClick={handleDelete}>
+          <button className={styles.button} disable={isLoading} onClick={handleDelete}>
             Delete
           </button>
         </Modal>
