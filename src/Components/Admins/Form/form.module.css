@@ -7,24 +7,24 @@
   margin: 50px auto;
 }
 
-.table {
-  margin-top: 20px;
+.labelTitle {
+  color: #002147;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
-.thead {
-  background-color: #002147;
+.inputCnt {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
-.thead th {
-  color: #F0F4F9;
-  font-size: 21px;
-  padding: 5px 40px;
-}
-
-.tableRow {
-  text-align: center;
-  border-bottom: 1px solid #BDBDBD;
-  padding: 5px 40px;
+.inputBox {
+  border: 1px solid #BDBDBD;
+  border-radius: 4px;
+  padding: 12px;
+  width: 270px;
 }
 
 .button {
@@ -32,15 +32,10 @@
   background-color: #FDC800;
   color: #002147;
   border: none;
-  font-weight: 18px;
   font-size: 16px;
-  padding: 5px 35px;
+  font-weight: 18px;
+  padding: 5px 25px;
   font-weight: bold;
   cursor: pointer;
   text-decoration: none;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
 }
