@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+
 function Form() {
   const [positionId, setPositionId] = useState('');
   const [postulantId, setPostulantId] = useState('');
@@ -9,9 +12,10 @@ function Form() {
   const [postulants, setPostulants] = useState([]);
   const [interviews, setInterviews] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const query = useQuery();
+  const history = useHistory();
 
-  const params = new URLSearchParams(window.location.search);
-  const applicationId = params.get('_id');
+  const applicationId = query.get('_id');
   let fetchMethod = 'POST';
 
   const onLoading = (data) => {
@@ -40,8 +44,6 @@ function Form() {
   const onSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const params = new URLSearchParams(window.location.search);
-    const applicationId = params.get('_id');
     const options = {
       method: fetchMethod,
       headers: {
@@ -67,7 +69,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        window.location.href = '/applications';
+        history.push('/applications');
       })
       .catch((error) => {
         setErrorMessage(error);
