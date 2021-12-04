@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
-import Modal from './modal/modal';
+//import Modal from './modal/modal';
+import Modal from '../Shared/Modal';
+
 import { Link, useHistory } from 'react-router-dom';
 
 const Admins = () => {
+  const [showModal, setShowModal] = useState(false);
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
@@ -40,8 +44,15 @@ const Admins = () => {
     history.push(`/admins/form?_id=${id}`);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedItem(undefined);
+  };
+
   const deleteAdmin = (admin) => {
     setAdminToDelete(admin);
+    setSelectedItem(admin);
+    setShowModal(true);
   };
 
   const handleDelete = () => {
@@ -53,6 +64,7 @@ const Admins = () => {
         }
         setAdminToDelete(false);
         getAdmins();
+        closeModal();
       })
       .catch((err) => {
         setError(err);
@@ -64,6 +76,13 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
+      <Modal
+        showModal={showModal}
+        title="Are you sure you want to delete this Admin User?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={handleDelete}
+      />
       <h2>Admins</h2>
       <Link to="/admins/form" className={styles.button}>
         ADD ADMIN
@@ -101,25 +120,25 @@ const Admins = () => {
           </tbody>
         </table>
       </div>
-      {adminToDelete && (
-        <Modal>
-          Are you sure you want to delete user: {adminToDelete.username}?
-          <button className={styles.button} onClick={() => setAdminToDelete(false)}>
-            Close
-          </button>
-          <button className={styles.button} disable={isLoading} onClick={handleDelete}>
-            Delete
-          </button>
-        </Modal>
-      )}
-      {error && (
-        <Modal>
-          {error}
-          <button className={styles.button} onClick={() => setError(false)}>
-            Close
-          </button>
-        </Modal>
-      )}
+      {/* {adminToDelete && (
+      //   <Modal>
+      //     Are you sure you want to delete user: {adminToDelete.username}?
+      //     <button className={styles.button} onClick={() => setAdminToDelete(false)}>
+      //       Close
+      //     </button>
+      //     <button className={styles.button} disable={isLoading} onClick={handleDelete}>
+      //       Delete
+      //     </button>
+      //   </Modal>
+      // )}
+      // {error && (
+      //   <Modal>
+      //     {error}
+      //     <button className={styles.button} onClick={() => setError(false)}>
+      //       Close
+      //     </button>
+      //   </Modal>
+      )} */}
     </section>
   );
 };
