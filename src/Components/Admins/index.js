@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from './modal/modal';
+import { Link, useHistory } from 'react-router-dom';
 
 const Admins = () => {
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
   const [error, setError] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const history = useHistory();
 
   const getAdmins = () => {
     setLoading(true);
@@ -35,7 +37,7 @@ const Admins = () => {
   }, []);
 
   const updateAdmin = (id) => {
-    window.location.href = `/admins/form?_id=${id}`;
+    history.push(`/admins/form?_id=${id}`);
   };
 
   const deleteAdmin = (admin) => {
@@ -63,9 +65,9 @@ const Admins = () => {
   return (
     <section className={styles.container}>
       <h2>Admins</h2>
-      <a href="/admins/form" className={styles.button}>
+      <Link to="/admins/form" className={styles.button}>
         ADD ADMIN
-      </a>
+      </Link>
       {isLoading && 'Loading...'}
       <div>
         <table className={styles.table}>

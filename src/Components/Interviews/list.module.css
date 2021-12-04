@@ -44,6 +44,11 @@
   font-size: 15px;
   color: #002147;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .button:hover {

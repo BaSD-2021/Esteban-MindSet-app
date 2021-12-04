@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 import Modal from './Modal';
+import { Link, useHistory } from 'react-router-dom';
 
 function Clients() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [clients, setClients] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory();
 
   const deleteClient = (event, id) => {
     const url = `${process.env.REACT_APP_API}/clients/${id}`;
@@ -25,16 +27,14 @@ function Clients() {
           })
           .then((response) => {
             setClients(response.data);
-            window.location.href = `/clients`;
           });
       })
       .catch((err) => {
         setErrorMessage(err);
+      })
+      .finally(() => {
+        closeModal();
       });
-  };
-
-  const goToForm = () => {
-    window.location.href = `/clients/form`;
   };
 
   const closeModal = () => {
@@ -81,7 +81,7 @@ function Clients() {
           {clients.map((client) => {
             return (
               <tr
-                onClick={() => (window.location.href = `/clients/form?_id=${client._id}`)}
+                onClick={() => history.push(`/clients/form?_id=${client._id}`)}
                 key={client._id}
                 className={styles.trStyles}
               >
@@ -105,9 +105,9 @@ function Clients() {
       </table>
       <div className={styles.errorMessage}>{errorMessage.message}</div>
       <Modal id={idToDelete} function={deleteClient} show={showModal} closeModal={closeModal} />
-      <button type="button" onClick={goToForm} className={styles.buttonCreate}>
-        Add client
-      </button>
+      <Link to="/Clients/Form" className={styles.buttonCreate}>
+        ADD CLIENT
+      </Link>
     </section>
   );
 }

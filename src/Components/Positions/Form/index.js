@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 
 function Form() {
@@ -10,6 +12,9 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [professionalProfilesValue, setProfessionalProfilesValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const query = useQuery();
+  const history = useHistory();
+
   let fetchMethod = 'POST';
 
   const onLoading = (dat) => {
@@ -42,8 +47,7 @@ function Form() {
     setIsOpenValue(event.target.value);
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const positionId = params.get('_id');
+  const positionId = query.get('_id');
   const url1 = `${process.env.REACT_APP_API}/positions?_id=${positionId}`;
 
   if (positionId) {
@@ -81,7 +85,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        window.location.href = `${window.location.origin}/positions`;
+        history.push(`/positions`);
       })
       .catch((errorValue) => {
         setError(errorValue.toString());

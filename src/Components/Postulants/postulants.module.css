@@ -30,7 +30,8 @@
   padding: 0 20px 0 20px;
 }
 
-.container button {
+.container button,
+.button {
   margin: auto;
   width: auto;
   height: 30px;
@@ -39,6 +40,13 @@
   background-color: #fdc800;
   font-size: 15px;
   color: #002147;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 5px;
 }
 
 .container button:hover {
@@ -49,4 +57,4 @@
 .showError{
   margin: 15px;
   color: #8f0000;
- } 
+}

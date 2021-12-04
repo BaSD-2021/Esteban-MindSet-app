@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './postulants.module.css';
+import { Link, useHistory } from 'react-router-dom';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
   const [itemOnDelete, setItemOnDelete] = useState({});
   const [showError, setShowError] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/postulants`)
@@ -28,7 +30,7 @@ function Postulants() {
       }
     })
       .then(() => {
-        window.location.href = `${window.location.origin}/postulants`;
+        history.push(`/postulants`);
       })
       .catch((err) => {
         setShowError(err);
@@ -60,7 +62,7 @@ function Postulants() {
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Adress</th>
+            <th>Address</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -69,19 +71,19 @@ function Postulants() {
             <tbody key={postulant._id}>
               <tr>
                 <td>
-                  <a href={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</a>
+                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
                 </td>
                 <td>
-                  <a href={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</a>
+                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
                 </td>
                 <td>
-                  <a href={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</a>
+                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
                 </td>
                 <td>
-                  <a href={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</a>
+                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
                 </td>
                 <td>
-                  <a href={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</a>
+                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
                 </td>
                 <td>
                   <button
@@ -98,13 +100,9 @@ function Postulants() {
         })}
       </table>
       <div className={styles.showError}>{showError.message}</div>
-      <button
-        onClick={() => {
-          window.location.href = `${window.location.origin}/postulants/form`;
-        }}
-      >
-        Create New Postulation
-      </button>
+      <Link to="/Postulants/Form" className={styles.button}>
+        Add Postulant
+      </Link>
     </section>
   );
 }

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 
-const params = new URLSearchParams(window.location.search);
-const postulantId = params.get('_id');
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
 function PostulantsForm() {
@@ -12,7 +12,7 @@ function PostulantsForm() {
   const [passwordValue, setPasswordValue] = useState('');
   const [contactFromValue, setContactFromValue] = useState('');
   const [contactToValue, setContactToValue] = useState('');
-  const [adressValue, setAdressValue] = useState('');
+  const [addressValue, setAddressValue] = useState('');
   const [birthdayValue, setBirthdayValue] = useState('');
   const [availableValue, setAvailableValue] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
@@ -29,7 +29,7 @@ function PostulantsForm() {
   const [universitySDValue, setUniversitySDValue] = useState('');
   const [universityEDValue, setUniversityEDValue] = useState('');
   const [universityDescriptionValue, setUniversityDescriptionValue] = useState('');
-  const [universityInstituteValue, setUniversityInsituteValue] = useState('');
+  const [universityInstituteValue, setUniversityInstituteValue] = useState('');
   const [informalSDValue, setInformalSDValue] = useState('');
   const [informalEDValue, setInformalEDValue] = useState('');
   const [informalDescriptionValue, setInformalDescriptionValue] = useState('');
@@ -39,7 +39,10 @@ function PostulantsForm() {
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
   const [showError, setShowError] = useState('');
+  const query = useQuery();
+  const history = useHistory();
 
+  const postulantId = query.get('_id');
   if (postulantId) {
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API}/postulants?_id=${postulantId}`)
@@ -70,7 +73,7 @@ function PostulantsForm() {
     setPasswordValue(fillData.password || '');
     setContactFromValue(contactFrom || '');
     setContactToValue(contactTo || '');
-    setAdressValue(fillData.address || '');
+    setAddressValue(fillData.address || '');
     setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
     setAvailableValue(fillData.available || '');
     setPhoneValue(fillData.phone || '');
@@ -92,7 +95,7 @@ function PostulantsForm() {
     setUniversitySDValue(fillUniStudies.startDate == null ? '' : fillUniStudies.startDate.slice(0, 10));
     setUniversityEDValue(fillUniStudies.endDate == null ? '' : fillUniStudies.endDate.slice(0, 10));
     setUniversityDescriptionValue(fillUniStudies.description || '');
-    setUniversityInsituteValue(fillUniStudies.institute || '');
+    setUniversityInstituteValue(fillUniStudies.institute || '');
 
     // eslint-disable-next-line prettier/prettier
     setInformalSDValue(fillInfStudies.startDate == null ? '' : fillInfStudies.startDate.slice(0, 10));
@@ -132,8 +135,8 @@ function PostulantsForm() {
     setContactToValue(event.target.value);
   };
 
-  const onChangeAdressInput = (event) => {
-    setAdressValue(event.target.value);
+  const onChangeAddressInput = (event) => {
+    setAddressValue(event.target.value);
   };
 
   const onChangeBirthdayInput = (event) => {
@@ -201,7 +204,7 @@ function PostulantsForm() {
   };
 
   const onChangeUniversityInstituteValueInput = (event) => {
-    setUniversityInsituteValue(event.target.value);
+    setUniversityInstituteValue(event.target.value);
   };
 
   const onChangeInformalSDValue = (event) => {
@@ -313,7 +316,7 @@ function PostulantsForm() {
         lastName: lastNameValue,
         email: emailValue,
         password: passwordValue,
-        address: adressValue,
+        address: addressValue,
         birthday: birthdayValue,
         available: availableValue,
         phone: phoneValue,
@@ -350,7 +353,7 @@ function PostulantsForm() {
         return response.json();
       })
       .then(() => {
-        window.location.href = `${window.location.origin}/postulants`;
+        history.push(`/postulants`);
       })
       .catch((err) => {
         setShowError(err);
@@ -434,14 +437,14 @@ function PostulantsForm() {
           />
         </div>
         <div>
-          <h3>Adress</h3>
+          <h3>Address</h3>
           <input
             className={styles.input}
-            id="adress"
-            name="adress"
-            placeholder="Adress"
-            value={adressValue}
-            onChange={onChangeAdressInput}
+            id="address"
+            name="address"
+            placeholder="Address"
+            value={addressValue}
+            onChange={onChangeAddressInput}
             type="text"
             required
           />

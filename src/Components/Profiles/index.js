@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './profiles.module.css';
+import { Link, useHistory } from 'react-router-dom';
 
 function Profiles() {
   const [showModal, setShowModal] = useState(false);
@@ -8,8 +9,8 @@ function Profiles() {
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const history = useHistory();
 
-  console.log(profiles);
   useEffect(() => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_API}/profiles`)
@@ -27,9 +28,7 @@ function Profiles() {
   }, []);
 
   const redirectToForm = (profile) => {
-    profile
-      ? (window.location.href = `${window.location.pathname}/form?id=${profile}`)
-      : (window.location.href = `${window.location.pathname}/form`);
+    profile ? history.push(`/profiles/form?_id=${profile}`) : history.push(`/profiles/form`);
   };
 
   const handleDelete = (event, profile) => {
@@ -95,7 +94,11 @@ function Profiles() {
                 <tr key={profile._id} onClick={() => redirectToForm(profile._id)}>
                   <td>{profile.name}</td>
                   <td>
-                    <button type="delete" onClick={(event) => handleDelete(event, profile)}>
+                    <button
+                      type="delete"
+                      onClick={(event) => handleDelete(event, profile)}
+                      className={styles.button}
+                    >
                       Delete
                     </button>
                   </td>
@@ -106,14 +109,10 @@ function Profiles() {
         </table>
       </div>
       <div className={styles.error}>{error}</div>
-      <button
-        type="add"
-        className={styles.button}
-        disabled={isLoading}
-        onClick={() => redirectToForm()}
-      >
+
+      <Link to="/Profiles/Form" className={styles.button}>
         Add Profile
-      </button>
+      </Link>
     </section>
   );
 }

@@ -53,6 +53,11 @@
   font-size: 15px;
   color: #002147;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .errorMessage{

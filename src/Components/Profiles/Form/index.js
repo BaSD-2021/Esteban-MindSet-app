@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import useQuery from '../../../Hooks/useQuery';
 import Input from '../Input';
 import styles from './form.module.css';
 
@@ -6,6 +8,8 @@ function profilesForm() {
   const [profileValue, setProfileValue] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const query = useQuery();
+  const history = useHistory();
 
   const onChangeProfileInput = (event) => {
     setProfileValue(event.target.value);
@@ -13,10 +17,9 @@ function profilesForm() {
 
   useEffect(() => {
     setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    const profileId = params.get('id');
+    const profileId = query.get('_id');
     if (profileId) {
-      fetch(`${process.env.REACT_APP_API}/profiles?_id${profileId}`)
+      fetch(`${process.env.REACT_APP_API}/profiles?_id=${profileId}`)
         .then((response) => {
           if (response.status !== 200) {
             return response.json().then(({ message }) => {
@@ -38,8 +41,7 @@ function profilesForm() {
   const onSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    const profileId = params.get('id');
+    const profileId = query.get('_id');
 
     let url;
     const options = {
@@ -69,7 +71,7 @@ function profilesForm() {
         return response.json();
       })
       .then(() => {
-        window.location.href = '/profiles';
+        history.push('/profiles');
       })
       .catch((error) => {
         setError(error.toString());

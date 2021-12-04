@@ -1,39 +1,40 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from './Modal';
+import { Link, useHistory } from 'react-router-dom';
 
 function Applications() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [applications, setApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory();
 
   const deleteApplication = (id) => {
     const url = `${process.env.REACT_APP_API}/applications/${id}`;
     fetch(url, {
       method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/applications`)
-        .then((response) => {
-          if (response.status !== 200) {
-            return response.json().then(({ message }) => {
-              throw new Error(message);
-            });
-          }
-          return response.json();
-        })
-        .then((response) => {
-          setApplications(response.data);
-          window.location.href = `/applications`;
-        })
-        .catch((error) => {
-          setErrorMessage(error);
-        });
-    });
-  };
-
-  const goToForm = () => {
-    window.location.href = `/applications/form`;
+    })
+      .then(() => {
+        fetch(`${process.env.REACT_APP_API}/applications`)
+          .then((response) => {
+            if (response.status !== 200) {
+              return response.json().then(({ message }) => {
+                throw new Error(message);
+              });
+            }
+            return response.json();
+          })
+          .then((response) => {
+            setApplications(response.data);
+          })
+          .catch((error) => {
+            setErrorMessage(error);
+          });
+      })
+      .finally(() => {
+        closeModal();
+      });
   };
 
   const closeModal = () => {
@@ -82,7 +83,7 @@ function Applications() {
           {applications.map((application) => {
             return (
               <tr
-                onClick={() => (window.location.href = `/applications/form?_id=${application._id}`)}
+                onClick={() => history.push(`/applications/form?_id=${application._id}`)}
                 key={application._id}
                 className={styles.trStyles}
               >
@@ -123,9 +124,9 @@ function Applications() {
         show={showModal}
         closeModal={closeModal}
       />
-      <button type="button" onClick={goToForm} className={styles.buttonCreate}>
-        Add application
-      </button>
+      <Link to="/Applications/Form" className={styles.buttonCreate}>
+        ADD APPLICATION
+      </Link>
     </section>
   );
 }
