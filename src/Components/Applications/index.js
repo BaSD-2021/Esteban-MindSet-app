@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
-import Modal from './Modal';
+//import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Applications() {
@@ -8,10 +9,12 @@ function Applications() {
   const [idToDelete, setIdToDelete] = useState('');
   const [applications, setApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
-  const deleteApplication = (id) => {
-    const url = `${process.env.REACT_APP_API}/applications/${id}`;
+  const deleteApplication = () => {
+    setLoading(true);
+    const url = `${process.env.REACT_APP_API}/applications/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
     })
@@ -27,13 +30,14 @@ function Applications() {
           })
           .then((response) => {
             setApplications(response.data);
+            closeModal();
           })
           .catch((error) => {
             setErrorMessage(error);
           });
       })
       .finally(() => {
-        closeModal();
+        setLoading(false);
       });
   };
 
@@ -119,10 +123,11 @@ function Applications() {
         {errorMessage.message}
       </div>
       <Modal
-        id={idToDelete}
-        function={deleteApplication}
-        show={showModal}
-        closeModal={closeModal}
+        showModal={showModal}
+        title="Do you want to proceed and delete this application?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deleteApplication}
       />
       <Link to="/Applications/Form" className={styles.buttonCreate}>
         ADD APPLICATION
