@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Clients() {
@@ -8,10 +8,12 @@ function Clients() {
   const [idToDelete, setIdToDelete] = useState('');
   const [clients, setClients] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
-  const deleteClient = (event, id) => {
-    const url = `${process.env.REACT_APP_API}/clients/${id}`;
+  const deleteClient = () => {
+    setLoading(true);
+    const url = `${process.env.REACT_APP_API}/clients/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
     })
@@ -27,13 +29,14 @@ function Clients() {
           })
           .then((response) => {
             setClients(response.data);
+            closeModal();
           });
       })
       .catch((err) => {
         setErrorMessage(err);
       })
       .finally(() => {
-        closeModal();
+        setLoading(false);
       });
   };
 
@@ -49,6 +52,7 @@ function Clients() {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => {
         if (response.status !== 200) {
@@ -63,7 +67,8 @@ function Clients() {
       })
       .catch((err) => {
         setErrorMessage(err);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -104,7 +109,13 @@ function Clients() {
         </tbody>
       </table>
       <div className={styles.errorMessage}>{errorMessage.message}</div>
-      <Modal id={idToDelete} function={deleteClient} show={showModal} closeModal={closeModal} />
+      <Modal
+        showModal={showModal}
+        title="Do you want to proceed and delete this Client?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deleteClient}
+      />
       <Link to="/Clients/Form" className={styles.buttonCreate}>
         ADD CLIENT
       </Link>
