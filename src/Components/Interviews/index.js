@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from './Modal';
+import Button from '../Shared/Button';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
+  const [errorValue, setError] = useState('');
   const history = useHistory();
 
   const deleteInterview = (id) => {
@@ -19,8 +21,8 @@ function Interviews() {
         .then((response) => {
           saveInterviews(response.data);
         })
-        .catch((error) => {
-          console.log('err', error);
+        .catch((errorValue) => {
+          setError(errorValue.toString());
         });
     });
   };
@@ -31,8 +33,8 @@ function Interviews() {
       .then((response) => {
         saveInterviews(response.data);
       })
-      .catch((error) => {
-        console.log('err', error);
+      .catch((errorValue) => {
+        setError(errorValue.toString());
       });
   }, []);
 
@@ -49,7 +51,7 @@ function Interviews() {
 
   return (
     <section className={styles.container}>
-      <h2>Interviews</h2>
+      <h2 className={styles.title}>Interviews</h2>
       <table className={styles.table}>
         <thead className={styles.thead}>
           <tr>
@@ -72,15 +74,12 @@ function Interviews() {
                 <td className={styles.td}>{interview.status}</td>
                 <td className={styles.td}>{interview.date}</td>
                 <td className={styles.td}>
-                  <button
-                    type="button"
+                  <Button
+                    name="deleteButton"
                     onClick={(e) => {
                       preventAndShow(e, interview._id);
                     }}
-                    className={styles.deleteButton}
-                  >
-                    Delete
-                  </button>
+                  />
                 </td>
               </tr>
             );
@@ -89,8 +88,9 @@ function Interviews() {
       </table>
       <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} />
       <Link to="/Interviews/Form" className={styles.button}>
-        ADD INTERVIEW
+        <Button name="addButton" entity="INTERVIEW" />
       </Link>
+      <div className={styles.error}>{errorValue}</div>
     </section>
   );
 }
