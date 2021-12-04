@@ -17,9 +17,9 @@ function profilesForm() {
 
   useEffect(() => {
     setLoading(true);
-    const profileId = query.get('id');
+    const profileId = query.get('_id');
     if (profileId) {
-      fetch(`${process.env.REACT_APP_API}/profiles?_id${profileId}`)
+      fetch(`${process.env.REACT_APP_API}/profiles?_id=${profileId}`)
         .then((response) => {
           if (response.status !== 200) {
             return response.json().then(({ message }) => {
@@ -41,7 +41,7 @@ function profilesForm() {
   const onSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    const profileId = query.get('id');
+    const profileId = query.get('_id');
 
     let url;
     const options = {
