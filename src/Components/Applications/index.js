@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from './Modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Applications() {
@@ -100,15 +101,12 @@ function Applications() {
                 </td>
                 <td className={styles.tdStyles}>{application.result ? application.result : '-'}</td>
                 <td className={styles.tdStyles}>
-                  <button
-                    type="button"
+                  <Button
+                    name="deleteButton"
                     onClick={(e) => {
                       preventAndShow(e, application._id);
                     }}
-                    className={styles.buttonDelete}
-                  >
-                    Delete
-                  </button>
+                  />
                 </td>
               </tr>
             );
@@ -124,8 +122,8 @@ function Applications() {
         show={showModal}
         closeModal={closeModal}
       />
-      <Link to="/Applications/Form" className={styles.buttonCreate}>
-        ADD APPLICATION
+      <Link to="/Applications/Form">
+        <Button name="addButton" entity="APPLICATION" />
       </Link>
     </section>
   );

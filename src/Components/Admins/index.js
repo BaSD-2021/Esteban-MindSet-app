@@ -85,7 +85,6 @@ const Admins = () => {
                   <td className={styles.tableRow}>
                     <Button
                       name="deleteButton"
-                      entity="Admin"
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAdmin(admin);
@@ -111,8 +110,8 @@ const Admins = () => {
           <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
         </Modal>
       )}
-      <Link to="/admins/form" className={styles.button}>
-        <Button name="addButton" entity="ADMIN"></Button>
+      <Link to="/admins/form">
+        <Button name="addButton" entity="ADMIN" />
       </Link>
     </section>
   );

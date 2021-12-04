@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 function Form() {
   const [positionId, setPositionId] = useState('');
@@ -225,9 +226,7 @@ function Form() {
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}
         </div>
-        <button id="saveButton" type="submit" className={styles.button}>
-          Save
-        </button>
+        <Button name="saveButton" />
       </form>
     </div>
   );
