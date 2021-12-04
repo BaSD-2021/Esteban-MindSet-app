@@ -1,28 +1,36 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
-  const deleteInterview = (id) => {
-    const url = `${process.env.REACT_APP_API}/interviews/${id}`;
+  const deleteInterview = () => {
+    setLoading(true);
+    const url = `${process.env.REACT_APP_API}/interviews/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/interviews`)
-        .then((response) => response.json())
-        .then((response) => {
-          saveInterviews(response.data);
-        })
-        .catch((error) => {
-          console.log('err', error);
-        });
-    });
+    })
+      .then(() => {
+        fetch(`${process.env.REACT_APP_API}/interviews`)
+          .then((response) => response.json())
+          .then((response) => {
+            saveInterviews(response.data);
+            closeModal();
+          })
+          .catch((error) => {
+            setErrorMessage(error);
+          });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -32,7 +40,7 @@ function Interviews() {
         saveInterviews(response.data);
       })
       .catch((error) => {
-        console.log('err', error);
+        setErrorMessage(error);
       });
   }, []);
 
@@ -87,7 +95,14 @@ function Interviews() {
           })}
         </tbody>
       </table>
-      <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} />
+      {/* <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} /> */}
+      <Modal
+        showModal={showModal}
+        title="Do you want to proceed and delete this Interview?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deleteInterview}
+      />
       <Link to="/Interviews/Form" className={styles.button}>
         ADD INTERVIEW
       </Link>
