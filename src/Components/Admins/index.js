@@ -65,7 +65,7 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      <h2>Admins</h2>
+      <h2 className={styles.title}>Admins</h2>
       {isLoading && 'Loading...'}
       <div>
         <table className={styles.table}>
@@ -90,7 +90,7 @@ const Admins = () => {
                         e.stopPropagation();
                         deleteAdmin(admin);
                       }}
-                    ></Button>
+                    />
                   </td>
                 </tr>
               );
