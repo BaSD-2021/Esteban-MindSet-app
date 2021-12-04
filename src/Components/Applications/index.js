@@ -68,7 +68,7 @@ function Applications() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.subtitle}>Applications</h2>
+      <h2 className={styles.title}>Applications</h2>
       <table className={styles.tableData}>
         <thead className={styles.tableHeader}>
           <tr className={styles.trStyles}>

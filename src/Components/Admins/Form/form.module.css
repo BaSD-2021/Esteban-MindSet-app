@@ -27,19 +27,6 @@
   width: 270px;
 }
 
-.button {
-  border-radius: 4px;
-  background-color: #FDC800;
-  color: #002147;
-  border: none;
-  font-size: 16px;
-  font-weight: 18px;
-  padding: 5px 25px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .title {
   font-weight: bolder;
   font-size: 25px;
