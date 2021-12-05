@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Modal from '../modal/modal';
+import Input from '../../Shared/input';
 
 let fetchMethod = 'POST';
 
@@ -94,44 +95,38 @@ function Form() {
   return (
     <form className={styles.container} onSubmit={save}>
       <h2>Form</h2>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>Name</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="text"
-          name="name"
-          placeholder="Paul"
-          value={nameValue}
-          onChange={(e) => setNameValue(e.target.value)}
-          required
-        ></input>
-      </div>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>User Name</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="text"
-          name="username"
-          placeholder="Paul.Walker"
-          value={usernameValue}
-          onChange={(e) => setUsernameValue(e.target.value)}
-          required
-        ></input>
-      </div>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>Password</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="password"
-          name="name"
-          value={passwordValue}
-          onChange={(e) => setPasswordValue(e.target.value)}
-          required
-        ></input>
-      </div>
+      <Input
+        title="Name"
+        className={styles.inputBox}
+        disabled={isLoading}
+        type="text"
+        name="name"
+        placeholder="Paul Walker"
+        value={nameValue}
+        onChange={(e) => setNameValue(e.target.value)}
+        required
+      ></Input>
+      <Input
+        title="User Name"
+        className={styles.inputBox}
+        disabled={isLoading}
+        type="text"
+        name="username"
+        placeholder="paul.walker"
+        value={usernameValue}
+        onChange={(e) => setUsernameValue(e.target.value)}
+        required
+      ></Input>
+      <Input
+        title="Password"
+        className={styles.inputBox}
+        disabled={isLoading}
+        type="password"
+        name="name"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+        required
+      ></Input>
       <button type="submit" disabled={isLoading} className={styles.button}>
         Register
       </button>
