@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 function Form() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
@@ -51,9 +52,9 @@ function Form() {
     setNotesValue(event.target.value);
   };
 
-  // const params = new URLSearchParams(window.location.search);
   const interviewId = query.get('_id');
   const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
+  console.log(interviewId);
 
   if (interviewId) {
     fetchMethod = 'PUT';
@@ -130,7 +131,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2>Interview</h2>
+        <h2 className={styles.title}>Form</h2>
         <label className={styles.label}>
           <span className={styles.span}>Postulant Name</span>
         </label>
@@ -234,9 +235,7 @@ function Form() {
           onChange={onChangeNotes}
           className={styles.input}
         />
-        <button id="saveButton" type="submit" className={styles.button}>
-          Save
-        </button>
+        <Button name="saveButton" />
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>

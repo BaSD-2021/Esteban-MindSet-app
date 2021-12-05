@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
-
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const getAdmins = () => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins`)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -31,7 +30,7 @@ const Admins = () => {
         setError(err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -45,17 +44,15 @@ const Admins = () => {
 
   const closeModal = () => {
     setShowModal(false);
-    setSelectedItem(undefined);
   };
 
   const deleteAdmin = (admin) => {
     setAdminToDelete(admin);
-    setSelectedItem(admin);
     setShowModal(true);
   };
 
   const handleDelete = () => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
@@ -69,7 +66,7 @@ const Admins = () => {
         setError(err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -83,50 +80,49 @@ const Admins = () => {
         onConfirm={handleDelete}
       />
       <h2>Admins</h2>
-      <Link to="/admins/form" className={styles.button}>
-        ADD ADMIN
-      </Link>
-      {isLoading && 'Loading...'}
-      <div>
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th>Name</th>
-              <th>User Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {admins.map((admin, index) => {
-              return (
-                <tr onClick={() => updateAdmin(admin._id)} key={index}>
-                  <td className={styles.tableRow}>{admin.name}</td>
-                  <td className={styles.tableRow}>{admin.username}</td>
-                  <td className={styles.tableRow}>
-                    <button
-                      className={styles.button}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteAdmin(admin);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <div>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
+              <tr>
+                <th>Name</th>
+                <th>User Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map((admin, index) => {
+                return (
+                  <tr onClick={() => updateAdmin(admin._id)} key={index}>
+                    <td className={styles.tableRow}>{admin.name}</td>
+                    <td className={styles.tableRow}>{admin.username}</td>
+                    <td className={styles.tableRow}>
+                      <Button
+                        name="deleteButton"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteAdmin(admin);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
       {error && (
         <Modal>
           {error}
-          <button className={styles.button} onClick={() => setError(false)}>
-            Close
-          </button>
+          <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
         </Modal>
       )}
+      <Link to="/admins/form">
+        <Button name="addButton" entity="ADMIN" />
+      </Link>
     </section>
   );
 };

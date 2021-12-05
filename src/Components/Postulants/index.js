@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
@@ -8,11 +9,11 @@ function Postulants() {
   const [postulants, setPostulants] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
@@ -21,11 +22,13 @@ function Postulants() {
       .catch((err) => {
         setShowError(err);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const deletePostulant = () => {
-    setLoading(true);
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
     fetch(url, {
       method: 'DELETE',
@@ -41,7 +44,7 @@ function Postulants() {
         setShowError(err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -66,53 +69,56 @@ function Postulants() {
         onConfirm={deletePostulant}
       />
       <h2>Postulants</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        {postulants.map((postulant) => {
-          return (
-            <tbody key={postulant._id}>
-              <tr>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
-                </td>
-                <td>
-                  <button
-                    onClick={(e) => {
-                      preventAndShow(e, postulant._id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          );
-        })}
-      </table>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          {postulants.map((postulant) => {
+            return (
+              <tbody key={postulant._id}>
+                <tr>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
+                  </td>
+                  <td>
+                    <Button
+                      name="deleteButton"
+                      onClick={(e) => {
+                        preventAndShow(e, postulant._id);
+                      }}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            );
+          })}
+        </table>
+      )}
       <div className={styles.showError}>{showError.message}</div>
       <Link to="/Postulants/Form" className={styles.button}>
-        Add Postulant
+        <Button name="addButton" entity="POSTULANT" />
       </Link>
     </section>
   );

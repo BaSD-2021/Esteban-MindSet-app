@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './psychologistItem.module.css';
+import Button from '../../Shared/Button';
 
 const PsychologistItem = ({
   psychologist,
@@ -27,9 +28,7 @@ const PsychologistItem = ({
       <td>{phone}</td>
       <td>{address}</td>
       <td>
-        <button className={styles.deleteBtn} onClick={(e) => toggleConfirmModal(e, psychologist)}>
-          Delete
-        </button>
+        <Button name="deleteButton" onClick={(e) => toggleConfirmModal(e, psychologist)} />
       </td>
     </tr>
   );

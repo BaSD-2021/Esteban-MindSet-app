@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Positions() {
@@ -8,11 +9,11 @@ function Positions() {
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [errorValue, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const deletePosition = () => {
-    setLoading(true);
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/positions/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
@@ -27,10 +28,25 @@ function Positions() {
           setError(errorValue.toString());
         })
         .finally(() => {
-          setLoading(false);
+          setIsLoading(false);
         });
     });
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(`${process.env.REACT_APP_API}/positions`)
+      .then((response) => response.json())
+      .then((response) => {
+        savePositions(response.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const closeModal = () => {
     setShowModal(false);
@@ -43,18 +59,18 @@ function Positions() {
     setShowModal(true);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${process.env.REACT_APP_API}/positions`)
-      .then((response) => response.json())
-      .then((response) => {
-        savePositions(response.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetch(`${process.env.REACT_APP_API}/positions`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       savePositions(response.data);
+  //     })
+  //     .catch((errorValue) => {
+  //       setError(errorValue.toString());
+  //     })
+  //     .finally(() => setIsLoading(false));
+  // }, []);
 
   return (
     <section className={styles.container}>
@@ -66,49 +82,50 @@ function Positions() {
         onConfirm={deletePosition}
       />
       <h2>Positions</h2>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr>
-            <td>Client</td>
-            <td>Job Description</td>
-            <td>Vacancy</td>
-            <td>Professional profile</td>
-            <td>Is Open</td>
-            <td>Delete</td>
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {positions.map((position) => {
-            return (
-              <tr
-                onClick={() => history.push(`/positions/form?_id=${position._id}`)}
-                key={position._id}
-              >
-                <td>{position.client?.name || '-'}</td>
-                <td>{position.jobDescription}</td>
-                <td>{position.vacancy}</td>
-                <td>{position.professionalProfile?.name || '-'}</td>
-                <td>{position.isOpen.toString()}</td>
-                <td>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      preventAndShow(e, position._id);
-                    }}
-                    className={styles.deleteButton}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <td>Client</td>
+              <td>Job Description</td>
+              <td>Vacancy</td>
+              <td>Professional profile</td>
+              <td>Is Open</td>
+              <td>Delete</td>
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            {positions.map((position) => {
+              console.log(position);
+              return (
+                <tr
+                  onClick={() => history.push(`/positions/form?_id=${position._id}`)}
+                  key={position._id}
+                >
+                  <td>{position.client?.name || '-'}</td>
+                  <td>{position.jobDescription}</td>
+                  <td>{position.vacancy}</td>
+                  <td>{position.professionalProfile?.name || '-'}</td>
+                  <td>{position.isOpen.toString()}</td>
+                  <td>
+                    <Button
+                      name="deleteButton"
+                      onClick={(e) => {
+                        preventAndShow(e, position._id);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
       <Link to="/Positions/Form" className={styles.button}>
-        ADD POSITION
+        <Button name="addButton" entity="POSITION" />
       </Link>
-      <div className={styles.error}>{errorValue}</div>
     </section>
   );
 }

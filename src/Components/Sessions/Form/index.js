@@ -4,6 +4,7 @@ import useQuery from '../../../Hooks/useQuery';
 import Select from '../Select';
 import TextArea from '../TextArea';
 import Input from '../Input';
+import Button from '../../Shared/Button';
 import styles from './form.module.css';
 
 function sessionsForm() {
@@ -157,7 +158,7 @@ function sessionsForm() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <h2>Session Form</h2>
+        <h2 className={styles.title}>Form</h2>
         <Select
           name="postulant"
           value={postulantValue}
@@ -180,7 +181,7 @@ function sessionsForm() {
           onChange={onChangeStatusInput}
           options={[
             { value: 'assigned', label: 'Assigned' },
-            { value: 'succesful', label: 'Succesful' },
+            { value: 'successful', label: 'Successful' },
             { value: 'cancelled', label: 'Cancelled' }
           ]}
           disabled={isLoading}
@@ -200,9 +201,9 @@ function sessionsForm() {
           onChange={onChangeNotesInput}
           disabled={isLoading}
         />
-        <button disabled={isLoading} type="submit" className={styles.button}>
-          Save
-        </button>
+        <div className={styles.buttonContainer}>
+          <Button disabled={isLoading} name="saveButton" />
+        </div>
         <div className={styles.error}>{error}</div>
       </form>
     </div>

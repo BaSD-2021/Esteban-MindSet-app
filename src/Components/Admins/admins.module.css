@@ -8,7 +8,7 @@
 }
 
 .table {
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .thead {
@@ -27,20 +27,21 @@
   padding: 5px 40px;
 }
 
-.button {
-  border-radius: 4px;
-  background-color: #FDC800;
-  color: #002147;
-  border: none;
-  font-weight: 18px;
-  font-size: 16px;
-  padding: 5px 35px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.loading{
+  margin: 15px;
+  padding: 8px;
+  font-size: 20px;
+  color: #2e2c2c;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+}
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }

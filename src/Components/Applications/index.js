@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from '../Shared/Modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Applications() {
@@ -8,11 +9,11 @@ function Applications() {
   const [idToDelete, setIdToDelete] = useState('');
   const [applications, setApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const deleteApplication = () => {
-    setLoading(true);
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/applications/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
@@ -36,7 +37,7 @@ function Applications() {
           });
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -66,58 +67,64 @@ function Applications() {
       })
       .catch((error) => {
         setErrorMessage(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   return (
     <section className={styles.container}>
       <h2 className={styles.subtitle}>Applications</h2>
-      <table className={styles.tableData}>
-        <thead className={styles.tableHeader}>
-          <tr className={styles.trStyles}>
-            <th>Job Description</th>
-            <th>Postulant</th>
-            <th>Interview</th>
-            <th>Result</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {applications.map((application) => {
-            return (
-              <tr
-                onClick={() => history.push(`/applications/form?_id=${application._id}`)}
-                key={application._id}
-                className={styles.trStyles}
-              >
-                <td className={styles.tdStyles}>
-                  {application.positions ? application.positions.jobDescription : '-'}
-                </td>
-                <td className={styles.tdStyles}>
-                  {application.postulants
-                    ? application.postulants.firstName + ' ' + application.postulants.lastName
-                    : '-'}
-                </td>
-                <td className={styles.tdStyles}>
-                  {application.interview ? application.interview.date.substr(0, 10) : '-'}
-                </td>
-                <td className={styles.tdStyles}>{application.result ? application.result : '-'}</td>
-                <td className={styles.tdStyles}>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      preventAndShow(e, application._id);
-                    }}
-                    className={styles.buttonDelete}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <table className={styles.tableData}>
+          <thead className={styles.tableHeader}>
+            <tr className={styles.trStyles}>
+              <th>Job Description</th>
+              <th>Postulant</th>
+              <th>Interview</th>
+              <th>Result</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {applications.map((application) => {
+              return (
+                <tr
+                  onClick={() => history.push(`/applications/form?_id=${application._id}`)}
+                  key={application._id}
+                  className={styles.trStyles}
+                >
+                  <td className={styles.tdStyles}>
+                    {application.positions ? application.positions.jobDescription : '-'}
+                  </td>
+                  <td className={styles.tdStyles}>
+                    {application.postulants
+                      ? application.postulants.firstName + ' ' + application.postulants.lastName
+                      : '-'}
+                  </td>
+                  <td className={styles.tdStyles}>
+                    {application.interview ? application.interview.date.substr(0, 10) : '-'}
+                  </td>
+                  <td className={styles.tdStyles}>
+                    {application.result ? application.result : '-'}
+                  </td>
+                  <td className={styles.tdStyles}>
+                    <Button
+                      name="deleteButton"
+                      onClick={(e) => {
+                        preventAndShow(e, application._id);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
       <div id="error_message" className={styles.errorMessage}>
         {errorMessage.message}
       </div>
@@ -128,8 +135,8 @@ function Applications() {
         isLoading={isLoading}
         onConfirm={deleteApplication}
       />
-      <Link to="/Applications/Form" className={styles.buttonCreate}>
-        ADD APPLICATION
+      <Link to="/Applications/Form">
+        <Button name="addButton" entity="APPLICATION" />
       </Link>
     </section>
   );

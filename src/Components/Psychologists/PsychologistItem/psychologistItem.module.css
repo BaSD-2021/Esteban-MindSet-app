@@ -18,14 +18,3 @@
   background-color: #f3f3f3;
   color: #004391;
 }
-.deleteBtn {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #c50000;
-  background-color: #c50000;
-  color: #fff;
-  font-weight: 600;
-}
-.deleteBtn:hover {
-  background-color: #ad0000;
-}

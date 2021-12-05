@@ -13,7 +13,7 @@
   font-size: 16px;
   margin: 20px 5px 0 0;
  }
- 
+
  .container input,
  .container select {
   display: flex;
@@ -40,24 +40,14 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
  }
- 
- .container button {
-  margin: 30px auto;
-  width: 30%;
-  height: 50px;
-  border: none;
-  border-radius: 3px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
- } 
-
- .container button:hover {
-  cursor: pointer;
-  background-color: #ffd027;
-}
 
 .showError{
   margin: 15px;
   color: #8f0000;
- } 
+ }
+
+ .title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+}

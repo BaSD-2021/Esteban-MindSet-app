@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -363,7 +364,7 @@ function PostulantsForm() {
   return (
     <div className={styles.container}>
       <form onSubmit={onSubmit}>
-        <h2>Postulation</h2>
+        <h2 className={styles.title}>Form</h2>
         <div>
           <h3>Full name</h3>
           <input
@@ -713,9 +714,7 @@ function PostulantsForm() {
             cols="33"
           />
         </div>
-        <button type="submit" id="saveButton">
-          Save
-        </button>
+        <Button name="saveButton" entity="POSTULANT" />
       </form>
       <div className={styles.showError}>{showError.message}</div>
     </div>
