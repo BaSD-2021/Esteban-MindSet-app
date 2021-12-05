@@ -8,11 +8,11 @@ function Sessions() {
   const [sessions, saveSessions] = useState([]);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/sessions`)
       .then((response) => {
         if (response.status !== 200) {
@@ -24,7 +24,7 @@ function Sessions() {
       })
       .then((response) => saveSessions(response.data))
       .catch((error) => setError(error.toString()))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   const redirectToForm = (session) => {
@@ -43,7 +43,7 @@ function Sessions() {
   };
 
   const deleteSession = () => {
-    setLoading(true);
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/sessions/${selectedItem}`;
     fetch(url, { method: 'DELETE' })
       .then((response) => {
@@ -67,7 +67,7 @@ function Sessions() {
           });
       })
       .catch((error) => setError(error.toString()))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -81,44 +81,48 @@ function Sessions() {
       />
       <h2>Sessions</h2>
       <div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Postulant</th>
-              <th>Psychologist</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sessions.map((session) => {
-              return (
-                <tr key={session._id} onClick={() => redirectToForm(session._id)}>
-                  <td>
-                    {session.postulant?.firstName || '-'}
-                    {session.postulant?.lastName || '-'}
-                  </td>
-                  <td>
-                    {session.psychologist?.firstName || '-'}
-                    {session.psychologist?.lastName || '-'}
-                  </td>
-                  <td>{session.date.replace('T', ' ')}</td>
-                  <td>{session.status}</td>
-                  <td>
-                    <button
-                      type="delete"
-                      onClick={(event) => handleDelete(event, session)}
-                      className={styles.button}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {isLoading ? (
+          <p className={styles.loading}>On Loading ...</p>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Postulant</th>
+                <th>Psychologist</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sessions.map((session) => {
+                return (
+                  <tr key={session._id} onClick={() => redirectToForm(session._id)}>
+                    <td>
+                      {session.postulant?.firstName || '-'}
+                      {session.postulant?.lastName || '-'}
+                    </td>
+                    <td>
+                      {session.psychologist?.firstName || '-'}
+                      {session.psychologist?.lastName || '-'}
+                    </td>
+                    <td>{session.date.replace('T', ' ')}</td>
+                    <td>{session.status}</td>
+                    <td>
+                      <button
+                        type="delete"
+                        onClick={(event) => handleDelete(event, session)}
+                        className={styles.button}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
       <div className={styles.error}>{error}</div>
       <Link to="/Sessions/Form" className={styles.button}>
