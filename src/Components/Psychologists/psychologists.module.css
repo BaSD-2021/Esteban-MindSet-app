@@ -16,3 +16,12 @@
   margin: 16px;
   color: #353535;
 }
+
+.loading{
+  margin: 15px;
+  padding: 8px;
+  font-size: 20px;
+  color: #2e2c2c;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+}
