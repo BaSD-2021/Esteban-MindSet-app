@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 //import Modal from './Modal';
-import Modal from '../Shared/Modal';
 import styles from './postulants.module.css';
+import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Postulants() {
@@ -36,8 +36,8 @@ function Postulants() {
       }
     })
       .then(() => {
-        history.push(`/postulants`);
         closeModal();
+        history.go(0);
       })
       .catch((err) => {
         setShowError(err);

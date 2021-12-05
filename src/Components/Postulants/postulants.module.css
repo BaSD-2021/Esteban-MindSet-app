@@ -32,7 +32,7 @@
 
 .container button,
 .button {
-  margin: auto;
+  /* margin: auto;
   width: auto;
   height: 30px;
   border: none;
@@ -46,7 +46,7 @@
   text-decoration: none;
   font-weight: bold;
   text-decoration: none;
-  padding: 5px;
+  padding: 5px; */
 }
 
 .container button:hover {
