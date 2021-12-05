@@ -49,3 +49,9 @@
   font-size: 25px;
   color: #002147;
 }
+
+.buttonContainer{
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}

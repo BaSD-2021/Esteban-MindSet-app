@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './button.module.css';
 
-function Button({ name, entity, onClick }) {
+function Button({ name, entity, onClick, onSubmit }) {
   return (
     <div>
-      <button className={styles[name]} onClick={onClick}>
+      <button className={styles[name]} onClick={onClick} onSubmit={onSubmit}>
         {name === 'deleteButton' && 'DELETE'}
         {name === 'addButton' && `ADD ${entity}`}
         {name === 'saveButton' && 'SAVE'}
