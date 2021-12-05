@@ -63,10 +63,12 @@ function Applications() {
       })
       .then((response) => {
         setApplications(response.data);
-        setIsLoading(false);
       })
       .catch((error) => {
         setErrorMessage(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
