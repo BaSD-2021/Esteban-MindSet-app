@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
+import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -98,13 +99,12 @@ function Postulants() {
                     <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
                   </td>
                   <td>
-                    <button
+                    <Button
+                      name="deleteButton"
                       onClick={() => {
                         modalOpen(postulant);
                       }}
-                    >
-                      Delete
-                    </button>
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -114,7 +114,7 @@ function Postulants() {
       )}
       <div className={styles.showError}>{showError.message}</div>
       <Link to="/Postulants/Form" className={styles.button}>
-        Add Postulant
+        <Button name="addButton" entity="POSTULANT" />
       </Link>
     </section>
   );

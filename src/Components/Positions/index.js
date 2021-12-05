@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from './Modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Positions() {
@@ -87,15 +88,12 @@ function Positions() {
                   <td>{position.professionalProfile?.name || '-'}</td>
                   <td>{position.isOpen.toString()}</td>
                   <td>
-                    <button
-                      type="button"
+                    <Button
+                      name="deleteButton"
                       onClick={(e) => {
                         preventAndShow(e, position._id);
                       }}
-                      className={styles.deleteButton}
-                    >
-                      Delete
-                    </button>
+                    />
                   </td>
                 </tr>
               );
@@ -105,7 +103,7 @@ function Positions() {
       )}
       <Modal id={idToDelete} function={deletePosition} show={showModal} closeModal={closeModal} />
       <Link to="/Positions/Form" className={styles.button}>
-        ADD POSITION
+        <Button name="addButton" entity="POSITION" />
       </Link>
       <div className={styles.error}>{errorValue}</div>
     </section>

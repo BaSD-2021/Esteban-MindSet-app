@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 import Modal from './Modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Clients() {
@@ -98,15 +99,12 @@ function Clients() {
                   <td className={styles.tdStyles}>{client.name ? client.name : '-'}</td>
                   <td className={styles.tdStyles}>{client.phone ? client.phone : '-'}</td>
                   <td className={styles.tdStyles}>
-                    <button
-                      type="button"
+                    <Button
+                      name="deleteButton"
                       onClick={(e) => {
                         preventAndShow(e, client._id);
                       }}
-                      className={styles.buttonDelete}
-                    >
-                      Delete
-                    </button>
+                    />
                   </td>
                 </tr>
               );
@@ -116,8 +114,8 @@ function Clients() {
       )}
       <div className={styles.errorMessage}>{errorMessage.message}</div>
       <Modal id={idToDelete} function={deleteClient} show={showModal} closeModal={closeModal} />
-      <Link to="/Clients/Form" className={styles.buttonCreate}>
-        ADD CLIENT
+      <Link to="/Clients/Form">
+        <Button name="addButton" entity="CLIENT" />
       </Link>
     </section>
   );

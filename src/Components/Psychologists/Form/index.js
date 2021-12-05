@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
   return (
-    <form className={styles.form} onSubmit={(e) => handleSubmit(itemOnEdit, e)}>
+    <form className={styles.form}>
       {inputs.map((input) => (
         <input
           className={styles.dataInput}
@@ -51,14 +52,12 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
         </div>
       ))}
       <div className={styles.buttonContainer}>
-        <input className={styles.submitBtn} type="submit" value="Submit" name="submit"></input>
-        <input
-          className={styles.cancelBtn}
-          type="button"
-          value="Cancel"
-          name="cancel"
-          onClick={toggleFormDisplay}
-        ></input>
+        <Button
+          name="saveButton"
+          onClick={(e) => {
+            toggleFormDisplay, handleSubmit(itemOnEdit, e);
+          }}
+        />
       </div>
     </form>
   );

@@ -44,35 +44,14 @@
   font-weight: 500;
   text-transform: capitalize;
 }
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+}
+
 .buttonContainer{
   display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
-}
-.submitBtn{
-  padding: 6px 9px;
-  margin:6px;
-  font-size: 0.9rem;
-  border-radius: 5px;
-  border: 2px solid #003877;
-  background-color:#fff;
-  color: #003877;
-  font-weight: 600;
-}
-.submitBtn:hover{
-  background-color: #003877;
-  color: #fff;
-}
-.cancelBtn{
-  padding: 6px 9px;
-  margin:6px;
-  font-size: 0.9rem;
-  border-radius: 5px;
-  border: 1px solid #c50000;
-  background-color: #c50000;
-  color: #fff;
-  font-weight: 600;
-}
-.cancelBtn:hover{
-  background-color: #ad0000;
+  justify-content: center;
+  margin-top: 25px;
 }

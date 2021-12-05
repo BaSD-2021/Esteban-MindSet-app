@@ -28,26 +28,14 @@
   margin: 10px;
 }
 
-.button {
-  margin: 10px;
-  width: auto;
-  height: 30px;
-  padding: 5px;
-  border: none;
-  border-radius: 2px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  font-weight: bold;
-}
-
-.button:hover {
-  cursor: pointer;
-  background-color: #ffd027;
-}
-
 .error {
   color: #f00;
   font-weight: bold;
   font-size: 18px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }

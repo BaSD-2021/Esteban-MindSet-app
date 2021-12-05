@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './sessions.module.css';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Sessions() {
@@ -79,7 +80,7 @@ function Sessions() {
         isLoading={isLoading}
         onConfirm={deleteSession}
       />
-      <h2>Sessions</h2>
+      <h2 className={styles.title}>Sessions</h2>
       <div>
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
@@ -109,13 +110,10 @@ function Sessions() {
                     <td>{session.date.replace('T', ' ')}</td>
                     <td>{session.status}</td>
                     <td>
-                      <button
-                        type="delete"
+                      <Button
+                        name="deleteButton"
                         onClick={(event) => handleDelete(event, session)}
-                        className={styles.button}
-                      >
-                        Delete
-                      </button>
+                      />
                     </td>
                   </tr>
                 );
@@ -125,9 +123,11 @@ function Sessions() {
         )}
       </div>
       <div className={styles.error}>{error}</div>
-      <Link to="/Sessions/Form" className={styles.button}>
-        ADD SESSION
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Sessions/Form" className={styles.button}>
+          <Button name="addButton" entity="SESSION" />
+        </Link>
+      </div>
     </section>
   );
 }

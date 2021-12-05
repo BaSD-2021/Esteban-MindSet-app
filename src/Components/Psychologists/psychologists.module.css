@@ -10,11 +10,6 @@
   margin-bottom: 20px;
   border: 1px solid #353535;
   border-radius: 5px;
-
-}
-.title{
-  margin: 16px;
-  color: #353535;
 }
 
 .loading{
@@ -24,4 +19,10 @@
   color: #2e2c2c;
   border: 1px solid #BDBDBD;
   border-radius: 5px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }

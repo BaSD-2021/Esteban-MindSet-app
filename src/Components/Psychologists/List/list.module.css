@@ -1,22 +1,13 @@
 .table{
   border-collapse: collapse;
 }
-.btnContainer{
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+}
+.buttonContainer{
   display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-.addBtn{
-  padding: 6px;
-  border: 2px solid #003877;
-  border-radius: 5px;
-  background-color: #003877;
-  color: #f5f5f5;
-  font-size: 1rem;
-  font-weight: 600;
-}
-.addBtn:hover{
-  background-color: #009155;
-  color: #fff;
-  border-color: #009155;
+  justify-content: center;
+  margin-top: 25px;
 }

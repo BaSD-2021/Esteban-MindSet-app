@@ -30,30 +30,6 @@
   padding: 0 20px 0 20px;
 }
 
-.container button,
-.button {
-  margin: auto;
-  width: auto;
-  height: 30px;
-  border: none;
-  border-radius: 10px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 5px;
-}
-
-.container button:hover {
-  cursor: pointer;
-  background-color: #ffd027;
-}
-
 .showError{
   margin: 15px;
   color: #8f0000;
@@ -66,4 +42,10 @@
   color: #2e2c2c;
   border: 1px solid #BDBDBD;
   border-radius: 5px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }
