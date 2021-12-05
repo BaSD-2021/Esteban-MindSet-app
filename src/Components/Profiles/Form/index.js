@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
-import Input from '../Input';
 import styles from './form.module.css';
+import Input from '../../Shared/input';
 
 function profilesForm() {
   const [profileValue, setProfileValue] = useState('');
@@ -85,6 +85,7 @@ function profilesForm() {
         <div>
           <h2>Profile Form</h2>
           <Input
+            title="Profile"
             name="profile"
             value={profileValue}
             onChange={onChangeProfileInput}
