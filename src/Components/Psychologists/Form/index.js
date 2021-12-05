@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
   return (
@@ -51,14 +52,15 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
         </div>
       ))}
       <div className={styles.buttonContainer}>
-        <input className={styles.submitBtn} type="submit" value="Submit" name="submit"></input>
+        <Button name="saveButton" type="button" onClick={toggleFormDisplay} />
+        {/* <input className={styles.submitBtn} type="submit" value="Submit" name="submit"></input>
         <input
           className={styles.cancelBtn}
           type="button"
           value="Cancel"
           name="cancel"
           onClick={toggleFormDisplay}
-        ></input>
+        ></input> */}
       </div>
     </form>
   );
