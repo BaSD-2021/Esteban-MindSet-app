@@ -38,6 +38,34 @@
   font-size: 18px;
 }
 
+.button {
+  margin: 20px;
+  height: 56px;
+  border: none;
+  padding: 0 20px;
+  background: #FDC800;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.loading{
+  margin: 15px;
+  padding: 8px;
+  font-size: 20px;
+  color: #2e2c2c;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+}
+
 .title {
   font-weight: bolder;
   font-size: 25px;

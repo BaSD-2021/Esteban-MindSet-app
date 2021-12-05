@@ -9,9 +9,11 @@ function Postulants() {
   const [postulants, setPostulants] = useState([]);
   const [itemOnDelete, setItemOnDelete] = useState({});
   const [showError, setShowError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
@@ -19,10 +21,14 @@ function Postulants() {
       })
       .catch((err) => {
         setShowError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   const deletePostulant = (id) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/postulants/${id}`;
     fetch(url, {
       method: 'DELETE',
@@ -35,6 +41,9 @@ function Postulants() {
       })
       .catch((err) => {
         setShowError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -55,50 +64,54 @@ function Postulants() {
         deletePostulant={deletePostulant}
         itemOnDelete={itemOnDelete}
       />
-      <h2 className={styles.title}>Postulants</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        {postulants.map((postulant) => {
-          return (
-            <tbody key={postulant._id}>
-              <tr>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
-                </td>
-                <td>
-                  <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
-                </td>
-                <td>
-                  <Button
-                    name="deleteButton"
-                    onClick={() => {
-                      modalOpen(postulant);
-                    }}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          );
-        })}
-      </table>
+      <h2>Postulants</h2>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          {postulants.map((postulant) => {
+            return (
+              <tbody key={postulant._id}>
+                <tr>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
+                  </td>
+                  <td>
+                    <Button
+                      name="deleteButton"
+                      onClick={() => {
+                        modalOpen(postulant);
+                      }}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            );
+          })}
+        </table>
+      )}
       <div className={styles.showError}>{showError.message}</div>
       <Link to="/Postulants/Form" className={styles.button}>
         <Button name="addButton" entity="POSTULANT" />

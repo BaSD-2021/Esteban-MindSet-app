@@ -10,8 +10,17 @@
   margin-bottom: 20px;
   border: 1px solid #353535;
   border-radius: 5px;
-
 }
+
+.loading{
+  margin: 15px;
+  padding: 8px;
+  font-size: 20px;
+  color: #2e2c2c;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+}
+
 .title {
   font-weight: bolder;
   font-size: 25px;

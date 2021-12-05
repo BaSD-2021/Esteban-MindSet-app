@@ -9,13 +9,11 @@ function Positions() {
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [errorValue, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
-  // const goToForm = () => {
-  //   window.location.href = `/positions/form`;
-  // };
-
   const deletePosition = (id) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/positions/${id}`;
     fetch(url, {
       method: 'DELETE'
@@ -27,11 +25,15 @@ function Positions() {
         })
         .catch((errorValue) => {
           setError(errorValue.toString());
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/positions`)
       .then((response) => response.json())
       .then((response) => {
@@ -39,6 +41,9 @@ function Positions() {
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -55,43 +60,47 @@ function Positions() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>Positions</h2>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr>
-            <td>Client</td>
-            <td>Job Description</td>
-            <td>Vacancy</td>
-            <td>Professional profile</td>
-            <td>Is Open</td>
-            <td>Delete</td>
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {positions.map((position) => {
-            return (
-              <tr
-                onClick={() => history.push(`/positions/form?_id=${position._id}`)}
-                key={position._id}
-              >
-                <td>{position.client?.name || '-'}</td>
-                <td>{position.jobDescription}</td>
-                <td>{position.vacancy}</td>
-                <td>{position.professionalProfile?.name || '-'}</td>
-                <td>{position.isOpen.toString()}</td>
-                <td>
-                  <Button
-                    name="deleteButton"
-                    onClick={(e) => {
-                      preventAndShow(e, position._id);
-                    }}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <h2>Positions</h2>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <td>Client</td>
+              <td>Job Description</td>
+              <td>Vacancy</td>
+              <td>Professional profile</td>
+              <td>Is Open</td>
+              <td>Delete</td>
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            {positions.map((position) => {
+              return (
+                <tr
+                  onClick={() => history.push(`/positions/form?_id=${position._id}`)}
+                  key={position._id}
+                >
+                  <td>{position.client?.name || '-'}</td>
+                  <td>{position.jobDescription}</td>
+                  <td>{position.vacancy}</td>
+                  <td>{position.professionalProfile?.name || '-'}</td>
+                  <td>{position.isOpen.toString()}</td>
+                  <td>
+                    <Button
+                      name="deleteButton"
+                      onClick={(e) => {
+                        preventAndShow(e, position._id);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
       <Modal id={idToDelete} function={deletePosition} show={showModal} closeModal={closeModal} />
       <Link to="/Positions/Form" className={styles.button}>
         <Button name="addButton" entity="POSITION" />
