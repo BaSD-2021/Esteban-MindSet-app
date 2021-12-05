@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './profiles.module.css';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 function Profiles() {
@@ -79,7 +80,7 @@ function Profiles() {
         isLoading={isLoading}
         onConfirm={deleteProfile}
       />
-      <h2>Profiles</h2>
+      <h2 className={styles.title}>Profiles</h2>
       <div>
         <table className={styles.table}>
           <thead>
@@ -94,13 +95,7 @@ function Profiles() {
                 <tr key={profile._id} onClick={() => redirectToForm(profile._id)}>
                   <td>{profile.name}</td>
                   <td>
-                    <button
-                      type="delete"
-                      onClick={(event) => handleDelete(event, profile)}
-                      className={styles.button}
-                    >
-                      Delete
-                    </button>
+                    <Button name="deleteButton" onClick={(event) => handleDelete(event, profile)} />
                   </td>
                 </tr>
               );
@@ -110,8 +105,8 @@ function Profiles() {
       </div>
       <div className={styles.error}>{error}</div>
 
-      <Link to="/Profiles/Form" className={styles.button}>
-        Add Profile
+      <Link to="/Profiles/Form">
+        <Button name="addButton" entity="PROFILE" />
       </Link>
     </section>
   );

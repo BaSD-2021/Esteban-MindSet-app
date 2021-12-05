@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import Input from '../Input';
 import styles from './form.module.css';
+import Button from '../../Shared/Button';
 
 function profilesForm() {
   const [profileValue, setProfileValue] = useState('');
@@ -83,7 +84,7 @@ function profilesForm() {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
         <div>
-          <h2>Profile Form</h2>
+          <h2 className={styles.title}>Profile Form</h2>
           <Input
             name="profile"
             value={profileValue}
@@ -93,9 +94,7 @@ function profilesForm() {
             required
           />
         </div>
-        <button type="submit" className={styles.button}>
-          Save
-        </button>
+        <Button name="saveButton" />
         <div className={styles.error}>{error}</div>
       </form>
     </div>

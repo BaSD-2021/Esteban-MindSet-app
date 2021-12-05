@@ -28,28 +28,29 @@
   text-transform: capitalize;
   border: 1px solid rgba(0,0,0,0.1);
   cursor: pointer;
+  text-align: center;
 }
+
 .error {
   color: #f00;
   font-weight: bold;
   font-size: 18px;
 }
 
-.button {
-  margin: 20px;
-  height: 56px;
-  border: none;
-  padding: 0 20px;
-  background: #FDC800;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+}
+
+.buttonContainer{
   display: flex;
-  align-items: center;
   justify-content: center;
-  text-decoration: none;
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
+  margin-top: 25px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from './modal/modal';
+import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 const Admins = () => {
@@ -64,10 +65,7 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      <h2>Admins</h2>
-      <Link to="/admins/form" className={styles.button}>
-        ADD ADMIN
-      </Link>
+      <h2 className={styles.title}>Admins</h2>
       {isLoading && 'Loading...'}
       <div>
         <table className={styles.table}>
@@ -85,15 +83,13 @@ const Admins = () => {
                   <td className={styles.tableRow}>{admin.name}</td>
                   <td className={styles.tableRow}>{admin.username}</td>
                   <td className={styles.tableRow}>
-                    <button
-                      className={styles.button}
+                    <Button
+                      name="deleteButton"
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAdmin(admin);
                       }}
-                    >
-                      Delete
-                    </button>
+                    />
                   </td>
                 </tr>
               );
@@ -104,22 +100,19 @@ const Admins = () => {
       {adminToDelete && (
         <Modal>
           Are you sure you want to delete user: {adminToDelete.username}?
-          <button className={styles.button} onClick={() => setAdminToDelete(false)}>
-            Close
-          </button>
-          <button className={styles.button} disable={isLoading} onClick={handleDelete}>
-            Delete
-          </button>
+          <Button name="modalDeleteButton" disable={isLoading} onClick={handleDelete}></Button>
+          <Button name="modalCancelButton" onClick={() => setAdminToDelete(false)}></Button>
         </Modal>
       )}
       {error && (
         <Modal>
           {error}
-          <button className={styles.button} onClick={() => setError(false)}>
-            Close
-          </button>
+          <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
         </Modal>
       )}
+      <Link to="/admins/form">
+        <Button name="addButton" entity="ADMIN" />
+      </Link>
     </section>
   );
 };

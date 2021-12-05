@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Modal from '../modal/modal';
+import Button from '../../Shared/Button';
 
 let fetchMethod = 'POST';
 
@@ -93,7 +94,7 @@ function Form() {
 
   return (
     <form className={styles.container} onSubmit={save}>
-      <h2>Form</h2>
+      <h2 className={styles.title}>Form</h2>
       <div className={styles.inputCnt}>
         <label className={styles.labelTitle}>Name</label>
         <input
@@ -132,9 +133,7 @@ function Form() {
           required
         ></input>
       </div>
-      <button type="submit" disabled={isLoading} className={styles.button}>
-        Register
-      </button>
+      <Button name="saveButton" disabled={isLoading}></Button>
       {error && (
         <Modal>
           {`${error}`}
