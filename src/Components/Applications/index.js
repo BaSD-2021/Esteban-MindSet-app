@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
-import Modal from '../Shared/Modal';
+import Modal from './Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ function Applications() {
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
-  const deleteApplication = () => {
+  const deleteApplication = (id) => {
     setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/applications/${idToDelete}`;
+    const url = `${process.env.REACT_APP_API}/applications/${id}`;
     fetch(url, {
       method: 'DELETE'
     })
@@ -30,13 +30,13 @@ function Applications() {
           })
           .then((response) => {
             setApplications(response.data);
-            closeModal();
           })
           .catch((error) => {
             setErrorMessage(error);
           });
       })
       .finally(() => {
+        closeModal();
         setIsLoading(false);
       });
   };
@@ -129,11 +129,10 @@ function Applications() {
         {errorMessage.message}
       </div>
       <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this application?"
-        onClose={closeModal}
-        isLoading={isLoading}
-        onConfirm={deleteApplication}
+        id={idToDelete}
+        function={deleteApplication}
+        show={showModal}
+        closeModal={closeModal}
       />
       <Link to="/Applications/Form">
         <Button name="addButton" entity="APPLICATION" />

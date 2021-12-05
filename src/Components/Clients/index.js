@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
-import Modal from '../Shared/Modal';
+import Modal from './Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ function Clients() {
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
-  const deleteClient = () => {
+  const deleteClient = (event, id) => {
     setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/clients/${idToDelete}`;
+    const url = `${process.env.REACT_APP_API}/clients/${id}`;
     fetch(url, {
       method: 'DELETE'
     })
@@ -30,13 +30,13 @@ function Clients() {
           })
           .then((response) => {
             setClients(response.data);
-            closeModal();
           });
       })
       .catch((err) => {
         setErrorMessage(err);
       })
       .finally(() => {
+        closeModal();
         setIsLoading(false);
       });
   };
@@ -113,13 +113,7 @@ function Clients() {
         </table>
       )}
       <div className={styles.errorMessage}>{errorMessage.message}</div>
-      <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this Client?"
-        onClose={closeModal}
-        isLoading={isLoading}
-        onConfirm={deleteClient}
-      />
+      <Modal id={idToDelete} function={deleteClient} show={showModal} closeModal={closeModal} />
       <Link to="/Clients/Form">
         <Button name="addButton" entity="CLIENT" />
       </Link>

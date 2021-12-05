@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './modal.module.css';
 
-const ModalAvailability = ({
+const Modal = ({
   title,
   children,
   confirmButton,
@@ -37,4 +37,4 @@ const ModalAvailability = ({
   );
 };
 
-export default ModalAvailability;
+export default Modal;

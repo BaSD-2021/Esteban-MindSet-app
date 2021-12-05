@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal';
+import Modal from './Modal';
 import styles from './profiles.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
@@ -111,6 +111,7 @@ function Profiles() {
         )}
       </div>
       <div className={styles.error}>{error}</div>
+
       <Link to="/Profiles/Form">
         <Button name="addButton" entity="PROFILE" />
       </Link>

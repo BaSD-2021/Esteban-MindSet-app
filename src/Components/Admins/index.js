@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
-import Modal from '../Shared/Modal';
+import Modal from './modal/modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
 const Admins = () => {
-  const [showModal, setShowModal] = useState(false);
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
   const [error, setError] = useState(false);
@@ -42,13 +41,8 @@ const Admins = () => {
     history.push(`/admins/form?_id=${id}`);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
   const deleteAdmin = (admin) => {
     setAdminToDelete(admin);
-    setShowModal(true);
   };
 
   const handleDelete = () => {
@@ -60,7 +54,6 @@ const Admins = () => {
         }
         setAdminToDelete(false);
         getAdmins();
-        closeModal();
       })
       .catch((err) => {
         setError(err);
@@ -72,13 +65,6 @@ const Admins = () => {
 
   return (
     <section className={styles.container}>
-      <Modal
-        showModal={showModal}
-        title="Are you sure you want to delete this Admin User?"
-        onClose={closeModal}
-        isLoading={isLoading}
-        onConfirm={handleDelete}
-      />
       <h2>Admins</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
@@ -113,6 +99,13 @@ const Admins = () => {
             </tbody>
           </table>
         </div>
+      )}
+      {adminToDelete && (
+        <Modal>
+          Are you sure you want to delete user: {adminToDelete.username}?
+          <Button name="modalDeleteButton" disable={isLoading} onClick={handleDelete}></Button>
+          <Button name="modalCancelButton" onClick={() => setAdminToDelete(false)}></Button>
+        </Modal>
       )}
       {error && (
         <Modal>

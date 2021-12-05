@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-import Modal from '../modal/modal.js';
+import Modal from '../modal/modal';
 import Button from '../../Shared/Button';
 
 let fetchMethod = 'POST';

@@ -52,9 +52,9 @@ function Form() {
     setNotesValue(event.target.value);
   };
 
+  // const params = new URLSearchParams(window.location.search);
   const interviewId = query.get('_id');
   const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
-  console.log(interviewId);
 
   if (interviewId) {
     fetchMethod = 'PUT';
