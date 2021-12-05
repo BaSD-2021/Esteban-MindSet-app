@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
 import Modal from '../Shared/Modal';
+import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
 
@@ -230,9 +231,9 @@ function Psychologists() {
           />
         )}
         {showAvailabilityModal && (
-          <Modal showModal={toggleAvailabilityModal} title="Availability">
+          <ModalAvailability showModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
-          </Modal>
+          </ModalAvailability>
         )}
         {showConfirmModal && (
           <Modal
