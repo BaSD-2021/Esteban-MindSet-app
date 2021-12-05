@@ -1,35 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorValue, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
-  const deleteInterview = (id) => {
+  const deleteInterview = () => {
     setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/interviews/${id}`;
+    const url = `${process.env.REACT_APP_API}/interviews/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/interviews`)
-        .then((response) => response.json())
-        .then((response) => {
-          saveInterviews(response.data);
-        })
-        .catch((errorValue) => {
-          setError(errorValue.toString());
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    });
+    })
+      .then(() => {
+        fetch(`${process.env.REACT_APP_API}/interviews`)
+          .then((response) => response.json())
+          .then((response) => {
+            saveInterviews(response.data);
+            closeModal();
+          })
+          .catch((error) => {
+            setErrorMessage(error);
+          });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -39,8 +41,8 @@ function Interviews() {
       .then((response) => {
         saveInterviews(response.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        setErrorMessage(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -99,11 +101,16 @@ function Interviews() {
           </tbody>
         </table>
       )}
-      <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} />
+      <Modal
+        showModal={showModal}
+        title="Do you want to proceed and delete this Interview?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deleteInterview}
+      />
       <Link to="/Interviews/Form" className={styles.button}>
         <Button name="addButton" entity="INTERVIEW" />
       </Link>
-      <div className={styles.error}>{errorValue}</div>
     </section>
   );
 }

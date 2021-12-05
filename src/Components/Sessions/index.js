@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';

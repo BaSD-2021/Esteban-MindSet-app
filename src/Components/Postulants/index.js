@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import Modal from './Modal';
 import Button from '../Shared/Button';
 import styles from './postulants.module.css';
+import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
-  const [itemOnDelete, setItemOnDelete] = useState({});
+  const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
@@ -27,9 +27,9 @@ function Postulants() {
       });
   }, []);
 
-  const deletePostulant = (id) => {
+  const deletePostulant = () => {
     setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/postulants/${id}`;
+    const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -37,7 +37,8 @@ function Postulants() {
       }
     })
       .then(() => {
-        history.push(`/postulants`);
+        closeModal();
+        history.go(0);
       })
       .catch((err) => {
         setShowError(err);
@@ -51,18 +52,21 @@ function Postulants() {
     setShowModal(false);
   };
 
-  const modalOpen = (postulant) => {
+  const preventAndShow = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdToDelete(id);
     setShowModal(true);
-    setItemOnDelete(postulant);
   };
 
   return (
     <section className={styles.container}>
       <Modal
         showModal={showModal}
-        closeModal={closeModal}
-        deletePostulant={deletePostulant}
-        itemOnDelete={itemOnDelete}
+        title="Do you want to proceed and delete this Postulant?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deletePostulant}
       />
       <h2>Postulants</h2>
       {isLoading ? (
@@ -101,8 +105,8 @@ function Postulants() {
                   <td>
                     <Button
                       name="deleteButton"
-                      onClick={() => {
-                        modalOpen(postulant);
+                      onClick={(e) => {
+                        preventAndShow(e, postulant._id);
                       }}
                     />
                   </td>
