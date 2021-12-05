@@ -11,6 +11,11 @@
     text-decoration: none;
   }
 
+  .deleteButton:hover {
+    cursor: pointer;
+    background-color: #ffd027;
+  }
+
   .addButton{
     border-radius: 4px;
     background-color: #FDC800;
@@ -24,6 +29,11 @@
     text-decoration: none;
   }
 
+  .addButton:hover {
+    cursor: pointer;
+    background-color: #ffd027;
+  }
+
   .modalDeleteButton{
     border-radius: 4px;
     background-color: #FDC800;
@@ -35,6 +45,11 @@
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+  }
+
+  .modalDeleteButton:hover {
+    cursor: pointer;
+    background-color: #ffd027;
   }
 
   .modalCancelButton {
@@ -51,6 +66,10 @@
     text-decoration: none;
   }
 
+  .modalCancelButton:hover {
+    cursor: pointer;
+  }
+
   .saveButton{
     border-radius: 4px;
     background-color: #FDC800;
@@ -62,4 +81,9 @@
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+  }
+
+  .saveButton:hover {
+    cursor: pointer;
+    background-color: #ffd027;
   }
