@@ -7,7 +7,8 @@ import { Link, useHistory } from 'react-router-dom';
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
-  const [itemOnDelete, setItemOnDelete] = useState('');
+  //const [itemOnDelete, setItemOnDelete] = useState({});
+  const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
@@ -27,7 +28,7 @@ function Postulants() {
 
   const deletePostulant = () => {
     setLoading(true);
-    const url = `${process.env.REACT_APP_API}/postulants/${itemOnDelete}`;
+    const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -39,9 +40,10 @@ function Postulants() {
         closeModal();
       })
       .catch((err) => {
-        setShowError(err).finally(() => {
-          setLoading(false);
-        });
+        setShowError(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -49,10 +51,17 @@ function Postulants() {
     setShowModal(false);
   };
 
-  const modalOpen = (postulant) => {
+  const preventAndShow = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    //setItemOnDelete(id);
+    setIdToDelete(id);
     setShowModal(true);
-    setItemOnDelete(postulant);
   };
+  // const modalOpen = (postulant) => {
+  //   setShowModal(true);
+  //   setItemOnDelete(postulant);
+  // };
 
   return (
     <section className={styles.container}>
@@ -102,8 +111,8 @@ function Postulants() {
                 </td>
                 <td>
                   <button
-                    onClick={() => {
-                      modalOpen(postulant);
+                    onClick={(e) => {
+                      preventAndShow(e, postulant._id);
                     }}
                   >
                     Delete

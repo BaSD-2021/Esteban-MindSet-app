@@ -233,13 +233,10 @@ function Psychologists() {
           />
         )}
         {showAvailabilityModal && (
-          <Modal showModal={showAvailabilityModal} title="Availability">
+          <Modal showModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
           </Modal>
-          // onClose={toggleConfirmModal}
-          // isLoading={isEditing}
-          // onConfirm={handleDelete}
-
+          //El modal de availability no anda!
           // <Modal1 toggleModal={toggleAvailabilityModal} title="Availability">
           //   <AvailabilityTable availability={psychologistAvailability} />
           // </Modal1>
