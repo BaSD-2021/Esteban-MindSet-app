@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './modal.module.css';
 
-const Modal = ({
+const Modal1 = ({
   title,
   children,
   confirmButton,
@@ -37,4 +37,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default Modal1;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Positions() {
@@ -8,14 +8,12 @@ function Positions() {
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [errorValue, setError] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
-  // const goToForm = () => {
-  //   window.location.href = `/positions/form`;
-  // };
-
-  const deletePosition = (id) => {
-    const url = `${process.env.REACT_APP_API}/positions/${id}`;
+  const deletePosition = () => {
+    setLoading(true);
+    const url = `${process.env.REACT_APP_API}/positions/${idToDelete}`;
     fetch(url, {
       method: 'DELETE'
     }).then(() => {
@@ -23,23 +21,16 @@ function Positions() {
         .then((response) => response.json())
         .then((response) => {
           savePositions(response.data);
+          closeModal();
         })
         .catch((errorValue) => {
           setError(errorValue.toString());
+        })
+        .finally(() => {
+          setLoading(false);
         });
     });
   };
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API}/positions`)
-      .then((response) => response.json())
-      .then((response) => {
-        savePositions(response.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      });
-  }, []);
 
   const closeModal = () => {
     setShowModal(false);
@@ -52,8 +43,28 @@ function Positions() {
     setShowModal(true);
   };
 
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${process.env.REACT_APP_API}/positions`)
+      .then((response) => response.json())
+      .then((response) => {
+        savePositions(response.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section className={styles.container}>
+      <Modal
+        showModal={showModal}
+        title="Do you want to proceed and delete this position?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deletePosition}
+      />
       <h2>Positions</h2>
       <table className={styles.table}>
         <thead className={styles.thead}>
@@ -94,7 +105,6 @@ function Positions() {
           })}
         </tbody>
       </table>
-      <Modal id={idToDelete} function={deletePosition} show={showModal} closeModal={closeModal} />
       <Link to="/Positions/Form" className={styles.button}>
         ADD POSITION
       </Link>

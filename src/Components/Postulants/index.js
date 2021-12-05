@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import Modal from './Modal';
+//import Modal from './Modal';
+import Modal from '../Shared/Modal';
 import styles from './postulants.module.css';
 import { Link, useHistory } from 'react-router-dom';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
-  const [itemOnDelete, setItemOnDelete] = useState({});
+  const [itemOnDelete, setItemOnDelete] = useState('');
   const [showError, setShowError] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
@@ -18,11 +21,13 @@ function Postulants() {
       })
       .catch((err) => {
         setShowError(err);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const deletePostulant = (id) => {
-    const url = `${process.env.REACT_APP_API}/postulants/${id}`;
+  const deletePostulant = () => {
+    setLoading(true);
+    const url = `${process.env.REACT_APP_API}/postulants/${itemOnDelete}`;
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -31,9 +36,12 @@ function Postulants() {
     })
       .then(() => {
         history.push(`/postulants`);
+        closeModal();
       })
       .catch((err) => {
-        setShowError(err);
+        setShowError(err).finally(() => {
+          setLoading(false);
+        });
       });
   };
 
@@ -48,11 +56,18 @@ function Postulants() {
 
   return (
     <section className={styles.container}>
-      <Modal
+      {/* <Modal
         showModal={showModal}
         closeModal={closeModal}
         deletePostulant={deletePostulant}
         itemOnDelete={itemOnDelete}
+      /> */}
+      <Modal
+        showModal={showModal}
+        title="Do you want to proceed and delete this Postulant?"
+        onClose={closeModal}
+        isLoading={isLoading}
+        onConfirm={deletePostulant}
       />
       <h2>Postulants</h2>
       <table className={styles.table}>

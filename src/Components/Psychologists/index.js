@@ -2,7 +2,8 @@ import styles from './psychologists.module.css';
 import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
+import Modal1 from './Modal';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
 
@@ -232,28 +233,41 @@ function Psychologists() {
           />
         )}
         {showAvailabilityModal && (
-          <Modal toggleModal={toggleAvailabilityModal} title="Availability">
+          <Modal showModal={showAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
           </Modal>
+          // onClose={toggleConfirmModal}
+          // isLoading={isEditing}
+          // onConfirm={handleDelete}
+
+          // <Modal1 toggleModal={toggleAvailabilityModal} title="Availability">
+          //   <AvailabilityTable availability={psychologistAvailability} />
+          // </Modal1>
         )}
         {showConfirmModal && (
           <Modal
-            toggleModal={toggleConfirmModal}
-            title="Delete Psychologist"
-            confirmButton="Confirm"
-            cancelButton="Cancel"
-            handleConfirm={handleDelete}
-            handleCancel={toggleConfirmModal}
-          >
-            <div>
-              <p>Are you sure you want to Delete this user?</p>
-            </div>
-          </Modal>
+            showModal={showConfirmModal}
+            title="Do you want to proceed and delete this psychologist?"
+            onClose={toggleConfirmModal}
+            isLoading={isEditing}
+            onConfirm={handleDelete}
+          />
+          // <Modal
+          //   toggleModal={toggleConfirmModal}
+          //   title="Delete Psychologist"
+          //   confirmButton="Confirm"
+          //   cancelButton="Cancel"
+          //   handleConfirm={handleDelete}
+          //   handleCancel={toggleConfirmModal}
+          //   {/* //   <div>
+          //   //     <p>Are you sure you want to Delete this user?</p>
+          //   //   </div>
+          //   // </Modal> */}
         )}
         {showError && (
-          <Modal toggleModal={() => setShowError(!showError)}>
+          <Modal1 toggleModal={() => setShowError(!showError)}>
             <div>{error}</div>
-          </Modal>
+          </Modal1>
         )}
       </div>
     </section>
