@@ -7,11 +7,11 @@ const Admins = () => {
   const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
   const [error, setError] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const getAdmins = () => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins`)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -28,7 +28,7 @@ const Admins = () => {
         setError(err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -45,7 +45,7 @@ const Admins = () => {
   };
 
   const handleDelete = () => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
@@ -58,7 +58,7 @@ const Admins = () => {
         setError(err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -68,39 +68,42 @@ const Admins = () => {
       <Link to="/admins/form" className={styles.button}>
         ADD ADMIN
       </Link>
-      {isLoading && 'Loading...'}
-      <div>
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th>Name</th>
-              <th>User Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {admins.map((admin, index) => {
-              return (
-                <tr onClick={() => updateAdmin(admin._id)} key={index}>
-                  <td className={styles.tableRow}>{admin.name}</td>
-                  <td className={styles.tableRow}>{admin.username}</td>
-                  <td className={styles.tableRow}>
-                    <button
-                      className={styles.button}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteAdmin(admin);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {isLoading ? (
+        <p className={styles.loading}>On Loading ...</p>
+      ) : (
+        <div>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
+              <tr>
+                <th>Name</th>
+                <th>User Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map((admin, index) => {
+                return (
+                  <tr onClick={() => updateAdmin(admin._id)} key={index}>
+                    <td className={styles.tableRow}>{admin.name}</td>
+                    <td className={styles.tableRow}>{admin.username}</td>
+                    <td className={styles.tableRow}>
+                      <button
+                        className={styles.button}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteAdmin(admin);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
       {adminToDelete && (
         <Modal>
           Are you sure you want to delete user: {adminToDelete.username}?
