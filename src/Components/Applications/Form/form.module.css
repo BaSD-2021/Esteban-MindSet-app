@@ -1,6 +1,7 @@
 .container{
  display: flex;
  flex-direction: column;
+ align-items: center;
  width: 50%;
  margin: auto;
 }
@@ -8,14 +9,6 @@
 .subtitle {
  font-size: 30px;
  margin:auto;
-}
-
-.label {
- font-size: 20px;
- font-weight: 600;
- color: #002147;
- margin-top: 10px;
- margin-bottom: 10px;
 }
 
 .selectInput{

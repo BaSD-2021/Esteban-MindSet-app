@@ -105,7 +105,7 @@ function Form() {
         value={nameValue}
         onChange={(e) => setNameValue(e.target.value)}
         required
-      ></Input>
+      />
       <Input
         title="User Name"
         className={styles.inputBox}
@@ -116,7 +116,7 @@ function Form() {
         value={usernameValue}
         onChange={(e) => setUsernameValue(e.target.value)}
         required
-      ></Input>
+      />
       <Input
         title="Password"
         className={styles.inputBox}
@@ -126,7 +126,7 @@ function Form() {
         value={passwordValue}
         onChange={(e) => setPasswordValue(e.target.value)}
         required
-      ></Input>
+      />
       <button type="submit" disabled={isLoading} className={styles.button}>
         Register
       </button>

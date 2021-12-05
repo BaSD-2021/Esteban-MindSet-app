@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/input';
 
 function Form() {
   const [positionId, setPositionId] = useState('');
@@ -210,10 +211,8 @@ function Form() {
             );
           })}
         </select>
-        <label className={styles.label}>
-          <span>Result</span>
-        </label>
-        <input
+        <Input
+          title="Result"
           id="result"
           name="result"
           type="text"
