@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-//import Modal from './Modal';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
@@ -7,7 +6,6 @@ import { Link, useHistory } from 'react-router-dom';
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
-  //const [itemOnDelete, setItemOnDelete] = useState({});
   const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -54,23 +52,12 @@ function Postulants() {
   const preventAndShow = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    //setItemOnDelete(id);
     setIdToDelete(id);
     setShowModal(true);
   };
-  // const modalOpen = (postulant) => {
-  //   setShowModal(true);
-  //   setItemOnDelete(postulant);
-  // };
 
   return (
     <section className={styles.container}>
-      {/* <Modal
-        showModal={showModal}
-        closeModal={closeModal}
-        deletePostulant={deletePostulant}
-        itemOnDelete={itemOnDelete}
-      /> */}
       <Modal
         showModal={showModal}
         title="Do you want to proceed and delete this Postulant?"

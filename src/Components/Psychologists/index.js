@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
 import Modal from '../Shared/Modal';
-import Modal1 from './Modal';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
 
@@ -138,8 +137,6 @@ function Psychologists() {
 
   const handleSubmit = (item, e) => {
     e.preventDefault();
-    console.log(item);
-
     const formattedAvailability = Object.keys(item.availability).reduce(
       (attrs, day) => ({
         ...attrs,
@@ -236,10 +233,6 @@ function Psychologists() {
           <Modal showModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
           </Modal>
-          //El modal de availability no anda!
-          // <Modal1 toggleModal={toggleAvailabilityModal} title="Availability">
-          //   <AvailabilityTable availability={psychologistAvailability} />
-          // </Modal1>
         )}
         {showConfirmModal && (
           <Modal
@@ -249,22 +242,11 @@ function Psychologists() {
             isLoading={isEditing}
             onConfirm={handleDelete}
           />
-          // <Modal
-          //   toggleModal={toggleConfirmModal}
-          //   title="Delete Psychologist"
-          //   confirmButton="Confirm"
-          //   cancelButton="Cancel"
-          //   handleConfirm={handleDelete}
-          //   handleCancel={toggleConfirmModal}
-          //   {/* //   <div>
-          //   //     <p>Are you sure you want to Delete this user?</p>
-          //   //   </div>
-          //   // </Modal> */}
         )}
         {showError && (
-          <Modal1 toggleModal={() => setShowError(!showError)}>
+          <Modal toggleModal={() => setShowError(!showError)}>
             <div>{error}</div>
-          </Modal1>
+          </Modal>
         )}
       </div>
     </section>

@@ -109,7 +109,6 @@ function Profiles() {
         </table>
       </div>
       <div className={styles.error}>{error}</div>
-
       <Link to="/Profiles/Form" className={styles.button}>
         Add Profile
       </Link>

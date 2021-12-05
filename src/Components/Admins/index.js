@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
-//import Modal from './modal/modal';
 import Modal from '../Shared/Modal';
 
 import { Link, useHistory } from 'react-router-dom';
@@ -120,25 +119,14 @@ const Admins = () => {
           </tbody>
         </table>
       </div>
-      {/* {adminToDelete && (
-      //   <Modal>
-      //     Are you sure you want to delete user: {adminToDelete.username}?
-      //     <button className={styles.button} onClick={() => setAdminToDelete(false)}>
-      //       Close
-      //     </button>
-      //     <button className={styles.button} disable={isLoading} onClick={handleDelete}>
-      //       Delete
-      //     </button>
-      //   </Modal>
-      // )}
-      // {error && (
-      //   <Modal>
-      //     {error}
-      //     <button className={styles.button} onClick={() => setError(false)}>
-      //       Close
-      //     </button>
-      //   </Modal>
-      )} */}
+      {error && (
+        <Modal>
+          {error}
+          <button className={styles.button} onClick={() => setError(false)}>
+            Close
+          </button>
+        </Modal>
+      )}
     </section>
   );
 };

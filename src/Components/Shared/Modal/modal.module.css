@@ -1,4 +1,6 @@
 .container{
+  top: 0;
+  left: 0;
   position:absolute;
   display: flex;
   justify-content: center;

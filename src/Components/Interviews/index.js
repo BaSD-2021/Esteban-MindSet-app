@@ -95,7 +95,6 @@ function Interviews() {
           })}
         </tbody>
       </table>
-      {/* <Modal id={idToDelete} function={deleteInterview} show={showModal} closeModal={closeModal} /> */}
       <Modal
         showModal={showModal}
         title="Do you want to proceed and delete this Interview?"
