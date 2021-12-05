@@ -8,11 +8,11 @@ function Profiles() {
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/profiles`)
       .then((response) => {
         if (response.status !== 200) {
@@ -24,7 +24,7 @@ function Profiles() {
       })
       .then((response) => setProfiles(response.data))
       .catch((error) => setError(error.toString()))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   const redirectToForm = (profile) => {
@@ -43,7 +43,7 @@ function Profiles() {
   };
 
   const deleteProfile = () => {
-    setLoading(true);
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/profiles/${selectedItem}`;
     fetch(url, { method: 'DELETE' })
       .then((response) => {
@@ -67,7 +67,7 @@ function Profiles() {
           });
       })
       .catch((error) => setError(error.toString()))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -81,32 +81,36 @@ function Profiles() {
       />
       <h2>Profiles</h2>
       <div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profiles.map((profile) => {
-              return (
-                <tr key={profile._id} onClick={() => redirectToForm(profile._id)}>
-                  <td>{profile.name}</td>
-                  <td>
-                    <button
-                      type="delete"
-                      onClick={(event) => handleDelete(event, profile)}
-                      className={styles.button}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {isLoading ? (
+          <p className={styles.loading}>On Loading ...</p>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profiles.map((profile) => {
+                return (
+                  <tr key={profile._id} onClick={() => redirectToForm(profile._id)}>
+                    <td>{profile.name}</td>
+                    <td>
+                      <button
+                        type="delete"
+                        onClick={(event) => handleDelete(event, profile)}
+                        className={styles.button}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
       <div className={styles.error}>{error}</div>
 
