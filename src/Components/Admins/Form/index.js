@@ -97,7 +97,6 @@ function Form() {
       <h2>Form</h2>
       <Input
         title="Name"
-        className={styles.inputBox}
         disabled={isLoading}
         type="text"
         name="name"
@@ -108,7 +107,6 @@ function Form() {
       />
       <Input
         title="User Name"
-        className={styles.inputBox}
         disabled={isLoading}
         type="text"
         name="username"
@@ -119,7 +117,6 @@ function Form() {
       />
       <Input
         title="Password"
-        className={styles.inputBox}
         disabled={isLoading}
         type="password"
         name="name"

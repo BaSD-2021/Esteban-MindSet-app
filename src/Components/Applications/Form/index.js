@@ -219,7 +219,6 @@ function Form() {
           required
           value={result}
           onChange={onChangeResult}
-          className={styles.selectInput}
         />
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}

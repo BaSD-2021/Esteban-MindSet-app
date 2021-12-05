@@ -131,60 +131,54 @@ function Form() {
           id="name"
           name="name"
           type="text"
-          required
           value={name}
           onChange={onChangeName}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="Phone"
           id="phone"
           name="phone"
           type="number"
-          required
           value={phone}
           onChange={onChangePhone}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="Country"
           id="country"
           name="country"
           type="text"
-          required
           value={country}
           onChange={onChangeCountry}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="State"
           id="state"
           name="state"
           type="text"
-          required
           value={state}
           onChange={onChangeState}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="City"
           id="city"
           name="city"
-          required
           type="text"
           value={city}
           onChange={onChangeCity}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="Adress"
           id="address"
           name="address"
-          required
           type="text"
           value={address}
           onChange={onChangeAddress}
-          className={styles.inputStyle}
+          required
         />
         <Input
           title="Logo"
@@ -193,7 +187,6 @@ function Form() {
           type="text"
           value={logo}
           onChange={onChangeLogo}
-          className={styles.inputStyle}
         />
         <Input
           title="Description"
@@ -202,7 +195,6 @@ function Form() {
           type="text"
           value={description}
           onChange={onChangeDescription}
-          className={styles.inputStyle}
         />
         <button id="saveButton" type="submit" className={styles.button}>
           Save
