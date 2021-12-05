@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/input';
 
 function Form() {
   const [name, setName] = useState('');
@@ -125,10 +126,8 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.subtitle}>Form</h2>
-        <label className={styles.label}>
-          <span>Name</span>
-        </label>
-        <input
+        <Input
+          title="Name"
           id="name"
           name="name"
           type="text"
@@ -137,10 +136,8 @@ function Form() {
           onChange={onChangeName}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Phone</span>
-        </label>
-        <input
+        <Input
+          title="Phone"
           id="phone"
           name="phone"
           type="number"
@@ -149,10 +146,8 @@ function Form() {
           onChange={onChangePhone}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Country</span>
-        </label>
-        <input
+        <Input
+          title="Country"
           id="country"
           name="country"
           type="text"
@@ -161,10 +156,8 @@ function Form() {
           onChange={onChangeCountry}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>State</span>
-        </label>
-        <input
+        <Input
+          title="State"
           id="state"
           name="state"
           type="text"
@@ -173,10 +166,8 @@ function Form() {
           onChange={onChangeState}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>City</span>
-        </label>
-        <input
+        <Input
+          title="City"
           id="city"
           name="city"
           required
@@ -185,10 +176,8 @@ function Form() {
           onChange={onChangeCity}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Address</span>
-        </label>
-        <input
+        <Input
+          title="Adress"
           id="address"
           name="address"
           required
@@ -197,10 +186,8 @@ function Form() {
           onChange={onChangeAddress}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Logo</span>
-        </label>
-        <input
+        <Input
+          title="Logo"
           id="logo"
           name="logo"
           type="text"
@@ -208,10 +195,8 @@ function Form() {
           onChange={onChangeLogo}
           className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Description</span>
-        </label>
-        <input
+        <Input
+          title="Description"
           id="description"
           name="description"
           type="text"
