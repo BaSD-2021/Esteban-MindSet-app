@@ -2,16 +2,20 @@
   margin: 10px 0 0 0;
 }
 
-.inputContent {
+.textareaContent {
   display: flex;
-  width: 370px;
   padding: 12px;
-  margin: 10px 0 0 0;
+  height: 48px;
+  width: 370px;
   border-radius: 3px;
   margin: 5px 0 0 0;
   border: 2px #002147 solid;
   border-color: #002147;
   color: #002147;
+  resize: none;
+  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
  }
 
  .labelTitle {

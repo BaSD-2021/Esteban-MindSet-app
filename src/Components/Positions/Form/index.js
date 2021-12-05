@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/input';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');
@@ -148,29 +149,23 @@ function Form() {
             );
           })}
         </select>
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Job Description</span>
-        </label>
-        <input
+        <Input
+          title="Job Description"
           id="jobDescription"
           name="jobDescription"
           type="text"
-          required
           value={jobDescriptionValue}
           onChange={onChangeJobDescription}
-          className={styles.input}
+          required
         />
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Vacancy</span>
-        </label>
-        <input
+        <Input
+          title="Vacancy"
           id="vacancy"
           name="vacancy"
           type="number"
-          required
           value={vacancyValue}
           onChange={onChangeVacancy}
-          className={styles.input}
+          required
         />
         <label className={styles.inputDiv}>
           <span className={styles.inputName}>Professional Profile</span>
