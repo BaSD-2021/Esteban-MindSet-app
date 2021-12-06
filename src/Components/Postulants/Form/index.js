@@ -407,15 +407,15 @@ function PostulantsForm() {
           type="password"
           required
         />
-        <h3>Contact Range</h3>
-        <div className={styles.contact}>
+        <div className={styles.doubleInputsContainer}>
           <Input
-            title="From"
+            title="Contact From"
             id="contactFrom"
             name="contactFrom"
             value={contactFromValue}
             onChange={onChangeContactFromValue}
             type="time"
+            style={styles.doubleInputs}
             required
           />
           <Input
@@ -426,6 +426,7 @@ function PostulantsForm() {
             value={contactToValue}
             onChange={onChangeContactToValue}
             type="time"
+            style={styles.doubleInputs}
             required
           />
         </div>
@@ -468,26 +469,30 @@ function PostulantsForm() {
           required
         />
         <h3>Elementary Studies</h3>
-        <Input
-          title="Start Date"
-          id="primarySD"
-          name="primarySD"
-          placeholder="Start Date"
-          value={primarySDValue}
-          onChange={onChangePrimarySDValue}
-          type="date"
-          required
-        />
-        <Input
-          title="Finish Date"
-          id="primaryED"
-          name="primaryED"
-          placeholder="End Date"
-          value={primaryEDValue}
-          onChange={onChangePrimaryEDValue}
-          type="date"
-          required
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="primarySD"
+            name="primarySD"
+            placeholder="Start Date"
+            value={primarySDValue}
+            onChange={onChangePrimarySDValue}
+            type="date"
+            style={styles.doubleInputs}
+            required
+          />
+          <Input
+            title="Finish Date"
+            id="primaryED"
+            name="primaryED"
+            placeholder="End Date"
+            value={primaryEDValue}
+            onChange={onChangePrimaryEDValue}
+            type="date"
+            style={styles.doubleInputs}
+            required
+          />
+        </div>
         <Input
           title="Elementary School Name"
           id="primary"
@@ -499,24 +504,28 @@ function PostulantsForm() {
           required
         />
         <h3>High School Studies</h3>
-        <Input
-          title="Start Date"
-          id="secondarySD"
-          name="secondarySD"
-          value={secondarySDValue}
-          onChange={onChangeSecondarySDValue}
-          type="date"
-          required
-        />
-        <Input
-          title="Finish Date"
-          id="secondaryED"
-          name="secondaryED"
-          value={secondaryEDValue}
-          onChange={onChangeSecondaryEDValue}
-          type="date"
-          required
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="secondarySD"
+            name="secondarySD"
+            value={secondarySDValue}
+            onChange={onChangeSecondarySDValue}
+            type="date"
+            style={styles.doubleInputs}
+            required
+          />
+          <Input
+            title="Finish Date"
+            id="secondaryED"
+            name="secondaryED"
+            value={secondaryEDValue}
+            onChange={onChangeSecondaryEDValue}
+            type="date"
+            style={styles.doubleInputs}
+            required
+          />
+        </div>
         <Input
           title="High school Name"
           id="secondary"
@@ -528,22 +537,26 @@ function PostulantsForm() {
           required
         />
         <h3>Superior Studies</h3>
-        <Input
-          title="Start Date"
-          id="tertiarySD"
-          name="tertiarySD"
-          value={tertiarySDValue}
-          onChange={onChangeTertiarySDValue}
-          type="date"
-        />
-        <Input
-          title="Finish Date"
-          id="tertiaryED"
-          name="tertiaryED"
-          value={tertiaryEDValue}
-          onChange={onChangeTertiaryEDValue}
-          type="date"
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="tertiarySD"
+            name="tertiarySD"
+            value={tertiarySDValue}
+            onChange={onChangeTertiarySDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+          <Input
+            title="Finish Date"
+            id="tertiaryED"
+            name="tertiaryED"
+            value={tertiaryEDValue}
+            onChange={onChangeTertiaryEDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+        </div>
         <Textarea
           title="Superior Studies Description"
           id="tertiaryDescription"
@@ -564,22 +577,26 @@ function PostulantsForm() {
           type="text"
         />
         <h3>University Studies</h3>
-        <Input
-          title="Start Date"
-          id="universitySD"
-          name="universitySD"
-          value={universitySDValue}
-          onChange={onChangeUniversitySDValue}
-          type="date"
-        />
-        <Input
-          title="Finish Date"
-          id="universityED"
-          name="universityED"
-          value={universityEDValue}
-          onChange={onChangeUniversityEDValue}
-          type="date"
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="universitySD"
+            name="universitySD"
+            value={universitySDValue}
+            onChange={onChangeUniversitySDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+          <Input
+            title="Finish Date"
+            id="universityED"
+            name="universityED"
+            value={universityEDValue}
+            onChange={onChangeUniversityEDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+        </div>
         <Textarea
           title="University Studies Description"
           id="universityDescription"
@@ -600,22 +617,26 @@ function PostulantsForm() {
           type="text"
         />
         <h3>Informal Studies</h3>
-        <Input
-          title="Start Date"
-          id="informalSD"
-          name="informalSD"
-          value={informalSDValue}
-          onChange={onChangeInformalSDValue}
-          type="date"
-        />
-        <Input
-          title="End Date"
-          id="informalED"
-          name="informalED"
-          value={informalEDValue}
-          onChange={onChangeInformalEDValue}
-          type="date"
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="informalSD"
+            name="informalSD"
+            value={informalSDValue}
+            onChange={onChangeInformalSDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+          <Input
+            title="End Date"
+            id="informalED"
+            name="informalED"
+            value={informalEDValue}
+            onChange={onChangeInformalEDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+        </div>
         <Textarea
           title="Informal Studies Description"
           id="informalDescription"
@@ -645,22 +666,26 @@ function PostulantsForm() {
           onChange={onChangeWorkExperienceCompanyValueInput}
           type="text"
         />
-        <Input
-          title="Start Date"
-          id="workExperienceSD"
-          name="workExperienceSD"
-          value={workExperienceSDValue}
-          onChange={onChangeWorkExperienceSDValue}
-          type="date"
-        />
-        <Input
-          title="End Date"
-          id="workExperienceED"
-          name="workExperienceED"
-          value={workExperienceEDValue}
-          onChange={onChangeWorkExperienceEDValue}
-          type="date"
-        />
+        <div className={styles.doubleInputsContainer}>
+          <Input
+            title="Start Date"
+            id="workExperienceSD"
+            name="workExperienceSD"
+            value={workExperienceSDValue}
+            onChange={onChangeWorkExperienceSDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+          <Input
+            title="End Date"
+            id="workExperienceED"
+            name="workExperienceED"
+            value={workExperienceEDValue}
+            onChange={onChangeWorkExperienceEDValue}
+            type="date"
+            style={styles.doubleInputs}
+          />
+        </div>
         <Textarea
           title="Work Experience Description"
           id="workExperienceDescription"
@@ -671,45 +696,6 @@ function PostulantsForm() {
           rows="5"
           cols="33"
         />
-        <div>
-          <input
-            className={styles.input}
-            id="company"
-            name="company"
-            placeholder="Company Name"
-            value={workExperienceCompanyValue}
-            onChange={onChangeWorkExperienceCompanyValueInput}
-            type="text"
-          />
-          <input
-            className={styles.input}
-            id="workExperienceSD"
-            name="workExperienceSD"
-            placeholder="Start Date"
-            value={workExperienceSDValue}
-            onChange={onChangeWorkExperienceSDValue}
-            type="date"
-          />
-          <input
-            className={styles.input}
-            id="workExperienceED"
-            name="workExperienceED"
-            placeholder="End Date"
-            value={workExperienceEDValue}
-            onChange={onChangeWorkExperienceEDValue}
-            type="date"
-          />
-          <textarea
-            className={styles.input}
-            id="workExperienceDescription"
-            name="workExperienceDescription"
-            placeholder="Work Experience Description"
-            value={workExperienceDescriptionValue}
-            onChange={onChangeWorkExperienceDescriptionValueInput}
-            rows="5"
-            cols="33"
-          />
-        </div>
         <Button name="saveButton" entity="POSTULANT" />
       </form>
       <div className={styles.showError}>{showError.message}</div>
