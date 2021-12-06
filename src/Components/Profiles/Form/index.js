@@ -17,7 +17,6 @@ function profilesForm() {
   };
 
   useEffect(() => {
-    setLoading(true);
     const profileId = query.get('_id');
     if (profileId) {
       fetch(`${process.env.REACT_APP_API}/profiles?_id=${profileId}`)
@@ -34,14 +33,12 @@ function profilesForm() {
         })
         .catch((error) => {
           setError(error.toString());
-        })
-        .finally(() => setLoading(false));
+        });
     }
   }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
     const profileId = query.get('_id');
 
     let url;
@@ -61,6 +58,8 @@ function profilesForm() {
       options.method = 'POST';
       url = `${process.env.REACT_APP_API}/profiles`;
     }
+
+    setLoading(true);
 
     fetch(url, options)
       .then((response) => {
@@ -95,7 +94,7 @@ function profilesForm() {
             required
           />
         </div>
-        <Button name="saveButton" />
+        <Button name="saveButton" disabled={isLoading} />
         <div className={styles.error}>{error}</div>
       </form>
     </div>

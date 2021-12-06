@@ -42,6 +42,7 @@ function PostulantsForm() {
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
   const [showError, setShowError] = useState('');
+  const [isLoading, setIsLoading] = useState('');
   const query = useQuery();
   const history = useHistory();
 
@@ -306,7 +307,6 @@ function PostulantsForm() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    // saveButton.disables = !!params.get('id');
 
     let url = '';
 
@@ -323,7 +323,7 @@ function PostulantsForm() {
         birthday: birthdayValue,
         available: availableValue,
         phone: phoneValue,
-        profiles: undefined /* profilesBodyContructor() */,
+        profiles: undefined,
         contactRange: {
           from: contactFromValue.match(hoursRegEx)
             ? contactFromValue
@@ -346,6 +346,8 @@ function PostulantsForm() {
       url = `${process.env.REACT_APP_API}/postulants/${postulantId}`;
     }
 
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -360,6 +362,9 @@ function PostulantsForm() {
       })
       .catch((err) => {
         setShowError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -375,6 +380,7 @@ function PostulantsForm() {
           placeholder="Boris"
           onChange={onChangeFirstNameInput}
           type="text"
+          disabled={isLoading}
           required
         />
         <Input
@@ -385,6 +391,7 @@ function PostulantsForm() {
           value={lastNameValue}
           onChange={onChangeLastNameInput}
           type="text"
+          disabled={isLoading}
           required
         />
         <Input
@@ -395,6 +402,7 @@ function PostulantsForm() {
           value={emailValue}
           onChange={onChangeEmailInput}
           type="email"
+          disabled={isLoading}
           required
         />
         <Input
@@ -405,6 +413,7 @@ function PostulantsForm() {
           value={passwordValue}
           onChange={onChangePasswordInput}
           type="password"
+          disabled={isLoading}
           required
         />
         <div className={styles.doubleInputsContainer}>
@@ -416,6 +425,7 @@ function PostulantsForm() {
             onChange={onChangeContactFromValue}
             type="time"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
           <Input
@@ -427,6 +437,7 @@ function PostulantsForm() {
             onChange={onChangeContactToValue}
             type="time"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
         </div>
@@ -438,6 +449,7 @@ function PostulantsForm() {
           value={addressValue}
           onChange={onChangeAddressInput}
           type="text"
+          disabled={isLoading}
           required
         />
         <Input
@@ -447,6 +459,7 @@ function PostulantsForm() {
           value={birthdayValue}
           onChange={onChangeBirthdayInput}
           type="date"
+          disabled={isLoading}
           required
         />
         <Input
@@ -456,6 +469,7 @@ function PostulantsForm() {
           checked={availableValue}
           onChange={onChangeAvailableInput}
           type="checkbox"
+          disabled={isLoading}
           required
         />
         <Input
@@ -466,6 +480,7 @@ function PostulantsForm() {
           value={phoneValue}
           onChange={onChangePhoneInput}
           type="tel"
+          disabled={isLoading}
           required
         />
         <h3>Elementary Studies</h3>
@@ -479,6 +494,7 @@ function PostulantsForm() {
             onChange={onChangePrimarySDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
           <Input
@@ -490,6 +506,7 @@ function PostulantsForm() {
             onChange={onChangePrimaryEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
         </div>
@@ -501,6 +518,7 @@ function PostulantsForm() {
           value={primarySchoolValue}
           onChange={onChangePrimarySchoolValueInput}
           type="text"
+          disabled={isLoading}
           required
         />
         <h3>High School Studies</h3>
@@ -513,6 +531,7 @@ function PostulantsForm() {
             onChange={onChangeSecondarySDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
           <Input
@@ -523,6 +542,7 @@ function PostulantsForm() {
             onChange={onChangeSecondaryEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
             required
           />
         </div>
@@ -534,6 +554,7 @@ function PostulantsForm() {
           value={secondarySchoolValue}
           onChange={onChangeSecondarySchoolValueInput}
           type="text"
+          disabled={isLoading}
           required
         />
         <h3>Superior Studies</h3>
@@ -546,6 +567,7 @@ function PostulantsForm() {
             onChange={onChangeTertiarySDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
           <Input
             title="Finish Date"
@@ -555,6 +577,7 @@ function PostulantsForm() {
             onChange={onChangeTertiaryEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
         </div>
         <Textarea
@@ -566,6 +589,7 @@ function PostulantsForm() {
           onChange={onChangeTertiaryDescriptionValueInput}
           rows="5"
           cols="33"
+          disabled={isLoading}
         />
         <Input
           title="Superior Studies Institute Name"
@@ -575,6 +599,7 @@ function PostulantsForm() {
           value={tertiaryInstituteValue}
           onChange={onChangeTertiaryInstituteValueInput}
           type="text"
+          disabled={isLoading}
         />
         <h3>University Studies</h3>
         <div className={styles.doubleInputsContainer}>
@@ -586,6 +611,7 @@ function PostulantsForm() {
             onChange={onChangeUniversitySDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
           <Input
             title="Finish Date"
@@ -595,6 +621,7 @@ function PostulantsForm() {
             onChange={onChangeUniversityEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
         </div>
         <Textarea
@@ -606,6 +633,7 @@ function PostulantsForm() {
           onChange={onChangeUniversityDescriptionValueInput}
           rows="5"
           cols="33"
+          disabled={isLoading}
         />
         <Input
           title="University Name"
@@ -615,6 +643,7 @@ function PostulantsForm() {
           value={universityInstituteValue}
           onChange={onChangeUniversityInstituteValueInput}
           type="text"
+          disabled={isLoading}
         />
         <h3>Informal Studies</h3>
         <div className={styles.doubleInputsContainer}>
@@ -626,6 +655,7 @@ function PostulantsForm() {
             onChange={onChangeInformalSDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
           <Input
             title="End Date"
@@ -635,6 +665,7 @@ function PostulantsForm() {
             onChange={onChangeInformalEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
         </div>
         <Textarea
@@ -646,6 +677,7 @@ function PostulantsForm() {
           onChange={onChangeInformalDescriptionValueInput}
           rows="5"
           cols="33"
+          disabled={isLoading}
         />
         <Input
           title="Institute Name"
@@ -655,6 +687,7 @@ function PostulantsForm() {
           value={informalInstituteValue}
           onChange={onChangeInformalInstituteValueInput}
           type="text"
+          disabled={isLoading}
         />
         <h3>Work Experience</h3>
         <Input
@@ -665,6 +698,7 @@ function PostulantsForm() {
           value={workExperienceCompanyValue}
           onChange={onChangeWorkExperienceCompanyValueInput}
           type="text"
+          disabled={isLoading}
         />
         <div className={styles.doubleInputsContainer}>
           <Input
@@ -675,6 +709,7 @@ function PostulantsForm() {
             onChange={onChangeWorkExperienceSDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
           <Input
             title="End Date"
@@ -684,6 +719,7 @@ function PostulantsForm() {
             onChange={onChangeWorkExperienceEDValue}
             type="date"
             style={styles.doubleInputs}
+            disabled={isLoading}
           />
         </div>
         <Textarea
@@ -695,8 +731,9 @@ function PostulantsForm() {
           onChange={onChangeWorkExperienceDescriptionValueInput}
           rows="5"
           cols="33"
+          disabled={isLoading}
         />
-        <Button name="saveButton" entity="POSTULANT" />
+        <Button name="saveButton" disabled={isLoading} />
       </form>
       <div className={styles.showError}>{showError.message}</div>
     </div>

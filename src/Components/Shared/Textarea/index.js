@@ -1,7 +1,18 @@
 import React from 'react';
 import styles from './textarea.module.css';
 
-function Textarea({ title, id, name, placeholder, value, onChange, required, rows, cols }) {
+function Textarea({
+  title,
+  id,
+  name,
+  placeholder,
+  value,
+  onChange,
+  required,
+  rows,
+  cols,
+  disabled
+}) {
   return (
     <div className={styles.container}>
       <label className={styles.labelTitle}>{title}</label>
@@ -15,6 +26,7 @@ function Textarea({ title, id, name, placeholder, value, onChange, required, row
         required={required}
         rows={rows}
         cols={cols}
+        disabled={disabled}
       />
     </div>
   );
