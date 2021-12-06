@@ -3,6 +3,7 @@ import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table/index';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +12,9 @@ const Admins = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
+  const columnName = ['Name', 'Username', 'Actions'];
 
   const getAdmins = () => {
     setIsLoading(true);
@@ -25,6 +29,7 @@ const Admins = () => {
       })
       .then((response) => {
         setAdmins(response.data);
+        setInformationToShow(response);
       })
       .catch((err) => {
         setError(err);
@@ -38,22 +43,13 @@ const Admins = () => {
     getAdmins();
   }, []);
 
-  const updateAdmin = (id) => {
-    history.push(`/admins/form?_id=${id}`);
-  };
-
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const deleteAdmin = (admin) => {
-    setAdminToDelete(admin);
-    setShowModal(true);
-  };
-
   const handleDelete = () => {
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
+    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
           throw 'There was an error while deleting this admin.';
@@ -70,6 +66,28 @@ const Admins = () => {
       });
   };
 
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([row.name ? row.name : '-', row.username ? row.username : '-']);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
+
+  const redirect = (id) => {
+    history.push(`/admins/form?_id=${id}`);
+  };
+
+  const preventAndShow = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setAdminToDelete(id);
+    setShowModal(true);
+  };
+
   return (
     <section className={styles.container}>
       <Modal
@@ -83,36 +101,13 @@ const Admins = () => {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <div>
-          <table className={styles.table}>
-            <thead className={styles.thead}>
-              <tr>
-                <th>Name</th>
-                <th>User Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {admins.map((admin, index) => {
-                return (
-                  <tr onClick={() => updateAdmin(admin._id)} key={index}>
-                    <td className={styles.tableRow}>{admin.name}</td>
-                    <td className={styles.tableRow}>{admin.username}</td>
-                    <td className={styles.tableRow}>
-                      <Button
-                        name="deleteButton"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteAdmin(admin);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       {error && (
         <Modal>
