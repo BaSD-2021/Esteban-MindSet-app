@@ -5,48 +5,19 @@
   justify-content: center;
   align-items: center;
 }
-.input {
-  display: flex;
-  width: 20%;
-  height: 30px;
-  border-radius: 3px;
-  margin: 5px 0 0;
-  border: 2px solid #002147;
-  color: #002147;
-  font-size: medium;
-}
-
-.inputName{
-  text-align: center;
-  font-weight: bolder;
-  color: #002147;
-  padding: 10px;
-}
 
 .inputDiv {
   margin: 10px;
-}
-
-.button {
-  margin: 10px;
-  width: auto;
-  height: 30px;
-  padding: 5px;
-  border: none;
-  border-radius: 2px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  font-weight: bold;
-}
-
-.button:hover {
-  cursor: pointer;
-  background-color: #ffd027;
 }
 
 .error {
   color: #f00;
   font-weight: bold;
   font-size: 18px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
 }

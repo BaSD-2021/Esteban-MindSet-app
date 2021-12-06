@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/input';
+import Input from '../../Shared/Input';
+import Button from '../../Shared/Button';
 
 function Form() {
   const [name, setName] = useState('');
@@ -62,8 +63,6 @@ function Form() {
   const onSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    // const params = new URLSearchParams(window.location.search);
-    // const clientId = params.get('_id');
     const options = {
       method: fetchMethod,
       headers: {
@@ -196,9 +195,7 @@ function Form() {
           value={description}
           onChange={onChangeDescription}
         />
-        <button id="saveButton" type="submit" className={styles.button}>
-          Save
-        </button>
+        <Button name="saveButton" />
       </form>
       <div id="error_message" className={styles.errorMessage}>
         {errorMessage.message}

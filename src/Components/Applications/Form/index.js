@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/input';
+import Input from '../../Shared/Input';
+import Button from '../../Shared/Button';
 
 function Form() {
   const [positionId, setPositionId] = useState('');
@@ -145,7 +146,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.subtitle}>Form</h2>
+        <h2 className={styles.title}>Form</h2>
         <label className={styles.label}>
           <span>Position</span>
         </label>
@@ -223,9 +224,7 @@ function Form() {
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}
         </div>
-        <button id="saveButton" type="submit" className={styles.button}>
-          Save
-        </button>
+        <Button name="saveButton" />
       </form>
     </div>
   );

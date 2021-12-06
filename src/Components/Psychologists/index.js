@@ -2,7 +2,8 @@ import styles from './psychologists.module.css';
 import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
-import Modal from './Modal';
+import Modal from '../Shared/Modal';
+import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
 
@@ -63,18 +64,23 @@ function Psychologists() {
   const [psychologistAvailability, setPsychologistAvailability] = useState({});
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getPsychologists();
   }, []);
 
   const getPsychologists = () => {
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/psychologists`)
       .then((response) => response.json())
       .then((response) => {
         setPsychologist(response.data);
       })
-      .catch(() => getError('There has been an error while retrieving psychologists'));
+      .catch(() => getError('There has been an error while retrieving psychologists'))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const getError = (error) => {
@@ -189,6 +195,7 @@ function Psychologists() {
   };
 
   const handleDelete = () => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/psychologists/${itemOnEdit._id}`;
     fetch(url, {
       method: 'DELETE',
@@ -205,7 +212,10 @@ function Psychologists() {
         toggleConfirmModal();
         getPsychologists();
       })
-      .catch((error) => error);
+      .catch((error) => error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -221,6 +231,8 @@ function Psychologists() {
             onChange={onChange}
             handleSubmit={handleSubmit}
           />
+        ) : isLoading ? (
+          <p className={styles.loading}>On Loading ...</p>
         ) : (
           <List
             psychologists={psychologists}
@@ -231,23 +243,18 @@ function Psychologists() {
           />
         )}
         {showAvailabilityModal && (
-          <Modal toggleModal={toggleAvailabilityModal} title="Availability">
+          <ModalAvailability showModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
-          </Modal>
+          </ModalAvailability>
         )}
         {showConfirmModal && (
           <Modal
-            toggleModal={toggleConfirmModal}
-            title="Delete Psychologist"
-            confirmButton="Confirm"
-            cancelButton="Cancel"
-            handleConfirm={handleDelete}
-            handleCancel={toggleConfirmModal}
-          >
-            <div>
-              <p>Are you sure you want to Delete this user?</p>
-            </div>
-          </Modal>
+            showModal={showConfirmModal}
+            title="Do you want to proceed and delete this psychologist?"
+            onClose={toggleConfirmModal}
+            isLoading={isEditing}
+            onConfirm={handleDelete}
+          />
         )}
         {showError && (
           <Modal toggleModal={() => setShowError(!showError)}>

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import Select from '../Select';
-import Textarea from '../../Shared/textarea';
+import Textarea from '../../Shared/Textarea';
+import Button from '../../Shared/Button';
 import styles from './form.module.css';
-import Input from '../../Shared/input';
+import Input from '../../Shared/Input';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');
@@ -157,7 +158,7 @@ function sessionsForm() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <h2>Session Form</h2>
+        <h2 className={styles.title}>Form</h2>
         <Select
           name="postulant"
           value={postulantValue}
@@ -180,7 +181,7 @@ function sessionsForm() {
           onChange={onChangeStatusInput}
           options={[
             { value: 'assigned', label: 'Assigned' },
-            { value: 'succesful', label: 'Succesful' },
+            { value: 'successful', label: 'Successful' },
             { value: 'cancelled', label: 'Cancelled' }
           ]}
           disabled={isLoading}
@@ -202,9 +203,9 @@ function sessionsForm() {
           onChange={onChangeNotesInput}
           disabled={isLoading}
         />
-        <button disabled={isLoading} type="submit" className={styles.button}>
-          Save
-        </button>
+        <div className={styles.buttonContainer}>
+          <Button disabled={isLoading} name="saveButton" />
+        </div>
         <div className={styles.error}>{error}</div>
       </form>
     </div>

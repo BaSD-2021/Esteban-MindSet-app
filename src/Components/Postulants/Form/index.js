@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/input';
-import Textarea from '../../Shared/textarea';
+import Input from '../../Shared/Input';
+import Textarea from '../../Shared/Textarea';
+import Button from '../../Shared/Button';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -670,9 +671,46 @@ function PostulantsForm() {
           rows="5"
           cols="33"
         />
-        <button type="submit" id="saveButton">
-          Save
-        </button>
+        <div>
+          <input
+            className={styles.input}
+            id="company"
+            name="company"
+            placeholder="Company Name"
+            value={workExperienceCompanyValue}
+            onChange={onChangeWorkExperienceCompanyValueInput}
+            type="text"
+          />
+          <input
+            className={styles.input}
+            id="workExperienceSD"
+            name="workExperienceSD"
+            placeholder="Start Date"
+            value={workExperienceSDValue}
+            onChange={onChangeWorkExperienceSDValue}
+            type="date"
+          />
+          <input
+            className={styles.input}
+            id="workExperienceED"
+            name="workExperienceED"
+            placeholder="End Date"
+            value={workExperienceEDValue}
+            onChange={onChangeWorkExperienceEDValue}
+            type="date"
+          />
+          <textarea
+            className={styles.input}
+            id="workExperienceDescription"
+            name="workExperienceDescription"
+            placeholder="Work Experience Description"
+            value={workExperienceDescriptionValue}
+            onChange={onChangeWorkExperienceDescriptionValueInput}
+            rows="5"
+            cols="33"
+          />
+        </div>
+        <Button name="saveButton" entity="POSTULANT" />
       </form>
       <div className={styles.showError}>{showError.message}</div>
     </div>

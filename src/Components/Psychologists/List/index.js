@@ -3,6 +3,7 @@ import TableHeader from '../TableHeader';
 import PSYCHOLOGISTS_TABLE_HEADERS from '../utils/table-headers-utils';
 import PsychologistItem from '../PsychologistItem';
 import styles from './list.module.css';
+import Button from '../../Shared/Button';
 
 const List = ({
   psychologists,
@@ -27,10 +28,8 @@ const List = ({
           ))}
         </tbody>
       </table>
-      <div className={styles.btnContainer}>
-        <button className={styles.addBtn} onClick={toggleFormDisplay}>
-          Add psychologist
-        </button>
+      <div className={styles.buttonContainer}>
+        <Button name="addButton" entity="PSYCHOLOGIST" onClick={toggleFormDisplay} />
       </div>
     </div>
   );
