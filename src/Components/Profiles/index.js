@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import styles from './profiles.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
@@ -24,7 +25,7 @@ function Profiles() {
         return response.json();
       })
       .then((response) => setProfiles(response.data))
-      .catch((error) => setError(error.toString()))
+      .catch((error) => setError(error))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -43,31 +44,27 @@ function Profiles() {
     setSelectedItem(undefined);
   };
 
+  const closeErrModal = () => {
+    setError(false);
+  };
+
   const deleteProfile = () => {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/profiles/${selectedItem}`;
     fetch(url, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
+          throw 'There was an error while deleting this profile.';
         }
-        return fetch(`${process.env.REACT_APP_API}/profiles`)
-          .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
-            }
-            return response.json();
-          })
-          .then((response) => {
-            setProfiles(response.data);
-            closeModal();
-          });
+        return fetch(`${process.env.REACT_APP_API}/profiles`).then((response) => {
+          if (response.status !== 204) {
+            throw 'There was an error while deleting this profile.';
+          }
+          setProfiles(response.data);
+          closeModal();
+        });
       })
-      .catch((error) => setError(error.toString()))
+      .catch((error) => setError(error))
       .finally(() => setIsLoading(false));
   };
 
@@ -110,7 +107,14 @@ function Profiles() {
           </table>
         )}
       </div>
-      <div className={styles.error}>{error}</div>
+      {error && (
+        <ErrorModal
+          message={error}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/Profiles/Form">
         <Button name="addButton" entity="PROFILE" />
       </Link>

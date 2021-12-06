@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import { Link, useHistory } from 'react-router-dom';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [postulants, setPostulants] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  const [showError, setShowError] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
@@ -20,7 +21,7 @@ function Postulants() {
         setPostulants(response.data);
       })
       .catch((err) => {
-        setShowError(err);
+        setError(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -32,16 +33,17 @@ function Postulants() {
     const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
     fetch(url, {
       method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json'
-      }
+      headers: { 'Content-type': 'application/json' }
     })
-      .then(() => {
+      .then((response) => {
+        if (response.status !== 204) {
+          throw 'There was an error while deleting this postulant.';
+        }
         closeModal();
         history.go(0);
       })
       .catch((err) => {
-        setShowError(err);
+        setError(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -50,6 +52,10 @@ function Postulants() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const closeErrModal = () => {
+    setError(false);
   };
 
   const preventAndShow = (e, id) => {
@@ -116,7 +122,15 @@ function Postulants() {
           })}
         </table>
       )}
-      <div className={styles.showError}>{showError.message}</div>
+      {/* <div className={styles.showError}>{showError.message}</div> */}
+      {error && (
+        <ErrorModal
+          message={error}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/Postulants/Form" className={styles.button}>
         <Button name="addButton" entity="POSTULANT" />
       </Link>
