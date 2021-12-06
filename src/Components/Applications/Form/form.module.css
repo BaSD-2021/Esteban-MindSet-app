@@ -1,9 +1,9 @@
-.container{
- display: flex;
- flex-direction: column;
- align-items: center;
- width: 50%;
- margin: auto;
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .subtitle {
@@ -21,4 +21,6 @@
   font-weight: bolder;
   font-size: 25px;
   color: #002147;
+  text-align: center;
 }
+

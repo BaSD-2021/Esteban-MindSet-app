@@ -14,6 +14,7 @@ function Form() {
   const [postulants, setPostulants] = useState([]);
   const [interviews, setInterviews] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
@@ -61,6 +62,7 @@ function Form() {
     const url = applicationId
       ? `${process.env.REACT_APP_API}/applications/${applicationId}`
       : `${process.env.REACT_APP_API}/applications/`;
+    setIsLoading(true);
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -75,6 +77,9 @@ function Form() {
       })
       .catch((error) => {
         setErrorMessage(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -220,11 +225,12 @@ function Form() {
           required
           value={result}
           onChange={onChangeResult}
+          disabled={isLoading}
         />
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}
         </div>
-        <Button name="saveButton" />
+        <Button name="saveButton" disabled={isLoading} />
       </form>
     </div>
   );

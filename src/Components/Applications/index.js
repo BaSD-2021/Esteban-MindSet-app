@@ -75,7 +75,7 @@ function Applications() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.subtitle}>Applications</h2>
+      <h2 className={styles.title}>Applications</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (

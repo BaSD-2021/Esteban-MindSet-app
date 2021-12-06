@@ -16,6 +16,7 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
@@ -82,7 +83,7 @@ function Form() {
     const url = interviewId
       ? `${process.env.REACT_APP_API}/interviews/${interviewId}`
       : `${process.env.REACT_APP_API}/interviews/`;
-
+    setIsLoading(true);
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -97,6 +98,9 @@ function Form() {
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -242,6 +246,7 @@ function Form() {
           type="datetime-local"
           value={dateValue}
           onChange={onChangeDate}
+          disabled={isLoading}
           required
         />
         <Input
@@ -251,8 +256,9 @@ function Form() {
           type="text"
           value={notesValue}
           onChange={onChangeNotes}
+          disabled={isLoading}
         />
-        <Button name="saveButton" />
+        <Button name="saveButton" disabled={isLoading} />
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
