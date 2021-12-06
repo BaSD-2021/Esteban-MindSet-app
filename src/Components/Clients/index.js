@@ -8,7 +8,6 @@ import Table from '../Shared/Table';
 function Clients() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  const [clients, setClients] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
@@ -32,8 +31,7 @@ function Clients() {
             }
             return response.json();
           })
-          .then((response) => {
-            setClients(response.data);
+          .then(() => {
             closeModal();
           });
       })
@@ -69,8 +67,7 @@ function Clients() {
         return response.json();
       })
       .then((response) => {
-        setInformationToShow(response);
-        setClients(response.data);
+        setInformationToShow(response.data);
       })
       .catch((err) => {
         setErrorMessage(err);
@@ -87,7 +84,7 @@ function Clients() {
   const setInformationToShow = (data) => {
     const idToPass = [];
     const dataToPass = [];
-    data.data.map((row) => {
+    data.map((row) => {
       idToPass.push(row._id);
       dataToPass.push([row.name ? row.name : '-', row.phone ? row.phone : '-']);
     });
