@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Select from '../../Shared/Select';
 
 function Form() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
@@ -16,6 +18,10 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const [arrayApplicationValue, setArrayApplicationValue] = useState([]);
+  const [arrayClientsValue, setArrayClientsValue] = useState([]);
+  const [arrayPostulantsValue, setArrayPostulantsValue] = useState([]);
+
   const query = useQuery();
   const history = useHistory();
 
@@ -52,6 +58,30 @@ function Form() {
 
   const onChangeNotes = (event) => {
     setNotesValue(event.target.value);
+  };
+
+  const selectApplicationId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayApplicationValue(array);
+  };
+
+  const selectClientsId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayClientsValue(array);
+  };
+
+  const selectPostulantsId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayPostulantsValue(array);
   };
 
   const interviewId = query.get('_id');
@@ -103,6 +133,7 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((res) => {
+        selectPostulantsId(res.data);
         setPostulantsValue(res.data);
       })
       .catch((errorValue) => {
@@ -112,6 +143,7 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
+        selectClientsId(res.data);
         setClientsValue(res.data);
       })
       .catch((errorValue) => {
@@ -121,6 +153,7 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/applications`)
       .then((response) => response.json())
       .then((res) => {
+        selectApplicationId(res.data);
         setApplicationValue(res.data);
       })
       .catch((errorValue) => {
@@ -142,99 +175,44 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Form</h2>
-        <label className={styles.label}>
-          <span className={styles.span}>Postulant Name</span>
-        </label>
-        <select
+        <Select
+          title="Postulant Name"
           id="postulantId"
           name="postulantId"
           type="text"
           required
           value={postulantIdValue}
           onChange={onChangePostulantId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {postulantsValue.map((postulant) => {
-            return (
-              <option value={postulant._id} key={postulant._id}>
-                {`${postulant.firstName} ${postulant.lastName}`}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Client Name</span>
-        </label>
-        <select
+          arrayToMap={arrayPostulantsValue}
+        />
+        <Select
+          title="Client Name"
           id="clientId"
           name="clientId"
-          type="text"
           required
           value={clientIdValue}
           onChange={onChangeClientId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {clientsValue.map((client) => {
-            return (
-              <option value={client._id} key={client._id}>
-                {client.name}
-              </option>
-            );
-          })}
-          ;
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Status</span>
-        </label>
-        <select
+          arrayToMap={arrayClientsValue}
+        />
+        <Select
+          title="Status"
           id="status"
           name="status"
-          type="text"
           required
           value={statusValue}
           onChange={onChangeStatus}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          <option value="successful">Successful</option>
-          <option value="failed">Failed</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="assigned">Assigned</option>
-          <option value="confirmed">Confirmed</option>
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Application ID</span>
-        </label>
-        <select
+          arrayToMap={['successful', 'failed', 'cancelled', 'assigned', 'confirmed']}
+        />
+
+        <Select
           title="Application ID"
           id="application"
           name="application"
-          type="text"
+          required
           value={applicationIdValue}
           onChange={onChangeApplication}
-          className={styles.input}
-          required
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {applicationValue.map((application) => {
-            return (
-              <option value={application._id} key={application._id}>
-                {application._id}
-              </option>
-            );
-          })}
-          ;
-        </select>
+          arrayToMap={arrayApplicationValue}
+        />
         <Input
           title="Date"
           id="date"
