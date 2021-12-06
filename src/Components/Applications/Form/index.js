@@ -62,7 +62,9 @@ function Form() {
     const url = applicationId
       ? `${process.env.REACT_APP_API}/applications/${applicationId}`
       : `${process.env.REACT_APP_API}/applications/`;
+
     setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {

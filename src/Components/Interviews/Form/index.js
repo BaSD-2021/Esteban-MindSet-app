@@ -83,7 +83,9 @@ function Form() {
     const url = interviewId
       ? `${process.env.REACT_APP_API}/interviews/${interviewId}`
       : `${process.env.REACT_APP_API}/interviews/`;
+
     setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {

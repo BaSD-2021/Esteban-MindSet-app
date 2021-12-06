@@ -14,6 +14,7 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [professionalProfilesValue, setProfessionalProfilesValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
@@ -77,6 +78,8 @@ function Form() {
       ? `${process.env.REACT_APP_API}/positions/${positionId}`
       : `${process.env.REACT_APP_API}/positions/`;
 
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -91,6 +94,9 @@ function Form() {
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -157,6 +163,7 @@ function Form() {
           type="text"
           value={jobDescriptionValue}
           onChange={onChangeJobDescription}
+          disabled={isLoading}
           required
         />
         <Input
@@ -166,6 +173,7 @@ function Form() {
           type="number"
           value={vacancyValue}
           onChange={onChangeVacancy}
+          disabled={isLoading}
           required
         />
         <label className={styles.inputDiv}>
@@ -209,7 +217,7 @@ function Form() {
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <Button name="saveButton" />
+        <Button name="saveButton" disabled={isLoading} />
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>

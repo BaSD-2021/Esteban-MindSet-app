@@ -85,7 +85,9 @@ function Form() {
     const url = clientId
       ? `${process.env.REACT_APP_API}/clients/${clientId}`
       : `${process.env.REACT_APP_API}/clients/`;
+
     setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
