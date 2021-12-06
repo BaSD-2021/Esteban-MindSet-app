@@ -7,13 +7,12 @@ import Table from '../Shared/Table/index';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
-  const [admins, setAdmins] = useState([]);
   const [adminToDelete, setAdminToDelete] = useState(false);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const history = useHistory();
   const [infoToShow, setInfoToShow] = useState([]);
   const [idToPass, setIdToPass] = useState([]);
+  const history = useHistory();
   const columnName = ['Name', 'Username', 'Actions'];
 
   const getAdmins = () => {
@@ -28,8 +27,7 @@ const Admins = () => {
         return response.json();
       })
       .then((response) => {
-        setAdmins(response.data);
-        setInformationToShow(response);
+        setInformationToShow(response.data);
       })
       .catch((err) => {
         setError(err);
@@ -69,7 +67,7 @@ const Admins = () => {
   const setInformationToShow = (data) => {
     const idToPass = [];
     const dataToPass = [];
-    data.data.map((row) => {
+    data.map((row) => {
       idToPass.push(row._id);
       dataToPass.push([row.name ? row.name : '-', row.username ? row.username : '-']);
     });
