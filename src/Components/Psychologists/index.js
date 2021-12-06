@@ -1,11 +1,12 @@
 import styles from './psychologists.module.css';
 import { useState, useEffect } from 'react';
-import List from './List';
 import Form from './Form';
 import Modal from '../Shared/Modal';
 import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
+import Table from '../Shared/Table/index';
+import { useHistory } from 'react-router-dom';
 
 const itemOnEditInitialState = {
   address: '',
@@ -65,6 +66,10 @@ function Psychologists() {
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
+  const [idToDelete, setIdToDelete] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
     getPsychologists();
@@ -76,6 +81,7 @@ function Psychologists() {
       .then((response) => response.json())
       .then((response) => {
         setPsychologist(response.data);
+        setInformationToShow(response);
       })
       .catch(() => getError('There has been an error while retrieving psychologists'))
       .finally(() => {
@@ -214,7 +220,55 @@ function Psychologists() {
       .catch((error) => error)
       .finally(() => {
         setIsLoading(false);
+        history.push(0);
       });
+  };
+
+  const columnName = [
+    'name',
+    'Username',
+    'Password',
+    'Availability',
+    'Email',
+    'Phone',
+    'Address',
+    'Actions'
+  ];
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.firstName && row.lastName ? row.firstName + ' ' + row.lastName : '-',
+        row.username ? row.username : '-',
+        row.password ? row.password : '-',
+        <button
+          className={styles.availabilityBtn}
+          onClick={(e) => toggleAvailabilityModal(e, row)}
+          key={row._id}
+        >
+          Click to see
+        </button>,
+        row.email ? row.email : '-',
+        row.phone ? row.phone : '-',
+        row.address ? row.address : '-'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
+
+  const redirect = (id) => {
+    history.push(`/applications/form?_id=${id}`);
+  };
+
+  const preventAndShow = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdToDelete(id);
+    toggleConfirmModal();
   };
 
   return (
@@ -233,12 +287,12 @@ function Psychologists() {
         ) : isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
         ) : (
-          <List
-            psychologists={psychologists}
-            handleEdit={handleEdit}
-            toggleFormDisplay={toggleFormDisplay}
-            toggleAvailabilityModal={toggleAvailabilityModal}
-            toggleConfirmModal={toggleConfirmModal}
+          <Table
+            columnsName={columnName}
+            id={idToPass}
+            tableInfo={infoToShow}
+            deleteFunction={preventAndShow}
+            redirectFunction={handleEdit}
           />
         )}
         {showAvailabilityModal && (
