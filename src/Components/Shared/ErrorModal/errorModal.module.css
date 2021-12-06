@@ -1,0 +1,38 @@
+.container{
+  top: 0;
+  left: 0;
+  position:absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 200px;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  background-color: #FFF;
+}
+.button {
+  margin: 20px;
+  height: 56px;
+  border: none;
+  padding: 0 20px;
+  background: #FDC800;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: gray;
+}

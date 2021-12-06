@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -44,6 +45,9 @@ const Admins = () => {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+  const closeErrModal = () => {
+    setError(false);
   };
 
   const deleteAdmin = (admin) => {
@@ -114,12 +118,7 @@ const Admins = () => {
           </table>
         </div>
       )}
-      {error && (
-        <Modal>
-          {error}
-          <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
-        </Modal>
-      )}
+      {error && <ErrorModal message={error} onClose={closeErrModal} />}
       <Link to="/admins/form">
         <Button name="addButton" entity="ADMIN" />
       </Link>
