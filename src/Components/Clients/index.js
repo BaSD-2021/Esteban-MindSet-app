@@ -3,6 +3,7 @@ import styles from './clients.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table';
 
 function Clients() {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +12,9 @@ function Clients() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
+  const columnName = ['Name', 'Phone', 'Actions'];
 
   const deleteClient = () => {
     setIsLoading(true);
@@ -38,6 +42,7 @@ function Clients() {
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -64,6 +69,7 @@ function Clients() {
         return response.json();
       })
       .then((response) => {
+        setInformationToShow(response);
         setClients(response.data);
       })
       .catch((err) => {
@@ -74,43 +80,34 @@ function Clients() {
       });
   }, []);
 
+  const redirect = (id) => {
+    history.push(`/clients/form?_id=${id}`);
+  };
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([row.name ? row.name : '-', row.phone ? row.phone : '-']);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
+
   return (
     <section className={styles.container}>
       <h2 className={styles.subtitle}>Clients</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <table className={styles.tableData}>
-          <thead className={styles.tableHeader}>
-            <tr className={styles.tdStyles}>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients.map((client) => {
-              return (
-                <tr
-                  onClick={() => history.push(`/clients/form?_id=${client._id}`)}
-                  key={client._id}
-                  className={styles.trStyles}
-                >
-                  <td className={styles.tdStyles}>{client.name ? client.name : '-'}</td>
-                  <td className={styles.tdStyles}>{client.phone ? client.phone : '-'}</td>
-                  <td className={styles.tdStyles}>
-                    <Button
-                      name="deleteButton"
-                      onClick={(e) => {
-                        preventAndShow(e, client._id);
-                      }}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       <div className={styles.errorMessage}>{errorMessage.message}</div>
       <Modal
