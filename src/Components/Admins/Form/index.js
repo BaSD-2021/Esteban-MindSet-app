@@ -126,48 +126,6 @@ function Form() {
         onChange={(e) => setPasswordValue(e.target.value)}
         required
       />
-      <button type="submit" disabled={isLoading} className={styles.button}>
-        Register
-      </button>
-      <h2 className={styles.title}>Form</h2>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>Name</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="text"
-          name="name"
-          placeholder="Paul"
-          value={nameValue}
-          onChange={(e) => setNameValue(e.target.value)}
-          required
-        ></input>
-      </div>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>User Name</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="text"
-          name="username"
-          placeholder="Paul.Walker"
-          value={usernameValue}
-          onChange={(e) => setUsernameValue(e.target.value)}
-          required
-        ></input>
-      </div>
-      <div className={styles.inputCnt}>
-        <label className={styles.labelTitle}>Password</label>
-        <input
-          className={styles.inputBox}
-          disabled={isLoading}
-          type="password"
-          name="name"
-          value={passwordValue}
-          onChange={(e) => setPasswordValue(e.target.value)}
-          required
-        ></input>
-      </div>
       <Button name="saveButton" disabled={isLoading}></Button>
       {error && (
         <Modal>
