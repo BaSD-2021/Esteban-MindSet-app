@@ -177,6 +177,8 @@ function Psychologists() {
       url = `${process.env.REACT_APP_API}/psychologists`;
     }
 
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -191,7 +193,10 @@ function Psychologists() {
         setToggleForm(!toggleForm);
       })
       .catch((error) => error)
-      .finally(() => setIsEditing(false));
+      .finally(() => {
+        setIsEditing(false);
+        setIsLoading(false);
+      });
   };
 
   const handleDelete = () => {
@@ -230,6 +235,7 @@ function Psychologists() {
             itemOnEdit={itemOnEdit}
             onChange={onChange}
             handleSubmit={handleSubmit}
+            disabled={isLoading}
           />
         ) : isLoading ? (
           <p className={styles.loading}>On Loading ...</p>

@@ -3,7 +3,15 @@ import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
-const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
+const Form = ({
+  inputs,
+  availability,
+  toggleFormDisplay,
+  itemOnEdit,
+  onChange,
+  handleSubmit,
+  disabled
+}) => {
   return (
     <form className={styles.form}>
       {inputs.map((input) => (
@@ -15,6 +23,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           placeholder={input.placeholder}
           value={itemOnEdit[input.inputName]}
           onChange={onChange}
+          disabled={disabled}
         />
       ))}
       <h3 className={styles.availabilityHeading}>Availability</h3>
@@ -31,6 +40,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
             value={itemOnEdit.availability[item.label].availability}
             onChange={onChange}
             style={styles.availabilityInput}
+            disabled={disabled}
           />
           <Input
             key={item.from.inputName}
@@ -40,6 +50,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
             value={itemOnEdit.availability[item.label].from}
             onChange={onChange}
             style={styles.availabilityInput}
+            disabled={disabled}
           />
           <Input
             key={item.to.inputName}
@@ -49,6 +60,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
             value={itemOnEdit.availability[item.label].to}
             onChange={onChange}
             style={styles.availabilityInput}
+            disabled={disabled}
           />
         </div>
       ))}
@@ -58,6 +70,7 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           onClick={(e) => {
             toggleFormDisplay, handleSubmit(itemOnEdit, e);
           }}
+          disabled={disabled}
         />
       </div>
     </form>

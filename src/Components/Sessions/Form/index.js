@@ -137,6 +137,8 @@ function sessionsForm() {
       url = `${process.env.REACT_APP_API}/sessions`;
     }
 
+    setLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
