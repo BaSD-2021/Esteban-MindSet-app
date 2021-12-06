@@ -147,7 +147,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Interview</h2>
         <label className={styles.label}>
           <span className={styles.span}>Postulant Name</span>
         </label>

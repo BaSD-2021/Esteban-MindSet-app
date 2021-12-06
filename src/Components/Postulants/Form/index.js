@@ -371,7 +371,7 @@ function PostulantsForm() {
   return (
     <div className={styles.container}>
       <form onSubmit={onSubmit}>
-        <h2>Postulation</h2>
+        <h2 className={styles.title}>Postulant</h2>
         <Input
           title="First Name"
           value={firstNameValue}

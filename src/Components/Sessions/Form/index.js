@@ -160,7 +160,7 @@ function sessionsForm() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Session</h2>
         <Select
           name="postulant"
           value={postulantValue}

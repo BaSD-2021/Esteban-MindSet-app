@@ -68,7 +68,7 @@ function Postulants() {
         isLoading={isLoading}
         onConfirm={deletePostulant}
       />
-      <h2>Postulants</h2>
+      <h2 className={styles.title}>Postulants</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (

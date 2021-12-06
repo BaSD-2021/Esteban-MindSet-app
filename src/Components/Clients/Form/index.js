@@ -131,7 +131,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.subtitle}>Form</h2>
+        <h2 className={styles.title}>Client</h2>
         <Input
           title="Name"
           id="name"

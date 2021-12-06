@@ -83,7 +83,7 @@ function profilesForm() {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
         <div>
-          <h2 className={styles.title}>Profile Form</h2>
+          <h2 className={styles.title}>Profile</h2>
           <Input
             title="Profile"
             name="profile"

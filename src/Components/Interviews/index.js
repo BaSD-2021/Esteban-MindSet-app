@@ -62,7 +62,7 @@ function Interviews() {
 
   return (
     <section className={styles.container}>
-      <h2>Interviews</h2>
+      <h2 className={styles.title}>Interviews</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (

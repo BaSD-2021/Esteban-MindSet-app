@@ -8,7 +8,6 @@ function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [errorValue, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
@@ -60,19 +59,6 @@ function Positions() {
     setShowModal(true);
   };
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   fetch(`${process.env.REACT_APP_API}/positions`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       savePositions(response.data);
-  //     })
-  //     .catch((errorValue) => {
-  //       setError(errorValue.toString());
-  //     })
-  //     .finally(() => setIsLoading(false));
-  // }, []);
-
   return (
     <section className={styles.container}>
       <Modal
@@ -82,7 +68,7 @@ function Positions() {
         isLoading={isLoading}
         onConfirm={deletePosition}
       />
-      <h2>Positions</h2>
+      <h2 className={styles.title}>Positions</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (

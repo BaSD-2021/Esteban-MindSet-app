@@ -153,7 +153,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Application</h2>
         <label className={styles.label}>
           <span>Position</span>
         </label>

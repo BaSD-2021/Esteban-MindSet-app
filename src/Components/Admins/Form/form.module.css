@@ -6,3 +6,11 @@
   align-items: center;
   margin: 50px auto;
 }
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+  margin: 10px;
+}
+

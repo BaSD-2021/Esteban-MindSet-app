@@ -96,7 +96,7 @@ function Form() {
 
   return (
     <form className={styles.container} onSubmit={save}>
-      <h2>Form</h2>
+      <h2 className={styles.title}>Admin</h2>
       <Input
         title="Name"
         disabled={isLoading}
