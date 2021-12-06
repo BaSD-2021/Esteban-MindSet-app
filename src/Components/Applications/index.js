@@ -8,7 +8,6 @@ import Table from '../Shared/Table/index';
 function Applications() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  const [applications, setApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
@@ -33,8 +32,7 @@ function Applications() {
             }
             return response.json();
           })
-          .then((response) => {
-            setApplications(response.data);
+          .then(() => {
             closeModal();
           })
           .catch((error) => {
@@ -43,6 +41,7 @@ function Applications() {
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -68,8 +67,7 @@ function Applications() {
         return response.json();
       })
       .then((response) => {
-        setApplications(response.data);
-        setInformationToShow(response);
+        setInformationToShow(response.data);
       })
       .catch((error) => {
         setErrorMessage(error);
@@ -81,7 +79,7 @@ function Applications() {
 
   const setInformationToShow = (data) => {
     const dataToPass = [];
-    data.data.map((row) => {
+    data.map((row) => {
       idToPass.push(row._id);
       dataToPass.push([
         row.positions ? row.positions.jobDescription : '-',
