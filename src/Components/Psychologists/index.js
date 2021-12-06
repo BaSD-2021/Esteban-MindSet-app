@@ -143,6 +143,7 @@ function Psychologists() {
 
   const handleSubmit = (item, e) => {
     e.preventDefault();
+
     const formattedAvailability = Object.keys(item.availability).reduce(
       (attrs, day) => ({
         ...attrs,

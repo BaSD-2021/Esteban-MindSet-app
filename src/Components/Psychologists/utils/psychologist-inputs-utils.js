@@ -1,35 +1,42 @@
 const PSYCHOLOGIST_FORM = [
   {
+    title: 'First Name',
     inputName: 'firstName',
     type: 'text',
     placeholder: 'Insert First Name'
   },
   {
+    title: 'Last Name',
     inputName: 'lastName',
     type: 'text',
     placeholder: 'Insert Last Name'
   },
   {
+    title: 'User Name',
     inputName: 'username',
     type: 'text',
     placeholder: 'Insert Username'
   },
   {
+    title: 'Password',
     inputName: 'password',
     type: 'text',
     placeholder: 'Insert Password'
   },
   {
+    title: 'E-Mail',
     inputName: 'email',
     type: 'text',
     placeholder: 'Insert Email'
   },
   {
+    title: 'Phone',
     inputName: 'phone',
     type: 'text',
     placeholder: 'Insert Phone'
   },
   {
+    title: 'Adress',
     inputName: 'address',
     type: 'text',
     placeholder: 'Insert Address'

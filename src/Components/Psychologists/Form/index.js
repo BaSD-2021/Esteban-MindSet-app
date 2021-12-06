@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
   return (
     <form className={styles.form}>
       {inputs.map((input) => (
-        <input
-          className={styles.dataInput}
+        <Input
+          title={input.title}
           key={input.inputName}
           type={input.type}
           name={input.inputName}
@@ -22,32 +23,32 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           <label key={item.label} className={styles.availabilityLabel}>
             {item.label}
           </label>
-          <input
+          <Input
             key={item.day.inputName}
             type={item.day.type}
             name={item.day.inputName}
             placeholder={item.day.placeholder}
             value={itemOnEdit.availability[item.label].availability}
             onChange={onChange}
-            className={styles.availabilityInput}
+            style={styles.availabilityInput}
           />
-          <input
+          <Input
             key={item.from.inputName}
             type={item.from.type}
             name={item.from.inputName}
             placeholder={item.from.placeholder}
             value={itemOnEdit.availability[item.label].from}
             onChange={onChange}
-            className={styles.availabilityInput}
+            style={styles.availabilityInput}
           />
-          <input
+          <Input
             key={item.to.inputName}
             type={item.to.type}
             name={item.to.inputName}
             placeholder={item.to.placeholder}
             value={itemOnEdit.availability[item.label].to}
             onChange={onChange}
-            className={styles.availabilityInput}
+            style={styles.availabilityInput}
           />
         </div>
       ))}

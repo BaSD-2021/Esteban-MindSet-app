@@ -8,6 +8,7 @@ function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [errorValue, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
@@ -98,7 +99,6 @@ function Positions() {
           </thead>
           <tbody className={styles.tbody}>
             {positions.map((position) => {
-              console.log(position);
               return (
                 <tr
                   onClick={() => history.push(`/positions/form?_id=${position._id}`)}

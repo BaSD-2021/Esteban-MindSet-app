@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
+import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -364,70 +366,60 @@ function PostulantsForm() {
   return (
     <div className={styles.container}>
       <form onSubmit={onSubmit}>
-        <h2 className={styles.title}>Form</h2>
-        <div>
-          <h3>Full name</h3>
-          <input
-            value={firstNameValue}
-            className={styles.input}
-            id="firstName"
-            name="firstName"
-            placeholder="First Name"
-            onChange={onChangeFirstNameInput}
-            type="text"
-            required
-          />
-          <input
-            className={styles.input}
-            id="lastName"
-            name="lastName"
-            placeholder="Last Name"
-            value={lastNameValue}
-            onChange={onChangeLastNameInput}
-            type="text"
-            required
-          />
-        </div>
-        <div>
-          <h3>Email</h3>
-          <input
-            className={styles.input}
-            id="email"
-            name="email"
-            placeholder="Email"
-            value={emailValue}
-            onChange={onChangeEmailInput}
-            type="email"
-            required
-          />
-        </div>
-        <div>
-          <h3>Password</h3>
-          <input
-            className={styles.input}
-            id="password"
-            name="password"
-            placeholder="Password"
-            value={passwordValue}
-            onChange={onChangePasswordInput}
-            type="password"
-            required
-          />
-        </div>
-        <div>
-          <h3>Contact Range</h3>
-          <input
-            className={styles.input}
+        <h2>Postulation</h2>
+        <Input
+          title="First Name"
+          value={firstNameValue}
+          id="firstName"
+          name="firstName"
+          placeholder="Boris"
+          onChange={onChangeFirstNameInput}
+          type="text"
+          required
+        />
+        <Input
+          title="Last Name"
+          id="lastName"
+          name="lastName"
+          placeholder="Johnson"
+          value={lastNameValue}
+          onChange={onChangeLastNameInput}
+          type="text"
+          required
+        />
+        <Input
+          title="E-Mail"
+          id="email"
+          name="email"
+          placeholder="bjohnson@gmail.com"
+          value={emailValue}
+          onChange={onChangeEmailInput}
+          type="email"
+          required
+        />
+        <Input
+          title="Password"
+          id="password"
+          name="password"
+          placeholder="Your password"
+          value={passwordValue}
+          onChange={onChangePasswordInput}
+          type="password"
+          required
+        />
+        <h3>Contact Range</h3>
+        <div className={styles.contact}>
+          <Input
+            title="From"
             id="contactFrom"
             name="contactFrom"
-            placeholder="Contact from"
             value={contactFromValue}
             onChange={onChangeContactFromValue}
             type="time"
             required
           />
-          <input
-            className={styles.input}
+          <Input
+            title="To"
             id="contactTo"
             name="contactTo"
             placeholder="Contact To"
@@ -437,244 +429,248 @@ function PostulantsForm() {
             required
           />
         </div>
-        <div>
-          <h3>Address</h3>
-          <input
-            className={styles.input}
-            id="address"
-            name="address"
-            placeholder="Address"
-            value={addressValue}
-            onChange={onChangeAddressInput}
-            type="text"
-            required
-          />
-        </div>
-        <div>
-          <h3>Birthday</h3>
-          <input
-            className={styles.input}
-            id="birthday"
-            name="birthday"
-            placeholder="birthday"
-            value={birthdayValue}
-            onChange={onChangeBirthdayInput}
-            type="date"
-            required
-          />
-        </div>
-        <div>
-          <h3>Availability</h3>
-          <input
-            className={styles.input}
-            id="available"
-            name="available"
-            checked={availableValue}
-            onChange={onChangeAvailableInput}
-            type="checkbox"
-            required
-          />
-        </div>
-        <div>
-          <h3>Phone</h3>
-          <input
-            className={styles.input}
-            id="phone"
-            name="phone"
-            placeholder="Phone"
-            value={phoneValue}
-            onChange={onChangePhoneInput}
-            type="tel"
-            required
-          />
-        </div>
-        <h3>Primary Studies</h3>
-        <div>
-          <input
-            className={styles.input}
-            id="primarySD"
-            name="primarySD"
-            placeholder="Start Date"
-            value={primarySDValue}
-            onChange={onChangePrimarySDValue}
-            type="date"
-            required
-          />
-          <input
-            className={styles.input}
-            id="primaryED"
-            name="primaryED"
-            placeholder="End Date"
-            value={primaryEDValue}
-            onChange={onChangePrimaryEDValue}
-            type="date"
-            required
-          />
-          <input
-            className={styles.input}
-            id="primary"
-            name="primary"
-            placeholder="Primary School Name"
-            value={primarySchoolValue}
-            onChange={onChangePrimarySchoolValueInput}
-            type="text"
-            required
-          />
-        </div>
-        <h3>Secondary Studies</h3>
-        <div>
-          <input
-            className={styles.input}
-            id="secondarySD"
-            name="secondarySD"
-            placeholder="Start Date"
-            value={secondarySDValue}
-            onChange={onChangeSecondarySDValue}
-            type="date"
-            required
-          />
-          <input
-            className={styles.input}
-            id="secondaryED"
-            name="secondaryED"
-            placeholder="End Date"
-            value={secondaryEDValue}
-            onChange={onChangeSecondaryEDValue}
-            type="date"
-            required
-          />
-          <input
-            className={styles.input}
-            id="secondary"
-            name="secondary"
-            placeholder="Secondary School Name"
-            value={secondarySchoolValue}
-            onChange={onChangeSecondarySchoolValueInput}
-            type="text"
-            required
-          />
-        </div>
-        <h3>Tertiary Studies</h3>
-        <div>
-          <input
-            className={styles.input}
-            id="tertiarySD"
-            name="tertiarySD"
-            placeholder="Start Date"
-            value={tertiarySDValue}
-            onChange={onChangeTertiarySDValue}
-            type="date"
-          />
-          <input
-            className={styles.input}
-            id="tertiaryED"
-            name="tertiaryED"
-            placeholder="End Date"
-            value={tertiaryEDValue}
-            onChange={onChangeTertiaryEDValue}
-            type="date"
-          />
-          <textarea
-            className={styles.input}
-            id="tertiaryDescription"
-            name="tertiaryDescription"
-            placeholder="Tertiary Description"
-            value={tertiaryDescriptionValue}
-            onChange={onChangeTertiaryDescriptionValueInput}
-            rows="5"
-            cols="33"
-          />
-          <input
-            className={styles.input}
-            id="tertiary"
-            name="tertiary"
-            placeholder="Tertiary Institute Name"
-            value={tertiaryInstituteValue}
-            onChange={onChangeTertiaryInstituteValueInput}
-            type="text"
-          />
-        </div>
+        <Input
+          title="Address"
+          id="address"
+          name="address"
+          placeholder="Fake Street 123"
+          value={addressValue}
+          onChange={onChangeAddressInput}
+          type="text"
+          required
+        />
+        <Input
+          title="Birthday"
+          id="birthday"
+          name="birthday"
+          value={birthdayValue}
+          onChange={onChangeBirthdayInput}
+          type="date"
+          required
+        />
+        <Input
+          title="Availability"
+          id="available"
+          name="available"
+          checked={availableValue}
+          onChange={onChangeAvailableInput}
+          type="checkbox"
+          required
+        />
+        <Input
+          title="Phone"
+          id="phone"
+          name="phone"
+          placeholder="123456789"
+          value={phoneValue}
+          onChange={onChangePhoneInput}
+          type="tel"
+          required
+        />
+        <h3>Elementary Studies</h3>
+        <Input
+          title="Start Date"
+          id="primarySD"
+          name="primarySD"
+          placeholder="Start Date"
+          value={primarySDValue}
+          onChange={onChangePrimarySDValue}
+          type="date"
+          required
+        />
+        <Input
+          title="Finish Date"
+          id="primaryED"
+          name="primaryED"
+          placeholder="End Date"
+          value={primaryEDValue}
+          onChange={onChangePrimaryEDValue}
+          type="date"
+          required
+        />
+        <Input
+          title="Elementary School Name"
+          id="primary"
+          name="primary"
+          placeholder="Fake Elementary School"
+          value={primarySchoolValue}
+          onChange={onChangePrimarySchoolValueInput}
+          type="text"
+          required
+        />
+        <h3>High School Studies</h3>
+        <Input
+          title="Start Date"
+          id="secondarySD"
+          name="secondarySD"
+          value={secondarySDValue}
+          onChange={onChangeSecondarySDValue}
+          type="date"
+          required
+        />
+        <Input
+          title="Finish Date"
+          id="secondaryED"
+          name="secondaryED"
+          value={secondaryEDValue}
+          onChange={onChangeSecondaryEDValue}
+          type="date"
+          required
+        />
+        <Input
+          title="High school Name"
+          id="secondary"
+          name="secondary"
+          placeholder="Fake High School"
+          value={secondarySchoolValue}
+          onChange={onChangeSecondarySchoolValueInput}
+          type="text"
+          required
+        />
+        <h3>Superior Studies</h3>
+        <Input
+          title="Start Date"
+          id="tertiarySD"
+          name="tertiarySD"
+          value={tertiarySDValue}
+          onChange={onChangeTertiarySDValue}
+          type="date"
+        />
+        <Input
+          title="Finish Date"
+          id="tertiaryED"
+          name="tertiaryED"
+          value={tertiaryEDValue}
+          onChange={onChangeTertiaryEDValue}
+          type="date"
+        />
+        <Textarea
+          title="Superior Studies Description"
+          id="tertiaryDescription"
+          name="tertiaryDescription"
+          placeholder="Your Superior Studies"
+          value={tertiaryDescriptionValue}
+          onChange={onChangeTertiaryDescriptionValueInput}
+          rows="5"
+          cols="33"
+        />
+        <Input
+          title="Superior Studies Institute Name"
+          id="tertiary"
+          name="tertiary"
+          placeholder="Fake Institute"
+          value={tertiaryInstituteValue}
+          onChange={onChangeTertiaryInstituteValueInput}
+          type="text"
+        />
         <h3>University Studies</h3>
-        <div>
-          <input
-            className={styles.input}
-            id="universitySD"
-            name="universitySD"
-            placeholder="Start Date"
-            value={universitySDValue}
-            onChange={onChangeUniversitySDValue}
-            type="date"
-          />
-          <input
-            className={styles.input}
-            id="universityED"
-            name="universityED"
-            placeholder="End Date"
-            value={universityEDValue}
-            onChange={onChangeUniversityEDValue}
-            type="date"
-          />
-          <textarea
-            className={styles.input}
-            id="universityDescription"
-            name="universityDescription"
-            placeholder="University Description"
-            value={universityDescriptionValue}
-            onChange={onChangeUniversityDescriptionValueInput}
-            rows="5"
-            cols="33"
-          />
-          <input
-            className={styles.input}
-            id="university"
-            name="university"
-            placeholder="University Name"
-            value={universityInstituteValue}
-            onChange={onChangeUniversityInstituteValueInput}
-            type="text"
-          />
-        </div>
+        <Input
+          title="Start Date"
+          id="universitySD"
+          name="universitySD"
+          value={universitySDValue}
+          onChange={onChangeUniversitySDValue}
+          type="date"
+        />
+        <Input
+          title="Finish Date"
+          id="universityED"
+          name="universityED"
+          value={universityEDValue}
+          onChange={onChangeUniversityEDValue}
+          type="date"
+        />
+        <Textarea
+          title="University Studies Description"
+          id="universityDescription"
+          name="universityDescription"
+          placeholder="Your University Studies"
+          value={universityDescriptionValue}
+          onChange={onChangeUniversityDescriptionValueInput}
+          rows="5"
+          cols="33"
+        />
+        <Input
+          title="University Name"
+          id="university"
+          name="university"
+          placeholder="Fake University"
+          value={universityInstituteValue}
+          onChange={onChangeUniversityInstituteValueInput}
+          type="text"
+        />
         <h3>Informal Studies</h3>
-        <div>
-          <input
-            className={styles.input}
-            id="informalSD"
-            name="informalSD"
-            placeholder="Start Date"
-            value={informalSDValue}
-            onChange={onChangeInformalSDValue}
-            type="date"
-          />
-          <input
-            className={styles.input}
-            id="informalED"
-            name="informalED"
-            placeholder="End Date"
-            value={informalEDValue}
-            onChange={onChangeInformalEDValue}
-            type="date"
-          />
-          <textarea
-            className={styles.input}
-            id="informalDescription"
-            name="informalDescription"
-            placeholder="Informal Studies Description"
-            value={informalDescriptionValue}
-            onChange={onChangeInformalDescriptionValueInput}
-            rows="5"
-            cols="33"
-          />
-          <input
-            className={styles.input}
-            id="informal"
-            name="informal"
-            placeholder="Institute Name"
-            value={informalInstituteValue}
-            onChange={onChangeInformalInstituteValueInput}
-            type="text"
-          />
-        </div>
+        <Input
+          title="Start Date"
+          id="informalSD"
+          name="informalSD"
+          value={informalSDValue}
+          onChange={onChangeInformalSDValue}
+          type="date"
+        />
+        <Input
+          title="End Date"
+          id="informalED"
+          name="informalED"
+          value={informalEDValue}
+          onChange={onChangeInformalEDValue}
+          type="date"
+        />
+        <Textarea
+          title="Informal Studies Description"
+          id="informalDescription"
+          name="informalDescription"
+          placeholder="Informal Studies Description"
+          value={informalDescriptionValue}
+          onChange={onChangeInformalDescriptionValueInput}
+          rows="5"
+          cols="33"
+        />
+        <Input
+          title="Institute Name"
+          id="informal"
+          name="informal"
+          placeholder="Fake Institute"
+          value={informalInstituteValue}
+          onChange={onChangeInformalInstituteValueInput}
+          type="text"
+        />
         <h3>Work Experience</h3>
+        <Input
+          title="Company Name"
+          id="company"
+          name="company"
+          placeholder="Fake Company"
+          value={workExperienceCompanyValue}
+          onChange={onChangeWorkExperienceCompanyValueInput}
+          type="text"
+        />
+        <Input
+          title="Start Date"
+          id="workExperienceSD"
+          name="workExperienceSD"
+          value={workExperienceSDValue}
+          onChange={onChangeWorkExperienceSDValue}
+          type="date"
+        />
+        <Input
+          title="End Date"
+          id="workExperienceED"
+          name="workExperienceED"
+          value={workExperienceEDValue}
+          onChange={onChangeWorkExperienceEDValue}
+          type="date"
+        />
+        <Textarea
+          title="Work Experience Description"
+          id="workExperienceDescription"
+          name="workExperienceDescription"
+          placeholder="Your Work Experience Description"
+          value={workExperienceDescriptionValue}
+          onChange={onChangeWorkExperienceDescriptionValueInput}
+          rows="5"
+          cols="33"
+        />
         <div>
           <input
             className={styles.input}

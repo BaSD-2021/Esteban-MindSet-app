@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-import Modal from '../modal/modal.js';
+// import Modal from '../modal/modal';
+import Input from '../../Shared/Input';
+import Modal from '../../Shared/Modal';
 import Button from '../../Shared/Button';
 
 let fetchMethod = 'POST';
@@ -94,6 +96,39 @@ function Form() {
 
   return (
     <form className={styles.container} onSubmit={save}>
+      <h2>Form</h2>
+      <Input
+        title="Name"
+        disabled={isLoading}
+        type="text"
+        name="name"
+        placeholder="Paul Walker"
+        value={nameValue}
+        onChange={(e) => setNameValue(e.target.value)}
+        required
+      />
+      <Input
+        title="User Name"
+        disabled={isLoading}
+        type="text"
+        name="username"
+        placeholder="paul.walker"
+        value={usernameValue}
+        onChange={(e) => setUsernameValue(e.target.value)}
+        required
+      />
+      <Input
+        title="Password"
+        disabled={isLoading}
+        type="password"
+        name="name"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+        required
+      />
+      <button type="submit" disabled={isLoading} className={styles.button}>
+        Register
+      </button>
       <h2 className={styles.title}>Form</h2>
       <div className={styles.inputCnt}>
         <label className={styles.labelTitle}>Name</label>
