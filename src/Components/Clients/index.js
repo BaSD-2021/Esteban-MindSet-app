@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -21,20 +22,15 @@ function Clients() {
       .then(() => {
         fetch(`${process.env.REACT_APP_API}/clients`)
           .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
+            if (response.status !== 204) {
+              throw 'There was an error while deleting this client.';
             }
-            return response.json();
-          })
-          .then((response) => {
             setClients(response.data);
             closeModal();
+          })
+          .catch((err) => {
+            setErrorMessage(err);
           });
-      })
-      .catch((err) => {
-        setErrorMessage(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -43,6 +39,9 @@ function Clients() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+  const closeErrModal = () => {
+    setErrorMessage(false);
   };
 
   const preventAndShow = (e, id) => {
@@ -120,6 +119,14 @@ function Clients() {
         isLoading={isLoading}
         onConfirm={deleteClient}
       />
+      {errorMessage && (
+        <ErrorModal
+          message={errorMessage}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/Clients/Form">
         <Button name="addButton" entity="CLIENT" />
       </Link>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import Button from '../Shared/Button';
 
 function Interviews() {
@@ -20,8 +21,10 @@ function Interviews() {
     })
       .then(() => {
         fetch(`${process.env.REACT_APP_API}/interviews`)
-          .then((response) => response.json())
           .then((response) => {
+            if (response.status !== 204) {
+              throw 'There was an error while deleting this interview.';
+            }
             saveInterviews(response.data);
             closeModal();
           })
@@ -51,6 +54,9 @@ function Interviews() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+  const closeErrModal = () => {
+    setErrorMessage(false);
   };
 
   const preventAndShow = (e, id) => {
@@ -108,6 +114,14 @@ function Interviews() {
         isLoading={isLoading}
         onConfirm={deleteInterview}
       />
+      {errorMessage && (
+        <ErrorModal
+          message={errorMessage}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/Interviews/Form" className={styles.button}>
         <Button name="addButton" entity="INTERVIEW" />
       </Link>

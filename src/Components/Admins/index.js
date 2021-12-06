@@ -57,7 +57,7 @@ const Admins = () => {
 
   const handleDelete = () => {
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
+    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete.id}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
           throw 'There was an error while deleting this admin.';
@@ -118,7 +118,14 @@ const Admins = () => {
           </table>
         </div>
       )}
-      {error && <ErrorModal message={error} onClose={closeErrModal} />}
+      {error && (
+        <ErrorModal
+          message={error}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/admins/form">
         <Button name="addButton" entity="ADMIN" />
       </Link>

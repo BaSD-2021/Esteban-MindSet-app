@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -21,14 +22,9 @@ function Applications() {
       .then(() => {
         fetch(`${process.env.REACT_APP_API}/applications`)
           .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
+            if (response.status !== 204) {
+              throw 'There was an error while deleting this application.';
             }
-            return response.json();
-          })
-          .then((response) => {
             setApplications(response.data);
             closeModal();
           })
@@ -44,7 +40,9 @@ function Applications() {
   const closeModal = () => {
     setShowModal(false);
   };
-
+  const closeErrModal = () => {
+    setErrorMessage(false);
+  };
   const preventAndShow = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
@@ -125,9 +123,6 @@ function Applications() {
           </tbody>
         </table>
       )}
-      <div id="error_message" className={styles.errorMessage}>
-        {errorMessage.message}
-      </div>
       <Modal
         showModal={showModal}
         title="Do you want to proceed and delete this application?"
@@ -135,6 +130,14 @@ function Applications() {
         isLoading={isLoading}
         onConfirm={deleteApplication}
       />
+      {errorMessage && (
+        <ErrorModal
+          message={errorMessage}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <Link to="/Applications/Form">
         <Button name="addButton" entity="APPLICATION" />
       </Link>

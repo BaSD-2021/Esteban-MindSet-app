@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  const [errorValue, setError] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
@@ -19,20 +20,21 @@ function Positions() {
       method: 'DELETE'
     }).then(() => {
       fetch(`${process.env.REACT_APP_API}/positions`)
-        .then((response) => response.json())
         .then((response) => {
+          if (response.status !== 204) {
+            throw 'There was an error while deleting this position.';
+          }
           savePositions(response.data);
           closeModal();
         })
-        .catch((errorValue) => {
-          setError(errorValue.toString());
+        .catch((error) => {
+          setError(error);
         })
         .finally(() => {
           setIsLoading(false);
         });
     });
   };
-
   useEffect(() => {
     setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/positions`)
@@ -40,8 +42,8 @@ function Positions() {
       .then((response) => {
         savePositions(response.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        setError(error.toString());
       })
       .finally(() => {
         setIsLoading(false);
@@ -51,6 +53,9 @@ function Positions() {
   const closeModal = () => {
     setShowModal(false);
   };
+  const closeErrModal = () => {
+    setError(false);
+  };
 
   const preventAndShow = (e, id) => {
     e.preventDefault();
@@ -58,19 +63,6 @@ function Positions() {
     setIdToDelete(id);
     setShowModal(true);
   };
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   fetch(`${process.env.REACT_APP_API}/positions`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       savePositions(response.data);
-  //     })
-  //     .catch((errorValue) => {
-  //       setError(errorValue.toString());
-  //     })
-  //     .finally(() => setIsLoading(false));
-  // }, []);
 
   return (
     <section className={styles.container}>
@@ -98,7 +90,6 @@ function Positions() {
           </thead>
           <tbody className={styles.tbody}>
             {positions.map((position) => {
-              console.log(position);
               return (
                 <tr
                   onClick={() => history.push(`/positions/form?_id=${position._id}`)}
@@ -122,6 +113,14 @@ function Positions() {
             })}
           </tbody>
         </table>
+      )}
+      {error && (
+        <ErrorModal
+          message={error}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
       )}
       <Link to="/Positions/Form" className={styles.button}>
         <Button name="addButton" entity="POSITION" />
