@@ -3,14 +3,17 @@ import Modal from '../Shared/Modal';
 import styles from './profiles.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table';
 
 function Profiles() {
   const [showModal, setShowModal] = useState(false);
-  const [profiles, setProfiles] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(undefined);
+  const [idToDelete, setIdToDelete] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
+  const columnName = ['Name', 'Actions'];
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +26,9 @@ function Profiles() {
         }
         return response.json();
       })
-      .then((response) => setProfiles(response.data))
+      .then((response) => {
+        setInformationToShow(response.data);
+      })
       .catch((error) => setError(error.toString()))
       .finally(() => setIsLoading(false));
   }, []);
@@ -32,20 +37,14 @@ function Profiles() {
     profile ? history.push(`/profiles/form?_id=${profile}`) : history.push(`/profiles/form`);
   };
 
-  const handleDelete = (event, profile) => {
-    event.stopPropagation();
-    setSelectedItem(profile._id);
-    setShowModal(true);
-  };
-
   const closeModal = () => {
     setShowModal(false);
-    setSelectedItem(undefined);
+    setIdToDelete('');
   };
 
   const deleteProfile = () => {
     setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/profiles/${selectedItem}`;
+    const url = `${process.env.REACT_APP_API}/profiles/${idToDelete}`;
     fetch(url, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
@@ -62,15 +61,34 @@ function Profiles() {
             }
             return response.json();
           })
-          .then((response) => {
-            setProfiles(response.data);
+          .then(() => {
             closeModal();
           });
       })
       .catch((error) => setError(error.toString()))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        history.go(0);
+      });
   };
 
+  const preventAndShow = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdToDelete(id);
+    setShowModal(true);
+  };
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([row.name ? row.name : '-']);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
   return (
     <section className={styles.container}>
       <Modal
@@ -85,29 +103,13 @@ function Profiles() {
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profiles.map((profile) => {
-                return (
-                  <tr key={profile._id} onClick={() => redirectToForm(profile._id)}>
-                    <td>{profile.name}</td>
-                    <td>
-                      <Button
-                        name="deleteButton"
-                        onClick={(event) => handleDelete(event, profile)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <Table
+            columnsName={columnName}
+            id={idToPass}
+            tableInfo={infoToShow}
+            deleteFunction={preventAndShow}
+            redirectFunction={redirectToForm}
+          />
         )}
       </div>
       <div className={styles.error}>{error}</div>
