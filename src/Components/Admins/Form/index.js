@@ -126,7 +126,9 @@ function Form() {
         onChange={(e) => setPasswordValue(e.target.value)}
         required
       />
-      <Button name="saveButton" disabled={isLoading}></Button>
+      <div className={styles.buttonContainer}>
+        <Button name="saveButton" disabled={isLoading}></Button>
+      </div>
       {error && (
         <Modal>
           {`${error}`}

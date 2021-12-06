@@ -111,9 +111,11 @@ function Profiles() {
         )}
       </div>
       <div className={styles.error}>{error}</div>
-      <Link to="/Profiles/Form">
-        <Button name="addButton" entity="PROFILE" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Profiles/Form">
+          <Button name="addButton" entity="PROFILE" />
+        </Link>
+      </div>
     </section>
   );
 }

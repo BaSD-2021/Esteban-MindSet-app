@@ -56,4 +56,10 @@
   border-radius: 5px;
 }
 
+.buttonContainer{
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
 

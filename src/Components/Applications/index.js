@@ -135,9 +135,11 @@ function Applications() {
         isLoading={isLoading}
         onConfirm={deleteApplication}
       />
-      <Link to="/Applications/Form">
-        <Button name="addButton" entity="APPLICATION" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Applications/Form">
+          <Button name="addButton" entity="APPLICATION" />
+        </Link>
+      </div>
     </section>
   );
 }

@@ -109,9 +109,11 @@ function Positions() {
           </tbody>
         </table>
       )}
-      <Link to="/Positions/Form" className={styles.button}>
-        <Button name="addButton" entity="POSITION" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Positions/Form" className={styles.button}>
+          <Button name="addButton" entity="POSITION" />
+        </Link>
+      </div>
     </section>
   );
 }

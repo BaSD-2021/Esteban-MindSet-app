@@ -217,7 +217,9 @@ function Form() {
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>

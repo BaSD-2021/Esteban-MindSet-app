@@ -733,7 +733,9 @@ function PostulantsForm() {
           cols="33"
           disabled={isLoading}
         />
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
       </form>
       <div className={styles.showError}>{showError.message}</div>
     </div>

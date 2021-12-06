@@ -120,9 +120,11 @@ const Admins = () => {
           <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
         </Modal>
       )}
-      <Link to="/admins/form">
-        <Button name="addButton" entity="ADMIN" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/admins/form">
+          <Button name="addButton" entity="ADMIN" />
+        </Link>
+      </div>
     </section>
   );
 };

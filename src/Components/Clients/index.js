@@ -120,9 +120,11 @@ function Clients() {
         isLoading={isLoading}
         onConfirm={deleteClient}
       />
-      <Link to="/Clients/Form">
-        <Button name="addButton" entity="CLIENT" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Clients/Form">
+          <Button name="addButton" entity="CLIENT" />
+        </Link>
+      </div>
     </section>
   );
 }

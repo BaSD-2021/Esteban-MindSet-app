@@ -232,7 +232,9 @@ function Form() {
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}
         </div>
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
       </form>
     </div>
   );

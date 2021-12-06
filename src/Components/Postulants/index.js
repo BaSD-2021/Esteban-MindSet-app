@@ -117,9 +117,11 @@ function Postulants() {
         </table>
       )}
       <div className={styles.showError}>{showError.message}</div>
-      <Link to="/Postulants/Form" className={styles.button}>
-        <Button name="addButton" entity="POSTULANT" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Postulants/Form" className={styles.button}>
+          <Button name="addButton" entity="POSTULANT" />
+        </Link>
+      </div>
     </section>
   );
 }

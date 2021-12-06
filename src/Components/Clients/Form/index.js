@@ -210,7 +210,9 @@ function Form() {
           onChange={onChangeDescription}
           disabled={isLoading}
         />
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
       </form>
       <div id="error_message" className={styles.errorMessage}>
         {errorMessage.message}

@@ -108,9 +108,11 @@ function Interviews() {
         isLoading={isLoading}
         onConfirm={deleteInterview}
       />
-      <Link to="/Interviews/Form" className={styles.button}>
-        <Button name="addButton" entity="INTERVIEW" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Interviews/Form" className={styles.button}>
+          <Button name="addButton" entity="INTERVIEW" />
+        </Link>
+      </div>
     </section>
   );
 }

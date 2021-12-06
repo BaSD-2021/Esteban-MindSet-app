@@ -260,7 +260,9 @@ function Form() {
           onChange={onChangeNotes}
           disabled={isLoading}
         />
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>

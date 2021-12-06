@@ -94,7 +94,9 @@ function profilesForm() {
             required
           />
         </div>
-        <Button name="saveButton" disabled={isLoading} />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{error}</div>
       </form>
     </div>

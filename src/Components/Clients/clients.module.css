@@ -50,3 +50,9 @@
   color: #002147;
   margin: 10px;
 }
+
+.buttonContainer{
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
