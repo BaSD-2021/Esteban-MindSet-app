@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
-import Input from '../Input';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 function profilesForm() {
@@ -86,6 +86,7 @@ function profilesForm() {
         <div>
           <h2 className={styles.title}>Profile Form</h2>
           <Input
+            title="Profile"
             name="profile"
             value={profileValue}
             onChange={onChangeProfileInput}

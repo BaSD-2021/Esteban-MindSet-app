@@ -8,6 +8,7 @@ import Table from '../Shared/Table';
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [infoToShow, setInfoToShow] = useState([]);

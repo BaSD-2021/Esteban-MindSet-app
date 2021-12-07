@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 function Form() {
@@ -13,6 +14,7 @@ function Form() {
   const [notesValue, setNotesValue] = useState('');
   const [postulantsValue, setPostulantsValue] = useState([]);
   const [clientsValue, setClientsValue] = useState([]);
+  const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
   const query = useQuery();
   const history = useHistory();
@@ -116,6 +118,15 @@ function Form() {
         setError(errorValue.toString());
       });
 
+    fetch(`${process.env.REACT_APP_API}/applications`)
+      .then((response) => response.json())
+      .then((res) => {
+        setApplicationValue(res.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      });
+
     if (interviewId) {
       fetch(url1)
         .then((response) => response.json())
@@ -200,39 +211,46 @@ function Form() {
           <option value="confirmed">Confirmed</option>
         </select>
         <label className={styles.label}>
-          <span className={styles.span}>Date</span>
+          <span className={styles.span}>Application ID</span>
         </label>
-        <input
-          id="date"
-          name="date"
-          type="datetime-local"
-          required
-          value={dateValue}
-          onChange={onChangeDate}
-          className={styles.input}
-        />
-        <label className={styles.label}>
-          <span className={styles.span}>Application Id</span>
-        </label>
-        <input
+        <select
+          title="Application ID"
           id="application"
           name="application"
           type="text"
-          required
           value={applicationIdValue}
           onChange={onChangeApplication}
           className={styles.input}
+          required
+        >
+          <option value={''} disabled>
+            Select one
+          </option>
+          {applicationValue.map((application) => {
+            return (
+              <option value={application._id} key={application._id}>
+                {application._id}
+              </option>
+            );
+          })}
+          ;
+        </select>
+        <Input
+          title="Date"
+          id="date"
+          name="date"
+          type="datetime-local"
+          value={dateValue}
+          onChange={onChangeDate}
+          required
         />
-        <label className={styles.label}>
-          <span className={styles.span}>Notes</span>
-        </label>
-        <input
+        <Input
+          title="Notes"
           id="notes"
           name="notes"
           type="text"
           value={notesValue}
           onChange={onChangeNotes}
-          className={styles.input}
         />
         <Button name="saveButton" />
         <div className={styles.error}>{errorValue}</div>

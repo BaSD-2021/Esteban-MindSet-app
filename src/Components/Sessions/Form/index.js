@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import Select from '../Select';
-import TextArea from '../TextArea';
-import Input from '../Input';
+import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');
@@ -188,6 +188,7 @@ function sessionsForm() {
           required
         />
         <Input
+          title="Date"
           name="date"
           value={dateValue}
           onChange={onChangeDateInput}
@@ -195,7 +196,8 @@ function sessionsForm() {
           disabled={isLoading}
           required
         />
-        <TextArea
+        <Textarea
+          title="Notes"
           name="notes"
           value={notesValue}
           onChange={onChangeNotesInput}
