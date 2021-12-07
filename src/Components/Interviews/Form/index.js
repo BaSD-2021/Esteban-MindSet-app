@@ -18,46 +18,12 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
-  const [arrayApplicationValue, setArrayApplicationValue] = useState([]);
-  const [arrayClientsValue, setArrayClientsValue] = useState([]);
-  const [arrayPostulantsValue, setArrayPostulantsValue] = useState([]);
-  // const [arrayPostulantsName, setArrayPostulantsName] = useState([]);
+  const [selectPostulant, setSelectPostulant] = useState([]);
+  const [selectClient, setSelectClient] = useState([]);
+  const [selectApplication, setSelectApplication] = useState([]);
 
   const query = useQuery();
   const history = useHistory();
-
-  const selectApplicationId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayApplicationValue(array);
-  };
-
-  const selectClientsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayClientsValue(array);
-  };
-
-  const selectPostulantsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayPostulantsValue(array);
-  };
-
-  // const selectPostulantsName = (data) => {
-  //   const array = [];
-  //   data.map((generic) => {
-  //     array.push(generic.firstName);
-  //   });
-  //   setArrayPostulantsName(array);
-  //   console.log(setArrayPostulantsName);
-  // };
 
   let fetchMethod = 'POST';
 
@@ -143,8 +109,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((res) => {
-        selectPostulantsId(res.data);
-        // selectPostulantsName(res.data);
+        setSelectPostulant(
+          res.data.map((postulant) => ({
+            value: postulant._id,
+            label: `${postulant.firstName} ${postulant.lastName}`
+          }))
+        );
         setPostulantsValue(res.data);
       })
       .catch((errorValue) => {
@@ -154,7 +124,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
-        selectClientsId(res.data);
+        setSelectClient(
+          res.data.map((client) => ({
+            value: client._id,
+            label: client.name
+          }))
+        );
         setClientsValue(res.data);
       })
       .catch((errorValue) => {
@@ -164,7 +139,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/applications`)
       .then((response) => response.json())
       .then((res) => {
-        selectApplicationId(res.data);
+        setSelectApplication(
+          res.data.map((application) => ({
+            value: application._id,
+            label: application._id
+          }))
+        );
         setApplicationValue(res.data);
       })
       .catch((errorValue) => {
@@ -190,21 +170,19 @@ function Form() {
           title="Postulant Name"
           id="postulantId"
           name="postulantId"
-          type="text"
-          required
           value={postulantIdValue}
           onChange={onChangePostulantId}
-          arrayToMap={arrayPostulantsValue}
-          // entityForShow={arrayPostulantsName}
+          arrayToMap={selectPostulant}
+          required
         />
         <Select
           title="Client Name"
           id="clientId"
           name="clientId"
-          required
           value={clientIdValue}
           onChange={onChangeClientId}
-          arrayToMap={arrayClientsValue}
+          arrayToMap={selectClient}
+          required
         />
         <Select
           title="Status"
@@ -213,7 +191,13 @@ function Form() {
           required
           value={statusValue}
           onChange={onChangeStatus}
-          arrayToMap={['successful', 'failed', 'cancelled', 'assigned', 'confirmed']}
+          arrayToMap={[
+            { value: 'successful', label: 'Successful' },
+            { value: 'failed', label: 'Failed' },
+            { value: 'cancelled', label: 'Cancelled' },
+            { value: 'assigned', label: 'Assigned' },
+            { value: 'confirmed', label: 'Confirmed' }
+          ]}
         />
         <Select
           title="Application ID"
@@ -222,7 +206,7 @@ function Form() {
           required
           value={applicationIdValue}
           onChange={onChangeApplication}
-          arrayToMap={arrayApplicationValue}
+          arrayToMap={selectApplication}
         />
         <Input
           title="Date"

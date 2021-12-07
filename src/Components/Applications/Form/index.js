@@ -16,38 +16,14 @@ function Form() {
   const [postulants, setPostulants] = useState([]);
   const [interviews, setInterviews] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [arrayPositionsValue, setArrayPositionsValue] = useState([]);
-  const [arrayPostulantsValue, setArrayPostulantsValue] = useState([]);
-  const [arrayDateValue, setArrayDateValue] = useState([]);
+  const [selectPosition, setSelectPosition] = useState([]);
+  const [selectPostulant, setSelectPostulant] = useState([]);
+  const [selectInterviewDate, setSelectInterviewDate] = useState([]);
   const query = useQuery();
   const history = useHistory();
 
   const applicationId = query.get('_id');
   let fetchMethod = 'POST';
-
-  const selectPositionsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayPositionsValue(array);
-  };
-
-  const selectPostulantsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayPostulantsValue(array);
-  };
-
-  const selectDateId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayDateValue(array);
-  };
 
   const onLoading = (data) => {
     setPostulantId(data.data[0].postulants ? data.data[0].postulants._id : '');
@@ -118,7 +94,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
-        selectPositionsId(res.data);
+        setSelectPosition(
+          res.data.map((position) => ({
+            value: position._id,
+            label: position.jobDescription
+          }))
+        );
         setPositions(res.data);
       })
       .catch((err) => {
@@ -134,7 +115,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
-        selectPostulantsId(res.data);
+        setSelectPostulant(
+          res.data.map((postulant) => ({
+            value: postulant._id,
+            label: `${postulant.firstName} ${postulant.lastName}`
+          }))
+        );
         setPostulants(res.data);
       })
       .catch((err) => {
@@ -150,7 +136,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
-        selectDateId(res.data);
+        setSelectInterviewDate(
+          res.data.map((interview) => ({
+            value: interview._id,
+            label: interview.date
+          }))
+        );
         setInterviews(res.data);
       })
       .catch((err) => {
@@ -185,7 +176,7 @@ function Form() {
           name="positionId"
           value={positionId}
           onChange={onChangePositionId}
-          arrayToMap={arrayPositionsValue}
+          arrayToMap={selectPosition}
           required
         />
         <Select
@@ -194,7 +185,7 @@ function Form() {
           name="postulantId"
           value={postulantId}
           onChange={onChangePostulantId}
-          arrayToMap={arrayPostulantsValue}
+          arrayToMap={selectPostulant}
           required
         />
         <Select
@@ -203,7 +194,7 @@ function Form() {
           name="interview"
           value={date}
           onChange={onChangeDate}
-          arrayToMap={arrayDateValue}
+          arrayToMap={selectInterviewDate}
           required
         />
         <Input

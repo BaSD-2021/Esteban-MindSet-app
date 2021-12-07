@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Select from '../../Shared/Select';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');
@@ -13,6 +15,8 @@ function Form() {
   const [isOpenValue, setIsOpenValue] = useState('');
   const [clientsValue, setClientsValue] = useState([]);
   const [professionalProfilesValue, setProfessionalProfilesValue] = useState([]);
+  const [selectClient, setSelectClient] = useState([]);
+  const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
   const [errorValue, setError] = useState('');
   const query = useQuery();
   const history = useHistory();
@@ -97,6 +101,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/profiles`)
       .then((response) => response.json())
       .then((res) => {
+        setSelectProfessionalProfile(
+          res.data.map((proffesionalprofile) => ({
+            value: proffesionalprofile._id,
+            label: proffesionalprofile.name
+          }))
+        );
         setProfessionalProfilesValue(res.data);
       })
       .catch((errorValue) => {
@@ -106,6 +116,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
+        setSelectClient(
+          res.data.map((client) => ({
+            value: client._id,
+            label: client.name
+          }))
+        );
         setClientsValue(res.data);
       })
       .catch((errorValue) => {
@@ -127,29 +143,15 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Form</h2>
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Client Name</span>
-        </label>
-        <select
+        <Select
+          title="Client Name"
           id="clientId"
           name="clientId"
-          type="text"
-          required
           value={clientIdValue}
           onChange={onChangeClientId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {clientsValue.map((client) => {
-            return (
-              <option value={client._id} key={client._id}>
-                {client.name}
-              </option>
-            );
-          })}
-        </select>
+          arrayToMap={selectClient}
+          required
+        />
         <Input
           title="Job Description"
           id="jobDescription"
@@ -168,47 +170,27 @@ function Form() {
           onChange={onChangeVacancy}
           required
         />
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Professional Profile</span>
-        </label>
-        <select
+        <Select
+          title="Professional Profile"
           id="professionalProfileId"
           name="professionalProfileId"
-          type="text"
-          required
           value={professionalProfileIdValue}
           onChange={onChangeProfessionalProfileId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {professionalProfilesValue.map((professionalProfile) => {
-            return (
-              <option value={professionalProfile._id} key={professionalProfile._id}>
-                {professionalProfile.name}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Is Open</span>
-        </label>
-        <select
+          arrayToMap={selectProfessionalProfile}
+          required
+        />
+        <Select
+          title="Is Open"
           id="isOpen"
           name="isOpen"
-          type="text"
-          required
           value={isOpenValue}
           onChange={onChangeIsOpen}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
+          arrayToMap={[
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' }
+          ]}
+          required
+        />
         <Button name="saveButton" />
         <div className={styles.error}>{errorValue}</div>
       </form>

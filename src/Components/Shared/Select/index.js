@@ -20,8 +20,8 @@ function Select({ title, id, name, value, onChange, type, required, style, array
         </option>
         {arrayToMap.map((entity) => {
           return (
-            <option value={entity} key={entity}>
-              {entity}
+            <option value={entity.value} key={entity.value}>
+              {entity.label}
             </option>
           );
         })}
