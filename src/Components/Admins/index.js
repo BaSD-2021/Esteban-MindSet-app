@@ -57,7 +57,7 @@ const Admins = () => {
 
   const handleDelete = () => {
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete.id}`, { method: 'DELETE' })
+    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete._id}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status !== 204) {
           throw 'There was an error while deleting this admin.';

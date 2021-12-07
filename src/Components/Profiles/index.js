@@ -51,21 +51,19 @@ function Profiles() {
   const deleteProfile = () => {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/profiles/${selectedItem}`;
-    fetch(url, { method: 'DELETE' })
+    fetch(url, { method: 'DELETE', headers: { 'Content-type': 'application/json' } })
       .then((response) => {
         if (response.status !== 204) {
-          throw 'There was an error while deleting this profile.';
+          throw 'There was an error while deleting this postulant.';
         }
-        return fetch(`${process.env.REACT_APP_API}/profiles`).then((response) => {
-          if (response.status !== 204) {
-            throw 'There was an error while deleting this profile.';
-          }
-          setProfiles(response.data);
-          closeModal();
-        });
+        setProfiles(response.data);
+        closeModal();
       })
       .catch((error) => setError(error))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        history.go(0);
+        setIsLoading(false);
+      });
   };
 
   return (

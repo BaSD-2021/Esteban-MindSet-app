@@ -9,7 +9,7 @@ function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
@@ -17,24 +17,25 @@ function Positions() {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/positions/${idToDelete}`;
     fetch(url, {
-      method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/positions`)
-        .then((response) => {
-          if (response.status !== 204) {
-            throw 'There was an error while deleting this position.';
-          }
-          savePositions(response.data);
-          closeModal();
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    });
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json' }
+    })
+      .then((response) => {
+        if (response.status !== 204) {
+          throw 'There was an error while deleting this position.';
+        }
+        savePositions(response.data);
+        closeModal();
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        history.go(0);
+        setIsLoading(false);
+      });
   };
+
   useEffect(() => {
     setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/positions`)

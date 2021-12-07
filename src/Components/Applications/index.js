@@ -17,23 +17,22 @@ function Applications() {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/applications/${idToDelete}`;
     fetch(url, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json' }
     })
-      .then(() => {
-        fetch(`${process.env.REACT_APP_API}/applications`)
-          .then((response) => {
-            if (response.status !== 204) {
-              throw 'There was an error while deleting this application.';
-            }
-            setApplications(response.data);
-            closeModal();
-          })
-          .catch((error) => {
-            setErrorMessage(error);
-          });
+      .then((response) => {
+        if (response.status !== 204) {
+          throw 'There was an error while deleting this application.';
+        }
+        setApplications(response.data);
+        closeModal();
+      })
+      .catch((error) => {
+        setErrorMessage(error);
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -51,6 +50,7 @@ function Applications() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/applications`)
       .then((response) => {
         if (response.status !== 200) {

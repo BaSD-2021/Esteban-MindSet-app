@@ -17,22 +17,21 @@ function Clients() {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/clients/${idToDelete}`;
     fetch(url, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json' }
     })
-      .then(() => {
-        fetch(`${process.env.REACT_APP_API}/clients`)
-          .then((response) => {
-            if (response.status !== 204) {
-              throw 'There was an error while deleting this client.';
-            }
-            setClients(response.data);
-            closeModal();
-          })
-          .catch((err) => {
-            setErrorMessage(err);
-          });
+      .then((response) => {
+        if (response.status !== 204) {
+          throw 'There was an error while deleting this client.';
+        }
+        setClients(response.data);
+        closeModal();
+      })
+      .catch((err) => {
+        setErrorMessage(err);
       })
       .finally(() => {
+        history.go(0);
         setIsLoading(false);
       });
   };
@@ -88,11 +87,12 @@ function Clients() {
             </tr>
           </thead>
           <tbody>
-            {clients.map((client) => {
+            {clients.map((client, index) => {
               return (
                 <tr
                   onClick={() => history.push(`/clients/form?_id=${client._id}`)}
-                  key={client._id}
+                  // key={client._id}
+                  key={index}
                   className={styles.trStyles}
                 >
                   <td className={styles.tdStyles}>{client.name ? client.name : '-'}</td>

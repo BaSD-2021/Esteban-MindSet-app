@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
@@ -42,32 +43,25 @@ function Sessions() {
     setShowModal(false);
     setSelectedItem(undefined);
   };
+  const closeErrModal = () => {
+    setError(false);
+  };
 
   const deleteSession = () => {
     setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/sessions/${selectedItem}`;
-    fetch(url, { method: 'DELETE' })
+    fetch(url, {
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json' }
+    })
       .then((response) => {
         if (response.status !== 204) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
+          throw 'There was an error while deleting this session.';
         }
-        return fetch(`${process.env.REACT_APP_API}/sessions`)
-          .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
-            }
-            return response.json();
-          })
-          .then((response) => {
-            saveSessions(response.data);
-            closeModal();
-          });
+        saveSessions(response.data);
+        closeModal();
       })
-      .catch((error) => setError(error.toString()))
+      .catch((error) => setError(error))
       .finally(() => setIsLoading(false));
   };
 
@@ -122,7 +116,14 @@ function Sessions() {
           </table>
         )}
       </div>
-      <div className={styles.error}>{error}</div>
+      {error && (
+        <ErrorModal
+          message={error}
+          onClose={() => {
+            closeErrModal(), closeModal();
+          }}
+        />
+      )}
       <div className={styles.buttonContainer}>
         <Link to="/Sessions/Form" className={styles.button}>
           <Button name="addButton" entity="SESSION" />

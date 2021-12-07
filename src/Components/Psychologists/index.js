@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
 import Modal from '../Shared/Modal';
+import ErrorModal from '../Shared/ErrorModal';
 import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';
@@ -62,7 +63,6 @@ function Psychologists() {
   const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [psychologistAvailability, setPsychologistAvailability] = useState({});
-  const [showError, setShowError] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -77,15 +77,12 @@ function Psychologists() {
       .then((response) => {
         setPsychologist(response.data);
       })
-      .catch(() => getError('There has been an error while retrieving psychologists'))
+      .catch((err) => {
+        setError(err);
+      })
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
-  const getError = (error) => {
-    setError(error);
-    setShowError(true);
   };
 
   const toggleFormDisplay = () => {
@@ -112,6 +109,10 @@ function Psychologists() {
       setItemOnEdit(itemOnEditInitialState);
       setShowConfirmModal(false);
     }
+  };
+
+  const closeErrModal = () => {
+    setError(false);
   };
 
   const handleEdit = (psychologist) => {
@@ -198,20 +199,18 @@ function Psychologists() {
     const url = `${process.env.REACT_APP_API}/psychologists/${itemOnEdit._id}`;
     fetch(url, {
       method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json'
-      }
+      headers: { 'Content-type': 'application/json' }
     })
       .then((res) => {
         if (res.status !== 204) {
-          return res.json().then((message) => {
-            throw new Error(message);
-          });
+          throw 'There was an error while deleting this psychologist.';
         }
         toggleConfirmModal();
         getPsychologists();
       })
-      .catch((error) => error)
+      .catch((err) => {
+        setError(err);
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -255,10 +254,13 @@ function Psychologists() {
             onConfirm={handleDelete}
           />
         )}
-        {showError && (
-          <Modal toggleModal={() => setShowError(!showError)}>
-            <div>{error}</div>
-          </Modal>
+        {error && (
+          <ErrorModal
+            message={error}
+            onClose={() => {
+              toggleConfirmModal(), closeErrModal();
+            }}
+          />
         )}
       </div>
     </section>

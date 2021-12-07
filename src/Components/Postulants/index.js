@@ -122,7 +122,6 @@ function Postulants() {
           })}
         </table>
       )}
-      {/* <div className={styles.showError}>{showError.message}</div> */}
       {error && (
         <ErrorModal
           message={error}
