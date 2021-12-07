@@ -54,7 +54,6 @@ function Form() {
 
   const interviewId = query.get('_id');
   const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
-  console.log(interviewId);
 
   if (interviewId) {
     fetchMethod = 'PUT';
