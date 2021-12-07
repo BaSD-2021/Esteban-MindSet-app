@@ -58,9 +58,9 @@ function sessionsForm() {
           setPsychoValue(response.data[0].psychologist?._id);
           setStatusValue(response.data[0].status);
           setNotesValue(response.data[0].notes);
+          setLoading(false);
         })
         .catch((error) => {
-          setLoading(false);
           setError(error.toString());
         });
     }
