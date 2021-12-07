@@ -15,53 +15,44 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-   width: 60%;
+  margin: 12px;
    border: 1px #909090 solid;
    border-radius: 5px;
-   padding: 5px;
+   padding: 12px;
    text-align: center;
  }
 
 .tableHeader {
-  font-size: 20px;
-  border-bottom: 1px #909090 solid;
+  font-size: 16px;
+  border-bottom: 2px #909090 solid;
 }
 
 .trStyles{
-  padding-top: 5px;
-  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-bottom: 1px #909090 solid
 }
+.trStyles:last-child{
+  border: none;
+}
+.thStyles{
+  padding: 8px;
+  width: 8rem;
+  font-size: 18px;
+  font-weight: 500;
+}
+
 
 .tdStyles{
+  padding: 8px;
   color: #002147;
   font-size: 16px;
-}
-
-.buttonDelete{
-  height: 25px;
-  border: none;
-  border-radius: 3px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  cursor: pointer;
-}
-
-.buttonCreate{
-  margin: 30px auto;
-  width: 15%;
-  height: 50px;
-  border: none;
-  border-radius: 3px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-weight: bold;
+  width: 8rem;
+  align-self: center;
+  overflow: hidden;
 }
 
 .errorMessage{
