@@ -55,35 +55,6 @@
   overflow: hidden;
 }
 
-
-.buttonDelete{
-  height: 25px;
-  padding: 4px 8px;
-  border: none;
-  border-radius: 3px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  cursor: pointer;
-}
-
-.buttonCreate{
-  margin: 30px auto;
-  width: 15%;
-  height: 50px;
-  border: none;
-  border-radius: 3px;
-  background-color: #fdc800;
-  font-size: 15px;
-  color: #002147;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .errorMessage{
   margin: 10px auto;
   font-size: 15px;

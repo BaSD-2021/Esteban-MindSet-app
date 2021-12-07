@@ -43,7 +43,6 @@ function Table(props) {
                     onClick={(e) => {
                       props.deleteFunction(e, props.id[index]);
                     }}
-                    className={styles.buttonDelete}
                   >
                     Delete
                   </button>
