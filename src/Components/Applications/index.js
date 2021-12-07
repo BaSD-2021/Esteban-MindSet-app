@@ -3,14 +3,18 @@ import styles from './applications.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table/index';
 
 function Applications() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  const [applications, setApplications] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
+
+  const columnName = ['Job Description', 'Postulant', 'Interview', 'Result', 'Actions'];
 
   const deleteApplication = () => {
     setIsLoading(true);
@@ -28,8 +32,7 @@ function Applications() {
             }
             return response.json();
           })
-          .then((response) => {
-            setApplications(response.data);
+          .then(() => {
             closeModal();
           })
           .catch((error) => {
@@ -38,6 +41,7 @@ function Applications() {
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -63,7 +67,7 @@ function Applications() {
         return response.json();
       })
       .then((response) => {
-        setApplications(response.data);
+        setInformationToShow(response.data);
       })
       .catch((error) => {
         setErrorMessage(error);
@@ -73,57 +77,39 @@ function Applications() {
       });
   }, []);
 
+  const setInformationToShow = (data) => {
+    const dataToPass = [];
+    const idToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.positions ? row.positions.jobDescription : '-',
+        row.postulants ? row.postulants.firstName + ' ' + row.postulants?.lastName : '-',
+        row.interview ? row.interview.date.slice(0, 10) : '-',
+        row.result ? row.result : '-'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
+
+  const redirect = (id) => {
+    history.push(`/applications/form?_id=${id}`);
+  };
+
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>Applications</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <table className={styles.tableData}>
-          <thead className={styles.tableHeader}>
-            <tr className={styles.trStyles}>
-              <th>Job Description</th>
-              <th>Postulant</th>
-              <th>Interview</th>
-              <th>Result</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {applications.map((application) => {
-              return (
-                <tr
-                  onClick={() => history.push(`/applications/form?_id=${application._id}`)}
-                  key={application._id}
-                  className={styles.trStyles}
-                >
-                  <td className={styles.tdStyles}>
-                    {application.positions ? application.positions.jobDescription : '-'}
-                  </td>
-                  <td className={styles.tdStyles}>
-                    {application.postulants
-                      ? application.postulants.firstName + ' ' + application.postulants.lastName
-                      : '-'}
-                  </td>
-                  <td className={styles.tdStyles}>
-                    {application.interview ? application.interview.date.substr(0, 10) : '-'}
-                  </td>
-                  <td className={styles.tdStyles}>
-                    {application.result ? application.result : '-'}
-                  </td>
-                  <td className={styles.tdStyles}>
-                    <Button
-                      name="deleteButton"
-                      onClick={(e) => {
-                        preventAndShow(e, application._id);
-                      }}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       <div id="error_message" className={styles.errorMessage}>
         {errorMessage.message}

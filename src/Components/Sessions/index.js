@@ -3,14 +3,17 @@ import Modal from '../Shared/Modal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);
-  const [sessions, saveSessions] = useState([]);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
+  const columnName = ['Postulant', 'Psychologist', 'Date', 'Status', 'Action'];
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +26,9 @@ function Sessions() {
         }
         return response.json();
       })
-      .then((response) => saveSessions(response.data))
+      .then((response) => {
+        setInformationToShow(response.data);
+      })
       .catch((error) => setError(error.toString()))
       .finally(() => setIsLoading(false));
   }, []);
@@ -34,7 +39,7 @@ function Sessions() {
 
   const handleDelete = (event, session) => {
     event.stopPropagation();
-    setSelectedItem(session._id);
+    setSelectedItem(session);
     setShowModal(true);
   };
 
@@ -62,13 +67,31 @@ function Sessions() {
             }
             return response.json();
           })
-          .then((response) => {
-            saveSessions(response.data);
+          .then(() => {
             closeModal();
           });
       })
       .catch((error) => setError(error.toString()))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        history.go(0);
+      });
+  };
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.postulant ? row.postulant.firstName + ' ' + row.postulant.lastName : '-',
+        row.psychologist ? row.psychologist.firstName + ' ' + row.psychologist.lastName : '-',
+        row.date ? row.date : '-',
+        row.status ? row.status : '-'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
   };
 
   return (
@@ -85,41 +108,13 @@ function Sessions() {
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Postulant</th>
-                <th>Psychologist</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sessions.map((session) => {
-                return (
-                  <tr key={session._id} onClick={() => redirectToForm(session._id)}>
-                    <td>
-                      {session.postulant?.firstName || '-'}
-                      {session.postulant?.lastName || '-'}
-                    </td>
-                    <td>
-                      {session.psychologist?.firstName || '-'}
-                      {session.psychologist?.lastName || '-'}
-                    </td>
-                    <td>{session.date.replace('T', ' ')}</td>
-                    <td>{session.status}</td>
-                    <td>
-                      <Button
-                        name="deleteButton"
-                        onClick={(event) => handleDelete(event, session)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <Table
+            columnsName={columnName}
+            id={idToPass}
+            tableInfo={infoToShow}
+            deleteFunction={handleDelete}
+            redirectFunction={redirectToForm}
+          />
         )}
       </div>
       <div className={styles.error}>{error}</div>

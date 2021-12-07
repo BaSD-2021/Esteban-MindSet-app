@@ -3,14 +3,17 @@ import { Link, useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
+import Table from '../Shared/Table';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
-  const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
+  const columnName = ['Postulant', 'Client', 'Status', 'Date', 'Action'];
 
   const deleteInterview = () => {
     setIsLoading(true);
@@ -21,8 +24,7 @@ function Interviews() {
       .then(() => {
         fetch(`${process.env.REACT_APP_API}/interviews`)
           .then((response) => response.json())
-          .then((response) => {
-            saveInterviews(response.data);
+          .then(() => {
             closeModal();
           })
           .catch((error) => {
@@ -31,6 +33,7 @@ function Interviews() {
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -39,7 +42,7 @@ function Interviews() {
     fetch(`${process.env.REACT_APP_API}/interviews`)
       .then((response) => response.json())
       .then((response) => {
-        saveInterviews(response.data);
+        setInformationToShow(response.data);
       })
       .catch((error) => {
         setErrorMessage(error);
@@ -60,46 +63,39 @@ function Interviews() {
     setShowModal(true);
   };
 
+  const redirect = (id) => {
+    history.push(`/interviews/form?_id=${id}`);
+  };
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.postulant ? row.postulant.firstName + ' ' + row.postulant.lastName : '-',
+        row.client ? row.client.name : '-',
+        row.status ? row.status : '-',
+        row.date ? row.date : '-'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
+
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>Interviews</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <td className={styles.td}>Postulant</td>
-              <td className={styles.td}>Client</td>
-              <td className={styles.td}>Status</td>
-              <td className={styles.td}>Date</td>
-              <td className={styles.td}>Delete</td>
-            </tr>
-          </thead>
-          <tbody className={styles.tbody}>
-            {interviews.map((interview) => {
-              return (
-                <tr
-                  onClick={() => history.push(`/interviews/form?_id=${interview._id}`)}
-                  key={interview._id}
-                >
-                  <td className={styles.td}>{interview.postulant?.firstName || '-'}</td>
-                  <td className={styles.td}>{interview.client?.name || '-'}</td>
-                  <td className={styles.td}>{interview.status}</td>
-                  <td className={styles.td}>{interview.date}</td>
-                  <td className={styles.td}>
-                    <Button
-                      name="deleteButton"
-                      onClick={(e) => {
-                        preventAndShow(e, interview._id);
-                      }}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       <Modal
         showModal={showModal}

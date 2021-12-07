@@ -134,7 +134,7 @@ function Psychologists() {
           ...itemOnEdit.availability,
           [keys[0]]: {
             ...itemOnEdit.availability[keys[0]],
-            [keys[1]]: e.target.value
+            [keys[1]]: keys[1] === 'availability' ? e.target.checked : e.target.value
           }
         }
       });
