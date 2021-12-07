@@ -5,6 +5,7 @@ import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
+import Checkbox from '../../Shared/Checkbox';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -78,7 +79,7 @@ function PostulantsForm() {
     setContactToValue(contactTo || '');
     setAddressValue(fillData.address || '');
     setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
-    setAvailableValue(fillData.available || '');
+    setAvailableValue(fillData.available || false);
     setPhoneValue(fillData.phone || '');
 
     setPrimarySDValue(fillPrimStudy.startDate == null ? '' : fillPrimStudy.startDate.slice(0, 10));
@@ -147,7 +148,7 @@ function PostulantsForm() {
   };
 
   const onChangeAvailableInput = (event) => {
-    setAvailableValue(event.target.checked);
+    setAvailableValue(event.target.value);
   };
 
   const onChangePhoneInput = (event) => {
@@ -449,14 +450,12 @@ function PostulantsForm() {
           type="date"
           required
         />
-        <Input
-          title="Availability"
+        <Checkbox
+          label="Availability"
           id="available"
           name="available"
-          checked={availableValue}
+          selected={availableValue}
           onChange={onChangeAvailableInput}
-          type="checkbox"
-          required
         />
         <Input
           title="Phone"
