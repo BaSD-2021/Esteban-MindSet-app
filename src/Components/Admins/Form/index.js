@@ -94,7 +94,7 @@ function Form() {
 
   return (
     <form className={styles.container} onSubmit={save}>
-      <h2>Form</h2>
+      <h2 className={styles.title}>Admin</h2>
       <Input
         title="Name"
         disabled={isLoading}
@@ -124,7 +124,9 @@ function Form() {
         onChange={(e) => setPasswordValue(e.target.value)}
         required
       />
-      <Button name="saveButton" disabled={isLoading}></Button>
+      <div className={styles.buttonContainer}>
+        <Button name="saveButton" disabled={isLoading}></Button>
+      </div>
       {error && (
         <Modal>
           {`${error}`}

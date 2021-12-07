@@ -15,6 +15,7 @@ function Form() {
   const [logo, setLogo] = useState('');
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
@@ -84,6 +85,9 @@ function Form() {
     const url = clientId
       ? `${process.env.REACT_APP_API}/clients/${clientId}`
       : `${process.env.REACT_APP_API}/clients/`;
+
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -98,6 +102,9 @@ function Form() {
       })
       .catch((err) => {
         setErrorMessage(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -124,7 +131,7 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.subtitle}>Form</h2>
+        <h2 className={styles.title}>Client</h2>
         <Input
           title="Name"
           id="name"
@@ -132,6 +139,7 @@ function Form() {
           type="text"
           value={name}
           onChange={onChangeName}
+          disabled={isLoading}
           required
         />
         <Input
@@ -141,6 +149,7 @@ function Form() {
           type="number"
           value={phone}
           onChange={onChangePhone}
+          disabled={isLoading}
           required
         />
         <Input
@@ -150,6 +159,7 @@ function Form() {
           type="text"
           value={country}
           onChange={onChangeCountry}
+          disabled={isLoading}
           required
         />
         <Input
@@ -159,6 +169,7 @@ function Form() {
           type="text"
           value={state}
           onChange={onChangeState}
+          disabled={isLoading}
           required
         />
         <Input
@@ -168,15 +179,17 @@ function Form() {
           type="text"
           value={city}
           onChange={onChangeCity}
+          disabled={isLoading}
           required
         />
         <Input
-          title="Adress"
+          title="Address"
           id="address"
           name="address"
           type="text"
           value={address}
           onChange={onChangeAddress}
+          disabled={isLoading}
           required
         />
         <Input
@@ -186,6 +199,7 @@ function Form() {
           type="text"
           value={logo}
           onChange={onChangeLogo}
+          disabled={isLoading}
         />
         <Input
           title="Description"
@@ -194,8 +208,11 @@ function Form() {
           type="text"
           value={description}
           onChange={onChangeDescription}
+          disabled={isLoading}
         />
-        <Button name="saveButton" />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
       </form>
       <div id="error_message" className={styles.errorMessage}>
         {errorMessage.message}

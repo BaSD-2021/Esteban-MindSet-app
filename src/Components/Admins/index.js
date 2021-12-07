@@ -95,7 +95,7 @@ const Admins = () => {
         isLoading={isLoading}
         onConfirm={handleDelete}
       />
-      <h2>Admins</h2>
+      <h2 className={styles.title}>Admins</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -113,9 +113,11 @@ const Admins = () => {
           <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
         </Modal>
       )}
-      <Link to="/admins/form">
-        <Button name="addButton" entity="ADMIN" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/admins/form">
+          <Button name="addButton" entity="ADMIN" />
+        </Link>
+      </div>
     </section>
   );
 };

@@ -17,7 +17,6 @@ function profilesForm() {
   };
 
   useEffect(() => {
-    setLoading(true);
     const profileId = query.get('_id');
     if (profileId) {
       fetch(`${process.env.REACT_APP_API}/profiles?_id=${profileId}`)
@@ -41,7 +40,6 @@ function profilesForm() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
     const profileId = query.get('_id');
 
     let url;
@@ -61,6 +59,8 @@ function profilesForm() {
       options.method = 'POST';
       url = `${process.env.REACT_APP_API}/profiles`;
     }
+
+    setLoading(true);
 
     fetch(url, options)
       .then((response) => {
@@ -84,7 +84,7 @@ function profilesForm() {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
         <div>
-          <h2 className={styles.title}>Profile Form</h2>
+          <h2 className={styles.title}>Profile</h2>
           <Input
             title="Profile"
             name="profile"
@@ -95,7 +95,9 @@ function profilesForm() {
             required
           />
         </div>
-        <Button name="saveButton" />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{error}</div>
       </form>
     </div>

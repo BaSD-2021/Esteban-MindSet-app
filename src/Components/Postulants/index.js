@@ -93,7 +93,7 @@ function Postulants() {
         isLoading={isLoading}
         onConfirm={deletePostulant}
       />
-      <h2>Postulants</h2>
+      <h2 className={styles.title}>Postulants</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -106,9 +106,11 @@ function Postulants() {
         />
       )}
       <div className={styles.showError}>{showError.message}</div>
-      <Link to="/Postulants/Form" className={styles.button}>
-        <Button name="addButton" entity="POSTULANT" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Postulants/Form" className={styles.button}>
+          <Button name="addButton" entity="POSTULANT" />
+        </Link>
+      </div>
     </section>
   );
 }

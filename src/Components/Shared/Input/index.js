@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './input.module.css';
 
-function Input({ title, id, name, placeholder, value, onChange, type, required, style }) {
+function Input({ title, id, name, placeholder, value, onChange, type, required, style, disabled }) {
   return (
     <div className={styles.container}>
       <label className={styles.labelTitle}>{title}</label>
@@ -14,6 +14,7 @@ function Input({ title, id, name, placeholder, value, onChange, type, required, 
         onChange={onChange}
         type={type}
         required={required}
+        disabled={disabled}
       />
     </div>
   );

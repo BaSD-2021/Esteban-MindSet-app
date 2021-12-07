@@ -94,7 +94,7 @@ function Clients() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.subtitle}>Clients</h2>
+      <h2 className={styles.title}>Clients</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -114,9 +114,11 @@ function Clients() {
         isLoading={isLoading}
         onConfirm={deleteClient}
       />
-      <Link to="/Clients/Form">
-        <Button name="addButton" entity="CLIENT" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Clients/Form">
+          <Button name="addButton" entity="CLIENT" />
+        </Link>
+      </div>
     </section>
   );
 }

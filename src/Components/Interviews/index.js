@@ -8,7 +8,6 @@ import Table from '../Shared/Table';
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [infoToShow, setInfoToShow] = useState([]);
@@ -86,7 +85,7 @@ function Interviews() {
 
   return (
     <section className={styles.container}>
-      <h2>Interviews</h2>
+      <h2 className={styles.title}>Interviews</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -105,9 +104,11 @@ function Interviews() {
         isLoading={isLoading}
         onConfirm={deleteInterview}
       />
-      <Link to="/Interviews/Form" className={styles.button}>
-        <Button name="addButton" entity="INTERVIEW" />
-      </Link>
+      <div className={styles.buttonContainer}>
+        <Link to="/Interviews/Form" className={styles.button}>
+          <Button name="addButton" entity="INTERVIEW" />
+        </Link>
+      </div>
     </section>
   );
 }

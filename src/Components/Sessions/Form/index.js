@@ -137,6 +137,8 @@ function sessionsForm() {
       url = `${process.env.REACT_APP_API}/sessions`;
     }
 
+    setLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -158,7 +160,7 @@ function sessionsForm() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onSubmit}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Session</h2>
         <Select
           title="Postulant"
           id="postulant"

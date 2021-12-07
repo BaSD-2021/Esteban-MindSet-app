@@ -18,6 +18,7 @@ function Form() {
   const [selectClient, setSelectClient] = useState([]);
   const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
   const [errorValue, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
@@ -81,6 +82,8 @@ function Form() {
       ? `${process.env.REACT_APP_API}/positions/${positionId}`
       : `${process.env.REACT_APP_API}/positions/`;
 
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -95,6 +98,9 @@ function Form() {
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -142,7 +148,10 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Position</h2>
+        <label className={styles.inputDiv}>
+          <span className={styles.inputName}>Client Name</span>
+        </label>
         <Select
           title="Client Name"
           id="clientId"
@@ -159,6 +168,7 @@ function Form() {
           type="text"
           value={jobDescriptionValue}
           onChange={onChangeJobDescription}
+          disabled={isLoading}
           required
         />
         <Input
@@ -168,6 +178,7 @@ function Form() {
           type="number"
           value={vacancyValue}
           onChange={onChangeVacancy}
+          disabled={isLoading}
           required
         />
         <Select
@@ -191,7 +202,9 @@ function Form() {
           ]}
           required
         />
-        <Button name="saveButton" />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>

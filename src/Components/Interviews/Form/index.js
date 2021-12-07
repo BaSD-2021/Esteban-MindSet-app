@@ -18,6 +18,7 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
@@ -89,6 +90,8 @@ function Form() {
       ? `${process.env.REACT_APP_API}/interviews/${interviewId}`
       : `${process.env.REACT_APP_API}/interviews/`;
 
+    setIsLoading(true);
+
     fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -103,6 +106,9 @@ function Form() {
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -165,7 +171,10 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Form</h2>
+        <h2 className={styles.title}>Interview</h2>
+        <label className={styles.label}>
+          <span className={styles.span}>Postulant Name</span>
+        </label>
         <Select
           title="Postulant Name"
           id="postulantId"
@@ -215,6 +224,7 @@ function Form() {
           type="datetime-local"
           value={dateValue}
           onChange={onChangeDate}
+          disabled={isLoading}
           required
         />
         <Input
@@ -224,8 +234,11 @@ function Form() {
           type="text"
           value={notesValue}
           onChange={onChangeNotes}
+          disabled={isLoading}
         />
-        <Button name="saveButton" />
+        <div className={styles.buttonContainer}>
+          <Button name="saveButton" disabled={isLoading} />
+        </div>
         <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
