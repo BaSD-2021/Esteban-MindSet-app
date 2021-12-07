@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Checkbox from '../../Shared/Checkbox';
 
 const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, handleSubmit }) => {
   return (
@@ -23,14 +24,11 @@ const Form = ({ inputs, availability, toggleFormDisplay, itemOnEdit, onChange, h
           <label key={item.label} className={styles.availabilityLabel}>
             {item.label}
           </label>
-          <Input
+          <Checkbox
             key={item.day.inputName}
-            type={item.day.type}
             name={item.day.inputName}
-            placeholder={item.day.placeholder}
-            value={itemOnEdit.availability[item.label].availability}
+            selected={itemOnEdit.availability[item.label].availability}
             onChange={onChange}
-            style={styles.availabilityInput}
           />
           <Input
             key={item.from.inputName}

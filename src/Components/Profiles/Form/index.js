@@ -31,11 +31,11 @@ function profilesForm() {
         })
         .then((response) => {
           setProfileValue(response.data[0].name);
+          setLoading(false);
         })
         .catch((error) => {
           setError(error.toString());
-        })
-        .finally(() => setLoading(false));
+        });
     }
   }, []);
 
@@ -72,12 +72,12 @@ function profilesForm() {
         return response.json();
       })
       .then(() => {
+        setLoading(false);
         history.push('/profiles');
       })
       .catch((error) => {
         setError(error.toString());
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   return (
