@@ -3,21 +3,24 @@ import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
-  const [postulants, setPostulants] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
+  const columnName = ['First Name', 'Last Name', 'Email', 'Phone', 'Address', 'Actions'];
 
   useEffect(() => {
     setIsLoading(true);
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
-        setPostulants(response.data);
+        setInformationToShow(response.data);
       })
       .catch((err) => {
         setShowError(err);
@@ -45,6 +48,7 @@ function Postulants() {
       })
       .finally(() => {
         setIsLoading(false);
+        history.go(0);
       });
   };
 
@@ -57,6 +61,27 @@ function Postulants() {
     e.stopPropagation();
     setIdToDelete(id);
     setShowModal(true);
+  };
+
+  const redirect = (id) => {
+    history.push(`/postulants/form?_id=${id}`);
+  };
+
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.firstName ? row.firstName : '-',
+        row.lastName ? row.lastName : '-',
+        row.email ? row.email : '-',
+        row.phone ? row.phone : '-',
+        row.address ? row.address : '-'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
   };
 
   return (
@@ -72,49 +97,13 @@ function Postulants() {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          {postulants.map((postulant) => {
-            return (
-              <tbody key={postulant._id}>
-                <tr>
-                  <td>
-                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.firstName}</Link>
-                  </td>
-                  <td>
-                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.lastName}</Link>
-                  </td>
-                  <td>
-                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.email}</Link>
-                  </td>
-                  <td>
-                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.phone}</Link>
-                  </td>
-                  <td>
-                    <Link to={`/postulants/form?_id=${postulant._id}`}>{postulant.address}</Link>
-                  </td>
-                  <td>
-                    <Button
-                      name="deleteButton"
-                      onClick={(e) => {
-                        preventAndShow(e, postulant._id);
-                      }}
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            );
-          })}
-        </table>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       <div className={styles.showError}>{showError.message}</div>
       <Link to="/Postulants/Form" className={styles.button}>

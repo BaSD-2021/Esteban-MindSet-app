@@ -3,15 +3,25 @@ import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { Link, useHistory } from 'react-router-dom';
+import Table from '../Shared/Table';
 
 function Positions() {
   const [showModal, setShowModal] = useState(false);
-  const [positions, savePositions] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [errorValue, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [infoToShow, setInfoToShow] = useState([]);
+  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
+  const columnName = [
+    'Client',
+    'Job Description',
+    'Vacancy',
+    'Professional Profile',
+    'Is Open',
+    'Delete'
+  ];
 
   const deletePosition = () => {
     setIsLoading(true);
@@ -21,8 +31,7 @@ function Positions() {
     }).then(() => {
       fetch(`${process.env.REACT_APP_API}/positions`)
         .then((response) => response.json())
-        .then((response) => {
-          savePositions(response.data);
+        .then(() => {
           closeModal();
         })
         .catch((errorValue) => {
@@ -30,6 +39,7 @@ function Positions() {
         })
         .finally(() => {
           setIsLoading(false);
+          history.go(0);
         });
     });
   };
@@ -39,7 +49,7 @@ function Positions() {
     fetch(`${process.env.REACT_APP_API}/positions`)
       .then((response) => response.json())
       .then((response) => {
-        savePositions(response.data);
+        setInformationToShow(response.data);
       })
       .catch((errorValue) => {
         setError(errorValue.toString());
@@ -48,6 +58,10 @@ function Positions() {
         setIsLoading(false);
       });
   }, []);
+
+  const redirect = (id) => {
+    history.push(`/positions/form?_id=${id}`);
+  };
 
   const closeModal = () => {
     setShowModal(false);
@@ -60,18 +74,22 @@ function Positions() {
     setShowModal(true);
   };
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   fetch(`${process.env.REACT_APP_API}/positions`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       savePositions(response.data);
-  //     })
-  //     .catch((errorValue) => {
-  //       setError(errorValue.toString());
-  //     })
-  //     .finally(() => setIsLoading(false));
-  // }, []);
+  const setInformationToShow = (data) => {
+    const idToPass = [];
+    const dataToPass = [];
+    data.map((row) => {
+      idToPass.push(row._id);
+      dataToPass.push([
+        row.client ? row.client.name : '-',
+        row.jobDescription ? row.jobDescription : '-',
+        row.vacancy ? row.vacancy : '-',
+        row.professionalProfile ? row.professionalProfile.name : '-',
+        row.isOpen ? 'Yes' : 'No'
+      ]);
+    });
+    setInfoToShow(dataToPass);
+    setIdToPass(idToPass);
+  };
 
   return (
     <section className={styles.container}>
@@ -86,42 +104,13 @@ function Positions() {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <td>Client</td>
-              <td>Job Description</td>
-              <td>Vacancy</td>
-              <td>Professional profile</td>
-              <td>Is Open</td>
-              <td>Delete</td>
-            </tr>
-          </thead>
-          <tbody className={styles.tbody}>
-            {positions.map((position) => {
-              return (
-                <tr
-                  onClick={() => history.push(`/positions/form?_id=${position._id}`)}
-                  key={position._id}
-                >
-                  <td>{position.client?.name || '-'}</td>
-                  <td>{position.jobDescription}</td>
-                  <td>{position.vacancy}</td>
-                  <td>{position.professionalProfile?.name || '-'}</td>
-                  <td>{position.isOpen.toString()}</td>
-                  <td>
-                    <Button
-                      name="deleteButton"
-                      onClick={(e) => {
-                        preventAndShow(e, position._id);
-                      }}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Table
+          columnsName={columnName}
+          id={idToPass}
+          tableInfo={infoToShow}
+          deleteFunction={preventAndShow}
+          redirectFunction={redirect}
+        />
       )}
       <Link to="/Positions/Form" className={styles.button}>
         <Button name="addButton" entity="POSITION" />
