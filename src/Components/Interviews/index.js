@@ -9,6 +9,7 @@ function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [interviews, saveInterviews] = useState([]);
   const [idToDelete, setIdToDelete] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();

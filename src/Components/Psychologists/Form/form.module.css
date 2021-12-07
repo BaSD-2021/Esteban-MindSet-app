@@ -3,32 +3,37 @@
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  margin: auto;
 }
+
 .availabilityForm{
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .availabilityForm label{
   display: inline-block;
   width: 10vw;
 }
+
 .availabilityInput{
-  margin:2px;
+  width: 33%;
+  margin: 0px;
   padding:4px;
-  border: 1.8px solid #FEC800;
+  border: 1.8px solid #002147;
   border-radius: 3px;
   background-color: rgb(247, 247, 247);
 }
+
 .dataInput{
   margin: 4px 0;
   padding: 6px;
   width: 90%;
   align-self: center;
-  border: 1.8px solid #FEC800;
+  border: 1.8px solid #002147;
   border-radius: 3px;
   background-color: rgb(247, 247, 247);
 }
+
 .dataInput:focus, .availabilityInput:hover{
   border-color: #0022e2;
   background-color: #fff;
