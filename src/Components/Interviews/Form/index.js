@@ -21,9 +21,43 @@ function Form() {
   const [arrayApplicationValue, setArrayApplicationValue] = useState([]);
   const [arrayClientsValue, setArrayClientsValue] = useState([]);
   const [arrayPostulantsValue, setArrayPostulantsValue] = useState([]);
+  // const [arrayPostulantsName, setArrayPostulantsName] = useState([]);
 
   const query = useQuery();
   const history = useHistory();
+
+  const selectApplicationId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayApplicationValue(array);
+  };
+
+  const selectClientsId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayClientsValue(array);
+  };
+
+  const selectPostulantsId = (data) => {
+    const array = [];
+    data.map((generic) => {
+      array.push(generic._id);
+    });
+    setArrayPostulantsValue(array);
+  };
+
+  // const selectPostulantsName = (data) => {
+  //   const array = [];
+  //   data.map((generic) => {
+  //     array.push(generic.firstName);
+  //   });
+  //   setArrayPostulantsName(array);
+  //   console.log(setArrayPostulantsName);
+  // };
 
   let fetchMethod = 'POST';
 
@@ -58,30 +92,6 @@ function Form() {
 
   const onChangeNotes = (event) => {
     setNotesValue(event.target.value);
-  };
-
-  const selectApplicationId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayApplicationValue(array);
-  };
-
-  const selectClientsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayClientsValue(array);
-  };
-
-  const selectPostulantsId = (data) => {
-    const array = [];
-    data.map((generic) => {
-      array.push(generic._id);
-    });
-    setArrayPostulantsValue(array);
   };
 
   const interviewId = query.get('_id');
@@ -134,6 +144,7 @@ function Form() {
       .then((response) => response.json())
       .then((res) => {
         selectPostulantsId(res.data);
+        // selectPostulantsName(res.data);
         setPostulantsValue(res.data);
       })
       .catch((errorValue) => {
@@ -184,6 +195,7 @@ function Form() {
           value={postulantIdValue}
           onChange={onChangePostulantId}
           arrayToMap={arrayPostulantsValue}
+          // entityForShow={arrayPostulantsName}
         />
         <Select
           title="Client Name"
@@ -203,7 +215,6 @@ function Form() {
           onChange={onChangeStatus}
           arrayToMap={['successful', 'failed', 'cancelled', 'assigned', 'confirmed']}
         />
-
         <Select
           title="Application ID"
           id="application"

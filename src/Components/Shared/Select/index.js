@@ -18,10 +18,10 @@ function Select({ title, id, name, value, onChange, type, required, style, array
         <option value={''} disabled>
           Select one
         </option>
-        {arrayToMap.map((genericEntity) => {
+        {arrayToMap.map((entity) => {
           return (
-            <option value={genericEntity} key={genericEntity}>
-              {genericEntity}
+            <option value={entity} key={entity}>
+              {entity}
             </option>
           );
         })}
