@@ -60,9 +60,9 @@ function sessionsForm() {
           setNotesValue(response.data[0].notes);
         })
         .catch((error) => {
+          setLoading(false);
           setError(error.toString());
-        })
-        .finally(() => setLoading(false));
+        });
     }
 
     fetch(`${process.env.REACT_APP_API}/postulants`)
@@ -75,6 +75,7 @@ function sessionsForm() {
         return response.json();
       })
       .then((response) => {
+        setLoading(false);
         setPostulants(
           response.data.map((postulant) => ({
             value: postulant._id,
@@ -84,8 +85,7 @@ function sessionsForm() {
       })
       .catch((error) => {
         setError(error.toString());
-      })
-      .finally(() => setLoading(false));
+      });
 
     fetch(`${process.env.REACT_APP_API}/psychologists`)
       .then((response) => {
@@ -97,6 +97,7 @@ function sessionsForm() {
         return response.json();
       })
       .then((response) => {
+        setLoading(false);
         setPsychologists(
           response.data.map((psychologist) => ({
             value: psychologist._id,
@@ -106,8 +107,7 @@ function sessionsForm() {
       })
       .catch((error) => {
         setError(error.toString());
-      })
-      .finally(() => setLoading(false));
+      });
   }, []);
 
   const onSubmit = (event) => {
@@ -147,12 +147,12 @@ function sessionsForm() {
         return response.json();
       })
       .then(() => {
+        setLoading(false);
         history.push('/sessions');
       })
       .catch((error) => {
         setError(error.toString());
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   return (

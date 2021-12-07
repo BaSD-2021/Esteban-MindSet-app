@@ -82,13 +82,11 @@ function Form() {
         return response.json();
       })
       .then(() => {
+        setLoading(false);
         history.push('/admins');
       })
       .catch((err) => {
         setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
