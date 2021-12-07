@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
-import Select from '../Select';
 import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
+import Select from '../../Shared/Select';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');
@@ -13,10 +13,10 @@ function sessionsForm() {
   const [psychoValue, setPsychoValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
-  const [postulants, setPostulants] = useState([]);
-  const [psychologists, setPsychologists] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const [selectPostulant, setSelectPostulant] = useState([]);
+  const [selectPsychologist, setSelectPsychologist] = useState([]);
   const query = useQuery();
   const history = useHistory();
 
@@ -75,7 +75,7 @@ function sessionsForm() {
         return response.json();
       })
       .then((response) => {
-        setPostulants(
+        setSelectPostulant(
           response.data.map((postulant) => ({
             value: postulant._id,
             label: `${postulant.firstName} ${postulant.lastName}`
@@ -97,7 +97,7 @@ function sessionsForm() {
         return response.json();
       })
       .then((response) => {
-        setPsychologists(
+        setSelectPsychologist(
           response.data.map((psychologist) => ({
             value: psychologist._id,
             label: `${psychologist.firstName} ${psychologist.lastName}`
@@ -160,26 +160,32 @@ function sessionsForm() {
       <form className={styles.form} onSubmit={onSubmit}>
         <h2 className={styles.title}>Form</h2>
         <Select
+          title="Postulant"
+          id="postulant"
           name="postulant"
           value={postulantValue}
           onChange={onChangePostulantInput}
-          options={postulants}
+          arrayToMap={selectPostulant}
           disabled={isLoading}
           required
         />
         <Select
+          title="Psychologist"
+          id="psychologist"
           name="psychologist"
           value={psychoValue}
           onChange={onChangePsychoInput}
-          options={psychologists}
+          arrayToMap={selectPsychologist}
           disabled={isLoading}
           required
         />
         <Select
+          title="Status"
+          id="status"
           name="status"
           value={statusValue}
           onChange={onChangeStatusInput}
-          options={[
+          arrayToMap={[
             { value: 'assigned', label: 'Assigned' },
             { value: 'successful', label: 'Successful' },
             { value: 'cancelled', label: 'Cancelled' }

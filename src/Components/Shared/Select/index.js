@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './select.module.css';
 
-function Select({ title, id, name, value, onChange, type, required, style, arrayToMap }) {
+function Select({ title, id, name, value, onChange, type, required, style, arrayToMap, disabled }) {
   return (
     <div className={styles.container}>
       <label className={styles.labelTitle}>{title}</label>
@@ -14,6 +14,7 @@ function Select({ title, id, name, value, onChange, type, required, style, array
         value={value}
         onChange={onChange}
         required={required}
+        disabled={disabled}
       >
         <option value={''} disabled>
           Select one
