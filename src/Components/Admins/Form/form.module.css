@@ -6,29 +6,3 @@
   align-items: center;
   margin: 50px auto;
 }
-
-.labelTitle {
-  color: #002147;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 5px 0;
-}
-
-.inputCnt {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-.inputBox {
-  border: 1px solid #BDBDBD;
-  border-radius: 4px;
-  padding: 12px;
-  width: 270px;
-}
-
-.title {
-  font-weight: bolder;
-  font-size: 25px;
-  color: #002147;
-}

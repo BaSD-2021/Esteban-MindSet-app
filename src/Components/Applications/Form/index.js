@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 function Form() {
@@ -211,17 +212,14 @@ function Form() {
             );
           })}
         </select>
-        <label className={styles.label}>
-          <span>Result</span>
-        </label>
-        <input
+        <Input
+          title="Result"
           id="result"
           name="result"
           type="text"
           required
           value={result}
           onChange={onChangeResult}
-          className={styles.selectInput}
         />
         <div id="error_message" className={styles.errorMessage}>
           {errorMessage.message}

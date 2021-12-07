@@ -79,6 +79,7 @@ function Applications() {
 
   const setInformationToShow = (data) => {
     const dataToPass = [];
+    const idToPass = [];
     data.map((row) => {
       idToPass.push(row._id);
       dataToPass.push([

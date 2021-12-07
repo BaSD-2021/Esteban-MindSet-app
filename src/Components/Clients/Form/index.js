@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 function Form() {
@@ -123,100 +124,76 @@ function Form() {
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Form</h2>
-        <label className={styles.label}>
-          <span>Name</span>
-        </label>
-        <input
+        <h2 className={styles.subtitle}>Form</h2>
+        <Input
+          title="Name"
           id="name"
           name="name"
           type="text"
-          required
           value={name}
           onChange={onChangeName}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>Phone</span>
-        </label>
-        <input
+        <Input
+          title="Phone"
           id="phone"
           name="phone"
           type="number"
-          required
           value={phone}
           onChange={onChangePhone}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>Country</span>
-        </label>
-        <input
+        <Input
+          title="Country"
           id="country"
           name="country"
           type="text"
-          required
           value={country}
           onChange={onChangeCountry}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>State</span>
-        </label>
-        <input
+        <Input
+          title="State"
           id="state"
           name="state"
           type="text"
-          required
           value={state}
           onChange={onChangeState}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>City</span>
-        </label>
-        <input
+        <Input
+          title="City"
           id="city"
           name="city"
-          required
           type="text"
           value={city}
           onChange={onChangeCity}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>Address</span>
-        </label>
-        <input
+        <Input
+          title="Adress"
           id="address"
           name="address"
-          required
           type="text"
           value={address}
           onChange={onChangeAddress}
-          className={styles.inputStyle}
+          required
         />
-        <label className={styles.label}>
-          <span>Logo</span>
-        </label>
-        <input
+        <Input
+          title="Logo"
           id="logo"
           name="logo"
           type="text"
           value={logo}
           onChange={onChangeLogo}
-          className={styles.inputStyle}
         />
-        <label className={styles.label}>
-          <span>Description</span>
-        </label>
-        <input
+        <Input
+          title="Description"
           id="description"
           name="description"
           type="text"
           value={description}
           onChange={onChangeDescription}
-          className={styles.inputStyle}
         />
         <Button name="saveButton" />
       </form>

@@ -1,4 +1,5 @@
 import styles from './table.module.css';
+import Button from '../Button';
 
 function Table(props) {
   return (
@@ -37,15 +38,12 @@ function Table(props) {
                   );
                 })}
                 <td className={styles.tdStyles}>
-                  <button
-                    key={props.id[index]}
-                    type="button"
+                  <Button
+                    name="deleteButton"
                     onClick={(e) => {
                       props.deleteFunction(e, props.id[index]);
                     }}
-                  >
-                    Delete
-                  </button>
+                  />
                 </td>
               </tr>
             );

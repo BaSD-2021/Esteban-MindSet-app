@@ -8,6 +8,7 @@ import Table from '../Shared/Table';
 function Positions() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [errorValue, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [infoToShow, setInfoToShow] = useState([]);

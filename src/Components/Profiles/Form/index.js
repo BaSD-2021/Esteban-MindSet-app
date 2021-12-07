@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
-import Input from '../Input';
 import styles from './form.module.css';
+import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 
 function profilesForm() {
@@ -31,11 +31,11 @@ function profilesForm() {
         })
         .then((response) => {
           setProfileValue(response.data[0].name);
+          setLoading(false);
         })
         .catch((error) => {
           setError(error.toString());
-        })
-        .finally(() => setLoading(false));
+        });
     }
   }, []);
 
@@ -72,12 +72,12 @@ function profilesForm() {
         return response.json();
       })
       .then(() => {
+        setLoading(false);
         history.push('/profiles');
       })
       .catch((error) => {
         setError(error.toString());
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   return (
@@ -86,6 +86,7 @@ function profilesForm() {
         <div>
           <h2 className={styles.title}>Profile Form</h2>
           <Input
+            title="Profile"
             name="profile"
             value={profileValue}
             onChange={onChangeProfileInput}
