@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Select from '../../Shared/Select';
 
 function Form() {
   const [positionId, setPositionId] = useState('');
@@ -15,6 +17,9 @@ function Form() {
   const [interviews, setInterviews] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectPosition, setSelectPosition] = useState([]);
+  const [selectPostulant, setSelectPostulant] = useState([]);
+  const [selectInterviewDate, setSelectInterviewDate] = useState([]);
   const query = useQuery();
   const history = useHistory();
 
@@ -96,6 +101,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setSelectPosition(
+          res.data.map((position) => ({
+            value: position._id,
+            label: position.jobDescription
+          }))
+        );
         setPositions(res.data);
       })
       .catch((err) => {
@@ -111,6 +122,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setSelectPostulant(
+          res.data.map((postulant) => ({
+            value: postulant._id,
+            label: `${postulant.firstName} ${postulant.lastName}`
+          }))
+        );
         setPostulants(res.data);
       })
       .catch((err) => {
@@ -126,6 +143,12 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setSelectInterviewDate(
+          res.data.map((interview) => ({
+            value: interview._id,
+            label: interview.date
+          }))
+        );
         setInterviews(res.data);
       })
       .catch((err) => {
@@ -157,68 +180,33 @@ function Form() {
         <label className={styles.label}>
           <span>Position</span>
         </label>
-        <select
+        <Select
+          title="Position"
           id="positionId"
           name="positionId"
-          required
           value={positionId}
           onChange={onChangePositionId}
-          className={styles.selectInput}
-        >
-          <option value={''} disabled>
-            {'--Select an Option--'}
-          </option>
-          {positions.map((position) => {
-            return (
-              <option value={position._id} key={position._id}>
-                {position.jobDescription}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.label}>
-          <span>Postulant</span>
-        </label>
-        <select
-          id="clientId"
-          name="clientId"
+          arrayToMap={selectPosition}
           required
+        />
+        <Select
+          title="Postulant"
+          id="postulantId"
+          name="postulantId"
           value={postulantId}
           onChange={onChangePostulantId}
-          className={styles.selectInput}
-        >
-          <option value={''} disabled>
-            {'--Select an Option--'}
-          </option>
-          {postulants.map((postulant) => {
-            return (
-              <option value={postulant._id} key={postulant._id}>
-                {postulant.firstName + ' ' + postulant.lastName}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.label}>
-          <span>Interview</span>
-        </label>
-        <select
+          arrayToMap={selectPostulant}
+          required
+        />
+        <Select
+          title="Interview"
           id="interview"
           name="interview"
           value={date}
           onChange={onChangeDate}
-          className={styles.selectInput}
-        >
-          <option value={''} disabled>
-            {'--Select an Option--'}
-          </option>
-          {interviews.map((interview) => {
-            return (
-              <option value={interview._id} key={interview._id}>
-                {interview.date}
-              </option>
-            );
-          })}
-        </select>
+          arrayToMap={selectInterviewDate}
+          required
+        />
         <Input
           title="Result"
           id="result"

@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Select from '../../Shared/Select';
 
 function Form() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
@@ -17,6 +19,10 @@ function Form() {
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectPostulant, setSelectPostulant] = useState([]);
+  const [selectClient, setSelectClient] = useState([]);
+  const [selectApplication, setSelectApplication] = useState([]);
+
   const query = useQuery();
   const history = useHistory();
 
@@ -109,6 +115,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((res) => {
+        setSelectPostulant(
+          res.data.map((postulant) => ({
+            value: postulant._id,
+            label: `${postulant.firstName} ${postulant.lastName}`
+          }))
+        );
         setPostulantsValue(res.data);
       })
       .catch((errorValue) => {
@@ -118,6 +130,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/clients`)
       .then((response) => response.json())
       .then((res) => {
+        setSelectClient(
+          res.data.map((client) => ({
+            value: client._id,
+            label: client.name
+          }))
+        );
         setClientsValue(res.data);
       })
       .catch((errorValue) => {
@@ -127,6 +145,12 @@ function Form() {
     fetch(`${process.env.REACT_APP_API}/applications`)
       .then((response) => response.json())
       .then((res) => {
+        setSelectApplication(
+          res.data.map((application) => ({
+            value: application._id,
+            label: application._id
+          }))
+        );
         setApplicationValue(res.data);
       })
       .catch((errorValue) => {
@@ -151,96 +175,48 @@ function Form() {
         <label className={styles.label}>
           <span className={styles.span}>Postulant Name</span>
         </label>
-        <select
+        <Select
+          title="Postulant Name"
           id="postulantId"
           name="postulantId"
-          type="text"
-          required
           value={postulantIdValue}
           onChange={onChangePostulantId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {postulantsValue.map((postulant) => {
-            return (
-              <option value={postulant._id} key={postulant._id}>
-                {`${postulant.firstName} ${postulant.lastName}`}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Client Name</span>
-        </label>
-        <select
+          arrayToMap={selectPostulant}
+          required
+        />
+        <Select
+          title="Client Name"
           id="clientId"
           name="clientId"
-          type="text"
-          required
           value={clientIdValue}
           onChange={onChangeClientId}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {clientsValue.map((client) => {
-            return (
-              <option value={client._id} key={client._id}>
-                {client.name}
-              </option>
-            );
-          })}
-          ;
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Status</span>
-        </label>
-        <select
+          arrayToMap={selectClient}
+          required
+        />
+        <Select
+          title="Status"
           id="status"
           name="status"
-          type="text"
           required
           value={statusValue}
           onChange={onChangeStatus}
-          className={styles.input}
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          <option value="successful">Successful</option>
-          <option value="failed">Failed</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="assigned">Assigned</option>
-          <option value="confirmed">Confirmed</option>
-        </select>
-        <label className={styles.label}>
-          <span className={styles.span}>Application ID</span>
-        </label>
-        <select
+          arrayToMap={[
+            { value: 'successful', label: 'Successful' },
+            { value: 'failed', label: 'Failed' },
+            { value: 'cancelled', label: 'Cancelled' },
+            { value: 'assigned', label: 'Assigned' },
+            { value: 'confirmed', label: 'Confirmed' }
+          ]}
+        />
+        <Select
           title="Application ID"
           id="application"
           name="application"
-          type="text"
+          required
           value={applicationIdValue}
           onChange={onChangeApplication}
-          className={styles.input}
-          required
-        >
-          <option value={''} disabled>
-            Select one
-          </option>
-          {applicationValue.map((application) => {
-            return (
-              <option value={application._id} key={application._id}>
-                {application._id}
-              </option>
-            );
-          })}
-          ;
-        </select>
+          arrayToMap={selectApplication}
+        />
         <Input
           title="Date"
           id="date"
