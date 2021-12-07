@@ -6,7 +6,11 @@ function Table(props) {
       <thead className={styles.tableHeader}>
         <tr className={styles.trStyles}>
           {props.columnsName.map((column, index) => {
-            return <th key={index}>{column}</th>;
+            return (
+              <th key={index} className={styles.thStyles}>
+                {column}
+              </th>
+            );
           })}
         </tr>
       </thead>
