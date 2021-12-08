@@ -1,12 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import adminsReducer from './admins/reducer';
+import thunk from 'redux-thunk';
 
 const reducers = combineReducers({
   admins: adminsReducer
 });
 
-const enhancer = composeWithDevTools(applyMiddleware(thunk));
-
-export const store = createStore(reducers, enhancer);
+export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
