@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import adminsReducer from './admins/reducer';
 import thunk from 'redux-thunk';
 
