@@ -2,121 +2,78 @@ import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAdmins, deleteAdmin } from '../../redux/admins/thunks';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
-  const [adminToDelete, setAdminToDelete] = useState(false);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
+  const [selectedIdAdmin, setIdAdmin] = useState(false);
   const history = useHistory();
-  const columnName = ['Name', 'Username', 'Actions'];
-
-  const getAdmins = () => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/admins`)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  const dispatch = useDispatch();
+  const admins = useSelector((store) => store.admins.list);
+  const error = useSelector((store) => store.admins.error);
+  const isLoading = useSelector((store) => store.admins.isFetching);
 
   useEffect(() => {
-    getAdmins();
+    dispatch(getAdmins());
   }, []);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const handleDelete = () => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/admins/${adminToDelete}`, { method: 'DELETE' })
-      .then((response) => {
-        if (response.status !== 204) {
-          throw 'There was an error while deleting this admin.';
-        }
-        setAdminToDelete(false);
-        getAdmins();
-        closeModal();
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  const setInformationToShow = (data) => {
-    const idToPass = [];
-    const dataToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([row.name ? row.name : '-', row.username ? row.username : '-']);
-    });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
-  };
-
-  const redirect = (id) => {
-    history.push(`/admins/form?_id=${id}`);
-  };
-
-  const preventAndShow = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setAdminToDelete(id);
-    setShowModal(true);
-  };
 
   return (
     <section className={styles.container}>
       <Modal
-        showModal={showModal}
+        show={showModal}
         title="Are you sure you want to delete this Admin User?"
-        onClose={closeModal}
         isLoading={isLoading}
-        onConfirm={handleDelete}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deleteAdmin(selectedIdAdmin)).then(() => {
+              setIdAdmin(false);
+              setShowModal(false);
+            });
+          }
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => setShowModal(false)
+        }}
       />
       <h2 className={styles.title}>Admins</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <Table
-          columnsName={columnName}
-          id={idToPass}
-          tableInfo={infoToShow}
-          deleteFunction={preventAndShow}
-          redirectFunction={redirect}
+          columns={[
+            { name: 'Name', value: 'name' },
+            { name: 'Username', value: 'username' }
+          ]}
+          data={admins}
+          onRowClick={(item) => history.push(`/admins/form?_id=${item._id}`)}
+          actions={[
+            {
+              text: 'Delete',
+              callback: (e, item) => {
+                e.stopPropagation();
+                setIdAdmin(item._id);
+                setShowModal(true);
+              }
+            }
+          ]}
         />
       )}
-      {error && (
-        <Modal>
-          {error}
-          <Button name="modalCancelButton" onClick={() => setError(false)}></Button>
-        </Modal>
-      )}
       <div className={styles.buttonContainer}>
-        <Link to="/admins/form">
-          <Button name="addButton" entity="ADMIN" />
-        </Link>
+        <Button label="Add Admin" onClick={() => history.push('/admins/form')} />
       </div>
     </section>
   );

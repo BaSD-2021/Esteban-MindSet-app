@@ -2,12 +2,9 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-// import Modal from '../modal/modal';
 import Input from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 import Button from '../../Shared/Button';
-
-let fetchMethod = 'POST';
 
 function Form() {
   const [nameValue, setNameValue] = useState('');
@@ -18,33 +15,26 @@ function Form() {
   const query = useQuery();
   const history = useHistory();
 
-  const getAdminById = () => {
-    fetch(`${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        const { name, username, password } = response.data[0];
-        setNameValue(name);
-        setUsernameValue(username);
-        setPasswordValue(password);
-      })
-      .catch((err) => {
-        setError(err.toString());
-      });
-  };
-
-  let url;
   useEffect(() => {
     if (query.get('_id')) {
-      url = `${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`;
-      fetchMethod = 'PUT';
-      getAdminById();
+      fetch(`${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`)
+        .then((response) => {
+          if (response.status !== 200 && response.status !== 201) {
+            return response.json().then(({ message }) => {
+              throw new Error(message);
+            });
+          }
+          return response.json();
+        })
+        .then((response) => {
+          const { name, username, password } = response.data[0];
+          setNameValue(name);
+          setUsernameValue(username);
+          setPasswordValue(password);
+        })
+        .catch((err) => {
+          setError(err.toString());
+        });
     }
   }, []);
 
@@ -52,7 +42,7 @@ function Form() {
     e.preventDefault();
 
     const options = {
-      method: fetchMethod,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -63,13 +53,11 @@ function Form() {
       })
     };
 
+    let url = `${process.env.REACT_APP_API}/admins`;
+
     if (query.get('_id')) {
-      fetchMethod = 'PUT';
+      options.method = 'PUT';
       url = `${process.env.REACT_APP_API}/admins/${query.get('_id')}`;
-      getAdminById();
-    } else {
-      fetchMethod = 'POST';
-      url = `${process.env.REACT_APP_API}/admins`;
     }
 
     setLoading(true);
@@ -87,8 +75,9 @@ function Form() {
         setLoading(false);
         history.push('/admins');
       })
-      .catch((err) => {
-        setError(err);
+      .catch((error) => {
+        setLoading(false);
+        setError(error.toString());
       });
   };
 
@@ -125,16 +114,17 @@ function Form() {
         required
       />
       <div className={styles.buttonContainer}>
-        <Button name="saveButton" disabled={isLoading}></Button>
+        <Button label="Save" disabled={isLoading} type="submit" />
       </div>
-      {error && (
-        <Modal>
-          {`${error}`}
-          <button className={styles.button} onClick={() => setError(false)}>
-            Close
-          </button>
-        </Modal>
-      )}
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => setError(false)
+        }}
+      />
     </form>
   );
 }
