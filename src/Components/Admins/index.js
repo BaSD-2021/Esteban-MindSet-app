@@ -6,19 +6,29 @@ import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdmins, deleteAdmin } from '../../redux/admins/thunks';
+import { cleanError } from '../../redux/admins/actions';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedIdAdmin, setIdAdmin] = useState(false);
+
   const history = useHistory();
+
+  // get the dispatcher to be able to dispatch Redux actions
   const dispatch = useDispatch();
+
+  // get the Redux store values we need in the component
   const admins = useSelector((store) => store.admins.list);
   const error = useSelector((store) => store.admins.error);
   const isLoading = useSelector((store) => store.admins.isFetching);
 
   useEffect(() => {
-    dispatch(getAdmins());
-  }, []);
+    // get admins list when the list on Redux is empty
+    if (!admins.length) {
+      // Dispatch (execute) the async redux action to get the admin list
+      dispatch(getAdmins());
+    }
+  }, [admins]);
 
   return (
     <section className={styles.container}>
@@ -34,19 +44,22 @@ const Admins = () => {
           text: 'Confirm',
           callback: () => {
             dispatch(deleteAdmin(selectedIdAdmin)).then(() => {
-              setIdAdmin(false);
+              setIdAdmin(undefined);
               setShowModal(false);
             });
           }
         }}
       />
       <Modal
+        // The Error Modal is shown when an error exist in Redux
         show={!!error}
         title="Error"
         message={error}
         cancel={{
           text: 'Close',
-          callback: () => setShowModal(false)
+          // Dispatch (execute) the cleanError action to remove the error in Redux
+          // and hide the modal
+          callback: () => dispatch(cleanError())
         }}
       />
       <h2 className={styles.title}>Admins</h2>
