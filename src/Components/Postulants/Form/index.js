@@ -732,7 +732,7 @@ function PostulantsForm() {
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
-          <Button name="saveButton" disabled={isLoading} />
+          <Button label="SAVE" theme="primary" disabled={isLoading} type="submit"></Button>
         </div>
       </form>
       <div className={styles.showError}>{showError.message}</div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 
 function Clients() {
@@ -115,9 +115,12 @@ function Clients() {
         onConfirm={deleteClient}
       />
       <div className={styles.buttonContainer}>
-        <Link to="/Clients/Form">
-          <Button name="addButton" entity="CLIENT" />
-        </Link>
+        <Button
+          label="ADD CLIENT"
+          type="button"
+          theme="primary"
+          onClick={() => history.push('/clients/form')}
+        />
       </div>
     </section>
   );

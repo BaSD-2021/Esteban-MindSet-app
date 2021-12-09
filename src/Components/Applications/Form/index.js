@@ -177,9 +177,6 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Application</h2>
-        <label className={styles.label}>
-          <span>Position</span>
-        </label>
         <Select
           title="Position"
           id="positionId"
@@ -221,7 +218,7 @@ function Form() {
           {errorMessage.message}
         </div>
         <div className={styles.buttonContainer}>
-          <Button name="saveButton" disabled={isLoading} />
+          <Button label="SAVE" theme="primary" disabled={isLoading} type="submit"></Button>
         </div>
       </form>
     </div>

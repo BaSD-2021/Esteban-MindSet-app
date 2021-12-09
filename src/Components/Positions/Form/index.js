@@ -149,9 +149,6 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Position</h2>
-        <label className={styles.inputDiv}>
-          <span className={styles.inputName}>Client Name</span>
-        </label>
         <Select
           title="Client Name"
           id="clientId"
@@ -203,7 +200,7 @@ function Form() {
           required
         />
         <div className={styles.buttonContainer}>
-          <Button name="saveButton" disabled={isLoading} />
+          <Button label="SAVE" theme="primary" disabled={isLoading} type="submit"></Button>
         </div>
         <div className={styles.error}>{errorValue}</div>
       </form>

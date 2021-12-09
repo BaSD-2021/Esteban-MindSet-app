@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from '../Shared/Modal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 
 function Sessions() {
@@ -119,9 +119,12 @@ function Sessions() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Link to="/Sessions/Form" className={styles.button}>
-          <Button name="addButton" entity="SESSION" />
-        </Link>
+        <Button
+          label="ADD SESSION"
+          type="button"
+          theme="primary"
+          onClick={() => history.push('/sessions/form')}
+        />
       </div>
     </section>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table/index';
 
 const Admins = () => {
@@ -114,9 +114,12 @@ const Admins = () => {
         </Modal>
       )}
       <div className={styles.buttonContainer}>
-        <Link to="/admins/form">
-          <Button name="addButton" entity="ADMIN" />
-        </Link>
+        <Button
+          label="ADD ADMIN"
+          type="button"
+          theme="primary"
+          onClick={() => history.push('/admins/form')}
+        />
       </div>
     </section>
   );

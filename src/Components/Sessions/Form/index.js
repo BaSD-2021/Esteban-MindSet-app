@@ -212,7 +212,7 @@ function sessionsForm() {
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
-          <Button disabled={isLoading} name="saveButton" />
+          <Button label="SAVE" theme="primary" disabled={isLoading} type="submit"></Button>
         </div>
         <div className={styles.error}>{error}</div>
       </form>

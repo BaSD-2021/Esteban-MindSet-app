@@ -39,7 +39,10 @@ function Table(props) {
                 })}
                 <td className={styles.tdStyles}>
                   <Button
-                    name="deleteButton"
+                    label="DELETE"
+                    style={styles.actionButton}
+                    type="button"
+                    theme="primary"
                     onClick={(e) => {
                       props.deleteFunction(e, props.id[index]);
                     }}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 
 function Postulants() {
@@ -107,9 +107,12 @@ function Postulants() {
       )}
       <div className={styles.showError}>{showError.message}</div>
       <div className={styles.buttonContainer}>
-        <Link to="/Postulants/Form" className={styles.button}>
-          <Button name="addButton" entity="POSTULANT" />
-        </Link>
+        <Button
+          label="ADD POSTULANT"
+          type="button"
+          theme="primary"
+          onClick={() => history.push('/postulants/form')}
+        />
       </div>
     </section>
   );

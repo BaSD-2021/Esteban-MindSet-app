@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from '../Shared/Modal';
 import styles from './profiles.module.css';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 
 function Profiles() {
@@ -114,9 +114,12 @@ function Profiles() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Link to="/Profiles/Form">
-          <Button name="addButton" entity="PROFILE" />
-        </Link>
+        <Button
+          label="ADD PROFILE"
+          type="button"
+          theme="primary"
+          onClick={() => history.push('/profiles/form')}
+        />
       </div>
     </section>
   );

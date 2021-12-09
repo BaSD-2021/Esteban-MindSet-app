@@ -63,7 +63,9 @@ const Form = ({
       ))}
       <div className={styles.buttonContainer}>
         <Button
-          name="saveButton"
+          label="SAVE"
+          theme="primary"
+          type="submit"
           onClick={(e) => {
             toggleFormDisplay, handleSubmit(itemOnEdit, e);
           }}
