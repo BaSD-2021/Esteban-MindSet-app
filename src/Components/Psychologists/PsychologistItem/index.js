@@ -33,7 +33,9 @@ const PsychologistItem = ({
           style={styles.actionButton}
           type="button"
           theme="primary"
-          onClick={toggleConfirmModal}
+          onClick={(e) => {
+            toggleConfirmModal(e, psychologist);
+          }}
         />
       </td>
     </tr>
