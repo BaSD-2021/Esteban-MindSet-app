@@ -211,7 +211,7 @@ function Form() {
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>{' '}
+          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
       </form>
       <div id="error_message" className={styles.errorMessage}>
