@@ -122,12 +122,7 @@ function Applications() {
         onConfirm={deleteApplication}
       />
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD APPLICATION"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/applications/form')}
-        />
+        <Button label="ADD APPLICATION" onClick={() => history.push('/applications/form')} />
       </div>
     </section>
   );

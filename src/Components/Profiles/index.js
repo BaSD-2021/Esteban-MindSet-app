@@ -114,12 +114,7 @@ function Profiles() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD PROFILE"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/profiles/form')}
-        />
+        <Button label="ADD PROFILE" onClick={() => history.push('/profiles/form')} />
       </div>
     </section>
   );

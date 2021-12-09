@@ -119,12 +119,7 @@ function Sessions() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD SESSION"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/sessions/form')}
-        />
+        <Button label="ADD SESSION" onClick={() => history.push('/sessions/form')} />
       </div>
     </section>
   );

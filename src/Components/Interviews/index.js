@@ -105,12 +105,7 @@ function Interviews() {
         onConfirm={deleteInterview}
       />
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD INTERVIEW"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/interviews/form')}
-        />
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
       </div>
     </section>
   );

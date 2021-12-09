@@ -115,12 +115,7 @@ function Clients() {
         onConfirm={deleteClient}
       />
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD CLIENT"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/clients/form')}
-        />
+        <Button label="ADD CLIENT" onClick={() => history.push('/clients/form')} />
       </div>
     </section>
   );

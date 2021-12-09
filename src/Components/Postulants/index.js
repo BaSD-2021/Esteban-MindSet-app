@@ -107,12 +107,7 @@ function Postulants() {
       )}
       <div className={styles.showError}>{showError.message}</div>
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD POSTULANT"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/postulants/form')}
-        />
+        <Button label="ADD POSTULANT" onClick={() => history.push('/postulants/form')} />
       </div>
     </section>
   );

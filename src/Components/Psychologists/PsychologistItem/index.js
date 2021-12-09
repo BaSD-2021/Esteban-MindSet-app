@@ -31,8 +31,6 @@ const PsychologistItem = ({
         <Button
           label="DELETE"
           style={styles.actionButton}
-          type="button"
-          theme="primary"
           onClick={(e) => {
             toggleConfirmModal(e, psychologist);
           }}

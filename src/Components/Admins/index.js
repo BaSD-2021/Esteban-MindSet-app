@@ -114,12 +114,7 @@ const Admins = () => {
         </Modal>
       )}
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD ADMIN"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/admins/form')}
-        />
+        <Button label="ADD ADMIN" onClick={() => history.push('/admins/form')} />
       </div>
     </section>
   );

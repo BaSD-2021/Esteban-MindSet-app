@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './button.module.css';
 
-function Button({ label, onClick, disabled, type, theme, style }) {
+function Button({ label, onClick, disabled, type = 'button', theme = 'primary', style }) {
   return (
     <div>
       <button

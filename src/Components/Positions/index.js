@@ -112,12 +112,7 @@ function Positions() {
         />
       )}
       <div className={styles.buttonContainer}>
-        <Button
-          label="ADD POSITION"
-          type="button"
-          theme="primary"
-          onClick={() => history.push('/positions/form')}
-        />
+        <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
       </div>
     </section>
   );

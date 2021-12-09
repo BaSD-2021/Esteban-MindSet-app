@@ -218,7 +218,7 @@ function Form() {
           {errorMessage.message}
         </div>
         <div className={styles.buttonContainer}>
-          <Button label="SAVE" theme="primary" disabled={isLoading} type="submit"></Button>
+          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
       </form>
     </div>
