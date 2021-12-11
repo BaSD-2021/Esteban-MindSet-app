@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 
 function Positions() {
@@ -112,9 +112,7 @@ function Positions() {
         />
       )}
       <div className={styles.buttonContainer}>
-        <Link to="/Positions/Form" className={styles.button}>
-          <Button name="addButton" entity="POSITION" />
-        </Link>
+        <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
       </div>
     </section>
   );

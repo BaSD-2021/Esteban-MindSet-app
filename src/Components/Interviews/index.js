@@ -170,10 +170,7 @@ function Interviews() {
         }}
       />
       <div className={styles.buttonContainer}>
-        {/* <Link to="/Interviews/Form" className={styles.button}>
-          <Button name="addButton" entity="INTERVIEW" />
-        </Link> */}
-        <Button label="Add Interview" onClick={() => history.push('/interviews/form')} />
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
       </div>
     </section>
   );
