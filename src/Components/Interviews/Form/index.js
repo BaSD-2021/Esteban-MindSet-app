@@ -5,7 +5,15 @@ import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Modal from '../../Shared/Modal';
 import Select from '../../Shared/Select';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createInterview,
+  getInterviewById,
+  updateInterview
+} from '../../../redux/interviews/thunks';
+import { cleanError } from '../../../redux/interviews/actions';
 
 function Form() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
@@ -22,6 +30,9 @@ function Form() {
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
+
+  const error = useSelector((store) => store.interviews.error);
+  //const isLoading = useSelector((store) => store.interviews.isFetching);
 
   const query = useQuery();
   const history = useHistory();
@@ -172,6 +183,9 @@ function Form() {
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Interview</h2>
+        <label className={styles.label}>
+          <span className={styles.span}>Postulant Name</span>
+        </label>
         <Select
           title="Postulant Name"
           id="postulantId"
@@ -234,7 +248,7 @@ function Form() {
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
+          <Button name="saveButton" disabled={isLoading} />
         </div>
         <div className={styles.error}>{errorValue}</div>
       </form>

@@ -19,9 +19,7 @@ import {
 // Async Actions definition
 export const getInterviews = () => {
   return (dispatch) => {
-    // Dispatch (execute) the redux action to indicate the request will start
     dispatch(getInterviewsPending());
-    // Make the backend request
     return fetch(`${process.env.REACT_APP_API}/interviews`)
       .then((response) => {
         if (response.status !== 200) {
@@ -32,19 +30,14 @@ export const getInterviews = () => {
         return response.json();
       })
       .then((response) => {
-        // Dispatch (execute) the redux action to save the response in Redux
         dispatch(getInterviewsSuccess(response.data));
       })
       .catch((error) => {
-        // Dispatch (execute) the redux action to save the error in Redux
-        // Remember always save an string, it is guaranteed using "error.toString()"
         dispatch(getInterviewsError(error.toString()));
       });
   };
 };
 
-// See the comments above for reference.
-// On this case, we are passing an "id" params to send it to the backend
 export const getInterviewById = (id) => {
   return (dispatch) => {
     dispatch(getInterviewByIdPending());
@@ -59,8 +52,6 @@ export const getInterviewById = (id) => {
       })
       .then((response) => {
         dispatch(getInterviewByIdSuccess(response.data[0]));
-        // it is necessary to return the response to get it on the ".then" in
-        // the component when the action is dispatched
         return response.data[0];
       })
       .catch((error) => {
@@ -69,7 +60,7 @@ export const getInterviewById = (id) => {
   };
 };
 
-export const createInterview = (values) => {
+export const createInterview = (interview) => {
   return (dispatch) => {
     dispatch(createInterviewPending());
     const options = {
@@ -77,7 +68,7 @@ export const createInterview = (values) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(interview)
     };
     return fetch(`${process.env.REACT_APP_API}/interview`, options)
       .then((response) => {
@@ -98,7 +89,7 @@ export const createInterview = (values) => {
   };
 };
 
-export const updateInterview = (id, values) => {
+export const updateInterview = (id, interview) => {
   return (dispatch) => {
     dispatch(updateInterviewPending());
     const options = {
@@ -106,7 +97,7 @@ export const updateInterview = (id, values) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(interview)
     };
     return fetch(`${process.env.REACT_APP_API}/interviews/${id}`, options)
       .then((response) => {
