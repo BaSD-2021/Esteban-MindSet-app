@@ -1,15 +1,16 @@
 import React from 'react';
 import styles from './button.module.css';
 
-function Button({ name, entity, onClick, onSubmit, disabled }) {
+function Button({ label, onClick, disabled, type = 'button', theme = 'primary', style }) {
   return (
     <div>
-      <button className={styles[name]} onClick={onClick} onSubmit={onSubmit} disabled={disabled}>
-        {name === 'deleteButton' && 'DELETE'}
-        {name === 'addButton' && `ADD ${entity}`}
-        {name === 'saveButton' && 'SAVE'}
-        {name === 'modalDeleteButton' && 'Delete'}
-        {name === 'modalCancelButton' && 'Cancel'}
+      <button
+        type={type}
+        className={`${styles[theme]} ${style} ${disabled && styles.disabled}`}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {label}
       </button>
     </div>
   );

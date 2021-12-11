@@ -29,7 +29,7 @@ const List = ({
         </tbody>
       </table>
       <div className={styles.buttonContainer}>
-        <Button name="addButton" entity="PSYCHOLOGIST" onClick={toggleFormDisplay} />
+        <Button label="ADD PSYCHOLOGIST" onClick={toggleFormDisplay} />
       </div>
     </div>
   );

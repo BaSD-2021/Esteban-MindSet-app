@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table/index';
 
 function Applications() {
@@ -122,9 +122,7 @@ function Applications() {
         onConfirm={deleteApplication}
       />
       <div className={styles.buttonContainer}>
-        <Link to="/Applications/Form">
-          <Button name="addButton" entity="APPLICATION" />
-        </Link>
+        <Button label="ADD APPLICATION" onClick={() => history.push('/applications/form')} />
       </div>
     </section>
   );

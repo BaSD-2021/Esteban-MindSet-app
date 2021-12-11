@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
@@ -105,9 +105,7 @@ function Interviews() {
         onConfirm={deleteInterview}
       />
       <div className={styles.buttonContainer}>
-        <Link to="/Interviews/Form" className={styles.button}>
-          <Button name="addButton" entity="INTERVIEW" />
-        </Link>
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
       </div>
     </section>
   );

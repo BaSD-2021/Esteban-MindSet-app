@@ -28,7 +28,13 @@ const PsychologistItem = ({
       <td>{phone}</td>
       <td>{address}</td>
       <td>
-        <Button name="deleteButton" onClick={(e) => toggleConfirmModal(e, psychologist)} />
+        <Button
+          label="DELETE"
+          style={styles.actionButton}
+          onClick={(e) => {
+            toggleConfirmModal(e, psychologist);
+          }}
+        />
       </td>
     </tr>
   );

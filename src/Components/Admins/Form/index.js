@@ -125,7 +125,7 @@ function Form() {
         required
       />
       <div className={styles.buttonContainer}>
-        <Button name="saveButton" disabled={isLoading}></Button>
+        <Button label="Save" disabled={isLoading} type="submit"></Button>
       </div>
       {error && (
         <Modal>
