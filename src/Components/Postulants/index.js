@@ -1,37 +1,31 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { Link, useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
+import { getPostulants } from '../../redux/postulants/thunks';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [showError, setShowError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [infoToShow, setInfoToShow] = useState([]);
   const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
   const columnName = ['First Name', 'Last Name', 'Email', 'Phone', 'Address', 'Actions'];
+  const dispatch = useDispatch();
+  const postulants = useSelector((store) => store.postulants.list);
+  const isLoading = useSelector((store) => store.postulants.isLoading);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => response.json())
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((err) => {
-        setShowError(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    if (!postulants.length) {
+      dispatch(getPostulants());
+    }
+  }, [postulants]);
 
   const deletePostulant = () => {
-    setIsLoading(true);
     const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
     fetch(url, {
       method: 'DELETE',
@@ -47,7 +41,6 @@ function Postulants() {
         setShowError(err);
       })
       .finally(() => {
-        setIsLoading(false);
         history.go(0);
       });
   };
