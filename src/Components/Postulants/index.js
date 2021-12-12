@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
 import { getPostulants } from '../../redux/postulants/thunks';
 
@@ -100,9 +100,7 @@ function Postulants() {
       )}
       <div className={styles.showError}>{showError.message}</div>
       <div className={styles.buttonContainer}>
-        <Link to="/Postulants/Form" className={styles.button}>
-          <Button name="addButton" entity="POSTULANT" />
-        </Link>
+        <Button label="ADD POSTULANT" onClick={() => history.push('/postulants/form')} />
       </div>
     </section>
   );
