@@ -2,6 +2,8 @@ import styles from './table.module.css';
 import Button from '../Button';
 
 function Table(props) {
+  console.log(props.data[0]);
+  console.log('data:', props.data[0]);
   return (
     <table className={styles.tableData}>
       <thead className={styles.tableHeader}>
