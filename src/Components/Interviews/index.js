@@ -32,7 +32,7 @@ function Interviews() {
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <Table
-          columns={[
+          columnsName={[
             { name: 'Postulant', value: 'postulant' },
             { name: 'Client', value: 'client' },
             { name: 'Status', value: 'status' },
