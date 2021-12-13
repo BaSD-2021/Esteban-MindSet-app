@@ -14,7 +14,8 @@ import {
   DELETE_PROFILE_PENDING,
   DELETE_PROFILE_SUCCESS,
   DELETE_PROFILE_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './constants';
 
 export const getProfilesPending = () => {
@@ -120,5 +121,11 @@ export const deleteProfileError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };

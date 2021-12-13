@@ -10,7 +10,7 @@ import { cleanError } from '../../redux/profiles/actions';
 
 function Profiles() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedIdProfile, setSelectedIdProfile] = useState(undefined);
+  const [selectedIdProfile, setSelectedIdProfile] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
   const profiles = useSelector((store) => store.profiles.list);

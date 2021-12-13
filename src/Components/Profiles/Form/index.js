@@ -7,45 +7,60 @@ import Button from '../../Shared/Button';
 import Modal from '../../Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileById, createProfile, updateProfile } from '../../../redux/profiles/thunks';
-import { cleanError } from '../../../redux/profiles/actions';
+import { cleanError, cleanSelectedItem } from '../../../redux/profiles/actions';
 
 function profilesForm() {
-  const [profileValue, setProfileValue] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [nameValue, setNameValue] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
-  const selectedProfile = useSelector((store) => store.selectedItem);
+  const selectedProfile = useSelector((store) => store.profiles.selectedItem);
   const error = useSelector((store) => store.profiles.error);
+  const isLoading = useSelector((store) => store.admins.isFetching);
 
   const onChangeProfileInput = (event) => {
-    setProfileValue(event.target.value);
+    setNameValue(event.target.value);
   };
 
   useEffect(() => {
     const profileId = query.get('_id');
     if (profileId) {
-      dispatch(getProfileById(profileId)).then((response) => {
-        setProfileValue(response.name);
-      });
+      dispatch(getProfileById(profileId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedProfile).length) {
+      setNameValue(selectedProfile.name);
     }
   }, [selectedProfile]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
     const profileId = query.get('_id');
 
     const body = {
-      name: profileValue
+      name: nameValue
     };
     if (profileId) {
-      dispatch(updateProfile(profileId, body));
+      dispatch(updateProfile(profileId, body)).then((response) => {
+        if (response) {
+          history.push('/profiles');
+        }
+      });
     } else {
-      dispatch(createProfile(body));
+      dispatch(createProfile(body)).then((response) => {
+        if (response) {
+          history.push('/profiles');
+        }
+      });
     }
-    history.replace('/profiles');
-
-    setLoading(true);
   };
 
   return (
@@ -65,7 +80,7 @@ function profilesForm() {
           <Input
             title="Profile"
             name="profile"
-            value={profileValue}
+            value={nameValue}
             onChange={onChangeProfileInput}
             type="text"
             disabled={isLoading}
