@@ -16,172 +16,84 @@ import {
 import { cleanError } from '../../../redux/interviews/actions';
 
 function Form() {
+  const [interviewId, setInterviewId] = useState(undefined);
   const [postulantIdValue, setPostulantIdValue] = useState('');
   const [clientIdValue, setClientIdValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
   const [dateValue, setDateValue] = useState('');
   const [applicationIdValue, setApplicationIdValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
-  const [postulantsValue, setPostulantsValue] = useState([]);
-  const [clientsValue, setClientsValue] = useState([]);
-  const [applicationValue, setApplicationValue] = useState([]);
-  const [errorValue, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // const [postulantsValue, setPostulantsValue] = useState([]);
+  // const [clientsValue, setClientsValue] = useState([]);
+  // const [applicationValue, setApplicationValue] = useState([]);
+  // const [errorValue, setError] = useState('');
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
 
   const error = useSelector((store) => store.interviews.error);
-  //const isLoading = useSelector((store) => store.interviews.isFetching);
-
+  const isLoading = useSelector((store) => store.interviews.isFetching);
+  const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
 
-  let fetchMethod = 'POST';
-
-  const onLoading = (dat) => {
-    setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
-    setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
-    setStatusValue(dat.data[0].status || '');
-    setDateValue(dat.data[0].date || '');
-    setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
-    setNotesValue(dat.data[0].notes || '');
-  };
-
-  const onChangePostulantId = (event) => {
-    setPostulantIdValue(event.target.value);
-  };
-
-  const onChangeClientId = (event) => {
-    setClientIdValue(event.target.value);
-  };
-
-  const onChangeStatus = (event) => {
-    setStatusValue(event.target.value);
-  };
-
-  const onChangeDate = (event) => {
-    setDateValue(event.target.value);
-  };
-
-  const onChangeApplication = (event) => {
-    setApplicationIdValue(event.target.value);
-  };
-
-  const onChangeNotes = (event) => {
-    setNotesValue(event.target.value);
-  };
-
-  const interviewId = query.get('_id');
-  const url1 = `${process.env.REACT_APP_API}/interviews?_id=${interviewId}`;
-
-  if (interviewId) {
-    fetchMethod = 'PUT';
-  }
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        postulant: postulantIdValue,
-        client: clientIdValue,
-        application: applicationIdValue,
-        status: statusValue,
-        date: dateValue,
-        notes: notesValue
-      }),
-      method: fetchMethod
-    };
-
-    const url = interviewId
-      ? `${process.env.REACT_APP_API}/interviews/${interviewId}`
-      : `${process.env.REACT_APP_API}/interviews/`;
-
-    setIsLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        history.push(`/interviews`);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectPostulant(
-          res.data.map((postulant) => ({
-            value: postulant._id,
-            label: `${postulant.firstName} ${postulant.lastName}`
-          }))
-        );
-        setPostulantsValue(res.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      });
-
-    fetch(`${process.env.REACT_APP_API}/clients`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectClient(
-          res.data.map((client) => ({
-            value: client._id,
-            label: client.name
-          }))
-        );
-        setClientsValue(res.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      });
-
-    fetch(`${process.env.REACT_APP_API}/applications`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectApplication(
-          res.data.map((application) => ({
-            value: application._id,
-            label: application._id
-          }))
-        );
-        setApplicationValue(res.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      });
-
+    const interviewId = query.get('_id');
     if (interviewId) {
-      fetch(url1)
-        .then((response) => response.json())
-        .then((res) => {
-          onLoading(res);
-        })
-        .catch((errorValue) => {
-          setError(errorValue.toString());
-        });
+      dispatch(getInterviewById(interviewId)).then((selectedInterview) => {
+        setInterviewId(interviewId);
+        setPostulantIdValue(selectedInterview.postulant);
+        setClientIdValue(selectedInterview.client);
+        setApplicationIdValue(selectedInterview.application);
+        setStatusValue(selectedInterview.status);
+        setDateValue(selectedInterview.date);
+        setNotesValue(selectedInterview.notes);
+      });
     }
   }, []);
+
+  const save = (e) => {
+    e.preventDefault();
+
+    const interviewId = query.get('_id');
+
+    if (interviewId) {
+      dispatch(
+        updateInterview(interviewId, {
+          postulant: postulantIdValue,
+          client: clientIdValue,
+          application: applicationIdValue,
+          status: statusValue,
+          date: dateValue,
+          notes: notesValue
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/interviews');
+        }
+      });
+    } else {
+      dispatch(
+        createInterview({
+          postulant: postulantIdValue,
+          client: clientIdValue,
+          application: applicationIdValue,
+          status: statusValue,
+          date: dateValue,
+          notes: notesValue
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/interviews');
+        }
+      });
+    }
+  };
+  //
+
   return (
     <div>
-      <form onSubmit={onSubmit} className={styles.container}>
+      <form onSubmit={save} className={styles.container}>
         <h2 className={styles.title}>Interview</h2>
         <label className={styles.label}>
           <span className={styles.span}>Postulant Name</span>
@@ -191,7 +103,7 @@ function Form() {
           id="postulantId"
           name="postulantId"
           value={postulantIdValue}
-          onChange={onChangePostulantId}
+          onChange={(e) => setPostulantIdValue(e.target.value)}
           arrayToMap={selectPostulant}
           required
         />
@@ -200,7 +112,7 @@ function Form() {
           id="clientId"
           name="clientId"
           value={clientIdValue}
-          onChange={onChangeClientId}
+          onChange={(e) => setClientIdValue(e.target.value)}
           arrayToMap={selectClient}
           required
         />
@@ -210,7 +122,7 @@ function Form() {
           name="status"
           required
           value={statusValue}
-          onChange={onChangeStatus}
+          onChange={(e) => setStatusValue(e.target.value)}
           arrayToMap={[
             { value: 'successful', label: 'Successful' },
             { value: 'failed', label: 'Failed' },
@@ -225,7 +137,7 @@ function Form() {
           name="application"
           required
           value={applicationIdValue}
-          onChange={onChangeApplication}
+          onChange={(e) => setApplicationIdValue(e.target.value)}
           arrayToMap={selectApplication}
         />
         <Input
@@ -234,7 +146,7 @@ function Form() {
           name="date"
           type="datetime-local"
           value={dateValue}
-          onChange={onChangeDate}
+          onChange={(e) => setDateValue(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -244,13 +156,20 @@ function Form() {
           name="notes"
           type="text"
           value={notesValue}
-          onChange={onChangeNotes}
+          onChange={(e) => setNotesValue(e.target.value)}
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
-          <Button name="saveButton" disabled={isLoading} />
+          <Button label="Save" disabled={isLoading} type="submit" />
         </div>
-        <div className={styles.error}>{errorValue}</div>
+        {error && (
+          <Modal>
+            {`${error}`}
+            <button className={styles.button} onClick={() => dispatch(cleanError())}>
+              Close
+            </button>
+          </Modal>
+        )}
       </form>
     </div>
   );
