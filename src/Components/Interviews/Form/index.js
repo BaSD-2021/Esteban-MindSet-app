@@ -16,7 +16,6 @@ import {
 import { cleanError } from '../../../redux/interviews/actions';
 
 function Form() {
-  const [interviewId, setInterviewId] = useState(undefined);
   const [postulantIdValue, setPostulantIdValue] = useState('');
   const [clientIdValue, setClientIdValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
@@ -31,6 +30,7 @@ function Form() {
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
+  const [id, setInterviewId] = useState(undefined);
 
   // const error = useSelector((store) => store.interviews.error);
   // const isLoading = useSelector((store) => store.interviews.isFetching);
@@ -39,14 +39,14 @@ function Form() {
   const history = useHistory();
   const selectedInterview = useSelector((store) => store.selectedItem);
 
-  const onLoading = (dat) => {
-    setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
-    setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
-    setStatusValue(dat.data[0].status || '');
-    setDateValue(dat.data[0].date || '');
-    setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
-    setNotesValue(dat.data[0].notes || '');
-  };
+  // const onLoading = (dat) => {
+  //   setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
+  //   setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
+  //   setStatusValue(dat.data[0].status || '');
+  //   setDateValue(dat.data[0].date || '');
+  //   setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
+  //   setNotesValue(dat.data[0].notes || '');
+  // };
 
   const onChangePostulantId = (event) => {
     setPostulantIdValue(event.target.value);
@@ -72,16 +72,32 @@ function Form() {
     setNotesValue(event.target.value);
   };
 
+  // useEffect(() => {
+  //   const interviewId = query.get('_id');
+  //   if (interviewId) {
+  //     dispatch(getInterviewById(interviewId)).then((response) => {
+  //       setPostulantIdValue(response.data[0].postulant?._id);
+  //       setClientIdValue(response.client._id);
+  //       setApplicationIdValue(response.application._id);
+  //       setStatusValue(response.status);
+  //       setDateValue(response.date);
+  //       setNotesValue(response.notes);
+  //     });
+  //   }
+  // }, []);
+
   useEffect(() => {
+    setLoading(true);
     const interviewId = query.get('_id');
     if (interviewId) {
-      dispatch(getInterviewById(interviewId)).then((response) => {
-        setPostulantIdValue(response.data[0].postulant?._id);
-        setClientIdValue(response.client._id);
-        setApplicationIdValue(response.application._id);
-        setStatusValue(response.status);
-        setDateValue(response.date);
-        setNotesValue(response.notes);
+      dispatch(getInterviewById(interviewId)).then((selectedInterview) => {
+        setInterviewId(interviewId);
+        setPostulantIdValue(selectedInterview.postulant?._id);
+        setClientIdValue(selectedInterview.client?._id);
+        setApplicationIdValue(selectedInterview.application?._id);
+        setStatusValue(selectedInterview.status);
+        setDateValue(selectedInterview.date);
+        setNotesValue(selectedInterview.notes);
       });
     }
   }, []);
