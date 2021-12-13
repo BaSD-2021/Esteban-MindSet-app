@@ -7,7 +7,7 @@ import Button from '../../Shared/Button';
 import Modal from '../../Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileById, createProfile, updateProfile } from '../../../redux/profiles/thunks';
-import { cleanError } from '../../../redux/sessions/actions';
+import { cleanError } from '../../../redux/profiles/actions';
 
 function profilesForm() {
   const [profileValue, setProfileValue] = useState('');
