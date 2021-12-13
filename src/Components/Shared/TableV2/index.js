@@ -1,5 +1,6 @@
 import styles from './table.module.css';
 import Button from '../Button';
+import get from 'lodash.get';
 
 function Table(props) {
   return (
@@ -30,7 +31,7 @@ function Table(props) {
                 {props.columns.map((column, index) => {
                   return (
                     <td key={`${item[column.value]}-${index}`} className={styles.tdStyles}>
-                      {item[column.value]}
+                      {get(item, column.value)}
                     </td>
                   );
                 })}
