@@ -2,94 +2,79 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
-// import Modal from '../modal/modal';
 import Input from '../../Shared/Input';
 import Modal from '../../Shared/Modal';
 import Button from '../../Shared/Button';
 
-let fetchMethod = 'POST';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAdmin, getAdminById, updateAdmin } from '../../../redux/admins/thunks';
+import { cleanError, cleanSelectedItem } from '../../../redux/admins/actions';
 
 function Form() {
   const [nameValue, setNameValue] = useState('');
   const [usernameValue, setUsernameValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const [error, setError] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+
+  const error = useSelector((store) => store.admins.error);
+  const isLoading = useSelector((store) => store.admins.isFetching);
+  const selectedItem = useSelector((store) => store.admins.selectedItem);
+
+  const dispatch = useDispatch();
+
   const query = useQuery();
   const history = useHistory();
 
-  const getAdminById = () => {
-    fetch(`${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        const { name, username, password } = response.data[0];
-        setNameValue(name);
-        setUsernameValue(username);
-        setPasswordValue(password);
-      })
-      .catch((err) => {
-        setError(err.toString());
-      });
-  };
-
-  let url;
   useEffect(() => {
-    if (query.get('_id')) {
-      url = `${process.env.REACT_APP_API}/admins?_id=${query.get('_id')}`;
-      fetchMethod = 'PUT';
-      getAdminById();
+    const adminId = query.get('_id');
+    if (adminId) {
+      dispatch(getAdminById(adminId));
     }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedItem).length) {
+      setNameValue(selectedItem.name);
+      setUsernameValue(selectedItem.username);
+      setPasswordValue(selectedItem.password);
+    }
+  }, [selectedItem]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
   }, []);
 
   const save = (e) => {
     e.preventDefault();
 
-    const options = {
-      method: fetchMethod,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: nameValue,
-        username: usernameValue,
-        password: passwordValue
-      })
-    };
+    const adminId = query.get('_id');
 
-    if (query.get('_id')) {
-      fetchMethod = 'PUT';
-      url = `${process.env.REACT_APP_API}/admins/${query.get('_id')}`;
-      getAdminById();
-    } else {
-      fetchMethod = 'POST';
-      url = `${process.env.REACT_APP_API}/admins`;
-    }
-
-    setLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
+    if (adminId) {
+      dispatch(
+        updateAdmin(adminId, {
+          name: nameValue,
+          username: usernameValue,
+          password: passwordValue
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/admins');
         }
-        return response.json();
-      })
-      .then(() => {
-        setLoading(false);
-        history.push('/admins');
-      })
-      .catch((err) => {
-        setError(err);
       });
+    } else {
+      dispatch(
+        createAdmin({
+          name: nameValue,
+          username: usernameValue,
+          password: passwordValue
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/admins');
+        }
+      });
+    }
   };
 
   return (
@@ -127,14 +112,15 @@ function Form() {
       <div className={styles.buttonContainer}>
         <Button label="Save" disabled={isLoading} type="submit"></Button>
       </div>
-      {error && (
-        <Modal>
-          {`${error}`}
-          <button className={styles.button} onClick={() => setError(false)}>
-            Close
-          </button>
-        </Modal>
-      )}
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
     </form>
   );
 }
