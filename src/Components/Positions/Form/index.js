@@ -1,11 +1,14 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Modal from '../../Shared/Modal';
 import Select from '../../Shared/Select';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPositionById, createPosition, updatePosition } from '../../../redux/positions/thunks';
+import { cleanError } from '../../../redux/positions/actions';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');
@@ -18,21 +21,14 @@ function Form() {
   const [selectClient, setSelectClient] = useState([]);
   const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
   const [errorValue, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [id, setPositionId] = useState(undefined);
+
+  // const error = useSelector((store) => store.interviews.error);
+  const isLoading = useSelector((store) => store.positions.isFetching);
+  const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
-
-  let fetchMethod = 'POST';
-
-  const onLoading = (dat) => {
-    setProfessionalProfileIdValue(
-      dat.data[0].professionalProfile ? dat.data[0].professionalProfile : ''
-    );
-    setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
-    setVacancyValue(dat.data[0].vacancy || '');
-    setJobDescriptionValue(dat.data[0].jobDescription || '');
-    setIsOpenValue(dat.data[0].isOpen || '');
-  };
+  const selectedPosition = useSelector((store) => store.selectedItem);
 
   const onChangeProfessionalProfileId = (event) => {
     setProfessionalProfileIdValue(event.target.value);
@@ -54,63 +50,28 @@ function Form() {
     setIsOpenValue(event.target.value);
   };
 
-  const positionId = query.get('_id');
-  const url1 = `${process.env.REACT_APP_API}/positions?_id=${positionId}`;
-
-  if (positionId) {
-    fetchMethod = 'PUT';
-  }
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        client: clientIdValue,
-        jobDescription: jobDescriptionValue,
-        vacancy: vacancyValue,
-        professionalProfile: professionalProfileIdValue,
-        isOpen: isOpenValue
-      }),
-      method: fetchMethod
-    };
-
-    const url = positionId
-      ? `${process.env.REACT_APP_API}/positions/${positionId}`
-      : `${process.env.REACT_APP_API}/positions/`;
-
-    setIsLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        history.push(`/positions`);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      })
-      .finally(() => {
-        setIsLoading(false);
+  useEffect(() => {
+    const positionId = query.get('_id');
+    if (positionId) {
+      dispatch(getPositionById(positionId)).then((selectedPosition) => {
+        setPositionId(positionId);
+        setClientIdValue(selectedPosition.client?._id);
+        setJobDescriptionValue(selectedPosition.jobDescription);
+        setVacancyValue(selectedPosition.vacancy);
+        setProfessionalProfileIdValue(selectedPosition.professionalProfile?.name);
+        setIsOpenValue(selectedPosition.isOpen);
       });
-  };
+    }
+  }, [selectedPosition]);
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/profiles`)
       .then((response) => response.json())
       .then((res) => {
         setSelectProfessionalProfile(
-          res.data.map((proffesionalprofile) => ({
-            value: proffesionalprofile._id,
-            label: proffesionalprofile.name
+          res.data.map((professionalProfile) => ({
+            value: professionalProfile._id,
+            label: professionalProfile.name
           }))
         );
         setProfessionalProfilesValue(res.data);
@@ -133,18 +94,43 @@ function Form() {
       .catch((errorValue) => {
         setError(errorValue.toString());
       });
+  }, []);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const positionId = query.get('_id');
 
     if (positionId) {
-      fetch(url1)
-        .then((response) => response.json())
-        .then((res) => {
-          onLoading(res);
+      dispatch(
+        updatePosition(positionId, {
+          client: clientIdValue,
+          jobDescription: jobDescriptionValue,
+          vacancy: vacancyValue,
+          professionalProfile: professionalProfileIdValue,
+          isOpen: isOpenValue
         })
-        .catch((errorValue) => {
-          setError(errorValue.toString());
-        });
+      ).then((response) => {
+        if (response) {
+          history.replace('/positions');
+        }
+      });
+    } else {
+      dispatch(
+        createPosition({
+          client: clientIdValue,
+          jobDescription: jobDescriptionValue,
+          vacancy: vacancyValue,
+          professionalProfile: professionalProfileIdValue,
+          isOpen: isOpenValue
+        })
+      ).then((response) => {
+        if (response) {
+          history.replace('/positions');
+        }
+      });
     }
-  }, []);
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit} className={styles.container}>
@@ -200,9 +186,18 @@ function Form() {
           required
         />
         <div className={styles.buttonContainer}>
+          {/* //<Button label="SAVE" type="submit"></Button> */}
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
-        <div className={styles.error}>{errorValue}</div>
+        {errorValue && (
+          <Modal>
+            {`${errorValue}`}
+            <button className={styles.button} onClick={() => dispatch(cleanError())}>
+              Close
+            </button>
+          </Modal>
+        )}
+        {/* <div className={styles.error}>{errorValue}</div> */}
       </form>
     </div>
   );

@@ -46,9 +46,9 @@ function Positions() {
           columns={[
             { name: 'Client', value: 'client.name' },
             { name: 'Job Description', value: 'jobDescription' },
-            { name: 'Vacancy', value: 'vacancy' }
-            // { name: 'Professional Profile', value: 'professionalProfile' },
-            // { name: 'Is Open', value: 'isOpen' }
+            { name: 'Vacancy', value: 'vacancy' },
+            { name: 'Professional Profile', value: 'professionalProfile.name' },
+            { name: 'Is Open', value: 'isOpen' }
           ]}
           data={positions}
           onRowClick={(item) => history.push(`/positions/form?_id=${item._id}`)}
