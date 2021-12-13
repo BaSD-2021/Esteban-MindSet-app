@@ -23,7 +23,6 @@ function Form() {
   const [errorValue, setError] = useState('');
   const [id, setPositionId] = useState(undefined);
 
-  // const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.positions.isFetching);
   const dispatch = useDispatch();
   const query = useQuery();
@@ -186,7 +185,6 @@ function Form() {
           required
         />
         <div className={styles.buttonContainer}>
-          {/* //<Button label="SAVE" type="submit"></Button> */}
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
         {errorValue && (
@@ -197,7 +195,6 @@ function Form() {
             </button>
           </Modal>
         )}
-        {/* <div className={styles.error}>{errorValue}</div> */}
       </form>
     </div>
   );
