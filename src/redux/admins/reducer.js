@@ -20,7 +20,7 @@ import {
 const initialState = {
   isFetching: false,
   list: [],
-  selectedItem: {},
+  selectedAdmin: {},
   error: ''
 };
 
@@ -52,14 +52,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: true,
         error: initialState.error,
-        selectedItem: initialState.selectedItem
+        selectedAdmin: initialState.selectedAdmin
       };
     }
     case GET_ADMIN_BY_ID_SUCCESS: {
       return {
         ...state,
         isFetching: false,
-        selectedItem: action.payload
+        selectedAdmin: action.payload
       };
     }
     case GET_ADMIN_BY_ID_ERROR: {

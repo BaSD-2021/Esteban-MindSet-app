@@ -1,4 +1,3 @@
-// Action type constants definition
 export const GET_ADMINS_PENDING = 'GET_ADMINS_PENDING';
 export const GET_ADMINS_SUCCESS = 'GET_ADMINS_SUCCESS';
 export const GET_ADMINS_ERROR = 'GET_ADMINS_ERROR';
@@ -21,9 +20,8 @@ export const DELETE_ADMIN_ERROR = 'DELETE_ADMIN_ERROR';
 
 export const CLEAN_ERROR = 'CLEAN_ERROR';
 
-export const CLEAN_SELECTED_ITEM = 'CLEAN_SELECTED_ITEM';
+export const CLEAN_SELECTED_ADMIN = 'CLEAN_SELECTED_ADMIN';
 
-// Actions definition
 export const getAdminsPending = () => {
   return {
     type: GET_ADMINS_PENDING
@@ -130,8 +128,8 @@ export const cleanError = () => {
   };
 };
 
-export const cleanSelectedItem = () => {
+export const cleanSelectedAdmin = () => {
   return {
-    type: CLEAN_SELECTED_ITEM
+    type: CLEAN_SELECTED_ADMIN
   };
 };

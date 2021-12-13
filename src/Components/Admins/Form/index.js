@@ -8,7 +8,7 @@ import Button from '../../Shared/Button';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin, getAdminById, updateAdmin } from '../../../redux/admins/thunks';
-import { cleanError, cleanSelectedItem } from '../../../redux/admins/actions';
+import { cleanError, cleanSelectedAdmin } from '../../../redux/admins/actions';
 
 function Form() {
   const [nameValue, setNameValue] = useState('');
@@ -17,7 +17,7 @@ function Form() {
 
   const error = useSelector((store) => store.admins.error);
   const isLoading = useSelector((store) => store.admins.isFetching);
-  const selectedItem = useSelector((store) => store.admins.selectedItem);
+  const selectedAdmin = useSelector((store) => store.admins.selectedAdmin);
 
   const dispatch = useDispatch();
 
@@ -32,16 +32,16 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(selectedItem).length) {
-      setNameValue(selectedItem.name);
-      setUsernameValue(selectedItem.username);
-      setPasswordValue(selectedItem.password);
+    if (Object.keys(selectedAdmin).length) {
+      setNameValue(selectedAdmin.name);
+      setUsernameValue(selectedAdmin.username);
+      setPasswordValue(selectedAdmin.password);
     }
-  }, [selectedItem]);
+  }, [selectedAdmin]);
 
   useEffect(() => {
     return () => {
-      dispatch(cleanSelectedItem());
+      dispatch(cleanSelectedAdmin());
     };
   }, []);
 
