@@ -33,6 +33,7 @@ export const getPositions = () => {
       })
       .catch((error) => {
         dispatch(getPositionsError(error.toString()));
+        console.log(error);
       });
   };
 };
