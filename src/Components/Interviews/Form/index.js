@@ -23,38 +23,118 @@ function Form() {
   const [dateValue, setDateValue] = useState('');
   const [applicationIdValue, setApplicationIdValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
-  // const [postulantsValue, setPostulantsValue] = useState([]);
-  // const [clientsValue, setClientsValue] = useState([]);
-  // const [applicationValue, setApplicationValue] = useState([]);
-  // const [errorValue, setError] = useState('');
+  const [postulantsValue, setPostulantsValue] = useState([]);
+  const [clientsValue, setClientsValue] = useState([]);
+  const [applicationValue, setApplicationValue] = useState([]);
+  const [errorValue, setError] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
 
-  const error = useSelector((store) => store.interviews.error);
-  const isLoading = useSelector((store) => store.interviews.isFetching);
+  // const error = useSelector((store) => store.interviews.error);
+  // const isLoading = useSelector((store) => store.interviews.isFetching);
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
+  const selectedInterview = useSelector((store) => store.selectedItem);
+
+  const onLoading = (dat) => {
+    setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
+    setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
+    setStatusValue(dat.data[0].status || '');
+    setDateValue(dat.data[0].date || '');
+    setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
+    setNotesValue(dat.data[0].notes || '');
+  };
+
+  const onChangePostulantId = (event) => {
+    setPostulantIdValue(event.target.value);
+  };
+
+  const onChangeClientId = (event) => {
+    setClientIdValue(event.target.value);
+  };
+
+  const onChangeStatus = (event) => {
+    setStatusValue(event.target.value);
+  };
+
+  const onChangeDate = (event) => {
+    setDateValue(event.target.value);
+  };
+
+  const onChangeApplication = (event) => {
+    setApplicationIdValue(event.target.value);
+  };
+
+  const onChangeNotes = (event) => {
+    setNotesValue(event.target.value);
+  };
 
   useEffect(() => {
     const interviewId = query.get('_id');
     if (interviewId) {
-      dispatch(getInterviewById(interviewId)).then((selectedInterview) => {
-        setInterviewId(interviewId);
-        setPostulantIdValue(selectedInterview.postulant);
-        setClientIdValue(selectedInterview.client);
-        setApplicationIdValue(selectedInterview.application);
-        setStatusValue(selectedInterview.status);
-        setDateValue(selectedInterview.date);
-        setNotesValue(selectedInterview.notes);
+      dispatch(getInterviewById(interviewId)).then((response) => {
+        setPostulantIdValue(response.data[0].postulant?._id);
+        setClientIdValue(response.client._id);
+        setApplicationIdValue(response.application._id);
+        setStatusValue(response.status);
+        setDateValue(response.date);
+        setNotesValue(response.notes);
       });
     }
   }, []);
 
-  const save = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API}/postulants`)
+      .then((response) => response.json())
+      .then((res) => {
+        setSelectPostulant(
+          res.data.map((postulant) => ({
+            value: postulant._id,
+            label: `${postulant.firstName} ${postulant.lastName}`
+          }))
+        );
+        setPostulantsValue(res.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      });
 
+    fetch(`${process.env.REACT_APP_API}/clients`)
+      .then((response) => response.json())
+      .then((res) => {
+        setSelectClient(
+          res.data.map((client) => ({
+            value: client._id,
+            label: client.name
+          }))
+        );
+        setClientsValue(res.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      });
+
+    fetch(`${process.env.REACT_APP_API}/applications`)
+      .then((response) => response.json())
+      .then((res) => {
+        setSelectApplication(
+          res.data.map((application) => ({
+            value: application._id,
+            label: application._id
+          }))
+        );
+        setApplicationValue(res.data);
+      })
+      .catch((errorValue) => {
+        setError(errorValue.toString());
+      });
+  }, []);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
     const interviewId = query.get('_id');
 
     if (interviewId) {
@@ -93,7 +173,7 @@ function Form() {
 
   return (
     <div>
-      <form onSubmit={save} className={styles.container}>
+      <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Interview</h2>
         <label className={styles.label}>
           <span className={styles.span}>Postulant Name</span>
@@ -103,7 +183,7 @@ function Form() {
           id="postulantId"
           name="postulantId"
           value={postulantIdValue}
-          onChange={(e) => setPostulantIdValue(e.target.value)}
+          onChange={onChangePostulantId}
           arrayToMap={selectPostulant}
           required
         />
@@ -112,7 +192,7 @@ function Form() {
           id="clientId"
           name="clientId"
           value={clientIdValue}
-          onChange={(e) => setClientIdValue(e.target.value)}
+          onChange={onChangeClientId}
           arrayToMap={selectClient}
           required
         />
@@ -122,7 +202,7 @@ function Form() {
           name="status"
           required
           value={statusValue}
-          onChange={(e) => setStatusValue(e.target.value)}
+          onChange={onChangeStatus}
           arrayToMap={[
             { value: 'successful', label: 'Successful' },
             { value: 'failed', label: 'Failed' },
@@ -137,7 +217,7 @@ function Form() {
           name="application"
           required
           value={applicationIdValue}
-          onChange={(e) => setApplicationIdValue(e.target.value)}
+          onChange={onChangeApplication}
           arrayToMap={selectApplication}
         />
         <Input
@@ -146,7 +226,7 @@ function Form() {
           name="date"
           type="datetime-local"
           value={dateValue}
-          onChange={(e) => setDateValue(e.target.value)}
+          onChange={onChangeDate}
           disabled={isLoading}
           required
         />
@@ -156,20 +236,13 @@ function Form() {
           name="notes"
           type="text"
           value={notesValue}
-          onChange={(e) => setNotesValue(e.target.value)}
+          onChange={onChangeNotes}
           disabled={isLoading}
         />
         <div className={styles.buttonContainer}>
           <Button label="Save" disabled={isLoading} type="submit" />
         </div>
-        {error && (
-          <Modal>
-            {`${error}`}
-            <button className={styles.button} onClick={() => dispatch(cleanError())}>
-              Close
-            </button>
-          </Modal>
-        )}
+        <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
   );
