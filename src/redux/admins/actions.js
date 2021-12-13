@@ -21,6 +21,8 @@ export const DELETE_ADMIN_ERROR = 'DELETE_ADMIN_ERROR';
 
 export const CLEAN_ERROR = 'CLEAN_ERROR';
 
+export const CLEAN_SELECTED_ITEM = 'CLEAN_SELECTED_ITEM';
+
 // Actions definition
 export const getAdminsPending = () => {
   return {
@@ -125,5 +127,11 @@ export const deleteAdminError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };

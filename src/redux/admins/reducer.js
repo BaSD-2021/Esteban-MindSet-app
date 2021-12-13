@@ -14,7 +14,8 @@ import {
   DELETE_ADMIN_PENDING,
   DELETE_ADMIN_SUCCESS,
   DELETE_ADMIN_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './actions';
 
 const initialState = {
@@ -145,6 +146,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: initialState.error
+      };
+    }
+    case CLEAN_SELECTED_ITEM: {
+      return {
+        ...state,
+        selectedItem: initialState.selectedItem
       };
     }
     default: {
