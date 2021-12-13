@@ -26,14 +26,14 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  //const [isLoading, setLoading] = useState(false);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
   const [id, setInterviewId] = useState(undefined);
 
   // const error = useSelector((store) => store.interviews.error);
-  // const isLoading = useSelector((store) => store.interviews.isFetching);
+  const isLoading = useSelector((store) => store.interviews.isFetching);
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
@@ -72,22 +72,7 @@ function Form() {
     setNotesValue(event.target.value);
   };
 
-  // useEffect(() => {
-  //   const interviewId = query.get('_id');
-  //   if (interviewId) {
-  //     dispatch(getInterviewById(interviewId)).then((response) => {
-  //       setPostulantIdValue(response.data[0].postulant?._id);
-  //       setClientIdValue(response.client._id);
-  //       setApplicationIdValue(response.application._id);
-  //       setStatusValue(response.status);
-  //       setDateValue(response.date);
-  //       setNotesValue(response.notes);
-  //     });
-  //   }
-  // }, []);
-
   useEffect(() => {
-    setLoading(true);
     const interviewId = query.get('_id');
     if (interviewId) {
       dispatch(getInterviewById(interviewId)).then((selectedInterview) => {
@@ -100,7 +85,7 @@ function Form() {
         setNotesValue(selectedInterview.notes);
       });
     }
-  }, []);
+  }, [selectedInterview]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/postulants`)
@@ -165,7 +150,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/interviews');
+          history.replace('/interviews');
         }
       });
     } else {
@@ -180,12 +165,11 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/interviews');
+          history.replace('/interviews');
         }
       });
     }
   };
-  //
 
   return (
     <div>

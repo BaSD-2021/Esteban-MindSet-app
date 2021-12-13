@@ -23,7 +23,7 @@ function Interviews() {
     if (!interviews.length) {
       dispatch(getInterviews());
     }
-  }, [interviews]);
+  }, []);
 
   return (
     <section className={styles.container}>

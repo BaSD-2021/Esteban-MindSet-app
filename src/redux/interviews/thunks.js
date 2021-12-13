@@ -41,7 +41,7 @@ export const getInterviews = () => {
 export const getInterviewById = (id) => {
   return (dispatch) => {
     dispatch(getInterviewByIdPending());
-    return fetch(`${process.env.REACT_APP_API}/interview?_id=${id}`)
+    return fetch(`${process.env.REACT_APP_API}/interviews?_id=${id}`)
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {
@@ -70,7 +70,7 @@ export const createInterview = (interview) => {
       },
       body: JSON.stringify(interview)
     };
-    return fetch(`${process.env.REACT_APP_API}/interview`, options)
+    return fetch(`${process.env.REACT_APP_API}/interviews`, options)
       .then((response) => {
         if (response.status !== 201) {
           return response.json().then(({ message }) => {
