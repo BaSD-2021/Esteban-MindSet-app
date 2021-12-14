@@ -28,9 +28,9 @@ function Header(props) {
         </div>
       </div>
       <nav className={styles.navbar}>
-        <div className={styles.appName}>
+        <Link to="/" className={styles.appName}>
           Mind<span>SET</span>
-        </div>
+        </Link>
         <ul className={styles.routes}>
           {props.routes.map((route) => (
             <li key={route.name}>
