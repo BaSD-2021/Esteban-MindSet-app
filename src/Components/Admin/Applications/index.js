@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Applications() {
@@ -94,7 +94,7 @@ function Applications() {
   };
 
   const redirect = (id) => {
-    history.push(`/applications/form?_id=${id}`);
+    history.push(`/admin/applications/form?_id=${id}`);
   };
 
   return (
@@ -122,7 +122,7 @@ function Applications() {
         onConfirm={deleteApplication}
       />
       <div className={styles.buttonContainer}>
-        <Button label="ADD APPLICATION" onClick={() => history.push('/applications/form')} />
+        <Button label="ADD APPLICATION" onClick={() => history.push('/admin/applications/form')} />
       </div>
     </section>
   );

@@ -64,7 +64,7 @@ function Interviews() {
   };
 
   const redirect = (id) => {
-    history.push(`/interviews/form?_id=${id}`);
+    history.push(`/admin/interviews/form?_id=${id}`);
   };
 
   const setInformationToShow = (data) => {
@@ -104,8 +104,9 @@ function Interviews() {
         isLoading={isLoading}
         onConfirm={deleteInterview}
       />
+      <span>{errorMessage}</span>
       <div className={styles.buttonContainer}>
-        <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/admin/interviews/form')} />
       </div>
     </section>
   );

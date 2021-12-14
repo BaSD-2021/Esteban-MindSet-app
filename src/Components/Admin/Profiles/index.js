@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from 'Components/Shared/Modal';
 import styles from './profiles.module.css';
 import Button from 'Components/Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Profiles() {
@@ -34,7 +34,7 @@ function Profiles() {
   }, []);
 
   const redirectToForm = (profile) => {
-    profile ? history.push(`/profiles/form?_id=${profile}`) : history.push(`/profiles/form`);
+    profile ? history.push(`/admin/profiles/form?_id=${profile}`) : history.push(`/profiles/form`);
   };
 
   const closeModal = () => {
@@ -114,7 +114,7 @@ function Profiles() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD PROFILE" onClick={() => history.push('/profiles/form')} />
+        <Button label="ADD PROFILE" onClick={() => history.push('/admin/profiles/form')} />
       </div>
     </section>
   );

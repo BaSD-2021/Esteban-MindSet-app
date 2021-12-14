@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './list.module.css';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Positions() {
@@ -59,7 +59,7 @@ function Positions() {
   }, []);
 
   const redirect = (id) => {
-    history.push(`/positions/form?_id=${id}`);
+    history.push(`/admin/positions/form?_id=${id}`);
   };
 
   const closeModal = () => {
@@ -111,8 +111,9 @@ function Positions() {
           redirectFunction={redirect}
         />
       )}
+      <span>{errorValue}</span>
       <div className={styles.buttonContainer}>
-        <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
+        <Button label="ADD POSITION" onClick={() => history.push('/admin/positions/form')} />
       </div>
     </section>
   );

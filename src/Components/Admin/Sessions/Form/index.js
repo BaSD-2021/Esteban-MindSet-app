@@ -150,7 +150,7 @@ function sessionsForm() {
       })
       .then(() => {
         setLoading(false);
-        history.push('/sessions');
+        history.push('/admin/sessions/list');
       })
       .catch((error) => {
         setError(error.toString());

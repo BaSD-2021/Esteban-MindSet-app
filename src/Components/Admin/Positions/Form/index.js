@@ -94,7 +94,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        history.push(`/positions`);
+        history.push(`/admin/positions/list`);
       })
       .catch((errorValue) => {
         setError(errorValue.toString());

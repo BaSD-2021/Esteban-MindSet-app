@@ -73,7 +73,7 @@ function profilesForm() {
       })
       .then(() => {
         setLoading(false);
-        history.push('/profiles');
+        history.push('/admin/profiles/list');
       })
       .catch((error) => {
         setError(error.toString());

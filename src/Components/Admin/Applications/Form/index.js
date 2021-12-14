@@ -80,7 +80,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        history.push('/applications');
+        history.push('/admin/applications/list');
       })
       .catch((error) => {
         setErrorMessage(error);

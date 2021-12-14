@@ -359,7 +359,7 @@ function PostulantsForm() {
         return response.json();
       })
       .then(() => {
-        history.push(`/postulants`);
+        history.push(`/admin/postulants/list`);
       })
       .catch((err) => {
         setShowError(err);

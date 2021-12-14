@@ -102,7 +102,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        history.push(`/interviews`);
+        history.push(`/admin/interviews/list`);
       })
       .catch((errorValue) => {
         setError(errorValue.toString());

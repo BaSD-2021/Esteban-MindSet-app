@@ -98,7 +98,7 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        history.push('/clients');
+        history.push('/admin/clients/list');
       })
       .catch((err) => {
         setErrorMessage(err);

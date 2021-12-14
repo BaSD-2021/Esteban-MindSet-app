@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Button from 'Components/Shared/Button';
 import styles from './postulants.module.css';
 import Modal from 'Components/Shared/Modal';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Postulants() {
@@ -64,7 +64,7 @@ function Postulants() {
   };
 
   const redirect = (id) => {
-    history.push(`/postulants/form?_id=${id}`);
+    history.push(`/admin/postulants/form?_id=${id}`);
   };
 
   const setInformationToShow = (data) => {
@@ -107,7 +107,7 @@ function Postulants() {
       )}
       <div className={styles.showError}>{showError.message}</div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD POSTULANT" onClick={() => history.push('/postulants/form')} />
+        <Button label="ADD POSTULANT" onClick={() => history.push('/admin/postulants/form')} />
       </div>
     </section>
   );

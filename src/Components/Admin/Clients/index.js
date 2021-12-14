@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Clients() {
@@ -78,7 +78,7 @@ function Clients() {
   }, []);
 
   const redirect = (id) => {
-    history.push(`/clients/form?_id=${id}`);
+    history.push(`/admin/clients/form?_id=${id}`);
   };
 
   const setInformationToShow = (data) => {
@@ -115,7 +115,7 @@ function Clients() {
         onConfirm={deleteClient}
       />
       <div className={styles.buttonContainer}>
-        <Button label="ADD CLIENT" onClick={() => history.push('/clients/form')} />
+        <Button label="ADD CLIENT" onClick={() => history.push('/admin/clients/form')} />
       </div>
     </section>
   );

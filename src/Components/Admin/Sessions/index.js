@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from 'Components/Shared/Modal';
 import styles from './sessions.module.css';
 import Button from 'Components/Shared/Button';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 
 function Sessions() {
@@ -34,7 +34,9 @@ function Sessions() {
   }, []);
 
   const redirectToForm = (session) => {
-    session ? history.push(`/Sessions/form?id=${session}`) : history.push(`/Sessions/Form`);
+    session
+      ? history.push(`/admin/sessions/form?id=${session}`)
+      : history.push(`/admin/sessions/Form`);
   };
 
   const handleDelete = (event, session) => {
@@ -119,7 +121,7 @@ function Sessions() {
       </div>
       <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD SESSION" onClick={() => history.push('/sessions/form')} />
+        <Button label="ADD SESSION" onClick={() => history.push('/admin/sessions/form')} />
       </div>
     </section>
   );
