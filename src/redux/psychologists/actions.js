@@ -20,6 +20,8 @@ export const DELETE_PSYCHOLOGIST_ERROR = 'DELETE_PSYCHOLOGIST_ERROR';
 
 export const CLEAN_ERROR = 'CLEAN_ERROR';
 
+export const CLEAN_SELECTED_ITEM = 'CLEAN_SELECTED_ITEM';
+
 export const getPsychologistFetching = () => {
   return {
     type: GET_PSYCHOLOGIST_FETCHING
@@ -123,5 +125,11 @@ export const deletePsychologistError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };
