@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Form, Field } from 'react-final-form';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
@@ -9,15 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin, getAdminById, updateAdmin } from '../../../redux/admins/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/admins/actions';
 
-function Form() {
-  // Keep using the React States to handle the input values
-  const [nameValue, setNameValue] = useState('');
-  const [usernameValue, setUsernameValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-
+function AdminsForm() {
   // get the Redux store values we need in the component
   const error = useSelector((store) => store.admins.error);
-  const isLoading = useSelector((store) => store.admins.isFetching);
   const selectedItem = useSelector((store) => store.admins.selectedItem);
 
   // get the dispatcher to be able to dispatch Redux actions
@@ -35,14 +30,6 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(selectedItem).length) {
-      setNameValue(selectedItem.name);
-      setUsernameValue(selectedItem.username);
-      setPasswordValue(selectedItem.password);
-    }
-  }, [selectedItem]);
-
-  useEffect(() => {
     // return a function to dispatch "cleanSelectedItem" action when the component
     // is unmounted, cleaning the "selectedItem" in Redux
     return () => {
@@ -50,35 +37,11 @@ function Form() {
     };
   }, []);
 
-  const save = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (formValues) => {
     const adminId = query.get('_id');
-
     if (adminId) {
       // Dispatch (execute) the Redux action to update an admin
-      dispatch(
-        updateAdmin(adminId, {
-          name: nameValue,
-          username: usernameValue,
-          password: passwordValue
-        })
-      ).then((response) => {
-        // Redirect to the admin list when the async action is ended
-        // If exists a response means the request was ok
-        if (response) {
-          history.push('/admins');
-        }
-      });
-    } else {
-      // Dispatch (execute) the Redux action to create an admin
-      dispatch(
-        createAdmin({
-          name: nameValue,
-          username: usernameValue,
-          password: passwordValue
-        })
-      ).then((response) => {
+      return dispatch(updateAdmin(adminId, formValues)).then((response) => {
         // Redirect to the admin list when the async action is ended
         // If exists a response means the request was ok
         if (response) {
@@ -86,48 +49,40 @@ function Form() {
         }
       });
     }
+    // Dispatch (execute) the Redux action to create an admin
+    return dispatch(createAdmin(formValues)).then((response) => {
+      // Redirect to the admin list when the async action is ended
+      // If exists a response means the request was ok
+      if (response) {
+        history.push('/admins');
+      }
+    });
   };
 
+  // Form-level validations
+  // Here we can set all the validations for the form in one place.
+  // Form-level and Field-level validations can work together
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.username) {
+      errors.username = 'Username is required';
+    }
+    if (formValues.name?.length < 3) {
+      errors.name = 'Name must be at least 3 characters';
+    }
+    return errors;
+  };
+
+  // we can create validator functions to be reused through fields
+  const required = (value) => (value ? undefined : 'Required');
+
   return (
-    <form className={styles.container} onSubmit={save}>
-      <h2 className={styles.title}>Admin</h2>
-      <Input
-        title="Name"
-        disabled={isLoading}
-        type="text"
-        name="name"
-        placeholder="Paul Walker"
-        value={nameValue}
-        onChange={(e) => setNameValue(e.target.value)}
-        required
-      />
-      <Input
-        title="User Name"
-        disabled={isLoading}
-        type="text"
-        name="username"
-        placeholder="paul.walker"
-        value={usernameValue}
-        onChange={(e) => setUsernameValue(e.target.value)}
-        required
-      />
-      <Input
-        title="Password"
-        disabled={isLoading}
-        type="password"
-        name="name"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
-        required
-      />
-      <div className={styles.buttonContainer}>
-        <Button label="Save" disabled={isLoading} type="submit" />
-      </div>
+    <>
       <Modal
         // The Error Modal is shown when an error exist in Redux
         show={!!error}
         title="Error"
-        message={error}
+        message={error.message || error}
         cancel={{
           text: 'Close',
           // Dispatch (execute) the cleanError action to remove the error in Redux
@@ -135,8 +90,59 @@ function Form() {
           callback: () => dispatch(cleanError())
         }}
       />
-    </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate} // Form-level validations
+        // As the "SelectedItem" has the same keys we are using as Field Names
+        // we just pass it as initial values.
+        initialValues={selectedItem}
+        // Example of initialValues. It should be an object where each key is a Field Name.
+        // initialValues={{
+        //   name: 'Damian Alvarez',
+        //   username: 'dami.a',
+        //   password: 'test123'
+        // }}
+        render={(formProps) => (
+          // In order for the "submitting" prop to work, we must return a promise on the onSubmit callback.
+          // "pristine" props indicate the form values were not changed
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Admin</h2>
+            <Field
+              name="name"
+              label="Name"
+              placeholder="Insert Name"
+              disabled={formProps.submitting}
+              component={Input} // Pass the rendered component
+              validate={(value) => (value ? undefined : 'Required')} // Field-level validation
+            />
+            <Field
+              name="username"
+              label="Username"
+              placeholder="Insert Username"
+              disabled={formProps.submitting}
+              component={Input}
+            />
+            <Field
+              name="password"
+              label="Password"
+              placeholder="Insert Password"
+              type="password"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={required} // Field-level validation
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
+    </>
   );
 }
 
-export default Form;
+export default AdminsForm;
