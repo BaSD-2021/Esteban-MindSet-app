@@ -5,11 +5,13 @@ import adminsReducer from './admins/reducer';
 import psychologistReducer from './psychologists/reducer';
 import sessionsReducer from './sessions/reducer';
 import profilesReducer from './profiles/reducer';
+import clientsReducer from './clients/reducer';
 
 const reducers = combineReducers({
   admins: adminsReducer,
   sessions: sessionsReducer,
   profiles: profilesReducer,
+  clients: clientsReducer,
   psychologists: psychologistReducer,
 });
 
