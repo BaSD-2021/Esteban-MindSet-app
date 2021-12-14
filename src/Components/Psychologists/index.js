@@ -81,7 +81,7 @@ function Psychologists() {
             isLoading={isLoading}
             onConfirm={() => {
               dispatch(deletePsychologist(idToDelete)).then(() => {
-                setIdToDelete(undefined);
+                setIdToDelete();
                 setShowConfirmModal(false);
               });
             }}

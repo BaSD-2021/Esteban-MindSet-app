@@ -40,7 +40,7 @@ export const getPsychologists = () => {
 export const getPsychologistById = (id) => {
   return (dispatch) => {
     dispatch(getPsychologistByIdFetching());
-    return fetch(`${process.env.REACT_APP_API}/psychologists/${id}`)
+    return fetch(`${process.env.REACT_APP_API}/psychologists?_id=${id}`)
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {

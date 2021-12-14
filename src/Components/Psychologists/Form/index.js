@@ -5,6 +5,12 @@ import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 import Checkbox from '../../Shared/Checkbox';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createPsychologist,
+  getPsychologistById,
+  updatePsychologist
+} from '../../../redux/psychologists/thunks';
 
 function Form() {
   const [firstName, setFirstName] = useState('');
@@ -36,294 +42,172 @@ function Form() {
   const [saturdayTo, setSaturdayTo] = useState(1200);
   const [sundayTo, setSundayTo] = useState(1200);
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const query = useQuery();
   const history = useHistory();
 
-  const psychologistId = query.get('_id');
-  let fetchMethod = 'POST';
+  const error = useSelector((store) => store.psychologists.error);
+  const isLoading = useSelector((store) => store.psychologists.isFetching);
+  const selectedItem = useSelector((store) => store.psychologists.selectedItem);
 
-  const fulfillData = (data) => {
-    setFirstName(data.data[0].firstName ? data.data[0].firstName : '');
-    setLastName(data.data[0].lastName ? data.data[0].lastName : '');
-    setPassword(data.data[0].password ? data.data[0].password : '');
-    setPhone(data.data[0].phone ? data.data[0].phone : '');
-    setUsername(data.data[0].username ? data.data[0].username : '');
-    setEmail(data.data[0].email ? data.data[0].email : '');
-    setAddress(data.data[0].address ? data.data[0].address : '');
-
-    setMondayAvailability(
-      data.data[0].availability.monday.availability
-        ? data.data[0].availability.monday.availability
-        : false
-    );
-    setTuesdayAvailability(
-      data.data[0].availability.tuesday.availability
-        ? data.data[0].availability.tuesday.availability
-        : false
-    );
-    setWednesdayAvailability(
-      data.data[0].availability.wednesday.availability
-        ? data.data[0].availability.wednesday.availability
-        : false
-    );
-    setThursdayAvailability(
-      data.data[0].availability.thursday.availability
-        ? data.data[0].availability.thursday.availability
-        : false
-    );
-    setFridayAvailability(
-      data.data[0].availability.friday.availability
-        ? data.data[0].availability.friday.availability
-        : false
-    );
-    setSaturdayAvailability(
-      data.data[0].availability.saturday.availability
-        ? data.data[0].availability.saturday.availability
-        : false
-    );
-    setSundayAvailability(
-      data.data[0].availability.sunday.availability
-        ? data.data[0].availability.sunday.availability
-        : false
-    );
-
-    setMondayFrom(
-      data.data[0].availability.monday.from ? data.data[0].availability.monday.from : 1200
-    );
-    setTuesdayFrom(
-      data.data[0].availability.tuesday.from ? data.data[0].availability.tuesday.from : 1200
-    );
-    setWednesdayFrom(
-      data.data[0].availability.wednesday.from ? data.data[0].availability.wednesday.from : 1200
-    );
-    setThursdayFrom(
-      data.data[0].availability.thursday.from ? data.data[0].availability.thursday.from : 1200
-    );
-    setFridayFrom(
-      data.data[0].availability.friday.from ? data.data[0].availability.friday.from : 1200
-    );
-    setSaturdayFrom(
-      data.data[0].availability.saturday.from ? data.data[0].availability.saturday.from : 1200
-    );
-    setSundayFrom(
-      data.data[0].availability.sunday.from ? data.data[0].availability.sunday.from : 1200
-    );
-
-    setMondayTo(data.data[0].availability.monday.to ? data.data[0].availability.monday.to : 1200);
-    setTuesdayTo(
-      data.data[0].availability.tuesday.to ? data.data[0].availability.tuesday.to : 1200
-    );
-    setWednesdayTo(
-      data.data[0].availability.wednesday.to ? data.data[0].availability.wednesday.to : 1200
-    );
-    setThursdayTo(
-      data.data[0].availability.thursday.to ? data.data[0].availability.thursday.to : 1200
-    );
-    setFridayTo(data.data[0].availability.friday.to ? data.data[0].availability.friday.to : 1200);
-    setSaturdayTo(
-      data.data[0].availability.saturday.to ? data.data[0].availability.saturday.to : 1200
-    );
-    setSundayTo(data.data[0].availability.sunday.to ? data.data[0].availability.sunday.to : 1200);
-  };
-
-  const onChangeFirstName = (event) => {
-    setFirstName(event.target.value);
-  };
-  const onChangeLastName = (event) => {
-    setLastName(event.target.value);
-  };
-  const onChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
-  const onChangePhone = (event) => {
-    setPhone(event.target.value);
-  };
-  const onChangeUsername = (event) => {
-    setUsername(event.target.value);
-  };
-  const onChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const onChangeAddress = (event) => {
-    setAddress(event.target.value);
-  };
-
-  const onChangeMondayAvailability = (event) => {
-    setMondayAvailability(event.target.checked);
-  };
-  const onChangeTuesdayAvailability = (event) => {
-    setTuesdayAvailability(event.target.checked);
-  };
-  const onChangeWednesdayAvailability = (event) => {
-    setWednesdayAvailability(event.target.checked);
-  };
-  const onChangeThursdayAvailability = (event) => {
-    setThursdayAvailability(event.target.checked);
-  };
-  const onChangeFridayAvailability = (event) => {
-    setFridayAvailability(event.target.checked);
-  };
-  const onChangeSaturdayAvailability = (event) => {
-    setSaturdayAvailability(event.target.checked);
-  };
-  const onChangeSundayAvailability = (event) => {
-    setSundayAvailability(event.target.checked);
-  };
-
-  const onChangeMondayFrom = (event) => {
-    setMondayFrom(event.target.value);
-  };
-  const onChangeTuesdayFrom = (event) => {
-    setTuesdayFrom(event.target.value);
-  };
-  const onChangeWednesdayFrom = (event) => {
-    setWednesdayFrom(event.target.value);
-  };
-  const onChangeThursdayFrom = (event) => {
-    setThursdayFrom(event.target.value);
-  };
-  const onChangeFridayFrom = (event) => {
-    setFridayFrom(event.target.value);
-  };
-  const onChangeSaturdayFrom = (event) => {
-    setSaturdayFrom(event.target.value);
-  };
-  const onChangeSundayFrom = (event) => {
-    setSundayFrom(event.target.value);
-  };
-
-  const onChangeMondayTo = (event) => {
-    setMondayTo(event.target.value);
-  };
-  const onChangeTuesdayTo = (event) => {
-    setTuesdayTo(event.target.value);
-  };
-  const onChangeWednesdayTo = (event) => {
-    setWednesdayTo(event.target.value);
-  };
-  const onChangeThursdayTo = (event) => {
-    setThursdayTo(event.target.value);
-  };
-  const onChangeFridayTo = (event) => {
-    setFridayTo(event.target.value);
-  };
-  const onChangeSaturdayTo = (event) => {
-    setSaturdayTo(event.target.value);
-  };
-  const onChangeSundayTo = (event) => {
-    setSundayTo(event.target.value);
-  };
-
-  if (psychologistId) {
-    fetchMethod = 'PUT';
-  }
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const options = {
-      method: fetchMethod,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        password: password,
-        email: email,
-        phone: parseInt(phone),
-        address: address,
-        availability: {
-          monday: {
-            availability: !!mondayAvailability,
-            from: parseInt(mondayFrom),
-            to: parseInt(mondayTo)
-          },
-          tuesday: {
-            availability: !!tuesdayAvailability,
-            from: parseInt(tuesdayFrom),
-            to: parseInt(tuesdayTo)
-          },
-          wednesday: {
-            availability: !!wednesdayAvailability,
-            from: parseInt(wednesdayFrom),
-            to: parseInt(wednesdayTo)
-          },
-          thursday: {
-            availability: !!thursdayAvailability,
-            from: parseInt(thursdayFrom),
-            to: parseInt(thursdayTo)
-          },
-          friday: {
-            availability: !!fridayAvailability,
-            from: parseInt(fridayFrom),
-            to: parseInt(fridayTo)
-          },
-          saturday: {
-            availability: !!saturdayAvailability,
-            from: parseInt(saturdayFrom),
-            to: parseInt(saturdayTo)
-          },
-          sunday: {
-            availability: !!sundayAvailability,
-            from: parseInt(sundayFrom),
-            to: parseInt(sundayTo)
-          }
-        }
-      })
-    };
-    const url = psychologistId
-      ? `${process.env.REACT_APP_API}/psychologists/${psychologistId}`
-      : `${process.env.REACT_APP_API}/psychologists/`;
-
-    setIsLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setErrorMessage(err);
-      })
-      .finally(() => {
-        history.push('/Psychologists');
-      });
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const psychologistId = query.get('_id');
     if (psychologistId) {
-      fetch(`${process.env.REACT_APP_API}/psychologists?_id=${psychologistId}`)
-        .then((response) => {
-          if (response.status !== 200) {
-            return response.json().then(({ message }) => {
-              throw new Error(message);
-            });
-          }
-          return response.json();
-        })
-        .then((res) => {
-          fulfillData(res);
-        })
-        .catch((err) => {
-          setErrorMessage(err);
-        });
+      dispatch(getPsychologistById(psychologistId));
     }
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(selectedItem).length) {
+      setFirstName(selectedItem.firstName);
+      setLastName(selectedItem.lastName);
+      setPassword(selectedItem.password);
+      setPhone(selectedItem.phone);
+      setEmail(selectedItem.email);
+      setUsername(selectedItem.username);
+      setAddress(selectedItem.address);
+      setMondayAvailability(selectedItem.availability.monday.availability);
+      setTuesdayAvailability(selectedItem.availability.tuesday.availability);
+      setWednesdayAvailability(selectedItem.availability.wednesday.availability);
+      setThursdayAvailability(selectedItem.availability.thursday.availability);
+      setFridayAvailability(selectedItem.availability.friday.availability);
+      setSaturdayAvailability(selectedItem.availability.saturday.availability);
+      setSundayAvailability(selectedItem.availability.sunday.availability);
+      setMondayFrom(selectedItem.availability.monday.from);
+      setTuesdayFrom(selectedItem.availability.tuesday.from);
+      setWednesdayFrom(selectedItem.availability.wednesday.from);
+      setThursdayFrom(selectedItem.availability.thursday.from);
+      setFridayFrom(selectedItem.availability.friday.from);
+      setSaturdayFrom(selectedItem.availability.saturday.from);
+      setSundayFrom(selectedItem.availability.sunday.from);
+      setMondayTo(selectedItem.availability.monday.to);
+      setTuesdayTo(selectedItem.availability.tuesday.to);
+      setWednesdayTo(selectedItem.availability.wednesday.to);
+      setThursdayTo(selectedItem.availability.thursday.to);
+      setFridayTo(selectedItem.availability.friday.to);
+      setSaturdayTo(selectedItem.availability.saturday.to);
+      setSundayTo(selectedItem.availability.sunday.to);
+    }
+  }, [selectedItem]);
+
+  const save = (e) => {
+    e.preventDefault();
+
+    const psychologistId = query.get('_id');
+
+    if (psychologistId) {
+      dispatch(
+        updatePsychologist(psychologistId, {
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          phone,
+          address,
+          availability: {
+            monday: {
+              availability: mondayAvailability,
+              from: mondayFrom,
+              to: mondayTo
+            },
+            tuesday: {
+              availability: tuesdayAvailability,
+              from: tuesdayFrom,
+              to: tuesdayTo
+            },
+            wednesday: {
+              availability: wednesdayAvailability,
+              from: wednesdayFrom,
+              to: wednesdayTo
+            },
+            thursday: {
+              availability: thursdayAvailability,
+              from: thursdayFrom,
+              to: thursdayTo
+            },
+            friday: {
+              availability: fridayAvailability,
+              from: fridayFrom,
+              to: fridayTo
+            },
+            saturday: {
+              availability: saturdayAvailability,
+              from: saturdayFrom,
+              to: saturdayTo
+            },
+            sunday: {
+              availability: sundayAvailability,
+              from: sundayFrom,
+              to: sundayTo
+            }
+          }
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/psychologists');
+        }
+      });
+    } else {
+      dispatch(
+        createPsychologist({
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          phone,
+          address,
+          availability: {
+            monday: {
+              availability: mondayAvailability,
+              from: mondayFrom,
+              to: mondayTo
+            },
+            tuesday: {
+              availability: tuesdayAvailability,
+              from: tuesdayFrom,
+              to: tuesdayTo
+            },
+            wednesday: {
+              availability: wednesdayAvailability,
+              from: wednesdayFrom,
+              to: wednesdayTo
+            },
+            thursday: {
+              availability: thursdayAvailability,
+              from: thursdayFrom,
+              to: thursdayTo
+            },
+            friday: {
+              availability: fridayAvailability,
+              from: fridayFrom,
+              to: fridayTo
+            },
+            saturday: {
+              availability: saturdayAvailability,
+              from: saturdayFrom,
+              to: saturdayTo
+            },
+            sunday: {
+              availability: sundayAvailability,
+              from: sundayFrom,
+              to: sundayTo
+            }
+          }
+        })
+      ).then((response) => {
+        if (response) {
+          history.push('/psychologists');
+        }
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <form onSubmit={onSubmit} className={styles.form}>
+      <form onSubmit={save} className={styles.form}>
         <h2 className={styles.title}>Psychologist</h2>
         <Input
           title="First Name"
@@ -331,7 +215,7 @@ function Form() {
           name="firstName"
           type="text"
           value={firstName}
-          onChange={onChangeFirstName}
+          onChange={(e) => setFirstName(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -341,7 +225,7 @@ function Form() {
           name="lastName"
           type="text"
           value={lastName}
-          onChange={onChangeLastName}
+          onChange={(e) => setLastName(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -351,7 +235,7 @@ function Form() {
           name="password"
           type="text"
           value={password}
-          onChange={onChangePassword}
+          onChange={(e) => setPassword(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -361,7 +245,7 @@ function Form() {
           name="phone"
           type="number"
           value={phone}
-          onChange={onChangePhone}
+          onChange={(e) => setPhone(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -371,7 +255,7 @@ function Form() {
           name="username"
           type="text"
           value={username}
-          onChange={onChangeUsername}
+          onChange={(e) => setUsername(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -381,7 +265,7 @@ function Form() {
           name="address"
           type="text"
           value={address}
-          onChange={onChangeAddress}
+          onChange={(e) => setAddress(e.target.value)}
           disabled={isLoading}
           required
         />
@@ -391,7 +275,7 @@ function Form() {
           name="email"
           type="text"
           value={email}
-          onChange={onChangeEmail}
+          onChange={(e) => setEmail(e.target.value)}
           disabled={isLoading}
         />
 
@@ -400,7 +284,7 @@ function Form() {
           <Checkbox
             label="Monday"
             selected={mondayAvailability}
-            onChange={onChangeMondayAvailability}
+            onChange={(e) => setMondayAvailability(e.target.checked)}
           />
           <Input
             id="mondayFrom"
@@ -408,7 +292,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={mondayFrom}
-            onChange={onChangeMondayFrom}
+            onChange={(e) => setMondayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -417,7 +301,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={mondayTo}
-            onChange={onChangeMondayTo}
+            onChange={(e) => setMondayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -426,7 +310,7 @@ function Form() {
           <Checkbox
             label="Tuesday"
             selected={tuesdayAvailability}
-            onChange={onChangeTuesdayAvailability}
+            onChange={(e) => setTuesdayAvailability(e.target.checked)}
           />
           <Input
             id="tuesdayFrom"
@@ -434,7 +318,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={tuesdayFrom}
-            onChange={onChangeTuesdayFrom}
+            onChange={(e) => setTuesdayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -443,7 +327,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={tuesdayTo}
-            onChange={onChangeTuesdayTo}
+            onChange={(e) => setTuesdayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -452,7 +336,7 @@ function Form() {
           <Checkbox
             label="Wednesday"
             selected={wednesdayAvailability}
-            onChange={onChangeWednesdayAvailability}
+            onChange={(e) => setWednesdayAvailability(e.target.checked)}
           />
           <Input
             id="wednesdayFrom"
@@ -460,7 +344,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={wednesdayFrom}
-            onChange={onChangeWednesdayFrom}
+            onChange={(e) => setWednesdayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -469,7 +353,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={wednesdayTo}
-            onChange={onChangeWednesdayTo}
+            onChange={(e) => setWednesdayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -478,7 +362,7 @@ function Form() {
           <Checkbox
             label="Thursday"
             selected={thursdayAvailability}
-            onChange={onChangeThursdayAvailability}
+            onChange={(e) => setThursdayAvailability(e.target.checked)}
           />
           <Input
             id="thursdayFrom"
@@ -486,7 +370,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={thursdayFrom}
-            onChange={onChangeThursdayFrom}
+            onChange={(e) => setTuesdayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -495,7 +379,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={thursdayTo}
-            onChange={onChangeThursdayTo}
+            onChange={(e) => setTuesdayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -504,7 +388,7 @@ function Form() {
           <Checkbox
             label="Friday"
             selected={fridayAvailability}
-            onChange={onChangeFridayAvailability}
+            onChange={(e) => setFridayAvailability(e.target.checked)}
           />
           <Input
             id="fridayFrom"
@@ -512,7 +396,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={fridayFrom}
-            onChange={onChangeFridayFrom}
+            onChange={(e) => setFridayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -521,7 +405,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={fridayTo}
-            onChange={onChangeFridayTo}
+            onChange={(e) => setFridayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -530,7 +414,7 @@ function Form() {
           <Checkbox
             label="Saturday"
             selected={saturdayAvailability}
-            onChange={onChangeSaturdayAvailability}
+            onChange={(e) => setSaturdayAvailability(e.target.checked)}
           />
           <Input
             id="saturdayFrom"
@@ -538,7 +422,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={saturdayFrom}
-            onChange={onChangeSaturdayFrom}
+            onChange={(e) => setSaturdayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -547,7 +431,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={saturdayTo}
-            onChange={onChangeSaturdayTo}
+            onChange={(e) => setSaturdayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -556,7 +440,7 @@ function Form() {
           <Checkbox
             label="Sunday"
             selected={sundayAvailability}
-            onChange={onChangeSundayAvailability}
+            onChange={(e) => setSundayAvailability(e.target.checked)}
           />
           <Input
             id="sundayFrom"
@@ -564,7 +448,7 @@ function Form() {
             placeholder="Select starting hour"
             type="number"
             value={sundayFrom}
-            onChange={onChangeSundayFrom}
+            onChange={(e) => setSundayFrom(e.target.value)}
             disabled={isLoading}
           />
           <Input
@@ -573,7 +457,7 @@ function Form() {
             placeholder="Select finishing hour"
             type="number"
             value={sundayTo}
-            onChange={onChangeSundayTo}
+            onChange={(e) => setSundayTo(e.target.value)}
             disabled={isLoading}
           />
         </div>
@@ -583,7 +467,7 @@ function Form() {
         </div>
       </form>
       <div id="error_message" className={styles.errorMessage}>
-        {errorMessage.message}
+        {error}
       </div>
     </div>
   );
