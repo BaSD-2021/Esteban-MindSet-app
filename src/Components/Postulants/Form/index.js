@@ -6,6 +6,9 @@ import Input from '../../Shared/Input';
 import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
 import Checkbox from '../../Shared/Checkbox';
+import { getPostulantsById } from '../../../redux/postulants/actions';
+import { addPostulant, updatePostulant } from '../../../redux/postulants/thunks';
+import { useSelector, useDispatch } from 'react-redux';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -46,31 +49,59 @@ function PostulantsForm() {
   const [isLoading, setIsLoading] = useState('');
   const query = useQuery();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
 
   const postulantId = query.get('_id');
   if (postulantId) {
-    useEffect(() => {
-      fetch(`${process.env.REACT_APP_API}/postulants?_id=${postulantId}`)
-        .then((response) => response.json())
-        .then((response) => {
-          autoFill(response);
-        })
-        .catch((err) => {
-          setShowError(err);
-        });
-    }, []);
+    dispatch(getPostulantsById(postulantId));
   }
 
+  useEffect(() => {
+    autoFill(selectedPostulant);
+  }, []);
+
   const autoFill = (data) => {
-    const fillData = data.data[0];
-    const fillPrimStudy = fillData.studies.primaryStudies;
-    const fillSecStudy = fillData.studies.secondaryStudies;
-    const fillTerStudy = fillData.studies.tertiaryStudies[0];
-    const fillUniStudies = fillData.studies.universityStudies[0];
-    const fillInfStudies = fillData.studies.informalStudies[0];
-    const fillWorkExp = fillData.workExperience[0];
-    const contactFrom = fillData.contactRange.from;
-    const contactTo = fillData.contactRange.to;
+    const fillData = data || {};
+    let fillPrimStudy = { startDate: null, endDate: null };
+    if (fillData.studies && fillData.studies.primaryStudies) {
+      fillPrimStudy = fillData.studies.primaryStudies;
+    }
+
+    let fillSecStudy = { startDate: null, endDate: null };
+    if (fillData.studies && fillData.studies.secondaryStudies) {
+      fillSecStudy = fillData.studies.secondaryStudies;
+    }
+
+    let fillTerStudy = { startDate: null, endDate: null };
+    if (fillData.studies && fillData.studies.tertiaryStudies) {
+      fillTerStudy = fillData.studies.tertiaryStudies[0];
+    }
+
+    let fillUniStudies = { startDate: null, endDate: null };
+    if (fillData.studies && fillData.studies.universityStudies) {
+      fillUniStudies = fillData.studies.universityStudies[0];
+    }
+
+    let fillInfStudies = { startDate: null, endDate: null };
+    if (fillData.studies && fillData.studies.informalStudies) {
+      fillInfStudies = fillData.studies.informalStudies[0];
+    }
+
+    let fillWorkExp = { startDate: null, endDate: null };
+    if (fillData.workExperience) {
+      fillWorkExp = fillData.workExperience[0];
+    }
+
+    let contactFrom = { from: null, to: null };
+    if (fillData.contactRange && fillData.contactRange.from) {
+      contactFrom = fillData.contactRange.from;
+    }
+
+    let contactTo = { from: null, to: null };
+    if (fillData.contactRange && fillData.contactRange.to) {
+      contactTo = fillData.contactRange.to;
+    }
 
     setFirstNameValue(fillData.firstName || '');
     setLastNameValue(fillData.lastName || '');
@@ -309,64 +340,35 @@ function PostulantsForm() {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    let url = '';
-
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
+    const postulant = {
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      email: emailValue,
+      password: passwordValue,
+      address: addressValue,
+      birthday: birthdayValue,
+      available: availableValue,
+      phone: phoneValue,
+      profiles: undefined,
+      contactRange: {
+        from: contactFromValue.match(hoursRegEx)
+          ? contactFromValue
+          : setShowError('Hours must have HH:MM format'),
+        to: contactToValue.match(hoursRegEx)
+          ? contactToValue
+          : setShowError('Hours must have HH:MM format')
       },
-      body: JSON.stringify({
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        email: emailValue,
-        password: passwordValue,
-        address: addressValue,
-        birthday: birthdayValue,
-        available: availableValue,
-        phone: phoneValue,
-        profiles: undefined,
-        contactRange: {
-          from: contactFromValue.match(hoursRegEx)
-            ? contactFromValue
-            : setShowError('Hours must have HH:MM format'),
-          to: contactToValue.match(hoursRegEx)
-            ? contactToValue
-            : setShowError('Hours must have HH:MM format')
-        },
-        studies: studiesBodyConstructor(),
-        workExperience: workExperienceBodyConstructor()
-      }),
-      method: 'POST'
+      studies: studiesBodyConstructor(),
+      workExperience: workExperienceBodyConstructor()
     };
 
-    options.method = 'POST';
-    url = `${process.env.REACT_APP_API}/postulants`;
-
     if (postulantId) {
-      options.method = 'PUT';
-      url = `${process.env.REACT_APP_API}/postulants/${postulantId}`;
+      dispatch(updatePostulant(postulantId, postulant));
+    } else {
+      dispatch(addPostulant(postulant));
     }
 
-    setIsLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        history.push(`/postulants`);
-      })
-      .catch((err) => {
-        setShowError(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    history.push('/postulants');
   };
 
   return (

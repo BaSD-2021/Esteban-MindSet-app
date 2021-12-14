@@ -2,9 +2,7 @@ import {
   GET_POSTULANTS_FETCHING,
   GET_POSTULANTS_FULFILLED,
   GET_POSTULANTS_REJECTED,
-  GET_POSTULANTS_BY_ID_FETCHING,
   GET_POSTULANTS_BY_ID_FULFILLED,
-  GET_POSTULANTS_BY_ID_REJECTED,
   ADD_POSTULANTS_FETCHING,
   ADD_POSTULANTS_FULFILLED,
   ADD_POSTULANTS_REJECTED,
@@ -14,6 +12,7 @@ import {
   DELETE_POSTULANTS_FETCHING,
   DELETE_POSTULANTS_FULFILLED,
   DELETE_POSTULANTS_REJECTED,
+  CLEAR_POSTULANT,
   CLEAR_ERROR
 } from './constants';
 
@@ -31,18 +30,9 @@ export const getPostulantsRejected = (error) => ({
   error
 });
 
-export const getPostulantsByIdFetching = () => ({
-  type: GET_POSTULANTS_BY_ID_FETCHING
-});
-
-export const getPostulantsByIdFulfilled = (payload) => ({
+export const getPostulantsById = (payload) => ({
   type: GET_POSTULANTS_BY_ID_FULFILLED,
   payload
-});
-
-export const getPostulantsByIdRejected = (error) => ({
-  type: GET_POSTULANTS_BY_ID_REJECTED,
-  error
 });
 
 export const addPostulantsFetching = () => ({
@@ -85,6 +75,10 @@ export const deletePostulantsFulfilled = (payload) => ({
 export const deletePostulantsRejected = (error) => ({
   type: DELETE_POSTULANTS_REJECTED,
   error
+});
+
+export const clearPostulant = () => ({
+  type: CLEAR_POSTULANT
 });
 
 export const clearError = () => ({

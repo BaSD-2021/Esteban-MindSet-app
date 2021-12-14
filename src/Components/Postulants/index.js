@@ -4,20 +4,50 @@ import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
-import { getPostulants } from '../../redux/postulants/thunks';
+import Table from '../Shared/TableV2';
+import { clearPostulant, clearError } from '../../redux/postulants/actions';
+import { getPostulants, deletePostulant } from '../../redux/postulants/thunks';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  const [showError, setShowError] = useState('');
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
   const history = useHistory();
-  const columnName = ['First Name', 'Last Name', 'Email', 'Phone', 'Address', 'Actions'];
+  const columns = [
+    {
+      name: 'First Name',
+      value: 'firstName'
+    },
+    {
+      name: 'Last Name',
+      value: 'lastName'
+    },
+    {
+      name: 'Email',
+      value: 'email'
+    },
+    {
+      name: 'Phone',
+      value: 'phone'
+    },
+    {
+      name: 'Address',
+      value: 'address'
+    }
+  ];
+  const actions = [
+    {
+      text: 'Delete',
+      callback: (e, item) => {
+        e.stopPropagation();
+        setIdToDelete(item._id);
+        setShowModal(true);
+      }
+    }
+  ];
   const dispatch = useDispatch();
   const postulants = useSelector((store) => store.postulants.list);
   const isLoading = useSelector((store) => store.postulants.isLoading);
+  const error = useSelector((store) => store.postulants.error);
 
   useEffect(() => {
     if (!postulants.length) {
@@ -25,82 +55,72 @@ function Postulants() {
     }
   }, [postulants]);
 
-  const deletePostulant = () => {
-    const url = `${process.env.REACT_APP_API}/postulants/${idToDelete}`;
-    fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-      .then(() => {
-        closeModal();
-        history.go(0);
-      })
-      .catch((err) => {
-        setShowError(err);
-      })
-      .finally(() => {
-        history.go(0);
-      });
+  const redirectUpdate = (postulant) => {
+    history.push(`/postulants/form?_id=${postulant._id}`);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const preventAndShow = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIdToDelete(id);
-    setShowModal(true);
-  };
-
-  const redirect = (id) => {
-    history.push(`/postulants/form?_id=${id}`);
-  };
-
-  const setInformationToShow = (data) => {
-    const idToPass = [];
-    const dataToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([
-        row.firstName ? row.firstName : '-',
-        row.lastName ? row.lastName : '-',
-        row.email ? row.email : '-',
-        row.phone ? row.phone : '-',
-        row.address ? row.address : '-'
-      ]);
+  const setInformationToShow = () => {
+    return postulants.map((row) => {
+      return {
+        _id: row._id,
+        firstName: row.firstName ? row.firstName : '-',
+        lastName: row.lastName ? row.lastName : '-',
+        email: row.email ? row.email : '-',
+        phone: row.phone ? row.phone : '-',
+        address: row.address ? row.address : '-'
+      };
     });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
+  };
+
+  const redirectAdd = () => {
+    dispatch(clearPostulant());
+    history.push('/postulants/form');
+  };
+
+  const handleDeletePostulant = () => {
+    dispatch(deletePostulant(idToDelete));
+    setShowModal(false);
   };
 
   return (
     <section className={styles.container}>
       <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this Postulant?"
-        onClose={closeModal}
-        isLoading={isLoading}
-        onConfirm={deletePostulant}
+        show={showModal}
+        message="Do you want to proceed and delete this Postulant?"
+        title="Delete Postulant"
+        cancel={{
+          text: 'Cancel',
+          disable: false,
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          disable: false,
+          callback: handleDeletePostulant
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(clearError())
+        }}
       />
       <h2 className={styles.title}>Postulants</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <Table
-          columnsName={columnName}
-          id={idToPass}
-          tableInfo={infoToShow}
-          deleteFunction={preventAndShow}
-          redirectFunction={redirect}
+          actions={actions}
+          columns={columns}
+          data={setInformationToShow()}
+          onRowClick={redirectUpdate}
         />
       )}
-      <div className={styles.showError}>{showError.message}</div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD POSTULANT" onClick={() => history.push('/postulants/form')} />
+        <Button label="ADD POSTULANT" onClick={redirectAdd} />
       </div>
     </section>
   );

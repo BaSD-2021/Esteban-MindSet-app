@@ -1,19 +1,19 @@
 import {
   getPostulantsFetching,
   getPostulantsFulfilled,
-  getPostulantsRejected
+  getPostulantsRejected,
   // getPostulantsByIdFetching,
   // getPostulantsByIdFulfilled,
   // getPostulantsByIdRejected,
-  // addPostulantsFetching,
-  // addPostulantsFulfilled,
-  // addPostulantsRejected,
-  // updatePostulantsFetching,
-  // updatePostulantsFulfilled,
-  // updatePostulantsRejected,
-  // deletePostulantsFetching,
-  // deletePostulantsFulfilled,
-  // deletePostulantsRejected,
+  addPostulantsFetching,
+  addPostulantsFulfilled,
+  addPostulantsRejected,
+  updatePostulantsFetching,
+  updatePostulantsFulfilled,
+  updatePostulantsRejected,
+  deletePostulantsFetching,
+  deletePostulantsFulfilled,
+  deletePostulantsRejected
   // clearError
 } from './actions';
 
@@ -33,12 +33,94 @@ export const getPostulants = () => {
   };
 };
 
-// export const getPostulantById = (id) => {
-//   return (dispatch) => {
-//     dispatch()
-//   }
+export const addPostulant = (postulant) => {
+  return (dispatch) => {
+    dispatch(addPostulantsFetching());
 
-// }
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postulant),
+      method: 'POST'
+    };
 
-// // VER IMPORTS DE DISPATCHER EN CONTROLES/POSTULANTS
-// VER GETPOSTULATSBYID
+    const url = `${process.env.REACT_APP_API}/postulants`;
+
+    fetch(url, options)
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(addPostulantsFulfilled(response.data));
+      })
+      .catch((err) => {
+        dispatch(addPostulantsRejected(err.toString()));
+      });
+  };
+};
+
+export const updatePostulant = (postulantId, postulant) => {
+  return (dispatch) => {
+    dispatch(updatePostulantsFetching());
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postulant),
+      method: 'PUT'
+    };
+
+    const url = `${process.env.REACT_APP_API}/postulants/${postulantId}`;
+
+    fetch(url, options)
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(updatePostulantsFulfilled(response.data));
+      })
+      .catch((err) => {
+        dispatch(updatePostulantsRejected(err.toString()));
+      });
+  };
+};
+
+export const deletePostulant = (postulantId) => {
+  return (dispatch) => {
+    dispatch(deletePostulantsFetching());
+
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    };
+
+    const url = `${process.env.REACT_APP_API}/postulants/${postulantId}`;
+
+    return fetch(url, options)
+      .then((response) => {
+        if (response.status !== 204) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        dispatch(deletePostulantsFulfilled(postulantId));
+      })
+      .catch((err) => {
+        dispatch(deletePostulantsRejected(err.toString()));
+      });
+  };
+};

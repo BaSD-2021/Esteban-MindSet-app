@@ -14,13 +14,14 @@ import {
   DELETE_POSTULANTS_FETCHING,
   DELETE_POSTULANTS_FULFILLED,
   DELETE_POSTULANTS_REJECTED,
+  CLEAR_POSTULANT,
   CLEAR_ERROR
 } from './constants';
 
 const initialState = {
   isLoading: false,
   list: [],
-  selectedPostulant: {},
+  selectedPostulant: undefined,
   error: false
 };
 
@@ -52,7 +53,7 @@ export const postulantsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        list: action.payload
+        selectedPostulant: state.list.find((postulant) => postulant._id === action.payload)
       };
     case GET_POSTULANTS_BY_ID_REJECTED:
       return {
@@ -69,7 +70,7 @@ export const postulantsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        list: action.payload
+        list: [...state.list, action.payload]
       };
     case ADD_POSTULANTS_REJECTED:
       return {
@@ -86,7 +87,13 @@ export const postulantsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        list: action.payload
+        list: state.list.map((item) => {
+          if (item._id === action.payload._id) {
+            item = action.payload;
+          }
+
+          return item;
+        })
       };
     case UPDATE_POSTULANTS_REJECTED:
       return {
@@ -111,6 +118,11 @@ export const postulantsReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: action.error
+      };
+    case CLEAR_POSTULANT:
+      return {
+        ...state,
+        selectedPostulant: initialState.selectedPostulant
       };
     case CLEAR_ERROR:
       return {
