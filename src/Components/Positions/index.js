@@ -111,6 +111,7 @@ function Positions() {
           redirectFunction={redirect}
         />
       )}
+      <span>{errorValue}</span>
       <div className={styles.buttonContainer}>
         <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
       </div>

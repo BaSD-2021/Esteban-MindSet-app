@@ -3,7 +3,7 @@ import styles from './admins.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table/index';
+import Table from '../Shared/TableV2';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdmins, deleteAdmin } from '../../redux/admins/thunks';
 import { cleanError } from '../../redux/admins/actions';

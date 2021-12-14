@@ -104,6 +104,7 @@ function Interviews() {
         isLoading={isLoading}
         onConfirm={deleteInterview}
       />
+      <span>{errorMessage}</span>
       <div className={styles.buttonContainer}>
         <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
       </div>
