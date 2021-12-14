@@ -67,7 +67,7 @@ function Form() {
         // Redirect to the admin list when the async action is ended
         // If exists a response means the request was ok
         if (response) {
-          history.push('/admins');
+          history.push('/admin/admins/list');
         }
       });
     } else {
@@ -82,7 +82,7 @@ function Form() {
         // Redirect to the admin list when the async action is ended
         // If exists a response means the request was ok
         if (response) {
-          history.push('/admins');
+          history.push('/admin/admins/list');
         }
       });
     }

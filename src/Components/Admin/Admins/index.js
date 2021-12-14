@@ -72,7 +72,7 @@ const Admins = () => {
             { name: 'Username', value: 'username' }
           ]}
           data={admins}
-          onRowClick={(item) => history.push(`/admins/form?_id=${item._id}`)}
+          onRowClick={(item) => history.push(`/admin/admins/form?_id=${item._id}`)}
           actions={[
             {
               text: 'Delete',
@@ -86,7 +86,7 @@ const Admins = () => {
         />
       )}
       <div className={styles.buttonContainer}>
-        <Button label="ADD ADMIN" onClick={() => history.push('/admins/form')} />
+        <Button label="Add Admin" onClick={() => history.push('/admin/admins/form')} />
       </div>
     </section>
   );

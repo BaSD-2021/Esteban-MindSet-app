@@ -1,7 +1,7 @@
 import React from 'react';
-import TableHeader from 'Components/Psychologists/TableHeader';
-import PSYCHOLOGISTS_TABLE_HEADERS from 'Components/Psychologists/utils/table-headers-utils';
-import PsychologistItem from 'Components/Psychologists/PsychologistItem';
+import TableHeader from 'Components/Admin/Psychologists/TableHeader';
+import PSYCHOLOGISTS_TABLE_HEADERS from 'Components/Admin/Psychologists/utils/table-headers-utils';
+import PsychologistItem from 'Components/Admin/Psychologists/PsychologistItem';
 import styles from './list.module.css';
 import Button from 'Components/Shared/Button';
 

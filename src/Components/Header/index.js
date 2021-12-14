@@ -1,7 +1,7 @@
 import styles from './header.module.css';
 import { Link } from 'react-router-dom';
 
-function Header() {
+function Header(props) {
   return (
     <header>
       <div className={styles.container}>
@@ -31,34 +31,12 @@ function Header() {
         <div className={styles.appName}>
           Mind<span>SET</span>
         </div>
-        <ul className={styles.rutes}>
-          <li>
-            <Link to="/admins"> Admins</Link>
-          </li>
-          <li>
-            <Link to="/applications"> Applications</Link>
-          </li>
-          <li>
-            <Link to="/clients"> Clients</Link>
-          </li>
-          <li>
-            <Link to="/interviews"> Interviews</Link>
-          </li>
-          <li>
-            <Link to="/positions"> Positions</Link>
-          </li>
-          <li>
-            <Link to="/postulants"> Postulants</Link>
-          </li>
-          <li>
-            <Link to="/profiles"> Profiles</Link>
-          </li>
-          <li>
-            <Link to="/psychologists"> Psychologists</Link>
-          </li>
-          <li>
-            <Link to="/sessions"> Sessions</Link>
-          </li>
+        <ul className={styles.routes}>
+          {props.routes.map((route) => (
+            <li key={route.name}>
+              <Link to={route.path}>{route.name}</Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
