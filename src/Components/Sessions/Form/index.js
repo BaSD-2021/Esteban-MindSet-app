@@ -6,6 +6,9 @@ import Button from '../../Shared/Button';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Select from '../../Shared/Select';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessionById, createSession, updateSession } from '../../../redux/sessions/thunks';
+import { cleanError, cleanSelectedItem } from '../../../redux/sessions/actions';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');
@@ -19,6 +22,8 @@ function sessionsForm() {
   const [selectPsychologist, setSelectPsychologist] = useState([]);
   const query = useQuery();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const selectedSession = useSelector((store) => store.sessions.selectedItem);
 
   const onChangeDateInput = (event) => {
     setDateValue(event.target.value);
@@ -40,31 +45,26 @@ function sessionsForm() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    const sessionId = query.get('id');
-    if (sessionId) {
-      fetch(`${process.env.REACT_APP_API}/sessions?_id=${sessionId}`)
-        .then((response) => {
-          if (response.status !== 200) {
-            return response.json().then(({ message }) => {
-              throw new Error(message);
-            });
-          }
-          return response.json();
-        })
-        .then((response) => {
-          setDateValue(response.data[0].date);
-          setPostulantValue(response.data[0].postulant?._id);
-          setPsychoValue(response.data[0].psychologist?._id);
-          setStatusValue(response.data[0].status);
-          setNotesValue(response.data[0].notes);
-          setLoading(false);
-        })
-        .catch((error) => {
-          setError(error.toString());
-        });
+    if (Object.keys(selectedSession).length) {
+      setDateValue(selectedSession.date);
+      setPostulantValue(selectedSession.postulant?._id);
+      setPsychoValue(selectedSession.psychologist?._id);
+      setStatusValue(selectedSession.status);
+      setNotesValue(selectedSession.notes);
     }
+  }, [selectedSession]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
+
+  useEffect(() => {
+    const sessionId = query.get('_id');
+    if (sessionId) {
+      dispatch(getSessionById(sessionId));
+    }
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => {
         if (response.status !== 200) {
@@ -112,49 +112,28 @@ function sessionsForm() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
-    const sessionId = query.get('id');
-
-    let url;
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        date: dateValue,
-        postulant: postulantValue,
-        psychologist: psychoValue,
-        status: statusValue,
-        notes: notesValue
-      })
+    const sessionId = query.get('_id');
+    const body = {
+      date: dateValue,
+      postulant: postulantValue,
+      psychologist: psychoValue,
+      status: statusValue,
+      notes: notesValue
     };
 
     if (sessionId) {
-      options.method = 'PUT';
-      url = `${process.env.REACT_APP_API}/sessions/${sessionId}`;
-    } else {
-      options.method = 'POST';
-      url = `${process.env.REACT_APP_API}/sessions`;
-    }
-
-    setLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
+      dispatch(updateSession(sessionId, body)).then((response) => {
+        if (response) {
+          history.push('/sessions');
         }
-        return response.json();
-      })
-      .then(() => {
-        setLoading(false);
-        history.push('/sessions');
-      })
-      .catch((error) => {
-        setError(error.toString());
       });
+    } else {
+      dispatch(createSession(body)).then((response) => {
+        if (response) {
+          history.push('/sessions');
+        }
+      });
+    }
   };
 
   return (
