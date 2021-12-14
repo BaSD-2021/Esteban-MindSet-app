@@ -37,8 +37,6 @@ export const getPsychologists = () => {
   };
 };
 
-// See the comments above for reference.
-// On this case, we are passing an "id" params to send it to the backend
 export const getPsychologistById = (id) => {
   return (dispatch) => {
     dispatch(getPsychologistByIdFetching());
