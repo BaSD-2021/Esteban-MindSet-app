@@ -151,25 +151,25 @@ function Form() {
   };
 
   const onChangeMondayAvailability = (event) => {
-    setMondayAvailability(event.target.value);
+    setMondayAvailability(event.target.checked);
   };
   const onChangeTuesdayAvailability = (event) => {
-    setTuesdayAvailability(event.target.value);
+    setTuesdayAvailability(event.target.checked);
   };
   const onChangeWednesdayAvailability = (event) => {
-    setWednesdayAvailability(event.target.value);
+    setWednesdayAvailability(event.target.checked);
   };
   const onChangeThursdayAvailability = (event) => {
-    setThursdayAvailability(event.target.value);
+    setThursdayAvailability(event.target.checked);
   };
   const onChangeFridayAvailability = (event) => {
-    setFridayAvailability(event.target.value);
+    setFridayAvailability(event.target.checked);
   };
   const onChangeSaturdayAvailability = (event) => {
-    setSaturdayAvailability(event.target.value);
+    setSaturdayAvailability(event.target.checked);
   };
   const onChangeSundayAvailability = (event) => {
-    setSundayAvailability(event.target.value);
+    setSundayAvailability(event.target.checked);
   };
 
   const onChangeMondayFrom = (event) => {
@@ -291,13 +291,13 @@ function Form() {
         return response.json();
       })
       .then(() => {
-        history.push('/Psychologists');
+        setIsLoading(false);
       })
       .catch((err) => {
         setErrorMessage(err);
       })
       .finally(() => {
-        setIsLoading(false);
+        history.push('/Psychologists');
       });
   };
 
@@ -399,7 +399,6 @@ function Form() {
           <h3 className={styles.availabilityTitle}>Availability</h3>
           <Checkbox
             label="Monday"
-            name={mondayAvailability}
             selected={mondayAvailability}
             onChange={onChangeMondayAvailability}
           />
@@ -426,7 +425,6 @@ function Form() {
         <div>
           <Checkbox
             label="Tuesday"
-            name={tuesdayAvailability}
             selected={tuesdayAvailability}
             onChange={onChangeTuesdayAvailability}
           />
@@ -453,7 +451,6 @@ function Form() {
         <div>
           <Checkbox
             label="Wednesday"
-            name={wednesdayAvailability}
             selected={wednesdayAvailability}
             onChange={onChangeWednesdayAvailability}
           />
@@ -480,7 +477,6 @@ function Form() {
         <div>
           <Checkbox
             label="Thursday"
-            name={thursdayAvailability}
             selected={thursdayAvailability}
             onChange={onChangeThursdayAvailability}
           />
@@ -507,7 +503,6 @@ function Form() {
         <div>
           <Checkbox
             label="Friday"
-            name={fridayAvailability}
             selected={fridayAvailability}
             onChange={onChangeFridayAvailability}
           />
@@ -534,7 +529,6 @@ function Form() {
         <div>
           <Checkbox
             label="Saturday"
-            name={saturdayAvailability}
             selected={saturdayAvailability}
             onChange={onChangeSaturdayAvailability}
           />
@@ -561,7 +555,6 @@ function Form() {
         <div>
           <Checkbox
             label="Sunday"
-            name={sundayAvailability}
             selected={sundayAvailability}
             onChange={onChangeSundayAvailability}
           />
