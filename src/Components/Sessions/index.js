@@ -10,7 +10,7 @@ import { cleanError } from '../../redux/sessions/actions';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedIdSession, setSelectedIdSession] = useState(undefined);
+  const [selectedIdSession, setSelectedIdSession] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
   const sessions = useSelector((store) => store.sessions.list);

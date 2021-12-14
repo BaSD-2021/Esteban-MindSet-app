@@ -8,6 +8,7 @@ import Input from '../../Shared/Input';
 import Select from '../../Shared/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionById, createSession, updateSession } from '../../../redux/sessions/thunks';
+import { cleanError, cleanSelectedItem } from '../../../redux/sessions/actions';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');
@@ -22,7 +23,7 @@ function sessionsForm() {
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
-  const selectedSession = useSelector((store) => store.selectedItem);
+  const selectedSession = useSelector((store) => store.sessions.selectedItem);
 
   const onChangeDateInput = (event) => {
     setDateValue(event.target.value);
@@ -44,19 +45,26 @@ function sessionsForm() {
   };
 
   useEffect(() => {
-    const sessionId = query.get('_id');
-    if (sessionId) {
-      dispatch(getSessionById(sessionId)).then((response) => {
-        setDateValue(response.date);
-        setPostulantValue(response.postulant?._id);
-        setPsychoValue(response.psychologist?._id);
-        setStatusValue(response.status);
-        setNotesValue(response.notes);
-      });
+    if (Object.keys(selectedSession).length) {
+      setDateValue(selectedSession.date);
+      setPostulantValue(selectedSession.postulant?._id);
+      setPsychoValue(selectedSession.psychologist?._id);
+      setStatusValue(selectedSession.status);
+      setNotesValue(selectedSession.notes);
     }
   }, [selectedSession]);
 
   useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
+
+  useEffect(() => {
+    const sessionId = query.get('_id');
+    if (sessionId) {
+      dispatch(getSessionById(sessionId));
+    }
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => {
         if (response.status !== 200) {
@@ -114,11 +122,18 @@ function sessionsForm() {
     };
 
     if (sessionId) {
-      dispatch(updateSession(sessionId, body));
+      dispatch(updateSession(sessionId, body)).then((response) => {
+        if (response) {
+          history.push('/sessions');
+        }
+      });
     } else {
-      dispatch(createSession(body));
+      dispatch(createSession(body)).then((response) => {
+        if (response) {
+          history.push('/sessions');
+        }
+      });
     }
-    history.replace('/sessions');
   };
 
   return (

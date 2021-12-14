@@ -14,7 +14,8 @@ import {
   DELETE_SESSION_PENDING,
   DELETE_SESSION_SUCCESS,
   DELETE_SESSION_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './constants';
 
 export const getSessionsPending = () => {
@@ -120,5 +121,11 @@ export const deleteSessionError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };
