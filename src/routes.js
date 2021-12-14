@@ -13,6 +13,7 @@ import PostulantsForm from './Components/Postulants/Form';
 import Profiles from './Components/Profiles/index';
 import ProfilesForm from './Components/Profiles/Form';
 import Psychologists from './Components/Psychologists/index';
+import PsychologistsForm from './Components/Psychologists/Form';
 import Sessions from './Components/Sessions/index';
 import SessionsForm from './Components/Sessions/Form';
 import Home from './Components/Home/index';
@@ -39,7 +40,8 @@ const Routes = () => {
           <Route path="/Postulants/Form" component={PostulantsForm} />
           <Route path="/Profiles" exact component={Profiles} />
           <Route path="/Profiles/Form" component={ProfilesForm} />
-          <Route path="/Psychologists" component={Psychologists} />
+          <Route path="/Psychologists" exact component={Psychologists} />
+          <Route path="/Psychologists/Form" component={PsychologistsForm} />
           <Route path="/Sessions" exact component={Sessions} />
           <Route path="/Sessions/Form" component={SessionsForm} />
         </Switch>

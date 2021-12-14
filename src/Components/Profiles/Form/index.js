@@ -4,91 +4,83 @@ import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
+import Modal from '../../Shared/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileById, createProfile, updateProfile } from '../../../redux/profiles/thunks';
+import { cleanError, cleanSelectedItem } from '../../../redux/profiles/actions';
 
 function profilesForm() {
-  const [profileValue, setProfileValue] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
+  const [nameValue, setNameValue] = useState('');
   const query = useQuery();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const selectedProfile = useSelector((store) => store.profiles.selectedItem);
+  const error = useSelector((store) => store.profiles.error);
+  const isLoading = useSelector((store) => store.admins.isFetching);
 
   const onChangeProfileInput = (event) => {
-    setProfileValue(event.target.value);
+    setNameValue(event.target.value);
   };
 
   useEffect(() => {
     const profileId = query.get('_id');
     if (profileId) {
-      fetch(`${process.env.REACT_APP_API}/profiles?_id=${profileId}`)
-        .then((response) => {
-          if (response.status !== 200) {
-            return response.json().then(({ message }) => {
-              throw new Error(message);
-            });
-          }
-          return response.json();
-        })
-        .then((response) => {
-          setProfileValue(response.data[0].name);
-          setLoading(false);
-        })
-        .catch((error) => {
-          setError(error.toString());
-        });
+      dispatch(getProfileById(profileId));
     }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedProfile).length) {
+      setNameValue(selectedProfile.name);
+    }
+  }, [selectedProfile]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
   }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
     const profileId = query.get('_id');
 
-    let url;
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: profileValue
-      })
+    const body = {
+      name: nameValue
     };
-
     if (profileId) {
-      options.method = 'PUT';
-      url = `${process.env.REACT_APP_API}/profiles/${profileId}`;
-    } else {
-      options.method = 'POST';
-      url = `${process.env.REACT_APP_API}/profiles`;
-    }
-
-    setLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
+      dispatch(updateProfile(profileId, body)).then((response) => {
+        if (response) {
+          history.push('/profiles');
         }
-        return response.json();
-      })
-      .then(() => {
-        setLoading(false);
-        history.push('/profiles');
-      })
-      .catch((error) => {
-        setError(error.toString());
       });
+    } else {
+      dispatch(createProfile(body)).then((response) => {
+        if (response) {
+          history.push('/profiles');
+        }
+      });
+    }
   };
 
   return (
     <div className={styles.container}>
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <form className={styles.form} onSubmit={onSubmit}>
         <div>
           <h2 className={styles.title}>Profile</h2>
           <Input
             title="Profile"
             name="profile"
-            value={profileValue}
+            value={nameValue}
             onChange={onChangeProfileInput}
             type="text"
             disabled={isLoading}
