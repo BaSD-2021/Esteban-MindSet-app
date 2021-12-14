@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Button from '../Shared/Button';
+import Button from 'Components/Shared/Button';
 import styles from './postulants.module.css';
-import Modal from '../Shared/Modal';
-import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import { Link, useHistory } from 'react-router-dom';
+import Table from 'Components/Shared/Table';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);

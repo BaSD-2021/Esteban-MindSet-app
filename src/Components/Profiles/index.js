@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import styles from './profiles.module.css';
-import Button from '../Shared/Button';
-import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Button from 'Components/Shared/Button';
+import { Link, useHistory } from 'react-router-dom';
+import Table from 'Components/Shared/Table';
 
 function Profiles() {
   const [showModal, setShowModal] = useState(false);

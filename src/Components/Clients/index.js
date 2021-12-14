@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import styles from './clients.module.css';
+<<<<<<< HEAD
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
 import Table from '../Shared/Table';
+=======
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
+import { Link, useHistory } from 'react-router-dom';
+import Table from 'Components/Shared/Table';
+>>>>>>> 7eb8c4c (MS: replace relative paths with absolute paths)
 
 function Clients() {
   const [showModal, setShowModal] = useState(false);

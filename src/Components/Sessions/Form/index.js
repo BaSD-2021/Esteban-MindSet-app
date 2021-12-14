@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
-import Textarea from '../../Shared/Textarea';
-import Button from '../../Shared/Button';
+import useQuery from 'Hooks/useQuery';
+import Textarea from 'Components/Shared/Textarea';
+import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Select from '../../Shared/Select';
+import Input from 'Components/Shared/Input';
+import Select from 'Components/Shared/Select';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');

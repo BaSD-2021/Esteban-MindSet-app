@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
 
 function Form() {
   const [name, setName] = useState('');

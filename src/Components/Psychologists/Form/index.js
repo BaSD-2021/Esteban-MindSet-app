@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Checkbox from '../../Shared/Checkbox';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Checkbox from 'Components/Shared/Checkbox';
 
 const Form = ({
   inputs,

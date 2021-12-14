@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Textarea from '../../Shared/Textarea';
-import Button from '../../Shared/Button';
-import Checkbox from '../../Shared/Checkbox';
+import Input from 'Components/Shared/Input';
+import Textarea from 'Components/Shared/Textarea';
+import Button from 'Components/Shared/Button';
+import Checkbox from 'Components/Shared/Checkbox';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 

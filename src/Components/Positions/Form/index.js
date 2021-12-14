@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Select from '../../Shared/Select';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Select from 'Components/Shared/Select';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');

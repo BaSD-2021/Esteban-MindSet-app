@@ -2,7 +2,7 @@ import styles from './psychologists.module.css';
 import { useState, useEffect } from 'react';
 import List from './List';
 import Form from './Form';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
 import { PSYCHOLOGIST_FORM, PSYCHOLOGIST_AVAILABILITY } from './utils/psychologist-inputs-utils';

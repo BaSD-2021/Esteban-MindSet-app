@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './list.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
-import Table from '../Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
+import Table from 'Components/Shared/Table';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);

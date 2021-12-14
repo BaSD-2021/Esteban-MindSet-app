@@ -1,5 +1,5 @@
-import Header from '../Header/index';
-import Footer from '../Footer/index';
+import Header from 'Components/Header';
+import Footer from 'Components/Footer';
 import styles from './layout.module.css';
 
 function Layout(props) {

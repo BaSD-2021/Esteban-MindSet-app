@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
-import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table/index';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
+import { Link, useHistory } from 'react-router-dom';
+import Table from 'Components/Shared/Table';
 
 function Applications() {
   const [showModal, setShowModal] = useState(false);
