@@ -57,7 +57,7 @@ function Form() {
         setClientIdValue(selectedPosition.client?._id);
         setJobDescriptionValue(selectedPosition.jobDescription);
         setVacancyValue(selectedPosition.vacancy);
-        setProfessionalProfileIdValue(selectedPosition.professionalProfile?.name);
+        setProfessionalProfileIdValue(selectedPosition.professionalProfile?._id);
         setIsOpenValue(selectedPosition.isOpen);
       });
     }
@@ -110,7 +110,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.replace('/positions');
+          history.push('/positions');
         }
       });
     } else {
@@ -124,7 +124,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.replace('/positions');
+          history.push('/positions');
         }
       });
     }
