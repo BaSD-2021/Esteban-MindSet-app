@@ -14,7 +14,8 @@ import {
   DELETE_POSITION_PENDING,
   DELETE_POSITION_SUCCESS,
   DELETE_POSITION_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './constants';
 
 export const getPositionsPending = () => {
@@ -120,5 +121,11 @@ export const deletePositionError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };

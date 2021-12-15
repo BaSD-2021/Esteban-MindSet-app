@@ -31,7 +31,8 @@ function Table(props) {
                 {props.columns.map((column, index) => {
                   return (
                     <td key={`${item[column.value]}-${index}`} className={styles.tdStyles}>
-                      {get(item, column.value).toString()}
+                      {get(item, column.value)}
+                      {/* {get(item, column.value).toString()} */}
                     </td>
                   );
                 })}

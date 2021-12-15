@@ -8,7 +8,7 @@ import Modal from '../../Shared/Modal';
 import Select from '../../Shared/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPositionById, createPosition, updatePosition } from '../../../redux/positions/thunks';
-import { cleanError } from '../../../redux/positions/actions';
+import { cleanError, cleanSelectedItem } from '../../../redux/positions/actions';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');
@@ -21,13 +21,13 @@ function Form() {
   const [selectClient, setSelectClient] = useState([]);
   const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
   const [errorValue, setError] = useState('');
-  const [id, setPositionId] = useState(undefined);
 
-  const isLoading = useSelector((store) => store.positions.isFetching);
-  const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
-  const selectedPosition = useSelector((store) => store.selectedItem);
+  const dispatch = useDispatch();
+  const selectedPosition = useSelector((store) => store.positions.selectedItem);
+  const isLoading = useSelector((store) => store.positions.isFetching);
+  const error = useSelector((store) => store.positions.error);
 
   const onChangeProfessionalProfileId = (event) => {
     setProfessionalProfileIdValue(event.target.value);
@@ -52,16 +52,25 @@ function Form() {
   useEffect(() => {
     const positionId = query.get('_id');
     if (positionId) {
-      dispatch(getPositionById(positionId)).then((selectedPosition) => {
-        setPositionId(positionId);
-        setClientIdValue(selectedPosition.client?._id);
-        setJobDescriptionValue(selectedPosition.jobDescription);
-        setVacancyValue(selectedPosition.vacancy);
-        setProfessionalProfileIdValue(selectedPosition.professionalProfile?._id);
-        setIsOpenValue(selectedPosition.isOpen);
-      });
+      dispatch(getPositionById(positionId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedPosition).length) {
+      setClientIdValue(selectedPosition.client?._id);
+      setJobDescriptionValue(selectedPosition.jobDescription);
+      setVacancyValue(selectedPosition.vacancy);
+      setProfessionalProfileIdValue(selectedPosition.professionalProfile?._id);
+      setIsOpenValue(selectedPosition.isOpen);
     }
   }, [selectedPosition]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/profiles`)
@@ -132,6 +141,15 @@ function Form() {
 
   return (
     <div>
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Position</h2>
         <Select
@@ -187,14 +205,6 @@ function Form() {
         <div className={styles.buttonContainer}>
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
-        {errorValue && (
-          <Modal>
-            {`${errorValue}`}
-            <button className={styles.button} onClick={() => dispatch(cleanError())}>
-              Close
-            </button>
-          </Modal>
-        )}
       </form>
     </div>
   );

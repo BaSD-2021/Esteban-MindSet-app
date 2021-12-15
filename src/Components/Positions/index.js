@@ -22,20 +22,35 @@ function Positions() {
     if (!positions.length) {
       dispatch(getPositions());
     }
-  }, []);
+  }, [positions]);
 
   return (
     <section className={styles.container}>
       <Modal
-        showModal={showModal}
+        show={showModal}
         title="Do you want to proceed and delete this position?"
-        onClose={() => setShowModal(false)}
         isLoading={isLoading}
-        onConfirm={() => {
-          dispatch(deletePosition(selectedIdPosition)).then(() => {
-            setSelectedIdPosition(undefined);
-            setShowModal(false);
-          });
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deletePosition(selectedIdPosition)).then(() => {
+              setSelectedIdPosition(undefined);
+              setShowModal(false);
+            });
+          }
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
         }}
       />
       <h2 className={styles.title}>Positions</h2>
@@ -63,14 +78,6 @@ function Positions() {
             }
           ]}
         />
-      )}
-      {error && (
-        <Modal>
-          {`${error}`}
-          <button className={styles.button} onClick={() => dispatch(cleanError())}>
-            Close
-          </button>
-        </Modal>
       )}
       <div className={styles.buttonContainer}>
         <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
