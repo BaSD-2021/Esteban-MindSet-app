@@ -15,7 +15,7 @@ import {
   DELETE_POSTULANTS_FULFILLED,
   DELETE_POSTULANTS_REJECTED,
   CLEAR_POSTULANT,
-  CLEAR_ERROR
+  CLEAN_ERROR
 } from './constants';
 
 const initialState = {
@@ -53,7 +53,7 @@ export const postulantsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        selectedPostulant: state.list.find((postulant) => postulant._id === action.payload)
+        selectedPostulant: action.payload
       };
     case GET_POSTULANTS_BY_ID_REJECTED:
       return {
@@ -124,7 +124,7 @@ export const postulantsReducer = (state = initialState, action) => {
         ...state,
         selectedPostulant: initialState.selectedPostulant
       };
-    case CLEAR_ERROR:
+    case CLEAN_ERROR:
       return {
         ...state,
         isLoading: false,

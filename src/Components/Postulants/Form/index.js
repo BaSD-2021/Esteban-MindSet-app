@@ -6,8 +6,9 @@ import Input from '../../Shared/Input';
 import Textarea from '../../Shared/Textarea';
 import Button from '../../Shared/Button';
 import Checkbox from '../../Shared/Checkbox';
-import { getPostulantsById } from '../../../redux/postulants/actions';
-import { addPostulant, updatePostulant } from '../../../redux/postulants/thunks';
+import Modal from '../../Shared/Modal';
+import { cleanError } from '../../../redux/postulants/actions';
+import { addPostulant, updatePostulant, getPostulantById } from '../../../redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -46,20 +47,23 @@ function PostulantsForm() {
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
   const [showError, setShowError] = useState('');
-  const [isLoading, setIsLoading] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
+  const isLoading = useSelector((store) => store.postulants.isLoading);
+  const error = useSelector((store) => store.sessions.error);
 
   const postulantId = query.get('_id');
-  if (postulantId) {
-    dispatch(getPostulantsById(postulantId));
-  }
+  useEffect(() => {
+    if (postulantId) {
+      dispatch(getPostulantById(postulantId));
+    }
+  }, []);
 
   useEffect(() => {
     autoFill(selectedPostulant);
-  }, []);
+  }, [selectedPostulant]);
 
   const autoFill = (data) => {
     const fillData = data || {};
@@ -363,18 +367,33 @@ function PostulantsForm() {
     };
 
     if (postulantId) {
-      dispatch(updatePostulant(postulantId, postulant));
+      dispatch(updatePostulant(postulantId, postulant)).then((response) => {
+        if (response) {
+          history.push('/postulants');
+        }
+      });
     } else {
-      dispatch(addPostulant(postulant));
+      dispatch(addPostulant(postulant)).then((response) => {
+        if (response) {
+          history.push('/postulants');
+        }
+      });
     }
-
-    history.push('/postulants');
   };
 
   return (
     <div className={styles.container}>
       <form onSubmit={onSubmit}>
         <h2 className={styles.title}>Postulant</h2>
+        <Modal
+          show={!!error}
+          title="Error"
+          message={error}
+          cancel={{
+            text: 'Close',
+            callback: () => dispatch(cleanError())
+          }}
+        />
         <Input
           title="First Name"
           value={firstNameValue}

@@ -5,7 +5,7 @@ import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { useHistory } from 'react-router-dom';
 import Table from '../Shared/TableV2';
-import { clearPostulant, clearError } from '../../redux/postulants/actions';
+import { clearPostulant, cleanError } from '../../redux/postulants/actions';
 import { getPostulants, deletePostulant } from '../../redux/postulants/thunks';
 
 function Postulants() {
@@ -59,19 +59,6 @@ function Postulants() {
     history.push(`/postulants/form?_id=${postulant._id}`);
   };
 
-  const setInformationToShow = () => {
-    return postulants.map((row) => {
-      return {
-        _id: row._id,
-        firstName: row.firstName ? row.firstName : '-',
-        lastName: row.lastName ? row.lastName : '-',
-        email: row.email ? row.email : '-',
-        phone: row.phone ? row.phone : '-',
-        address: row.address ? row.address : '-'
-      };
-    });
-  };
-
   const redirectAdd = () => {
     dispatch(clearPostulant());
     history.push('/postulants/form');
@@ -105,19 +92,14 @@ function Postulants() {
         message={error}
         cancel={{
           text: 'Close',
-          callback: () => dispatch(clearError())
+          callback: () => dispatch(cleanError())
         }}
       />
       <h2 className={styles.title}>Postulants</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <Table
-          actions={actions}
-          columns={columns}
-          data={setInformationToShow()}
-          onRowClick={redirectUpdate}
-        />
+        <Table actions={actions} columns={columns} data={postulants} onRowClick={redirectUpdate} />
       )}
       <div className={styles.buttonContainer}>
         <Button label="ADD POSTULANT" onClick={redirectAdd} />

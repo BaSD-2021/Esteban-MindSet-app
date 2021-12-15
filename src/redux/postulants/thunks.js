@@ -2,9 +2,9 @@ import {
   getPostulantsFetching,
   getPostulantsFulfilled,
   getPostulantsRejected,
-  // getPostulantsByIdFetching,
-  // getPostulantsByIdFulfilled,
-  // getPostulantsByIdRejected,
+  getPostulantByIdFetching,
+  getPostulantByIdFulfilled,
+  getPostulantByIdRejected,
   addPostulantsFetching,
   addPostulantsFulfilled,
   addPostulantsRejected,
@@ -14,7 +14,6 @@ import {
   deletePostulantsFetching,
   deletePostulantsFulfilled,
   deletePostulantsRejected
-  // clearError
 } from './actions';
 
 // const URL = `${process.env.REACT_APP_API}/postulants`;
@@ -22,13 +21,35 @@ import {
 export const getPostulants = () => {
   return (dispatch) => {
     dispatch(getPostulantsFetching());
-    fetch(`${process.env.REACT_APP_API}/postulants`)
+    return fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => response.json())
       .then((response) => {
         dispatch(getPostulantsFulfilled(response.data));
       })
       .catch((error) => {
         dispatch(getPostulantsRejected(error.toString()));
+      });
+  };
+};
+
+export const getPostulantById = (id) => {
+  return (dispatch) => {
+    dispatch(getPostulantByIdFetching());
+    return fetch(`${process.env.REACT_APP_API}/postulants?_id=${id}`)
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(getPostulantByIdFulfilled(response.data[0]));
+        return response.data[0];
+      })
+      .catch((error) => {
+        dispatch(getPostulantByIdRejected(error.toString()));
       });
   };
 };
@@ -47,7 +68,7 @@ export const addPostulant = (postulant) => {
 
     const url = `${process.env.REACT_APP_API}/postulants`;
 
-    fetch(url, options)
+    return fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           return response.json().then(({ message }) => {
@@ -58,6 +79,7 @@ export const addPostulant = (postulant) => {
       })
       .then((response) => {
         dispatch(addPostulantsFulfilled(response.data));
+        return response.data;
       })
       .catch((err) => {
         dispatch(addPostulantsRejected(err.toString()));
@@ -79,7 +101,7 @@ export const updatePostulant = (postulantId, postulant) => {
 
     const url = `${process.env.REACT_APP_API}/postulants/${postulantId}`;
 
-    fetch(url, options)
+    return fetch(url, options)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           return response.json().then(({ message }) => {
@@ -90,6 +112,7 @@ export const updatePostulant = (postulantId, postulant) => {
       })
       .then((response) => {
         dispatch(updatePostulantsFulfilled(response.data));
+        return response.data;
       })
       .catch((err) => {
         dispatch(updatePostulantsRejected(err.toString()));
