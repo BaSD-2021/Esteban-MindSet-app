@@ -1,64 +1,23 @@
-.form {
+.container{
   display: flex;
-  flex-direction: column;
-  align-content: center;
   justify-content: center;
 }
-
-.availabilityForm{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-}
-.availabilityForm label{
-  display: inline-block;
-  width: 10vw;
-}
-
-.availabilityInput{
-  width: 33%;
-  margin: 0px;
-  padding:4px;
-  border: 1.8px solid #002147;
-  border-radius: 3px;
-  background-color: rgb(247, 247, 247);
-}
-
-.dataInput{
-  margin: 4px 0;
-  padding: 6px;
-  width: 90%;
-  align-self: center;
-  border: 1.8px solid #002147;
-  border-radius: 3px;
-  background-color: rgb(247, 247, 247);
-}
-
-.dataInput:focus, .availabilityInput:hover{
-  border-color: #0022e2;
-  background-color: #fff;
-}
-.availabilityHeading{
-  margin:12px;
-  align-self: center;
-  color: #353535;
-}
-.availabilityLabel{
-  margin: 2px 12px 2px 2px;
-  color: #353535;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-.title {
-  font-weight: bolder;
-  font-size: 25px;
+.title{
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
   color: #002147;
-  margin: 10px;
+  text-align: center;
 }
-
 .buttonContainer{
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 16px;
+}
+.availabilityTitle{
+  margin: 16px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #002147;
+  text-align: center;
 }

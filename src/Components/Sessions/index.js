@@ -3,105 +3,54 @@ import Modal from '../Shared/Modal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from '../Shared/TableV2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessions, deleteSession } from '../../redux/sessions/thunks';
+import { cleanError } from '../../redux/sessions/actions';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(undefined);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
+  const [selectedIdSession, setSelectedIdSession] = useState('');
   const history = useHistory();
-  const columnName = ['Postulant', 'Psychologist', 'Date', 'Status', 'Action'];
+  const dispatch = useDispatch();
+  const sessions = useSelector((store) => store.sessions.list);
+  const error = useSelector((store) => store.sessions.error);
+  const isLoading = useSelector((store) => store.sessions.isFetching);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/sessions`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((error) => setError(error.toString()))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const redirectToForm = (session) => {
-    session ? history.push(`/Sessions/form?id=${session}`) : history.push(`/Sessions/Form`);
-  };
-
-  const handleDelete = (event, session) => {
-    event.stopPropagation();
-    setSelectedItem(session);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedItem(undefined);
-  };
-
-  const deleteSession = () => {
-    setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/sessions/${selectedItem}`;
-    fetch(url, { method: 'DELETE' })
-      .then((response) => {
-        if (response.status !== 204) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return fetch(`${process.env.REACT_APP_API}/sessions`)
-          .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
-            }
-            return response.json();
-          })
-          .then(() => {
-            closeModal();
-          });
-      })
-      .catch((error) => setError(error.toString()))
-      .finally(() => {
-        setIsLoading(false);
-        history.go(0);
-      });
-  };
-
-  const setInformationToShow = (data) => {
-    const idToPass = [];
-    const dataToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([
-        row.postulant ? row.postulant.firstName + ' ' + row.postulant.lastName : '-',
-        row.psychologist ? row.psychologist.firstName + ' ' + row.psychologist.lastName : '-',
-        row.date ? row.date : '-',
-        row.status ? row.status : '-'
-      ]);
-    });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
-  };
+    if (!sessions.length) {
+      dispatch(getSessions());
+    }
+  }, [sessions]);
 
   return (
     <section className={styles.container}>
       <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this session?"
-        onClose={closeModal}
+        show={showModal}
+        title="Are you sure you want to delete this Admin User?"
         isLoading={isLoading}
-        onConfirm={deleteSession}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deleteSession(selectedIdSession)).then(() => {
+              setSelectedIdSession(undefined);
+              setShowModal(false);
+            });
+          }
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
       />
       <h2 className={styles.title}>Sessions</h2>
       <div>
@@ -109,15 +58,27 @@ function Sessions() {
           <p className={styles.loading}>On Loading ...</p>
         ) : (
           <Table
-            columnsName={columnName}
-            id={idToPass}
-            tableInfo={infoToShow}
-            deleteFunction={handleDelete}
-            redirectFunction={redirectToForm}
+            columns={[
+              { name: 'Postulant', value: 'postulant.lastName' },
+              { name: 'Psychologist', value: 'psychologist.lastName' },
+              { name: 'Date', value: 'date' },
+              { name: 'Status', value: 'status' }
+            ]}
+            data={sessions}
+            onRowClick={(item) => history.push(`/sessions/form?_id=${item._id}`)}
+            actions={[
+              {
+                text: 'Delete',
+                callback: (e, item) => {
+                  e.stopPropagation();
+                  setSelectedIdSession(item._id);
+                  setShowModal(true);
+                }
+              }
+            ]}
           />
         )}
       </div>
-      <div className={styles.error}>{error}</div>
       <div className={styles.buttonContainer}>
         <Button label="ADD SESSION" onClick={() => history.push('/sessions/form')} />
       </div>
