@@ -65,17 +65,6 @@ function Form() {
     const interviewId = query.get('_id');
     if (interviewId) {
       dispatch(getInterviewById(interviewId));
-      // .then((selectedInterview) => {
-      //       setInterviewId(interviewId);
-      //       setPostulantIdValue(selectedInterview.postulant?._id);
-      //       setClientIdValue(selectedInterview.client?._id);
-      //       setApplicationIdValue(selectedInterview.application?._id);
-      //       setStatusValue(selectedInterview.status);
-      //       setDateValue(selectedInterview.date);
-      //       setNotesValue(selectedInterview.notes);
-      //     });
-      //   }
-      // }, [selectedInterview]);
     }
   }, []);
 

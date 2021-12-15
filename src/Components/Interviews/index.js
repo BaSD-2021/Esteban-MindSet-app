@@ -55,14 +55,7 @@ function Interviews() {
       <Modal
         show={showModal}
         title="Do you want to proceed and delete this Interview?"
-        // onClose={() => setShowModal(false)}
         isLoading={isLoading}
-        // onConfirm={() => {
-        //   dispatch(deleteInterview(selectedIdInterview)).then(() => {
-        //     setIdInterview(undefined);
-        //     setShowModal(false);
-        //   });
-        // }}
         cancel={{
           text: 'Cancel',
           callback: () => setShowModal(false)
@@ -86,14 +79,6 @@ function Interviews() {
           callback: () => dispatch(cleanError())
         }}
       />
-      {/* {error && (
-        <Modal>
-          {`${error}`}
-          <button className={styles.button} onClick={() => dispatch(cleanError())}>
-            Close
-          </button>
-        </Modal>
-      )} */}
       <div className={styles.buttonContainer}>
         <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
       </div>
