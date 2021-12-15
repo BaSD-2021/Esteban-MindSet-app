@@ -14,7 +14,8 @@ import {
   DELETE_INTERVIEW_PENDING,
   DELETE_INTERVIEW_SUCCESS,
   DELETE_INTERVIEW_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './constants';
 
 const initialState = {
@@ -141,6 +142,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: initialState.error
+      };
+    }
+    case CLEAN_SELECTED_ITEM: {
+      return {
+        ...state,
+        selectedItem: initialState.selectedItem
       };
     }
     default: {

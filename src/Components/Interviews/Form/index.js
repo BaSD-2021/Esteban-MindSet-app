@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
@@ -13,7 +12,7 @@ import {
   getInterviewById,
   updateInterview
 } from '../../../redux/interviews/thunks';
-import { cleanError } from '../../../redux/interviews/actions';
+import { cleanError, cleanSelectedItem } from '../../../redux/interviews/actions';
 
 function Form() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
@@ -26,27 +25,17 @@ function Form() {
   const [clientsValue, setClientsValue] = useState([]);
   const [applicationValue, setApplicationValue] = useState([]);
   const [errorValue, setError] = useState('');
-  //const [isLoading, setLoading] = useState(false);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
   const [id, setInterviewId] = useState(undefined);
 
-  // const error = useSelector((store) => store.interviews.error);
+  const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
-  const selectedInterview = useSelector((store) => store.selectedItem);
-
-  // const onLoading = (dat) => {
-  //   setPostulantIdValue(dat.data[0].postulant ? dat.data[0].postulant._id : '');
-  //   setClientIdValue(dat.data[0].client ? dat.data[0].client._id : '');
-  //   setStatusValue(dat.data[0].status || '');
-  //   setDateValue(dat.data[0].date || '');
-  //   setApplicationIdValue(dat.data[0].application._id == null ? '' : dat.data[0].application._id);
-  //   setNotesValue(dat.data[0].notes || '');
-  // };
+  const selectedInterview = useSelector((store) => store.interviews.selectedItem);
 
   const onChangePostulantId = (event) => {
     setPostulantIdValue(event.target.value);
@@ -75,17 +64,37 @@ function Form() {
   useEffect(() => {
     const interviewId = query.get('_id');
     if (interviewId) {
-      dispatch(getInterviewById(interviewId)).then((selectedInterview) => {
-        setInterviewId(interviewId);
-        setPostulantIdValue(selectedInterview.postulant?._id);
-        setClientIdValue(selectedInterview.client?._id);
-        setApplicationIdValue(selectedInterview.application?._id);
-        setStatusValue(selectedInterview.status);
-        setDateValue(selectedInterview.date);
-        setNotesValue(selectedInterview.notes);
-      });
+      dispatch(getInterviewById(interviewId));
+      // .then((selectedInterview) => {
+      //       setInterviewId(interviewId);
+      //       setPostulantIdValue(selectedInterview.postulant?._id);
+      //       setClientIdValue(selectedInterview.client?._id);
+      //       setApplicationIdValue(selectedInterview.application?._id);
+      //       setStatusValue(selectedInterview.status);
+      //       setDateValue(selectedInterview.date);
+      //       setNotesValue(selectedInterview.notes);
+      //     });
+      //   }
+      // }, [selectedInterview]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedInterview).length) {
+      setPostulantIdValue(selectedInterview.postulant?._id);
+      setClientIdValue(selectedInterview.client?._id);
+      setApplicationIdValue(selectedInterview.application?._id);
+      setStatusValue(selectedInterview.status);
+      setDateValue(selectedInterview.date);
+      setNotesValue(selectedInterview.notes);
     }
   }, [selectedInterview]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API}/postulants`)
@@ -150,7 +159,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.replace('/interviews');
+          history.push('/interviews');
         }
       });
     } else {
@@ -165,7 +174,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.replace('/interviews');
+          history.push('/interviews');
         }
       });
     }
@@ -173,6 +182,15 @@ function Form() {
 
   return (
     <div>
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <form onSubmit={onSubmit} className={styles.container}>
         <h2 className={styles.title}>Interview</h2>
         <label className={styles.label}>
@@ -242,7 +260,6 @@ function Form() {
         <div className={styles.buttonContainer}>
           <Button label="Save" disabled={isLoading} type="submit" />
         </div>
-        <div className={styles.error}>{errorValue}</div>
       </form>
     </div>
   );

@@ -14,7 +14,8 @@ import {
   DELETE_INTERVIEW_PENDING,
   DELETE_INTERVIEW_SUCCESS,
   DELETE_INTERVIEW_ERROR,
-  CLEAN_ERROR
+  CLEAN_ERROR,
+  CLEAN_SELECTED_ITEM
 } from './constants';
 
 // Actions definition
@@ -121,5 +122,11 @@ export const deleteInterviewError = (error) => {
 export const cleanError = () => {
   return {
     type: CLEAN_ERROR
+  };
+};
+
+export const cleanSelectedItem = () => {
+  return {
+    type: CLEAN_SELECTED_ITEM
   };
 };
