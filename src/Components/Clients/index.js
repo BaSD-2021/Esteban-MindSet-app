@@ -3,117 +3,79 @@ import styles from './clients.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from '../Shared/TableV2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getClients, deleteClient } from '../../redux/clients/thunks';
+import { cleanError } from '../../redux/clients/actions';
 
 function Clients() {
   const [showModal, setShowModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedIdClient, setSelectedIdClient] = useState('');
   const history = useHistory();
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
-  const columnName = ['Name', 'Phone', 'Actions'];
-
-  const deleteClient = () => {
-    setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/clients/${idToDelete}`;
-    fetch(url, {
-      method: 'DELETE'
-    })
-      .then(() => {
-        fetch(`${process.env.REACT_APP_API}/clients`)
-          .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
-            }
-            return response.json();
-          })
-          .then(() => {
-            closeModal();
-          });
-      })
-      .catch((err) => {
-        setErrorMessage(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        history.go(0);
-      });
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const preventAndShow = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIdToDelete(id);
-    setShowModal(true);
-  };
+  const dispatch = useDispatch();
+  const clients = useSelector((store) => store.clients.list);
+  const error = useSelector((store) => store.clients.error);
+  const isLoading = useSelector((store) => store.clients.isFetching);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/clients`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((err) => {
-        setErrorMessage(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  const redirect = (id) => {
-    history.push(`/clients/form?_id=${id}`);
-  };
-
-  const setInformationToShow = (data) => {
-    const idToPass = [];
-    const dataToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([row.name ? row.name : '-', row.phone ? row.phone : '-']);
-    });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
-  };
+    if (!clients.length) {
+      dispatch(getClients());
+    }
+  }, [clients]);
 
   return (
     <section className={styles.container}>
+      <Modal
+        show={showModal}
+        title="Are you sure you want to delete this Client?"
+        isLoading={isLoading}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deleteClient(selectedIdClient)).then(() => {
+              setSelectedIdClient(undefined);
+              setShowModal(false);
+            });
+          }
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <h2 className={styles.title}>Clients</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <Table
-          columnsName={columnName}
-          id={idToPass}
-          tableInfo={infoToShow}
-          deleteFunction={preventAndShow}
-          redirectFunction={redirect}
+          columns={[
+            { name: 'Name', value: 'name' },
+            { name: 'Phone Number', value: 'phone' }
+          ]}
+          data={clients}
+          onRowClick={(item) => history.push(`/clients/form?_id=${item._id}`)}
+          actions={[
+            {
+              text: 'Delete',
+              callback: (e, item) => {
+                e.stopPropagation();
+                setSelectedIdClient(item._id);
+                setShowModal(true);
+              }
+            }
+          ]}
         />
       )}
-      <div className={styles.errorMessage}>{errorMessage.message}</div>
-      <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this Client?"
-        onClose={closeModal}
-        isLoading={isLoading}
-        onConfirm={deleteClient}
-      />
+      <div className={styles.errorMessage}>{error}</div>
       <div className={styles.buttonContainer}>
         <Button label="ADD CLIENT" onClick={() => history.push('/clients/form')} />
       </div>

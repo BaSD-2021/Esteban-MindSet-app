@@ -10,7 +10,7 @@ const PsychologistItem = ({
 }) => {
   const { firstName, lastName, username, password, email, phone, address } = psychologist;
   return (
-    <tr className={styles.row} onClick={() => handleEdit(psychologist)}>
+    <tr className={styles.row} onClick={() => handleEdit(psychologist._id)}>
       <td>
         {firstName} {lastName}
       </td>
