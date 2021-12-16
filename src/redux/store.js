@@ -3,6 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import adminsReducer from './admins/reducer';
 import positionsReducer from './positions/reducer';
+import interviewsReducer from './interviews/reducer';
 import psychologistReducer from './psychologists/reducer';
 import sessionsReducer from './sessions/reducer';
 import profilesReducer from './profiles/reducer';
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   clients: clientsReducer,
   psychologists: psychologistReducer,
   positions: positionsReducer,
+  interviews: interviewsReducer,
   postulants: postulantsReducer
 });
 
