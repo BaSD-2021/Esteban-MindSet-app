@@ -284,7 +284,7 @@ function Form() {
           <Checkbox
             label="Monday"
             selected={mondayAvailability}
-            onChange={(e) => setMondayAvailability(e.target.checked)}
+            onChange={(e) => setMondayAvailability(!!e.target.checked)}
           />
           <Input
             id="mondayFrom"
@@ -310,7 +310,7 @@ function Form() {
           <Checkbox
             label="Tuesday"
             selected={tuesdayAvailability}
-            onChange={(e) => setTuesdayAvailability(e.target.checked)}
+            onChange={(e) => setTuesdayAvailability(!!e.target.checked)}
           />
           <Input
             id="tuesdayFrom"
@@ -336,7 +336,7 @@ function Form() {
           <Checkbox
             label="Wednesday"
             selected={wednesdayAvailability}
-            onChange={(e) => setWednesdayAvailability(e.target.checked)}
+            onChange={(e) => setWednesdayAvailability(!!e.target.checked)}
           />
           <Input
             id="wednesdayFrom"
@@ -362,7 +362,7 @@ function Form() {
           <Checkbox
             label="Thursday"
             selected={thursdayAvailability}
-            onChange={(e) => setThursdayAvailability(e.target.checked)}
+            onChange={(e) => setThursdayAvailability(!!e.target.checked)}
           />
           <Input
             id="thursdayFrom"
@@ -388,7 +388,7 @@ function Form() {
           <Checkbox
             label="Friday"
             selected={fridayAvailability}
-            onChange={(e) => setFridayAvailability(e.target.checked)}
+            onChange={(e) => setFridayAvailability(!!e.target.checked)}
           />
           <Input
             id="fridayFrom"
@@ -414,7 +414,7 @@ function Form() {
           <Checkbox
             label="Saturday"
             selected={saturdayAvailability}
-            onChange={(e) => setSaturdayAvailability(e.target.checked)}
+            onChange={(e) => setSaturdayAvailability(!!e.target.checked)}
           />
           <Input
             id="saturdayFrom"
@@ -440,7 +440,7 @@ function Form() {
           <Checkbox
             label="Sunday"
             selected={sundayAvailability}
-            onChange={(e) => setSundayAvailability(e.target.checked)}
+            onChange={(e) => setSundayAvailability(!!e.target.checked)}
           />
           <Input
             id="sundayFrom"
