@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from '../../../Hooks/useQuery';
@@ -6,32 +5,31 @@ import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 import Select from '../../Shared/Select';
+import Modal from '../../Shared/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getApplicationById,
+  createApplication,
+  updateApplication
+} from '../../../redux/applications/thunks';
+import { cleanError, cleanSelectedItem } from '../../../redux/applications/actions';
 
-function Form() {
+function applicationForm() {
   const [positionId, setPositionId] = useState('');
   const [postulantId, setPostulantId] = useState('');
   const [date, setDate] = useState('');
   const [result, setResult] = useState('');
-  const [positions, setPositions] = useState([]);
-  const [postulants, setPostulants] = useState([]);
-  const [interviews, setInterviews] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectPosition, setSelectPosition] = useState([]);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectInterviewDate, setSelectInterviewDate] = useState([]);
   const query = useQuery();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const selectedApplication = useSelector((store) => store.applications.selectedItem);
+  const error = useSelector((store) => store.applications.error);
 
-  const applicationId = query.get('_id');
-  let fetchMethod = 'POST';
-
-  const onLoading = (data) => {
-    setPostulantId(data.data[0].postulants ? data.data[0].postulants._id : '');
-    setPositionId(data.data[0].positions ? data.data[0].positions._id : '');
-    setDate(data.data[0].interview ? data.data[0].interview._id : '');
-    setResult(data.data[0].result);
-  };
   const onChangePositionId = (event) => {
     setPositionId(event.target.value);
   };
@@ -45,52 +43,26 @@ function Form() {
     setResult(event.target.value);
   };
 
-  if (applicationId) {
-    fetchMethod = 'PUT';
-  }
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const options = {
-      method: fetchMethod,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        positions: positionId,
-        postulants: postulantId,
-        interview: date,
-        result: result
-      })
-    };
-    const url = applicationId
-      ? `${process.env.REACT_APP_API}/applications/${applicationId}`
-      : `${process.env.REACT_APP_API}/applications/`;
-
-    setIsLoading(true);
-
-    fetch(url, options)
-      .then((response) => {
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then(() => {
-        history.push('/applications');
-      })
-      .catch((error) => {
-        setErrorMessage(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  useEffect(() => {
+    if (Object.keys(selectedApplication).length) {
+      setPositionId(selectedApplication.positions?._id);
+      setPostulantId(selectedApplication.postulants?._id);
+      setDate(selectedApplication.interview._id);
+      setResult(selectedApplication.result);
+    }
+  }, [selectedApplication]);
 
   useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
+
+  useEffect(() => {
+    const applicationId = query.get('_id');
+    if (applicationId) {
+      dispatch(getApplicationById(applicationId));
+    }
     fetch(`${process.env.REACT_APP_API}/positions`)
       .then((response) => {
         if (response.status !== 200) {
@@ -101,17 +73,18 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setIsLoading(false);
         setSelectPosition(
           res.data.map((position) => ({
             value: position._id,
             label: position.jobDescription
           }))
         );
-        setPositions(res.data);
       })
       .catch((err) => {
-        setErrorMessage(err);
+        setErrorMessage(err.toString());
       });
+
     fetch(`${process.env.REACT_APP_API}/postulants`)
       .then((response) => {
         if (response.status !== 200) {
@@ -122,17 +95,18 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setIsLoading(false);
         setSelectPostulant(
           res.data.map((postulant) => ({
             value: postulant._id,
             label: `${postulant.firstName} ${postulant.lastName}`
           }))
         );
-        setPostulants(res.data);
       })
       .catch((err) => {
-        setErrorMessage(err);
+        setErrorMessage(err.toString());
       });
+
     fetch(`${process.env.REACT_APP_API}/interviews`)
       .then((response) => {
         if (response.status !== 200) {
@@ -143,40 +117,62 @@ function Form() {
         return response.json();
       })
       .then((res) => {
+        setIsLoading(false);
         setSelectInterviewDate(
           res.data.map((interview) => ({
             value: interview._id,
             label: interview.date
           }))
         );
-        setInterviews(res.data);
       })
       .catch((err) => {
-        setErrorMessage(err);
+        setErrorMessage(err.toString());
       });
-    if (applicationId) {
-      fetch(`${process.env.REACT_APP_API}/applications?_id=${applicationId}`)
-        .then((response) => {
-          if (response.status !== 200) {
-            return response.json().then(({ message }) => {
-              throw new Error(message);
-            });
-          }
-          return response.json();
-        })
-        .then((res) => {
-          onLoading(res);
-        })
-        .catch((err) => {
-          setErrorMessage(err);
-        });
-    }
   }, []);
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const applicationId = query.get('_id');
+
+    const body = {
+      positions: positionId,
+      postulants: postulantId,
+      interview: date,
+      result: result
+    };
+
+    if (applicationId) {
+      dispatch(updateApplication(applicationId, body)).then((response) => {
+        if (response) {
+          history.push('/applications');
+        }
+      });
+    } else {
+      dispatch(createApplication(body)).then((response) => {
+        if (response) {
+          history.push('/applications');
+        }
+      });
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
+      <Modal
+        show={!!error || !!errorMessage}
+        title="Error"
+        message={error || errorMessage}
+        cancel={{
+          text: 'Close',
+          callback: () => {
+            dispatch(cleanError());
+            setErrorMessage(null);
+          }
+        }}
+      />
       <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Application</h2>
+        <h2 className={styles.title}>Applications</h2>
         <Select
           title="Position"
           id="positionId"
@@ -214,9 +210,6 @@ function Form() {
           onChange={onChangeResult}
           disabled={isLoading}
         />
-        <div id="error_message" className={styles.errorMessage}>
-          {errorMessage.message}
-        </div>
         <div className={styles.buttonContainer}>
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
@@ -224,4 +217,5 @@ function Form() {
     </div>
   );
 }
-export default Form;
+
+export default applicationForm;
