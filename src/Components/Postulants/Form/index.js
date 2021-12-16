@@ -149,7 +149,7 @@ function PostulantsForm() {
   };
 
   const onChangeAvailableInput = (event) => {
-    setAvailableValue(event.target.value);
+    setAvailableValue(!!event.target.checked);
   };
 
   const onChangePhoneInput = (event) => {

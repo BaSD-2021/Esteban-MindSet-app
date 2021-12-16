@@ -12,7 +12,7 @@ const reducers = combineReducers({
   sessions: sessionsReducer,
   profiles: profilesReducer,
   clients: clientsReducer,
-  psychologists: psychologistReducer,
+  psychologists: psychologistReducer
 });
 
 const enhancer = composeWithDevTools(applyMiddleware(thunk));
