@@ -21,14 +21,9 @@ function Form() {
   const [dateValue, setDateValue] = useState('');
   const [applicationIdValue, setApplicationIdValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
-  const [postulantsValue, setPostulantsValue] = useState([]);
-  const [clientsValue, setClientsValue] = useState([]);
-  const [applicationValue, setApplicationValue] = useState([]);
-  const [errorValue, setError] = useState('');
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectApplication, setSelectApplication] = useState([]);
-  const [id, setInterviewId] = useState(undefined);
 
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
@@ -95,10 +90,9 @@ function Form() {
             label: `${postulant.firstName} ${postulant.lastName}`
           }))
         );
-        setPostulantsValue(res.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        return error.toString();
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
@@ -110,10 +104,9 @@ function Form() {
             label: client.name
           }))
         );
-        setClientsValue(res.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        return error.toString();
       });
 
     fetch(`${process.env.REACT_APP_API}/applications`)
@@ -125,10 +118,9 @@ function Form() {
             label: application._id
           }))
         );
-        setApplicationValue(res.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        return error.toString();
       });
   }, []);
 
