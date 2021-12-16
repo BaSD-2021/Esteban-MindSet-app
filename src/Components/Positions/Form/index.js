@@ -16,11 +16,8 @@ function Form() {
   const [vacancyValue, setVacancyValue] = useState('');
   const [jobDescriptionValue, setJobDescriptionValue] = useState('');
   const [isOpenValue, setIsOpenValue] = useState('');
-  const [clientsValue, setClientsValue] = useState([]);
-  const [professionalProfilesValue, setProfessionalProfilesValue] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
-  const [errorValue, setError] = useState('');
 
   const query = useQuery();
   const history = useHistory();
@@ -82,10 +79,9 @@ function Form() {
             label: professionalProfile.name
           }))
         );
-        setProfessionalProfilesValue(res.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        return error.toString();
       });
 
     fetch(`${process.env.REACT_APP_API}/clients`)
@@ -97,10 +93,9 @@ function Form() {
             label: client.name
           }))
         );
-        setClientsValue(res.data);
       })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
+      .catch((error) => {
+        return error.toString();
       });
   }, []);
 
