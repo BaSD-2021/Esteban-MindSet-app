@@ -6,6 +6,7 @@ import psychologistReducer from './psychologists/reducer';
 import sessionsReducer from './sessions/reducer';
 import profilesReducer from './profiles/reducer';
 import clientsReducer from './clients/reducer';
+import { postulantsReducer } from './postulants/reducer';
 
 const reducers = combineReducers({
   admins: adminsReducer,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   profiles: profilesReducer,
   clients: clientsReducer,
   psychologists: psychologistReducer,
+  postulants: postulantsReducer
 });
 
 const enhancer = composeWithDevTools(applyMiddleware(thunk));
