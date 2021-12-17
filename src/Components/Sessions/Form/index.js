@@ -25,7 +25,7 @@ function sessionsForm() {
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((store) => store.sessions.error);
-  const isLoading = useSelector((store) => store.sessions.isLoading);
+  const isLoading = useSelector((store) => store.sessions.isFetching);
   const selectedSession = useSelector((store) => store.sessions.selectedItem);
 
   const onChangeDateInput = (event) => {
