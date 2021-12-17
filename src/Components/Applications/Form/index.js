@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import useQuery from '../../../Hooks/useQuery';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 import Select from '../../Shared/Select';
 import Modal from '../../Shared/Modal';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getApplicationById,
   createApplication,
   updateApplication
 } from '../../../redux/applications/thunks';
-// import { getPositions } from '../../../redux/positions/thunks';
+import { getPositions } from '../../../redux/positions/thunks';
 import { getInterviews } from '../../../redux/interviews/thunks';
 import { getPostulants } from '../../../redux/postulants/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/applications/actions';
@@ -23,15 +23,14 @@ function applicationForm() {
   const [date, setDate] = useState('');
   const [result, setResult] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectPosition, setSelectPosition] = useState([]);
-  // const [processedPositions, setProcessedPositions] = useState([]);
+  const [processedPositions, setProcessedPositions] = useState([]);
   const [processedPostulants, setProcessedPostulants] = useState([]);
   const [processedInterviews, setProcessedInterviews] = useState([]);
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedApplication = useSelector((store) => store.applications.selectedItem);
+  const isLoading = useSelector((store) => store.postulants.isLoading);
   const error = useSelector((store) => store.applications.error);
 
   const onChangePositionId = (event) => {
@@ -68,38 +67,16 @@ function applicationForm() {
       dispatch(getApplicationById(applicationId));
     }
 
-    // ------------POSITIONS------------------
-    fetch(`${process.env.REACT_APP_API}/positions`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((res) => {
-        setIsLoading(false);
-        setSelectPosition(
-          res.data.map((position) => ({
+    dispatch(getPositions()).then((response) => {
+      return setProcessedPositions(
+        response.map((position) => {
+          return {
             value: position._id,
             label: position.jobDescription
-          }))
-        );
-      })
-      .catch((err) => {
-        setErrorMessage(err.toString());
-      });
-    // dispatch(getPositions()).then((response) => {
-    //   return setProcessedPositions(
-    //     response.map((position) => {
-    //       return {
-    //         value: position._id,
-    //         label: position.jobDescription
-    //       };
-    //     })
-    //   );
-    // });
+          };
+        })
+      );
+    });
 
     dispatch(getPostulants()).then((response) => {
       return setProcessedPostulants(
@@ -173,7 +150,7 @@ function applicationForm() {
           name="positionId"
           value={positionId}
           onChange={onChangePositionId}
-          arrayToMap={selectPosition}
+          arrayToMap={processedPositions}
           required
         />
         <Select
