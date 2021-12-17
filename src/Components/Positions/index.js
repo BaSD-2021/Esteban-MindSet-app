@@ -3,112 +3,80 @@ import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from '../Shared/TableV2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPositions, deletePosition } from '../../redux/positions/thunks';
+import { cleanError } from '../../redux/positions/actions';
 
 function Positions() {
   const [showModal, setShowModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState('');
-  const [errorValue, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
-  const history = useHistory();
-  const columnName = [
-    'Client',
-    'Job Description',
-    'Vacancy',
-    'Professional Profile',
-    'Is Open',
-    'Delete'
-  ];
+  const [selectedIdPosition, setSelectedIdPosition] = useState(undefined);
 
-  const deletePosition = () => {
-    setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/positions/${idToDelete}`;
-    fetch(url, {
-      method: 'DELETE'
-    }).then(() => {
-      fetch(`${process.env.REACT_APP_API}/positions`)
-        .then((response) => response.json())
-        .then(() => {
-          closeModal();
-        })
-        .catch((errorValue) => {
-          setError(errorValue.toString());
-        })
-        .finally(() => {
-          setIsLoading(false);
-          history.go(0);
-        });
-    });
-  };
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const positions = useSelector((store) => store.positions.list);
+  const error = useSelector((store) => store.positions.error);
+  const isLoading = useSelector((store) => store.positions.isFetching);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API}/positions`)
-      .then((response) => response.json())
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((errorValue) => {
-        setError(errorValue.toString());
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  const redirect = (id) => {
-    history.push(`/positions/form?_id=${id}`);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const preventAndShow = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIdToDelete(id);
-    setShowModal(true);
-  };
-
-  const setInformationToShow = (data) => {
-    const idToPass = [];
-    const dataToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([
-        row.client ? row.client.name : '-',
-        row.jobDescription ? row.jobDescription : '-',
-        row.vacancy ? row.vacancy : '-',
-        row.professionalProfile ? row.professionalProfile.name : '-',
-        row.isOpen ? 'Yes' : 'No'
-      ]);
-    });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
-  };
+    if (!positions.length) {
+      dispatch(getPositions());
+    }
+  }, [positions]);
 
   return (
     <section className={styles.container}>
       <Modal
-        showModal={showModal}
+        show={showModal}
         title="Do you want to proceed and delete this position?"
-        onClose={closeModal}
         isLoading={isLoading}
-        onConfirm={deletePosition}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deletePosition(selectedIdPosition)).then(() => {
+              setSelectedIdPosition(undefined);
+              setShowModal(false);
+            });
+          }
+        }}
+      />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
       />
       <h2 className={styles.title}>Positions</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <Table
-          columnsName={columnName}
-          id={idToPass}
-          tableInfo={infoToShow}
-          deleteFunction={preventAndShow}
-          redirectFunction={redirect}
+          columns={[
+            { name: 'Client', value: 'client.name' },
+            { name: 'Job Description', value: 'jobDescription' },
+            { name: 'Vacancy', value: 'vacancy' },
+            { name: 'Professional Profile', value: 'professionalProfile.name' },
+            { name: 'Is Open', value: 'isOpen' }
+          ]}
+          data={positions}
+          onRowClick={(item) => history.push(`/positions/form?_id=${item._id}`)}
+          actions={[
+            {
+              text: 'Delete',
+              callback: (e, item) => {
+                e.stopPropagation();
+                setSelectedIdPosition(item._id);
+                setShowModal(true);
+              }
+            }
+          ]}
         />
       )}
       <div className={styles.buttonContainer}>
