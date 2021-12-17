@@ -25,6 +25,7 @@ export const getPostulants = () => {
       .then((response) => response.json())
       .then((response) => {
         dispatch(getPostulantsFulfilled(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getPostulantsRejected(error.toString()));
