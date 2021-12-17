@@ -16,8 +16,6 @@ import {
   deletePostulantsRejected
 } from './actions';
 
-// const URL = `${process.env.REACT_APP_API}/postulants`;
-
 export const getPostulants = () => {
   return (dispatch) => {
     dispatch(getPostulantsFetching());
@@ -25,6 +23,7 @@ export const getPostulants = () => {
       .then((response) => response.json())
       .then((response) => {
         dispatch(getPostulantsFulfilled(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getPostulantsRejected(error.toString()));
