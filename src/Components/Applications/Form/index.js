@@ -12,6 +12,9 @@ import {
   createApplication,
   updateApplication
 } from '../../../redux/applications/thunks';
+// import { getPositions } from '../../../redux/positions/thunks';
+import { getInterviews } from '../../../redux/interviews/thunks';
+import { getPostulants } from '../../../redux/postulants/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/applications/actions';
 
 function applicationForm() {
@@ -22,8 +25,9 @@ function applicationForm() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectPosition, setSelectPosition] = useState([]);
-  const [selectPostulant, setSelectPostulant] = useState([]);
-  const [selectInterviewDate, setSelectInterviewDate] = useState([]);
+  // const [processedPositions, setProcessedPositions] = useState([]);
+  const [processedPostulants, setProcessedPostulants] = useState([]);
+  const [processedInterviews, setProcessedInterviews] = useState([]);
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -47,7 +51,7 @@ function applicationForm() {
     if (Object.keys(selectedApplication).length) {
       setPositionId(selectedApplication.positions?._id);
       setPostulantId(selectedApplication.postulants?._id);
-      setDate(selectedApplication.interview._id);
+      setDate(selectedApplication.interview?._id);
       setResult(selectedApplication.result);
     }
   }, [selectedApplication]);
@@ -63,6 +67,8 @@ function applicationForm() {
     if (applicationId) {
       dispatch(getApplicationById(applicationId));
     }
+
+    // ------------POSITIONS------------------
     fetch(`${process.env.REACT_APP_API}/positions`)
       .then((response) => {
         if (response.status !== 200) {
@@ -84,50 +90,38 @@ function applicationForm() {
       .catch((err) => {
         setErrorMessage(err.toString());
       });
+    // dispatch(getPositions()).then((response) => {
+    //   return setProcessedPositions(
+    //     response.map((position) => {
+    //       return {
+    //         value: position._id,
+    //         label: position.jobDescription
+    //       };
+    //     })
+    //   );
+    // });
 
-    fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((res) => {
-        setIsLoading(false);
-        setSelectPostulant(
-          res.data.map((postulant) => ({
+    dispatch(getPostulants()).then((response) => {
+      return setProcessedPostulants(
+        response.map((postulant) => {
+          return {
             value: postulant._id,
             label: `${postulant.firstName} ${postulant.lastName}`
-          }))
-        );
-      })
-      .catch((err) => {
-        setErrorMessage(err.toString());
-      });
+          };
+        })
+      );
+    });
 
-    fetch(`${process.env.REACT_APP_API}/interviews`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((res) => {
-        setIsLoading(false);
-        setSelectInterviewDate(
-          res.data.map((interview) => ({
+    dispatch(getInterviews()).then((response) => {
+      return setProcessedInterviews(
+        response.map((interview) => {
+          return {
             value: interview._id,
             label: interview.date
-          }))
-        );
-      })
-      .catch((err) => {
-        setErrorMessage(err.toString());
-      });
+          };
+        })
+      );
+    });
   }, []);
 
   const onSubmit = (event) => {
@@ -188,7 +182,7 @@ function applicationForm() {
           name="postulantId"
           value={postulantId}
           onChange={onChangePostulantId}
-          arrayToMap={selectPostulant}
+          arrayToMap={processedPostulants}
           required
         />
         <Select
@@ -197,7 +191,7 @@ function applicationForm() {
           name="interview"
           value={date}
           onChange={onChangeDate}
-          arrayToMap={selectInterviewDate}
+          arrayToMap={processedInterviews}
           required
         />
         <Input

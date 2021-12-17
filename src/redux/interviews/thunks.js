@@ -31,6 +31,7 @@ export const getInterviews = () => {
       })
       .then((response) => {
         dispatch(getInterviewsSuccess(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getInterviewsError(error.toString()));
