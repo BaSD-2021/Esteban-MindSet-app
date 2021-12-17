@@ -3,7 +3,7 @@ import Modal from '../Shared/Modal';
 import styles from './profiles.module.css';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/TableV2';
+import Table from '../Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfiles, deleteProfile } from '../../redux/profiles/thunks';
 import { cleanError } from '../../redux/profiles/actions';

@@ -3,7 +3,7 @@ import styles from './list.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/TableV2';
+import Table from '../Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPositions, deletePosition } from '../../redux/positions/thunks';
 import { cleanError } from '../../redux/positions/actions';
