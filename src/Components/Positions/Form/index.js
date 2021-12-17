@@ -8,6 +8,8 @@ import Modal from '../../Shared/Modal';
 import Select from '../../Shared/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPositionById, createPosition, updatePosition } from '../../../redux/positions/thunks';
+import { getProfiles } from '../../../redux/profiles/thunks';
+import { getClients } from '../../../redux/clients/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/positions/actions';
 
 function Form() {
@@ -70,25 +72,19 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API}/profiles`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectProfessionalProfile(
-          res.data.map((professionalProfile) => ({
-            value: professionalProfile._id,
-            label: professionalProfile.name
-          }))
-        );
-      })
-      .catch((error) => {
-        return error.toString();
-      });
+    dispatch(getProfiles()).then((response) => {
+      setSelectProfessionalProfile(
+        response.map((professionalProfile) => ({
+          value: professionalProfile._id,
+          label: professionalProfile.name
+        }))
+      );
+    });
 
-    fetch(`${process.env.REACT_APP_API}/clients`)
-      .then((response) => response.json())
-      .then((res) => {
+    dispatch(getClients())
+      .then((response) => {
         setSelectClient(
-          res.data.map((client) => ({
+          response.map((client) => ({
             value: client._id,
             label: client.name
           }))
