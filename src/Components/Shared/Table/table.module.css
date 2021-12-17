@@ -8,9 +8,9 @@
 
 .subtitle {
   font-size: 30px;
-}
+ }
 
-.tableData {
+ .tableData {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,33 +20,34 @@
   border-radius: 5px;
   padding: 12px;
   text-align: center;
-}
+ }
 
 .tableHeader {
   font-size: 16px;
   border-bottom: 2px #909090 solid;
 }
 
-.trStyles {
+.trStyles{
   display: flex;
   justify-content: space-between;
-  padding: 0 12px;
+  padding: 12px;
   font-size: 16px;
   cursor: pointer;
   border-bottom: 1px #909090 solid
 }
 
-.trStyles:last-child {
+.trStyles:last-child{
   border: none;
 }
-.thStyles {
+
+.thStyles{
   padding: 8px;
   width: 8rem;
   font-size: 18px;
   font-weight: 500;
 }
 
-.tdStyles {
+.tdStyles{
   padding: 8px;
   color: #002147;
   font-size: 16px;
@@ -55,8 +56,16 @@
   overflow: hidden;
 }
 
-.errorMessage {
+.errorMessage{
   margin: 10px auto;
   font-size: 15px;
   color: #002147;
-}
+ }
+
+ .tdActions {
+   display: flex;
+ }
+
+ .actionButton {
+   margin: 0 5px;
+ }
