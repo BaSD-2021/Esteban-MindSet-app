@@ -5,6 +5,8 @@ import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Button from '../../Shared/Button';
 import Checkbox from '../../Shared/Checkbox';
+import Modal from '../../Shared/Modal';
+import { cleanError, cleanSelectedItem } from '../../../redux/psychologists/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createPsychologist,
@@ -90,6 +92,12 @@ function Form() {
       setSundayTo(selectedItem.availability.sunday.to);
     }
   }, [selectedItem]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedItem());
+    };
+  }, []);
 
   const save = (e) => {
     e.preventDefault();
@@ -207,6 +215,15 @@ function Form() {
 
   return (
     <div className={styles.container}>
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <form onSubmit={save} className={styles.form}>
         <h2 className={styles.title}>Psychologist</h2>
         <Input
@@ -466,9 +483,6 @@ function Form() {
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
       </form>
-      <div id="error_message" className={styles.errorMessage}>
-        {error}
-      </div>
     </div>
   );
 }
