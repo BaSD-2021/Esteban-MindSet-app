@@ -30,6 +30,7 @@ export const getPsychologists = () => {
       })
       .then((response) => {
         dispatch(getPsychologistSuccess(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getPsychologistError(error.toString()));

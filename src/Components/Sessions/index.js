@@ -3,7 +3,7 @@ import Modal from '../Shared/Modal';
 import styles from './sessions.module.css';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/TableV2';
+import Table from '../Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, deleteSession } from '../../redux/sessions/thunks';
 import { cleanError } from '../../redux/sessions/actions';
@@ -27,7 +27,7 @@ function Sessions() {
     <section className={styles.container}>
       <Modal
         show={showModal}
-        title="Are you sure you want to delete this Admin User?"
+        title="Are you sure you want to delete this Session User?"
         isLoading={isLoading}
         cancel={{
           text: 'Cancel',

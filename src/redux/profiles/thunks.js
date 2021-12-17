@@ -30,6 +30,7 @@ export const getProfiles = () => {
       })
       .then((response) => {
         dispatch(getProfilesSuccess(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getProfilesError(error.toString()));

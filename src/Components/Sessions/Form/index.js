@@ -6,8 +6,11 @@ import Button from '../../Shared/Button';
 import styles from './form.module.css';
 import Input from '../../Shared/Input';
 import Select from '../../Shared/Select';
+import Modal from '../../Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionById, createSession, updateSession } from '../../../redux/sessions/thunks';
+import { getPsychologists } from '../../../redux/psychologists/thunks';
+import { getPostulants } from '../../../redux/postulants/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/sessions/actions';
 
 function sessionsForm() {
@@ -16,13 +19,13 @@ function sessionsForm() {
   const [psychoValue, setPsychoValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
   const [notesValue, setNotesValue] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setLoading] = useState(false);
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectPsychologist, setSelectPsychologist] = useState([]);
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
+  const error = useSelector((store) => store.sessions.error);
+  const isLoading = useSelector((store) => store.sessions.isFetching);
   const selectedSession = useSelector((store) => store.sessions.selectedItem);
 
   const onChangeDateInput = (event) => {
@@ -62,52 +65,25 @@ function sessionsForm() {
 
   useEffect(() => {
     const sessionId = query.get('_id');
+    dispatch(getPostulants()).then((response) => {
+      setSelectPostulant(
+        response.map((postulant) => ({
+          value: postulant._id,
+          label: `${postulant.firstName} ${postulant.lastName}`
+        }))
+      );
+    });
+    dispatch(getPsychologists()).then((response) => {
+      setSelectPsychologist(
+        response.map((psychologist) => ({
+          value: psychologist._id,
+          label: `${psychologist.firstName} ${psychologist.lastName}`
+        }))
+      );
+    });
     if (sessionId) {
       dispatch(getSessionById(sessionId));
     }
-    fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setLoading(false);
-        setSelectPostulant(
-          response.data.map((postulant) => ({
-            value: postulant._id,
-            label: `${postulant.firstName} ${postulant.lastName}`
-          }))
-        );
-      })
-      .catch((error) => {
-        setError(error.toString());
-      });
-
-    fetch(`${process.env.REACT_APP_API}/psychologists`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setLoading(false);
-        setSelectPsychologist(
-          response.data.map((psychologist) => ({
-            value: psychologist._id,
-            label: `${psychologist.firstName} ${psychologist.lastName}`
-          }))
-        );
-      })
-      .catch((error) => {
-        setError(error.toString());
-      });
   }, []);
 
   const onSubmit = (event) => {
@@ -138,6 +114,15 @@ function sessionsForm() {
 
   return (
     <div className={styles.container}>
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
       <form className={styles.form} onSubmit={onSubmit}>
         <h2 className={styles.title}>Session</h2>
         <Select
@@ -193,7 +178,6 @@ function sessionsForm() {
         <div className={styles.buttonContainer}>
           <Button label="SAVE" disabled={isLoading} type="submit"></Button>
         </div>
-        <div className={styles.error}>{error}</div>
       </form>
     </div>
   );

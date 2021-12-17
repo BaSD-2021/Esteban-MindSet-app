@@ -1,50 +1,51 @@
 import styles from './table.module.css';
 import Button from '../Button';
+import get from 'lodash.get';
 
 function Table(props) {
   return (
     <table className={styles.tableData}>
       <thead className={styles.tableHeader}>
         <tr className={styles.trStyles}>
-          {props.columnsName.map((column, index) => {
+          {props.columns.map((column) => {
             return (
-              <th key={index} className={styles.thStyles}>
-                {column}
+              <th key={column.name} className={styles.thStyles}>
+                {column.name}
               </th>
             );
           })}
+          {props.actions.length && <th className={styles.thStyles}>Actions</th>}
         </tr>
       </thead>
       <tbody>
-        {props.tableInfo.length === 0 ? (
+        {props.data.length === 0 ? (
           <tr>
             <td>
               <p>There is no data to show. Please create new entities.</p>
             </td>
           </tr>
         ) : (
-          props.tableInfo.map((row, index) => {
+          props.data.map((item) => {
             return (
-              <tr
-                key={props.id[index]}
-                onClick={() => props.redirectFunction(props.id[index])}
-                className={styles.trStyles}
-              >
-                {row.map((cell, index) => {
+              <tr key={item._id} onClick={() => props.onRowClick(item)} className={styles.trStyles}>
+                {props.columns.map((column, index) => {
                   return (
-                    <td key={index} className={styles.tdStyles}>
-                      {cell}
+                    <td key={`${item[column.value]}-${index}`} className={styles.tdStyles}>
+                      {get(item, column.value, '').toString()}
                     </td>
                   );
                 })}
-                <td className={styles.tdStyles}>
-                  <Button
-                    label="DELETE"
-                    style={styles.actionButton}
-                    onClick={(e) => {
-                      props.deleteFunction(e, props.id[index]);
-                    }}
-                  />
+                <td className={styles.tdActions}>
+                  {props.actions.map((action) => {
+                    return (
+                      <Button
+                        key={action.text}
+                        label={action.text}
+                        style={styles.actionButton}
+                        onClick={(e) => action.callback(e, item)}
+                      />
+                    );
+                  })}
                 </td>
               </tr>
             );

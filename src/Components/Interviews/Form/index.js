@@ -12,6 +12,9 @@ import {
   getInterviewById,
   updateInterview
 } from '../../../redux/interviews/thunks';
+import { getPostulants } from '../../../redux/postulants/thunks';
+import { getClients } from '../../../redux/clients/thunks';
+import { getApplications } from '../../../redux/applications/thunks';
 import { cleanError, cleanSelectedItem } from '../../../redux/interviews/actions';
 
 function Form() {
@@ -81,47 +84,32 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API}/postulants`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectPostulant(
-          res.data.map((postulant) => ({
-            value: postulant._id,
-            label: `${postulant.firstName} ${postulant.lastName}`
-          }))
-        );
-      })
-      .catch((error) => {
-        return error.toString();
-      });
+    dispatch(getPostulants()).then((response) => {
+      setSelectPostulant(
+        response.map((postulant) => ({
+          value: postulant._id,
+          label: `${postulant.firstName} ${postulant.lastName}`
+        }))
+      );
+    });
 
-    fetch(`${process.env.REACT_APP_API}/clients`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectClient(
-          res.data.map((client) => ({
-            value: client._id,
-            label: client.name
-          }))
-        );
-      })
-      .catch((error) => {
-        return error.toString();
-      });
+    dispatch(getClients()).then((response) => {
+      setSelectClient(
+        response.map((client) => ({
+          value: client._id,
+          label: client.name
+        }))
+      );
+    });
 
-    fetch(`${process.env.REACT_APP_API}/applications`)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectApplication(
-          res.data.map((application) => ({
-            value: application._id,
-            label: application._id
-          }))
-        );
-      })
-      .catch((error) => {
-        return error.toString();
-      });
+    dispatch(getApplications()).then((response) => {
+      setSelectApplication(
+        response.map((application) => ({
+          value: application._id,
+          label: application._id
+        }))
+      );
+    });
   }, []);
 
   const onSubmit = (event) => {

@@ -3,7 +3,7 @@ import styles from './clients.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/TableV2';
+import Table from '../Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClients, deleteClient } from '../../redux/clients/thunks';
 import { cleanError } from '../../redux/clients/actions';

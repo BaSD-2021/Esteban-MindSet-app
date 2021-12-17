@@ -4,7 +4,7 @@ import Button from '../Shared/Button';
 import styles from './postulants.module.css';
 import Modal from '../Shared/Modal';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/TableV2';
+import Table from '../Shared/Table';
 import { clearPostulant, cleanError } from '../../redux/postulants/actions';
 import { getPostulants, deletePostulant } from '../../redux/postulants/thunks';
 

@@ -30,6 +30,7 @@ export const getClients = () => {
       })
       .then((response) => {
         dispatch(getClientsSuccess(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getClientsError(error.toString()));
