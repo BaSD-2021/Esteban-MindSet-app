@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from 'Components/Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
 import Input from 'Components/Shared/Input';
 import Button from 'Components/Shared/Button';

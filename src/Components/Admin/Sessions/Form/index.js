@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from 'Components/Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import Textarea from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';

@@ -59,7 +59,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/admins');
+          history.push('/admin/admins/list');
         }
       });
     } else {
@@ -71,7 +71,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/admins');
+          history.push('/admin/admins/list');
         }
       });
     }

@@ -1,40 +1,18 @@
 import styles from './footer.module.css';
 
-function Footer() {
+function Footer(props) {
   return (
     <footer className={styles.container}>
       <div className={styles.main}>
         <div className={styles.appName}>
           Mind<span>SET</span>
         </div>
-        <ul className={styles.rutes}>
-          <li>
-            <a href="/admins">admins</a>
-          </li>
-          <li>
-            <a href="/applications">applications</a>
-          </li>
-          <li>
-            <a href="/clients">clients</a>
-          </li>
-          <li>
-            <a href="/interviews">interviews</a>
-          </li>
-          <li>
-            <a href="/positions">positions</a>
-          </li>
-          <li>
-            <a href="/postulants">postulants</a>
-          </li>
-          <li>
-            <a href="/profiles">profiles</a>
-          </li>
-          <li>
-            <a href="/psychologists">psychologists</a>
-          </li>
-          <li>
-            <a href="/sessions">sessions</a>
-          </li>
+        <ul className={styles.routes}>
+          {props.routes.map((route) => (
+            <li key={route.name}>
+              <a href={route.path}>{route.name}</a>
+            </li>
+          ))}
         </ul>
       </div>
       <div className={styles.license}>

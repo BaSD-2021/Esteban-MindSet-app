@@ -3,11 +3,12 @@ import Footer from 'Components/Footer/index';
 import styles from './layout.module.css';
 
 function Layout(props) {
+  const { routes = [] } = props;
   return (
     <div className={styles.container}>
-      <Header />
+      <Header routes={routes} />
       {props.children}
-      <Footer />
+      <Footer routes={routes} />
     </div>
   );
 }
