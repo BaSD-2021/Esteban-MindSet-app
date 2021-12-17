@@ -1,21 +1,21 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Select from '../../Shared/Select';
-import Modal from '../../Shared/Modal';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Select from 'Components/Shared/Select';
+import Modal from 'Components/Shared/Modal';
 import {
   getApplicationById,
   createApplication,
   updateApplication
-} from '../../../redux/applications/thunks';
-import { getPositions } from '../../../redux/positions/thunks';
-import { getInterviews } from '../../../redux/interviews/thunks';
-import { getPostulants } from '../../../redux/postulants/thunks';
-import { cleanError, cleanSelectedItem } from '../../../redux/applications/actions';
+} from 'redux/applications/thunks';
+import { getPositions } from 'redux/positions/thunks';
+import { getInterviews } from 'redux/interviews/thunks';
+import { getPostulants } from 'redux/postulants/thunks';
+import { cleanError, cleanSelectedItem } from 'redux/applications/actions';
 
 function applicationForm() {
   const [positionId, setPositionId] = useState('');

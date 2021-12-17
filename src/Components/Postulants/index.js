@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../Shared/Button';
+import Button from 'Components/Shared/Button';
 import styles from './postulants.module.css';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
-import { clearPostulant, cleanError } from '../../redux/postulants/actions';
-import { getPostulants, deletePostulant } from '../../redux/postulants/thunks';
+import Table from 'Components/Shared/Table';
+import { clearPostulant, cleanError } from 'redux/postulants/actions';
+import { getPostulants, deletePostulant } from 'redux/postulants/thunks';
 
 function Postulants() {
   const [showModal, setShowModal] = useState(false);

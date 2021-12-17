@@ -1,9 +1,9 @@
 import React from 'react';
-import TableHeader from '../TableHeader';
-import PSYCHOLOGISTS_TABLE_HEADERS from '../utils/table-headers-utils';
-import PsychologistItem from '../PsychologistItem';
+import TableHeader from 'Components/Psychologists/TableHeader';
+import PSYCHOLOGISTS_TABLE_HEADERS from 'Components/Psychologists/utils/table-headers-utils';
+import PsychologistItem from 'Components/Psychologists/PsychologistItem';
 import styles from './list.module.css';
-import Button from '../../Shared/Button';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
 
 const List = ({

@@ -3,11 +3,10 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import List from './List';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import ModalAvailability from './ModalAvailability';
 import AvailabilityTable from './AvailabilityTable';
-import { getPsychologists, deletePsychologist } from '../../redux/psychologists/thunks';
-//import { cleanError } from '../../redux/psychologists/actions';
+import { getPsychologists, deletePsychologist } from 'redux/psychologists/thunks';
 
 function Psychologists() {
   const [idToDelete, setIdToDelete] = useState('');

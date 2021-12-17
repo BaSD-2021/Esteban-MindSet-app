@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './list.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPositions, deletePosition } from '../../redux/positions/thunks';
-import { cleanError } from '../../redux/positions/actions';
+import { getPositions, deletePosition } from 'redux/positions/thunks';
+import { cleanError } from 'redux/positions/actions';
 
 function Positions() {
   const [showModal, setShowModal] = useState(false);

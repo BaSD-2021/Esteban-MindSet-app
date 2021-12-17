@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import styles from './profiles.module.css';
-import Button from '../Shared/Button';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfiles, deleteProfile } from '../../redux/profiles/thunks';
-import { cleanError } from '../../redux/profiles/actions';
+import { getProfiles, deleteProfile } from 'redux/profiles/thunks';
+import { cleanError } from 'redux/profiles/actions';
 
 function Profiles() {
   const [showModal, setShowModal] = useState(false);

@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Modal from '../../Shared/Modal';
-import Button from '../../Shared/Button';
+import Input from 'Components/Shared/Input';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createAdmin, getAdminById, updateAdmin } from '../../../redux/admins/thunks';
-import { cleanError, cleanSelectedAdmin } from '../../../redux/admins/actions';
+import { createAdmin, getAdminById, updateAdmin } from 'redux/admins/thunks';
+import { cleanError, cleanSelectedAdmin } from 'redux/admins/actions';
 
 function Form() {
   const [nameValue, setNameValue] = useState('');

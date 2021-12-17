@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './list.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
-import TableV2 from '../Shared/Table';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
+import TableV2 from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInterviews, deleteInterview } from '../../redux/interviews/thunks';
-import { cleanError } from '../../redux/interviews/actions';
+import { getInterviews, deleteInterview } from 'redux/interviews/thunks';
+import { cleanError } from 'redux/interviews/actions';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);

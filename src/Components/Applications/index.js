@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getApplications, deleteApplication } from '../../redux/applications/thunks';
-import { cleanError } from '../../redux/applications/actions';
+import { getApplications, deleteApplication } from 'redux/applications/thunks';
+import { cleanError } from 'redux/applications/actions';
 
 function Applications() {
   const [showModal, setShowModal] = useState(false);

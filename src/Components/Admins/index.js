@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './admins.module.css';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button';
+import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table/index';
+import Table from 'Components/Shared/Table/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAdmins, deleteAdmin } from '../../redux/admins/thunks';
-import { cleanError } from '../../redux/admins/actions';
+import { getAdmins, deleteAdmin } from 'redux/admins/thunks';
+import { cleanError } from 'redux/admins/actions';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);

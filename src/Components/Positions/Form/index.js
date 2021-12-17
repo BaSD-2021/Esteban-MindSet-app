@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Components/Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Modal from '../../Shared/Modal';
-import Select from '../../Shared/Select';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Modal from 'Components/Shared/Modal';
+import Select from 'Components/Shared/Select';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPositionById, createPosition, updatePosition } from '../../../redux/positions/thunks';
-import { getProfiles } from '../../../redux/profiles/thunks';
-import { getClients } from '../../../redux/clients/thunks';
-import { cleanError, cleanSelectedItem } from '../../../redux/positions/actions';
+import { getPositionById, createPosition, updatePosition } from 'redux/positions/thunks';
+import { getProfiles } from 'redux/profiles/thunks';
+import { getClients } from 'redux/clients/thunks';
+import { cleanError, cleanSelectedItem } from 'redux/positions/actions';
 
 function Form() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');

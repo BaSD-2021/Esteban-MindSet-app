@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Components/Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Checkbox from '../../Shared/Checkbox';
-import Modal from '../../Shared/Modal';
-import { cleanError, cleanSelectedItem } from '../../../redux/psychologists/actions';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Checkbox from 'Components/Shared/Checkbox';
+import Modal from 'Components/Shared/Modal';
+import { cleanError, cleanSelectedItem } from 'redux/psychologists/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createPsychologist,
   getPsychologistById,
   updatePsychologist
-} from '../../../redux/psychologists/thunks';
+} from 'redux/psychologists/thunks';
 
 function Form() {
   const [firstName, setFirstName] = useState('');

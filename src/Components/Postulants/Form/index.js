@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Components/Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Textarea from '../../Shared/Textarea';
-import Button from '../../Shared/Button';
-import Checkbox from '../../Shared/Checkbox';
-import Modal from '../../Shared/Modal';
-import { cleanError } from '../../../redux/postulants/actions';
-import { addPostulant, updatePostulant, getPostulantById } from '../../../redux/postulants/thunks';
+import Input from 'Components/Shared/Input';
+import Textarea from 'Components/Shared/Textarea';
+import Button from 'Components/Shared/Button';
+import Checkbox from 'Components/Shared/Checkbox';
+import Modal from 'Components/Shared/Modal';
+import { cleanError } from 'redux/postulants/actions';
+import { addPostulant, updatePostulant, getPostulantById } from 'redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
-import Textarea from '../../Shared/Textarea';
-import Button from '../../Shared/Button';
+import useQuery from 'Components/Hooks/useQuery';
+import Textarea from 'Components/Shared/Textarea';
+import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Select from '../../Shared/Select';
-import Modal from '../../Shared/Modal';
+import Input from 'Components/Shared/Input';
+import Select from 'Components/Shared/Select';
+import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSessionById, createSession, updateSession } from '../../../redux/sessions/thunks';
-import { getPsychologists } from '../../../redux/psychologists/thunks';
-import { getPostulants } from '../../../redux/postulants/thunks';
-import { cleanError, cleanSelectedItem } from '../../../redux/sessions/actions';
+import { getSessionById, createSession, updateSession } from 'redux/sessions/thunks';
+import { getPsychologists } from 'redux/psychologists/thunks';
+import { getPostulants } from 'redux/postulants/thunks';
+import { cleanError, cleanSelectedItem } from 'redux/sessions/actions';
 
 function sessionsForm() {
   const [dateValue, setDateValue] = useState('');

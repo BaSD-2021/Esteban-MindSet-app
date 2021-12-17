@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useQuery from '../../../Hooks/useQuery';
+import useQuery from 'Components/Hooks/useQuery';
 import styles from './form.module.css';
-import Input from '../../Shared/Input';
-import Button from '../../Shared/Button';
-import Modal from '../../Shared/Modal';
+import Input from 'Components/Shared/Input';
+import Button from 'Components/Shared/Button';
+import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getClientById, createClient, updateClient } from '../../../redux/clients/thunks';
-import { cleanError, cleanSelectedItem } from '../../../redux/clients/actions';
+import { getClientById, createClient, updateClient } from 'redux/clients/thunks';
+import { cleanError, cleanSelectedItem } from 'redux/clients/actions';
 
 function Form() {
   const [name, setName] = useState('');

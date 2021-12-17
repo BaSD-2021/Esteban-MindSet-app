@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Modal from '../Shared/Modal';
+import Modal from 'Components/Shared/Modal';
 import styles from './sessions.module.css';
-import Button from '../Shared/Button';
+import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSessions, deleteSession } from '../../redux/sessions/thunks';
-import { cleanError } from '../../redux/sessions/actions';
+import { getSessions, deleteSession } from 'redux/sessions/thunks';
+import { cleanError } from 'redux/sessions/actions';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);

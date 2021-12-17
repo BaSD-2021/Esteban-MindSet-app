@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './psychologistItem.module.css';
-import Button from '../../Shared/Button';
+import Button from 'Components/Shared/Button';
 
 const PsychologistItem = ({
   psychologist,
