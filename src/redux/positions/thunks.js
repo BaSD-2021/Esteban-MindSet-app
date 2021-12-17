@@ -30,6 +30,7 @@ export const getPositions = () => {
       })
       .then((response) => {
         dispatch(getPositionsSuccess(response.data));
+        return response.data;
       })
       .catch((error) => {
         dispatch(getPositionsError(error.toString()));

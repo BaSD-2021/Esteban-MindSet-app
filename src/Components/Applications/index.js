@@ -3,124 +3,115 @@ import styles from './applications.module.css';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from '../Shared/Table/index';
+import Table from '../Shared/TableV2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getApplications, deleteApplication } from '../../redux/applications/thunks';
+import { cleanError } from '../../redux/applications/actions';
 
 function Applications() {
   const [showModal, setShowModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedIdApplication, setSelectedIdApplication] = useState('');
   const history = useHistory();
-  const [infoToShow, setInfoToShow] = useState([]);
-  const [idToPass, setIdToPass] = useState([]);
+  const dispatch = useDispatch();
+  const [processedApplications, setProcessedApplications] = useState([]);
+  const applications = useSelector((store) => store.applications.list);
+  const error = useSelector((store) => store.applications.error);
+  const isLoading = useSelector((store) => store.applications.isFetching);
 
-  const columnName = ['Job Description', 'Postulant', 'Interview', 'Result', 'Actions'];
-
-  const deleteApplication = () => {
-    setIsLoading(true);
-    const url = `${process.env.REACT_APP_API}/applications/${idToDelete}`;
-    fetch(url, {
-      method: 'DELETE'
-    })
-      .then(() => {
-        fetch(`${process.env.REACT_APP_API}/applications`)
-          .then((response) => {
-            if (response.status !== 200) {
-              return response.json().then(({ message }) => {
-                throw new Error(message);
-              });
-            }
-            return response.json();
-          })
-          .then(() => {
-            closeModal();
-          })
-          .catch((error) => {
-            setErrorMessage(error);
-          });
-      })
-      .finally(() => {
-        setIsLoading(false);
-        history.go(0);
-      });
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const preventAndShow = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIdToDelete(id);
-    setShowModal(true);
-  };
+  const columnName = [
+    {
+      name: 'Job Description',
+      value: 'positions'
+    },
+    {
+      name: 'Postulant',
+      value: 'postulants'
+    },
+    {
+      name: 'Interview',
+      value: 'interview'
+    },
+    {
+      name: 'Result',
+      value: 'result'
+    }
+  ];
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API}/applications`)
-      .then((response) => {
-        if (response.status !== 200) {
-          return response.json().then(({ message }) => {
-            throw new Error(message);
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setInformationToShow(response.data);
-      })
-      .catch((error) => {
-        setErrorMessage(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    if (!applications.length) {
+      dispatch(getApplications());
+    } else {
+      processApplications();
+    }
+  }, [applications]);
 
-  const setInformationToShow = (data) => {
-    const dataToPass = [];
-    const idToPass = [];
-    data.map((row) => {
-      idToPass.push(row._id);
-      dataToPass.push([
-        row.positions ? row.positions.jobDescription : '-',
-        row.postulants ? row.postulants.firstName + ' ' + row.postulants?.lastName : '-',
-        row.interview ? row.interview.date.slice(0, 10) : '-',
-        row.result ? row.result : '-'
-      ]);
-    });
-    setInfoToShow(dataToPass);
-    setIdToPass(idToPass);
-  };
-
-  const redirect = (id) => {
-    history.push(`/applications/form?_id=${id}`);
+  const processApplications = () => {
+    setProcessedApplications(
+      applications.map((application) => {
+        return {
+          _id: application._id,
+          positions: application.positions ? application.positions.jobDescription : '-',
+          postulants: application.postulants
+            ? `${application.postulants.firstName} ${application.postulants.lastName}`
+            : '-',
+          interview: application.interview ? application.interview.date : '-',
+          result: application.result
+        };
+      })
+    );
   };
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>Applications</h2>
-      {isLoading ? (
-        <p className={styles.loading}>On Loading ...</p>
-      ) : (
-        <Table
-          columnsName={columnName}
-          id={idToPass}
-          tableInfo={infoToShow}
-          deleteFunction={preventAndShow}
-          redirectFunction={redirect}
-        />
-      )}
-      <div id="error_message" className={styles.errorMessage}>
-        {errorMessage.message}
-      </div>
       <Modal
-        showModal={showModal}
-        title="Do you want to proceed and delete this application?"
-        onClose={closeModal}
+        show={showModal}
+        title="Are you sure you want to delete this application?"
         isLoading={isLoading}
-        onConfirm={deleteApplication}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowModal(false)
+        }}
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(deleteApplication(selectedIdApplication)).then(() => {
+              setSelectedIdApplication(undefined);
+              setShowModal(false);
+            });
+          }
+        }}
       />
+      <Modal
+        show={!!error}
+        title="Error"
+        message={error}
+        cancel={{
+          text: 'Close',
+          callback: () => dispatch(cleanError())
+        }}
+      />
+      <h2 className={styles.title}>Applications</h2>
+      <div>
+        {isLoading ? (
+          <p className={styles.loading}>On Loading ...</p>
+        ) : (
+          <Table
+            columns={columnName}
+            data={processedApplications}
+            onRowClick={(item) => history.push(`/applications/form?_id=${item._id}`)}
+            actions={[
+              {
+                text: 'Delete',
+                callback: (e, item) => {
+                  e.stopPropagation();
+                  setSelectedIdApplication(item._id);
+                  setShowModal(true);
+                }
+              }
+            ]}
+          />
+        )}
+      </div>
       <div className={styles.buttonContainer}>
         <Button label="ADD APPLICATION" onClick={() => history.push('/applications/form')} />
       </div>
