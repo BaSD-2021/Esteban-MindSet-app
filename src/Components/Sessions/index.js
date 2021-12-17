@@ -27,7 +27,7 @@ function Sessions() {
     <section className={styles.container}>
       <Modal
         show={showModal}
-        title="Are you sure you want to delete this Admin User?"
+        title="Are you sure you want to delete this Session User?"
         isLoading={isLoading}
         cancel={{
           text: 'Cancel',
