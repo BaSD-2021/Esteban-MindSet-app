@@ -369,13 +369,13 @@ function PostulantsForm() {
     if (postulantId) {
       dispatch(updatePostulant(postulantId, postulant)).then((response) => {
         if (response) {
-          history.push('/postulants');
+          history.push('/admin/postulants/list');
         }
       });
     } else {
       dispatch(addPostulant(postulant)).then((response) => {
         if (response) {
-          history.push('/postulants');
+          history.push('admin/postulants/list');
         }
       });
     }

@@ -62,7 +62,7 @@ function Clients() {
             { name: 'Phone Number', value: 'phone' }
           ]}
           data={clients}
-          onRowClick={(item) => history.push(`/clients/form?_id=${item._id}`)}
+          onRowClick={(item) => history.push(`/admin/clients/form?_id=${item._id}`)}
           actions={[
             {
               text: 'Delete',
@@ -77,7 +77,7 @@ function Clients() {
       )}
       <div className={styles.errorMessage}>{error}</div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD CLIENT" onClick={() => history.push('/clients/form')} />
+        <Button label="ADD CLIENT" onClick={() => history.push('/admin/clients/form')} />
       </div>
     </section>
   );

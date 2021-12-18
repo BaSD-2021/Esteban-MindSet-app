@@ -66,7 +66,7 @@ function Positions() {
             { name: 'Is Open', value: 'isOpen' }
           ]}
           data={positions}
-          onRowClick={(item) => history.push(`/positions/form?_id=${item._id}`)}
+          onRowClick={(item) => history.push(`/admin/positions/form?_id=${item._id}`)}
           actions={[
             {
               text: 'Delete',
@@ -80,7 +80,7 @@ function Positions() {
         />
       )}
       <div className={styles.buttonContainer}>
-        <Button label="ADD POSITION" onClick={() => history.push('/positions/form')} />
+        <Button label="ADD POSITION" onClick={() => history.push('/admin/positions/form')} />
       </div>
     </section>
   );

@@ -116,13 +116,13 @@ function applicationForm() {
     if (applicationId) {
       dispatch(updateApplication(applicationId, body)).then((response) => {
         if (response) {
-          history.push('/applications');
+          history.push('/admin/applications/list');
         }
       });
     } else {
       dispatch(createApplication(body)).then((response) => {
         if (response) {
-          history.push('/applications');
+          history.push('/admin/applications/list');
         }
       });
     }

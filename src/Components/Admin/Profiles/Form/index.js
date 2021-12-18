@@ -51,13 +51,13 @@ function profilesForm() {
     if (profileId) {
       dispatch(updateProfile(profileId, body)).then((response) => {
         if (response) {
-          history.push('/profiles');
+          history.push('/admin/profiles/list');
         }
       });
     } else {
       dispatch(createProfile(body)).then((response) => {
         if (response) {
-          history.push('/profiles');
+          history.push('/admin/profiles/list');
         }
       });
     }

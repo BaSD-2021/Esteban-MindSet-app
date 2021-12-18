@@ -39,7 +39,7 @@ function Interviews() {
             { name: 'Date', value: 'date' }
           ]}
           data={interviews}
-          onRowClick={(item) => history.push(`/interviews/form?_id=${item._id}`)}
+          onRowClick={(item) => history.push(`/admin/interviews/form?_id=${item._id}`)}
           actions={[
             {
               text: 'Delete',
@@ -80,7 +80,7 @@ function Interviews() {
         }}
       />
       <div className={styles.buttonContainer}>
-        <Button label="ADD INTERVIEW" onClick={() => history.push('/interviews/form')} />
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/admin/interviews/form')} />
       </div>
     </section>
   );

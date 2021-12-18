@@ -32,7 +32,10 @@ const List = ({
         </tbody>
       </table>
       <div className={styles.buttonContainer}>
-        <Button label="ADD PSYCHOLOGIST" onClick={() => history.push('/psychologists/form')} />
+        <Button
+          label="ADD PSYCHOLOGIST"
+          onClick={() => history.push('/admin/psychologists/form')}
+        />
       </div>
     </div>
   );

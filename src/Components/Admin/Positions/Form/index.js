@@ -110,7 +110,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/positions');
+          history.push('/admin/positions/list');
         }
       });
     } else {
@@ -124,7 +124,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/positions');
+          history.push('/admin/positions/list');
         }
       });
     }

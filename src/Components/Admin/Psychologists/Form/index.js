@@ -154,7 +154,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/psychologists');
+          history.push('/admin/psychologists/list');
         }
       });
     } else {
@@ -207,7 +207,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/psychologists');
+          history.push('/admin/psychologists/list');
         }
       });
     }

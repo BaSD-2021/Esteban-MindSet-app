@@ -3,7 +3,7 @@ import styles from './admins.module.css';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
-import Table from 'Components/Shared/Table/index';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdmins, deleteAdmin } from 'redux/admins/thunks';
 import { cleanError } from 'redux/admins/actions';
@@ -63,7 +63,7 @@ const Admins = () => {
             { name: 'Username', value: 'username' }
           ]}
           data={admins}
-          onRowClick={(item) => history.push(`/admins/form?_id=${item._id}`)}
+          onRowClick={(item) => history.push(`/admin/admins/form?_id=${item._id}`)}
           actions={[
             {
               text: 'Delete',
@@ -77,7 +77,7 @@ const Admins = () => {
         />
       )}
       <div className={styles.buttonContainer}>
-        <Button label="ADD ADMIN" onClick={() => history.push('/admins/form')} />
+        <Button label="ADD ADMIN" onClick={() => history.push('/admin/admins/form')} />
       </div>
     </section>
   );

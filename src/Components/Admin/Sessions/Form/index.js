@@ -100,13 +100,13 @@ function sessionsForm() {
     if (sessionId) {
       dispatch(updateSession(sessionId, body)).then((response) => {
         if (response) {
-          history.push('/sessions');
+          history.push('/admin/sessions/list');
         }
       });
     } else {
       dispatch(createSession(body)).then((response) => {
         if (response) {
-          history.push('/sessions');
+          history.push('/admin/sessions/list');
         }
       });
     }

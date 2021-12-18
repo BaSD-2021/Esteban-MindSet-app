@@ -98,7 +98,7 @@ function Applications() {
           <Table
             columns={columnName}
             data={processedApplications}
-            onRowClick={(item) => history.push(`/applications/form?_id=${item._id}`)}
+            onRowClick={(item) => history.push(`/admin/applications/form?_id=${item._id}`)}
             actions={[
               {
                 text: 'Delete',
@@ -113,7 +113,7 @@ function Applications() {
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD APPLICATION" onClick={() => history.push('/applications/form')} />
+        <Button label="ADD APPLICATION" onClick={() => history.push('/admin/applications/form')} />
       </div>
     </section>
   );

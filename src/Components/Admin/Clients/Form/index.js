@@ -95,13 +95,13 @@ function Form() {
     if (clientId) {
       dispatch(updateClient(clientId, body)).then((response) => {
         if (response) {
-          history.push('/clients');
+          history.push('/admin/clients/list');
         }
       });
     } else {
       dispatch(createClient(body)).then((response) => {
         if (response) {
-          history.push('/clients');
+          history.push('/admin/clients/list');
         }
       });
     }

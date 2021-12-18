@@ -56,12 +56,12 @@ function Postulants() {
   }, [postulants]);
 
   const redirectUpdate = (postulant) => {
-    history.push(`/postulants/form?_id=${postulant._id}`);
+    history.push(`/admin/postulants/form?_id=${postulant._id}`);
   };
 
   const redirectAdd = () => {
     dispatch(clearPostulant());
-    history.push('/postulants/form');
+    history.push('/admin/postulants/form');
   };
 
   const handleDeletePostulant = () => {

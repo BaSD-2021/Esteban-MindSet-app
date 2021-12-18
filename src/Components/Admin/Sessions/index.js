@@ -65,7 +65,7 @@ function Sessions() {
               { name: 'Status', value: 'status' }
             ]}
             data={sessions}
-            onRowClick={(item) => history.push(`/sessions/form?_id=${item._id}`)}
+            onRowClick={(item) => history.push(`/admin/sessions/form?_id=${item._id}`)}
             actions={[
               {
                 text: 'Delete',
@@ -80,7 +80,7 @@ function Sessions() {
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD SESSION" onClick={() => history.push('/sessions/form')} />
+        <Button label="ADD SESSION" onClick={() => history.push('/admin/sessions/form')} />
       </div>
     </section>
   );

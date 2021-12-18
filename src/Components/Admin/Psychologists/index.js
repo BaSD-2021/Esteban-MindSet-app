@@ -50,7 +50,7 @@ function Psychologists() {
   };
 
   const redirect = (id) => {
-    history.push(`/psychologists/form?_id=${id}`);
+    history.push(`/admin/psychologists/form?_id=${id}`);
   };
 
   return (

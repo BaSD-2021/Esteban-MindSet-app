@@ -124,7 +124,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/interviews');
+          history.push('/admin/interviews/list');
         }
       });
     } else {
@@ -139,7 +139,7 @@ function Form() {
         })
       ).then((response) => {
         if (response) {
-          history.push('/interviews');
+          history.push('/admin/interviews/list');
         }
       });
     }

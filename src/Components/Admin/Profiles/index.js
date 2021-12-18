@@ -60,7 +60,7 @@ function Profiles() {
           <Table
             columns={[{ name: 'Postulant', value: 'name' }]}
             data={profiles}
-            onRowClick={(item) => history.push(`/profiles/form?_id=${item._id}`)}
+            onRowClick={(item) => history.push(`/admin/profiles/form?_id=${item._id}`)}
             actions={[
               {
                 text: 'Delete',
@@ -75,7 +75,7 @@ function Profiles() {
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD PROFILE" onClick={() => history.push('/profiles/form')} />
+        <Button label="ADD PROFILE" onClick={() => history.push('/admin/profiles/form')} />
       </div>
     </section>
   );
