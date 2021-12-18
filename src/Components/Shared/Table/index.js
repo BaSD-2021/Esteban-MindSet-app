@@ -1,5 +1,5 @@
 import styles from './table.module.css';
-import Button from '../Button';
+import Button from 'Components/Shared/Button';
 import get from 'lodash.get';
 
 function Table(props) {
