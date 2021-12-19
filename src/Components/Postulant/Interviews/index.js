@@ -9,6 +9,7 @@ import { cleanError } from 'redux/interviews/actions';
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [selectedIdInterview, setIdInterview] = useState(false);
+  const [disableArrayValue, setDisableArrayValue] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -20,11 +21,25 @@ function Interviews() {
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
 
+  let disableArray = [];
+
   useEffect(() => {
     if (!interviews.length) {
       dispatch(getInterviews());
     }
+
+    interviewsOfOnePostulant.map((interview) => {
+      if (interview.status === 'assigned' || interview.status === 'successful') {
+        disableArray.push('false');
+      } else {
+        disableArray.push('true');
+      }
+    });
+
+    setDisableArrayValue(disableArray);
   }, []);
+
+  console.log(disableArrayValue);
 
   return (
     <section className={styles.container}>
@@ -40,6 +55,7 @@ function Interviews() {
           ]}
           data={interviewsOfOnePostulant}
           disableEdit={true}
+          disableArray={disableArrayValue}
           actions={[
             {
               text: 'Cancel',
