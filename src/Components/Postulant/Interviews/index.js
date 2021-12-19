@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import styles from './interviews.module.css';
 import Modal from 'Components/Shared/Modal';
-import Button from 'Components/Shared/Button';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInterviews, deleteInterview } from 'redux/interviews/thunks';
@@ -12,7 +10,6 @@ function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [selectedIdInterview, setIdInterview] = useState(false);
 
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const interviews = useSelector((store) => store.interviews.list);
@@ -42,13 +39,16 @@ function Interviews() {
             { name: 'Date', value: 'date' }
           ]}
           data={interviewsOfOnePostulant}
+          disableEdit={true}
           actions={[
             {
               text: 'Cancel',
               callback: (e, item) => {
                 e.stopPropagation();
-                setIdInterview(item._id);
-                setShowModal(true);
+                if (item.status === 'assigned' || item.status === 'confirmed') {
+                  setIdInterview(item._id);
+                  setShowModal(true);
+                }
               }
             }
           ]}
@@ -81,9 +81,6 @@ function Interviews() {
           callback: () => dispatch(cleanError())
         }}
       />
-      <div className={styles.buttonContainer}>
-        <Button label="ADD INTERVIEW" onClick={() => history.push('/postulant/interviews/form')} />
-      </div>
     </section>
   );
 }

@@ -33,3 +33,7 @@
 .secondary:hover {
   cursor: pointer;
 }
+
+.disabled {
+  background-color: red;
+}

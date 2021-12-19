@@ -3,7 +3,6 @@ import Home from 'Components/Postulant/Home';
 import Layout from 'Components/Layout';
 import Applications from 'Components/Postulant/Applications';
 import InterviewsList from 'Components/Postulant/Interviews';
-import InterviewsForm from 'Components/Postulant/Interviews/Form';
 import Positions from 'Components/Postulant/Positions';
 import Sessions from 'Components/Postulant/Sessions';
 import Profile from 'Components/Postulant/Profile';
@@ -27,7 +26,6 @@ const PostulantsRoutes = () => {
         <Route exact path={`${url}/`} component={Home} />
         <Route path={`${url}/applications`} component={Applications} />
         <Route path={`${url}/interviews/list`} component={InterviewsList} />
-        <Route path={`${url}/interviews/form`} component={InterviewsForm} />
         <Route path={`${url}/positions`} component={Positions} />
         <Route path={`${url}/sessions`} component={Sessions} />
         <Route path={`${url}/profile`} component={Profile} />
