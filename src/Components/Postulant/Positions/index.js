@@ -14,13 +14,13 @@ function Positions() {
   const positions = useSelector((store) => store.positions.list);
   const error = useSelector((store) => store.positions.error);
   const isLoading = useSelector((store) => store.positions.isFetching);
-
-  console.log(positions);
+  const [openPositions, setOpenPositions] = useState([]);
 
   useEffect(() => {
     if (!positions.length) {
       dispatch(getPositions());
     }
+    setOpenPositions(positions.filter((position) => position.isOpen));
   }, [positions]);
 
   return (
@@ -45,7 +45,7 @@ function Positions() {
             { name: 'Vacancy', value: 'vacancy' },
             { name: 'Professional Profile', value: 'professionalProfile.name' }
           ]}
-          data={positions}
+          data={openPositions}
           onRowClick={(item) => history.push(`/admin/positions/form?_id=${item._id}`)}
           actions={[]}
         />
