@@ -14,7 +14,7 @@ function Table(props) {
               </th>
             );
           })}
-          {props.actions.length && <th className={styles.thStyles}>Actions</th>}
+          {props.actions.length ? <th className={styles.thStyles}>Actions</th> : null}
         </tr>
       </thead>
       <tbody>
