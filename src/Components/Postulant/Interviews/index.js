@@ -10,14 +10,11 @@ function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [selectedIdInterview, setIdInterview] = useState(false);
   const [disableArrayValue, setDisableArrayValue] = useState([]);
+  const [interviewsOfOnePostulant, setInterviewsOfOnePostulant] = useState([]);
 
   const dispatch = useDispatch();
 
   const interviews = useSelector((store) => store.interviews.list);
-  const interviewsOfOnePostulant = interviews.filter(
-    (interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID
-  );
-
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
 
@@ -38,6 +35,14 @@ function Interviews() {
 
     setDisableArrayValue(disableArray);
   }, []);
+
+  useEffect(() => {
+    setInterviewsOfOnePostulant(
+      interviews.filter(
+        (interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID
+      )
+    );
+  }, [interviews]);
 
   return (
     <section className={styles.container}>
