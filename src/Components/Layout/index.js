@@ -3,7 +3,7 @@ import Footer from 'Components/Footer/index';
 import styles from './layout.module.css';
 
 function Layout(props) {
-  const { routes = [] } = props;
+  const { routes } = props;
   return (
     <div className={styles.container}>
       <Header routes={routes} />
