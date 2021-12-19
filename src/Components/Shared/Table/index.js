@@ -3,7 +3,6 @@ import Button from 'Components/Shared/Button';
 import get from 'lodash.get';
 
 function Table(props) {
-  console.log(props);
   return (
     <table className={styles.tableData}>
       <thead className={styles.tableHeader}>

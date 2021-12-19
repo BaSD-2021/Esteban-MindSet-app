@@ -15,7 +15,7 @@ function Interviews() {
 
   const interviews = useSelector((store) => store.interviews.list);
   const interviewsOfOnePostulant = interviews.filter(
-    (interview) => interview.postulant._id === '61adf3f49a63822458f2d7f0'
+    (interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID
   );
 
   const error = useSelector((store) => store.interviews.error);
@@ -38,8 +38,6 @@ function Interviews() {
 
     setDisableArrayValue(disableArray);
   }, []);
-
-  console.log(disableArrayValue);
 
   return (
     <section className={styles.container}>
