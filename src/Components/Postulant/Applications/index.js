@@ -4,12 +4,10 @@ import Modal from 'Components/Shared/Modal';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getApplications, deleteApplication } from 'redux/applications/thunks';
+import { getApplications } from 'redux/applications/thunks';
 import { cleanError } from 'redux/applications/actions';
 
 function Applications() {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedIdApplication, setSelectedIdApplication] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
   const [processedApplications, setProcessedApplications] = useState([]);
@@ -17,14 +15,14 @@ function Applications() {
   const error = useSelector((store) => store.applications.error);
   const isLoading = useSelector((store) => store.applications.isFetching);
 
+  const applicationsOfOnePostulant = applications.filter(
+    (application) => application.postulants._id === process.env.REACT_APP_POSTULANT_ID
+  );
+
   const columnName = [
     {
       name: 'Job Description',
       value: 'positions'
-    },
-    {
-      name: 'Postulant',
-      value: 'postulants'
     },
     {
       name: 'Interview',
@@ -46,13 +44,10 @@ function Applications() {
 
   const processApplications = () => {
     setProcessedApplications(
-      applications.map((application) => {
+      applicationsOfOnePostulant.map((application) => {
         return {
           _id: application._id,
           positions: application.positions ? application.positions.jobDescription : '-',
-          postulants: application.postulants
-            ? `${application.postulants.firstName} ${application.postulants.lastName}`
-            : '-',
           interview: application.interview ? application.interview.date : '-',
           result: application.result
         };
@@ -63,24 +58,6 @@ function Applications() {
   return (
     <section className={styles.container}>
       <Modal
-        show={showModal}
-        title="Are you sure you want to delete this application?"
-        isLoading={isLoading}
-        cancel={{
-          text: 'Cancel',
-          callback: () => setShowModal(false)
-        }}
-        confirm={{
-          text: 'Confirm',
-          callback: () => {
-            dispatch(deleteApplication(selectedIdApplication)).then(() => {
-              setSelectedIdApplication(undefined);
-              setShowModal(false);
-            });
-          }
-        }}
-      />
-      <Modal
         show={!!error}
         title="Error"
         message={error}
@@ -89,7 +66,7 @@ function Applications() {
           callback: () => dispatch(cleanError())
         }}
       />
-      <h2 className={styles.title}>Applications</h2>
+      <h2 className={styles.title}>My Applications</h2>
       <div>
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
