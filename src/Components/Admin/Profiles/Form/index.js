@@ -1,26 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input from 'Components/Shared/InputV2';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import { getProfileById, createProfile, updateProfile } from 'redux/profiles/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/profiles/actions';
 
 function profilesForm() {
-  const [nameValue, setNameValue] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedProfile = useSelector((store) => store.profiles.selectedItem);
   const error = useSelector((store) => store.profiles.error);
-  const isLoading = useSelector((store) => store.admins.isFetching);
-
-  const onChangeProfileInput = (event) => {
-    setNameValue(event.target.value);
-  };
 
   useEffect(() => {
     const profileId = query.get('_id');
@@ -30,32 +25,22 @@ function profilesForm() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(selectedProfile).length) {
-      setNameValue(selectedProfile.name);
-    }
-  }, [selectedProfile]);
-
-  useEffect(() => {
     return () => {
       dispatch(cleanSelectedItem());
     };
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (formValues) => {
     const profileId = query.get('_id');
 
-    const body = {
-      name: nameValue
-    };
     if (profileId) {
-      dispatch(updateProfile(profileId, body)).then((response) => {
+      dispatch(updateProfile(profileId, formValues)).then((response) => {
         if (response) {
           history.push('/admin/profiles/list');
         }
       });
     } else {
-      dispatch(createProfile(body)).then((response) => {
+      dispatch(createProfile(formValues)).then((response) => {
         if (response) {
           history.push('/admin/profiles/list');
         }
@@ -63,35 +48,53 @@ function profilesForm() {
     }
   };
 
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.name) {
+      errors.name = 'Profile Name is required';
+    }
+    if (formValues.name?.length < 3) {
+      errors.name = 'Profile Name must be at least 3 characters';
+    }
+    return errors;
+  };
+
   return (
     <div className={styles.container}>
       <Modal
         show={!!error}
         title="Error"
-        message={error}
+        message={error.message || error}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
         }}
       />
-      <form className={styles.form} onSubmit={onSubmit}>
-        <div>
-          <h2 className={styles.title}>Profile</h2>
-          <Input
-            title="Profile"
-            name="profile"
-            value={nameValue}
-            onChange={onChangeProfileInput}
-            type="text"
-            disabled={isLoading}
-            required
-          />
-        </div>
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-        <div className={styles.error}>{error}</div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        initialValues={selectedProfile}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Profile</h2>
+            <Field
+              name="name"
+              label="Name"
+              placeholder="Insert Name"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={(value) => (value ? undefined : 'Required')}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
