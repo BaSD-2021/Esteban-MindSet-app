@@ -20,8 +20,6 @@ function Interviews() {
     (interview) => interview.postulant._id === '61adf3f49a63822458f2d7f0'
   );
 
-  console.log(interviewsOfOnePostulant);
-
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
 
