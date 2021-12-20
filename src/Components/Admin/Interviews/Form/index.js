@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input2 from 'Components/Shared/Input2';
+import Select2 from 'Components/Shared/Select2';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
-import Select from 'Components/Shared/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { createInterview, getInterviewById, updateInterview } from 'redux/interviews/thunks';
 import { getPostulants } from 'redux/postulants/thunks';
@@ -13,7 +14,7 @@ import { getClients } from 'redux/clients/thunks';
 import { getApplications } from 'redux/applications/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/interviews/actions';
 
-function Form() {
+function InterviewForm() {
   const [postulantIdValue, setPostulantIdValue] = useState('');
   const [clientIdValue, setClientIdValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
@@ -25,35 +26,10 @@ function Form() {
   const [selectApplication, setSelectApplication] = useState([]);
 
   const error = useSelector((store) => store.interviews.error);
-  const isLoading = useSelector((store) => store.interviews.isFetching);
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
-  const selectedInterview = useSelector((store) => store.interviews.selectedItem);
-
-  const onChangePostulantId = (event) => {
-    setPostulantIdValue(event.target.value);
-  };
-
-  const onChangeClientId = (event) => {
-    setClientIdValue(event.target.value);
-  };
-
-  const onChangeStatus = (event) => {
-    setStatusValue(event.target.value);
-  };
-
-  const onChangeDate = (event) => {
-    setDateValue(event.target.value);
-  };
-
-  const onChangeApplication = (event) => {
-    setApplicationIdValue(event.target.value);
-  };
-
-  const onChangeNotes = (event) => {
-    setNotesValue(event.target.value);
-  };
+  const selectedItem = useSelector((store) => store.interviews.selectedItem);
 
   useEffect(() => {
     const interviewId = query.get('_id');
@@ -63,15 +39,15 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(selectedInterview).length) {
-      setPostulantIdValue(selectedInterview.postulant?._id);
-      setClientIdValue(selectedInterview.client?._id);
-      setApplicationIdValue(selectedInterview.application?._id);
-      setStatusValue(selectedInterview.status);
-      setDateValue(selectedInterview.date);
-      setNotesValue(selectedInterview.notes);
+    if (Object.keys(selectedItem).length) {
+      setPostulantIdValue(selectedItem.postulant?._id);
+      setClientIdValue(selectedItem.client?._id);
+      setApplicationIdValue(selectedItem.application?._id);
+      setStatusValue(selectedItem.status);
+      setDateValue(selectedItem.date);
+      setNotesValue(selectedItem.notes);
     }
-  }, [selectedInterview]);
+  }, [selectedItem]);
 
   useEffect(() => {
     return () => {
@@ -108,126 +84,144 @@ function Form() {
     });
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (formValues) => {
     const interviewId = query.get('_id');
+    const body = {
+      postulant: formValues.postulant,
+      client: formValues.clients,
+      application: formValues.application,
+      status: formValues.status,
+      date: formValues.date,
+      notes: formValues.notes
+    };
 
     if (interviewId) {
-      dispatch(
-        updateInterview(interviewId, {
-          postulant: postulantIdValue,
-          client: clientIdValue,
-          application: applicationIdValue,
-          status: statusValue,
-          date: dateValue,
-          notes: notesValue
-        })
-      ).then((response) => {
-        if (response) {
-          history.push('/admin/interviews/list');
-        }
-      });
-    } else {
-      dispatch(
-        createInterview({
-          postulant: postulantIdValue,
-          client: clientIdValue,
-          application: applicationIdValue,
-          status: statusValue,
-          date: dateValue,
-          notes: notesValue
-        })
-      ).then((response) => {
+      return dispatch(updateInterview(interviewId, body)).then((response) => {
         if (response) {
           history.push('/admin/interviews/list');
         }
       });
     }
+    return dispatch(createInterview(body)).then((response) => {
+      if (response) {
+        history.push('/admin/interviews/list');
+      }
+    });
+  };
+
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.postulant) {
+      errors.postulant = 'Postulant is required';
+    }
+    if (!formValues.client) {
+      errors.client = 'Client is required';
+    }
+    if (!formValues.application) {
+      errors.application = 'Application is required';
+    }
+    if (!formValues.status) {
+      errors.status = 'Status is required';
+    }
+    if (!formValues.date) {
+      errors.date = 'Date is required';
+    }
+    if (formValues.notes?.length < 3) {
+      errors.notes = 'Notes must be at least 3 characters';
+    }
+    return errors;
   };
 
   return (
     <div>
       <Modal
-        show={!!error}
+        show={!!error || !!error.message}
         title="Error"
-        message={error}
+        message={error || error.message}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
         }}
       />
-      <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Interview</h2>
-        <label className={styles.label}>
-          <span className={styles.span}>Postulant Name</span>
-        </label>
-        <Select
-          title="Postulant Name"
-          id="postulantId"
-          name="postulantId"
-          value={postulantIdValue}
-          onChange={onChangePostulantId}
-          arrayToMap={selectPostulant}
-          required
-        />
-        <Select
-          title="Client Name"
-          id="clientId"
-          name="clientId"
-          value={clientIdValue}
-          onChange={onChangeClientId}
-          arrayToMap={selectClient}
-          required
-        />
-        <Select
-          title="Status"
-          id="status"
-          name="status"
-          required
-          value={statusValue}
-          onChange={onChangeStatus}
-          arrayToMap={[
-            { value: 'successful', label: 'Successful' },
-            { value: 'failed', label: 'Failed' },
-            { value: 'cancelled', label: 'Cancelled' },
-            { value: 'assigned', label: 'Assigned' },
-            { value: 'confirmed', label: 'Confirmed' }
-          ]}
-        />
-        <Select
-          title="Application ID"
-          id="application"
-          name="application"
-          required
-          value={applicationIdValue}
-          onChange={onChangeApplication}
-          arrayToMap={selectApplication}
-        />
-        <Input
-          title="Date"
-          id="date"
-          name="date"
-          type="datetime-local"
-          value={dateValue}
-          onChange={onChangeDate}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Notes"
-          id="notes"
-          name="notes"
-          type="text"
-          value={notesValue}
-          onChange={onChangeNotes}
-          disabled={isLoading}
-        />
-        <div className={styles.buttonContainer}>
-          <Button label="Save" disabled={isLoading} type="submit" />
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Interviews</h2>
+            <Field
+              name="postulant"
+              title={'Select a Postulant'}
+              component={Select2}
+              disabled={formProps.submitting}
+              arrayToMap={selectPostulant}
+              initialValue={postulantIdValue}
+              value={postulantIdValue}
+            />
+            <Field
+              name="client"
+              title={'Select a Client'}
+              component={Select2}
+              disabled={formProps.submitting}
+              arrayToMap={selectClient}
+              initialValue={clientIdValue}
+              value={clientIdValue}
+            />
+            <Field
+              name="application"
+              title={'Select an Application'}
+              component={Select2}
+              disabled={formProps.submitting}
+              arrayToMap={selectApplication}
+              initialValue={applicationIdValue}
+              value={applicationIdValue}
+            />
+            <Field
+              name="status"
+              title={'Select a Status'}
+              component={Select2}
+              disabled={formProps.submitting}
+              arrayToMap={[
+                { value: 'successful', label: 'Successful' },
+                { value: 'failed', label: 'Failed' },
+                { value: 'cancelled', label: 'Cancelled' },
+                { value: 'assigned', label: 'Assigned' },
+                { value: 'confirmed', label: 'Confirmed' }
+              ]}
+              initialValue={statusValue}
+              value={statusValue}
+            />
+            <Field
+              name="date"
+              title={'Select a Date'}
+              component={Input2}
+              type="datetime-local"
+              disabled={formProps.submitting}
+              initialValue={dateValue}
+              value={dateValue}
+            />
+            <Field
+              title="Notes"
+              name="notes"
+              label="Notes"
+              type="text"
+              placeholder="Insert Notes"
+              disabled={formProps.submitting}
+              component={Input2}
+              initialValue={notesValue}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
 
-export default Form;
+export default InterviewForm;
