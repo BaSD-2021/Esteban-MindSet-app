@@ -5,7 +5,6 @@ import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInterviews, updateInterview } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/interviews/actions';
-import { useHistory } from 'react-router-dom';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
@@ -14,7 +13,6 @@ function Interviews() {
   const [interviewsOfOnePostulant, setInterviewsOfOnePostulant] = useState([]);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const interviews = useSelector((store) => store.interviews.list);
   const error = useSelector((store) => store.interviews.error);
@@ -68,8 +66,8 @@ function Interviews() {
           actions={[
             {
               text: 'Cancel',
-              callback: (e, item) => {
-                e.stopPropagation();
+              disabled: (item) => item.status != 'assigned' && item.status !== 'confirmed',
+              callback: (item) => {
                 if (item.status === 'assigned' || item.status === 'confirmed') {
                   setIdInterview(item._id);
                   setShowModal(true);

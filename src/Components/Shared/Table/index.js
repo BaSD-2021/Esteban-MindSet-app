@@ -51,7 +51,7 @@ function Table(props) {
                         label={action.text}
                         style={styles.actionButton}
                         onClick={(e) => action.callback(e, item)}
-                        disabled={action.disableArray}
+                        disabled={action.disabled && action.disabled(item)}
                       />
                     );
                   })}
