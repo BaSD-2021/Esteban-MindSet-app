@@ -66,8 +66,8 @@ function Interviews() {
           actions={[
             {
               text: 'Cancel',
-              disabled: (item) => item.status != 'assigned' && item.status !== 'confirmed',
-              callback: (item) => {
+              callback: (e, item) => {
+                e.stopPropagation();
                 if (item.status === 'assigned' || item.status === 'confirmed') {
                   setIdInterview(item._id);
                   setShowModal(true);
