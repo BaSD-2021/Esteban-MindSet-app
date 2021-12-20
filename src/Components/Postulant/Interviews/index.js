@@ -3,16 +3,18 @@ import styles from './interviews.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInterviews, deleteInterview } from 'redux/interviews/thunks';
+import { getInterviews, updateInterview } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/interviews/actions';
+import { useHistory } from 'react-router-dom';
 
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedIdInterview, setIdInterview] = useState(false);
+  const [selectedIdInterview, setIdInterview] = useState('');
   const [disableArrayValue, setDisableArrayValue] = useState([]);
   const [interviewsOfOnePostulant, setInterviewsOfOnePostulant] = useState([]);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const interviews = useSelector((store) => store.interviews.list);
   const error = useSelector((store) => store.interviews.error);
@@ -43,6 +45,10 @@ function Interviews() {
       )
     );
   }, [interviews]);
+
+  const editInterview = (selectedIdInterview) => {
+    return interviewsOfOnePostulant.find((interview) => interview._id === selectedIdInterview);
+  };
 
   return (
     <section className={styles.container}>
@@ -75,7 +81,7 @@ function Interviews() {
       )}
       <Modal
         show={showModal}
-        title="Do you want to proceed and delete this Interview?"
+        title="Do you want to proceed and cancel this Interview?"
         isLoading={isLoading}
         cancel={{
           text: 'Cancel',
@@ -84,7 +90,17 @@ function Interviews() {
         confirm={{
           text: 'Confirm',
           callback: () => {
-            dispatch(deleteInterview(selectedIdInterview)).then(() => {
+            const interviewToEdit = editInterview(selectedIdInterview);
+            dispatch(
+              updateInterview(selectedIdInterview, {
+                postulant: interviewToEdit.postulant._id,
+                client: interviewToEdit.client._id,
+                application: interviewToEdit.application._id,
+                status: 'cancelled',
+                date: interviewToEdit.date,
+                notes: interviewToEdit.notes
+              })
+            ).then(() => {
               setIdInterview(undefined);
               setShowModal(false);
             });
