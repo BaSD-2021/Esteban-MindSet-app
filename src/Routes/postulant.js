@@ -5,6 +5,7 @@ import Applications from 'Components/Postulant/Applications';
 import Interviews from 'Components/Postulant/Interviews';
 import Positions from 'Components/Postulant/Positions';
 import Sessions from 'Components/Postulant/Sessions';
+import SessionsForm from 'Components/Postulant/Sessions/Form';
 import Profile from 'Components/Postulant/Profile';
 import SignUp from 'Components/Postulant/SignUp';
 
@@ -27,7 +28,8 @@ const PostulantsRoutes = () => {
         <Route path={`${url}/applications`} component={Applications} />
         <Route path={`${url}/interviews`} component={Interviews} />
         <Route path={`${url}/positions`} component={Positions} />
-        <Route path={`${url}/sessions`} component={Sessions} />
+        <Route exact path={`${url}/sessions`} component={Sessions} />
+        <Route path={`${url}/sessions/form`} component={SessionsForm} />
         <Route path={`${url}/profile`} component={Profile} />
         <Route path={`${url}/signup`} component={SignUp} />
         <Redirect to={`${url}/`} />
