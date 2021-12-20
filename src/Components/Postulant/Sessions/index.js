@@ -5,12 +5,10 @@ import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSessions, deleteSession } from 'redux/sessions/thunks';
+import { getSessions } from 'redux/sessions/thunks';
 import { cleanError } from 'redux/sessions/actions';
 
 function Sessions() {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedIdSession, setSelectedIdSession] = useState('');
   const [processedSessions, setProcessedSessions] = useState([]);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -45,24 +43,6 @@ function Sessions() {
 
   return (
     <section className={styles.container}>
-      <Modal
-        show={showModal}
-        title="Are you sure you want to delete this Session User?"
-        isLoading={isLoading}
-        cancel={{
-          text: 'Cancel',
-          callback: () => setShowModal(false)
-        }}
-        confirm={{
-          text: 'Confirm',
-          callback: () => {
-            dispatch(deleteSession(selectedIdSession)).then(() => {
-              setSelectedIdSession('');
-              setShowModal(false);
-            });
-          }
-        }}
-      />
       <Modal
         show={!!error}
         title="Error"
