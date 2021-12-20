@@ -2,21 +2,20 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input from 'Components/Shared/InputV2';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
-import Select from 'Components/Shared/Select';
+import Select from 'Components/Shared/SelectV2';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import { getPositionById, createPosition, updatePosition } from 'redux/positions/thunks';
 import { getProfiles } from 'redux/profiles/thunks';
 import { getClients } from 'redux/clients/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/positions/actions';
 
-function Form() {
+function PositionForm() {
   const [professionalProfileIdValue, setProfessionalProfileIdValue] = useState('');
   const [clientIdValue, setClientIdValue] = useState('');
-  const [vacancyValue, setVacancyValue] = useState('');
-  const [jobDescriptionValue, setJobDescriptionValue] = useState('');
   const [isOpenValue, setIsOpenValue] = useState('');
   const [selectClient, setSelectClient] = useState([]);
   const [selectProfessionalProfile, setSelectProfessionalProfile] = useState([]);
@@ -25,28 +24,7 @@ function Form() {
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedPosition = useSelector((store) => store.positions.selectedItem);
-  const isLoading = useSelector((store) => store.positions.isFetching);
   const error = useSelector((store) => store.positions.error);
-
-  const onChangeProfessionalProfileId = (event) => {
-    setProfessionalProfileIdValue(event.target.value);
-  };
-
-  const onChangeClientId = (event) => {
-    setClientIdValue(event.target.value);
-  };
-
-  const onChangeVacancy = (event) => {
-    setVacancyValue(event.target.value);
-  };
-
-  const onChangeJobDescription = (event) => {
-    setJobDescriptionValue(event.target.value);
-  };
-
-  const onChangeIsOpen = (event) => {
-    setIsOpenValue(event.target.value);
-  };
 
   useEffect(() => {
     const positionId = query.get('_id');
@@ -58,8 +36,6 @@ function Form() {
   useEffect(() => {
     if (Object.keys(selectedPosition).length) {
       setClientIdValue(selectedPosition.client?._id);
-      setJobDescriptionValue(selectedPosition.jobDescription);
-      setVacancyValue(selectedPosition.vacancy);
       setProfessionalProfileIdValue(selectedPosition.professionalProfile?._id);
       setIsOpenValue(selectedPosition.isOpen);
     }
@@ -95,34 +71,17 @@ function Form() {
       });
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (formValues) => {
     const positionId = query.get('_id');
 
     if (positionId) {
-      dispatch(
-        updatePosition(positionId, {
-          client: clientIdValue,
-          jobDescription: jobDescriptionValue,
-          vacancy: vacancyValue,
-          professionalProfile: professionalProfileIdValue,
-          isOpen: isOpenValue
-        })
-      ).then((response) => {
+      dispatch(updatePosition(positionId, formValues)).then((response) => {
         if (response) {
           history.push('/admin/positions/list');
         }
       });
     } else {
-      dispatch(
-        createPosition({
-          client: clientIdValue,
-          jobDescription: jobDescriptionValue,
-          vacancy: vacancyValue,
-          professionalProfile: professionalProfileIdValue,
-          isOpen: isOpenValue
-        })
-      ).then((response) => {
+      dispatch(createPosition(formValues)).then((response) => {
         if (response) {
           history.push('/admin/positions/list');
         }
@@ -130,75 +89,109 @@ function Form() {
     }
   };
 
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.client) {
+      errors.client = 'Client Name is required';
+    }
+    if (!formValues.jobDescription) {
+      errors.jobDescription = 'Job Description is required';
+    }
+    if (!formValues.jobDescription) {
+      errors.jobDescription = 'Job Description is required';
+    }
+    if (!formValues.vacancy) {
+      errors.vacancy = 'Vacancy is required';
+    }
+    if (!formValues.professionalProfile) {
+      errors.professionalProfile = 'Professional profile is required';
+    }
+    if (!formValues.isOpen && formValues.isOpen !== false) {
+      errors.isOpen = 'Open status is required';
+    }
+    return errors;
+  };
+
+  const required = (value) => {
+    return value ? undefined : 'Required';
+  };
+
   return (
     <div>
       <Modal
-        show={!!error}
+        show={!!error || !!error.message}
         title="Error"
-        message={error}
+        message={!!error || !!error.message}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
         }}
       />
-      <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Position</h2>
-        <Select
-          title="Client Name"
-          id="clientId"
-          name="clientId"
-          value={clientIdValue}
-          onChange={onChangeClientId}
-          arrayToMap={selectClient}
-          required
-        />
-        <Input
-          title="Job Description"
-          id="jobDescription"
-          name="jobDescription"
-          type="text"
-          value={jobDescriptionValue}
-          onChange={onChangeJobDescription}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Vacancy"
-          id="vacancy"
-          name="vacancy"
-          type="number"
-          value={vacancyValue}
-          onChange={onChangeVacancy}
-          disabled={isLoading}
-          required
-        />
-        <Select
-          title="Professional Profile"
-          id="professionalProfileId"
-          name="professionalProfileId"
-          value={professionalProfileIdValue}
-          onChange={onChangeProfessionalProfileId}
-          arrayToMap={selectProfessionalProfile}
-          required
-        />
-        <Select
-          title="Is Open"
-          id="isOpen"
-          name="isOpen"
-          value={isOpenValue}
-          onChange={onChangeIsOpen}
-          arrayToMap={[
-            { value: 'true', label: 'Yes' },
-            { value: 'false', label: 'No' }
-          ]}
-          required
-        />
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        initialValues={selectedPosition}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Position</h2>
+            <Field
+              name="client"
+              title="Select a Client Name"
+              disabled={formProps.submitting}
+              component={Select}
+              validate={required}
+              arrayToMap={selectClient}
+              initialValue={clientIdValue}
+              value={clientIdValue}
+            />
+            <Field
+              name="jobDescription"
+              label="Job Description"
+              placeholder="Insert Job Description"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={required}
+            />
+            <Field
+              name="vacancy"
+              label="Vacancy"
+              placeholder="Insert number of vacancies"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={required}
+            />
+            <Field
+              name="professionalProfile"
+              title="Professional Profile"
+              disabled={formProps.submitting}
+              component={Select}
+              validate={required}
+              arrayToMap={selectProfessionalProfile}
+              initialValue={professionalProfileIdValue}
+            />
+            <Field
+              name="isOpen"
+              title="Is Open?"
+              disabled={formProps.submitting}
+              component={Select}
+              arrayToMap={[
+                { value: 'true', label: 'Yes' },
+                { value: 'false', label: 'No' }
+              ]}
+              initialValue={isOpenValue}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
 
-export default Form;
+export default PositionForm;
