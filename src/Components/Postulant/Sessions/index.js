@@ -57,7 +57,7 @@ function Sessions() {
           text: 'Confirm',
           callback: () => {
             dispatch(deleteSession(selectedIdSession)).then(() => {
-              setSelectedIdSession(undefined);
+              setSelectedIdSession('');
               setShowModal(false);
             });
           }
