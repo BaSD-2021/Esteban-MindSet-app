@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
-import Textarea from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/InputV2';
-import Select from 'Components/Shared/SelectV2';
+import Input from 'Components/Shared/Input2';
+import Select from 'Components/Shared/Select2';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Field } from 'react-final-form';
