@@ -1,6 +1,6 @@
 import Table from 'Components/Shared/Table';
 import styles from './home.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getApplications } from 'redux/applications/thunks';
@@ -11,6 +11,7 @@ import { getPostulants } from 'redux/postulants/thunks';
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [lastApplications, setLastApplications] = useState([]);
   const applications = useSelector((store) => store.applications.list);
   const positions = useSelector((store) => store.positions.list);
   const sessions = useSelector((store) => store.sessions.list);
@@ -24,14 +25,37 @@ function Home() {
     dispatch(getPostulants());
   }, []);
 
+  useEffect(() => {
+    if (!applications.length) {
+      dispatch(getApplications());
+    } else {
+      processApplications();
+    }
+  }, [applications]);
+
   const selectedPostulant = postulants.filter(
     (postulant) => postulant._id === process.env.REACT_APP_POSTULANT_ID
   );
 
-  const lastApplications = applications
-    .filter((application) => application.postulants._id === process.env.REACT_APP_POSTULANT_ID)
-    .reverse()
-    .slice(0, 4);
+  const processApplications = () => {
+    setLastApplications(
+      applications
+        .filter((application) => application.postulants._id === process.env.REACT_APP_POSTULANT_ID)
+        .reverse()
+        .slice(0, 4)
+        .map((application) => {
+          return {
+            _id: application._id,
+            positions: application.positions ? application.positions.jobDescription : '-',
+            postulants: application.postulants
+              ? `${application.postulants.firstName} ${application.postulants.lastName}`
+              : '-',
+            interview: application.interview ? application.interview.date : '-',
+            result: application.result
+          };
+        })
+    );
+  };
 
   const lastPositions = positions
     .filter((position) => position.isOpen)
@@ -43,20 +67,20 @@ function Home() {
     .reverse()
     .slice(0, 4);
 
-  // const applicationsColumns = [
-  //   {
-  //     name: 'Job Description',
-  //     value: 'positions'
-  //   },
-  //   {
-  //     name: 'Interview',
-  //     value: 'interview'
-  //   },
-  //   {
-  //     name: 'Result',
-  //     value: 'result'
-  //   }
-  // ];
+  const applicationsColumns = [
+    {
+      name: 'Job Description',
+      value: 'positions'
+    },
+    {
+      name: 'Interview',
+      value: 'interview'
+    },
+    {
+      name: 'Result',
+      value: 'result'
+    }
+  ];
   const positionsColumns = [
     { name: 'Client', value: 'client.name' },
     { name: 'Profile', value: 'professionalProfile.name' },
@@ -70,33 +94,46 @@ function Home() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>{`Hello ${selectedPostulant[0].firstName}`}</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <div className={styles.topContainer}>
-          <div className={styles.widget}>
-            <h3 className={styles.widgetTitle}>Latest Positions</h3>
-            <Table
-              columns={positionsColumns}
-              data={lastPositions}
-              onRowClick={(item) => history.push(`/postulant/positions/form?_id=${item._id}`)}
-              actions={[]}
-            />
+        <>
+          <h2 className={styles.title}>{`Hello ${
+            selectedPostulant.length ? selectedPostulant[0].firstName : null
+          }`}</h2>
+          <div className={styles.topContainer}>
+            <div className={styles.widget}>
+              <h3 className={styles.widgetTitle}>Latest Positions</h3>
+              <Table
+                columns={positionsColumns}
+                data={lastPositions}
+                onRowClick={(item) => history.push(`/postulant/positions/form?_id=${item._id}`)}
+                actions={[]}
+              />
+            </div>
+            <div className={styles.widget}>
+              <h3 className={styles.widgetTitle}>Incoming Sessions</h3>
+              <Table
+                columns={sessionsColumns}
+                data={lastSessions}
+                onRowClick={(item) => history.push(`/postulant/sessions/form?_id=${item._id}`)}
+                actions={[]}
+              />
+            </div>
           </div>
-          <div className={styles.widget}>
-            <h3 className={styles.widgetTitle}>Incoming Sessions</h3>
-            <Table
-              columns={sessionsColumns}
-              data={lastSessions}
-              onRowClick={(item) => history.push(`/postulant/sessions/form?_id=${item._id}`)}
-              actions={[]}
-            />
+          <div className={styles.bottomContainer}>
+            <div className={styles.widget}>
+              <h3 className={styles.widgetTitle}>Latest Applications</h3>
+              <Table
+                columns={applicationsColumns}
+                data={lastApplications}
+                onRowClick={(item) => history.push(`/postulant/applications/form?_id=${item._id}`)}
+                actions={[]}
+              />
+            </div>
           </div>
-        </div>
+        </>
       )}
-
-      <div className={styles.bottomContainer}>{/* <Table /> */}</div>
     </section>
   );
 }

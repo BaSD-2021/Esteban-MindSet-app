@@ -16,6 +16,10 @@
   margin: 20px 0;
   justify-content: space-around;
 }
+.bottomContainer{
+  width: 45rem;
+  margin-bottom: 16px;
+}
 .widgetTitle{
   margin-left: 16px;
   font-size: 18px;
