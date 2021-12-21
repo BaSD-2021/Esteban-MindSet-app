@@ -61,11 +61,10 @@ function Interviews() {
             { name: 'Date', value: 'date' }
           ]}
           data={interviewsOfOnePostulant}
-          disableEdit={true}
-          disableArray={disableArrayValue}
           actions={[
             {
               text: 'Cancel',
+              disabled: (item) => item.status !== 'assigned' && item.status !== 'confirmed',
               callback: (e, item) => {
                 e.stopPropagation();
                 if (item.status === 'assigned' || item.status === 'confirmed') {
