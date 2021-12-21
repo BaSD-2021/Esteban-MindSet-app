@@ -5,3 +5,19 @@
   align-items: center;
   flex-direction: column;
 }
+.title{
+  margin-top:20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.topContainer{
+  display: flex;
+  width: 75%;
+  margin: 20px 0;
+  justify-content: space-around;
+}
+.widgetTitle{
+  margin-left: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}

@@ -42,7 +42,7 @@ function Home() {
     .filter((session) => session.postulant._id === process.env.REACT_APP_POSTULANT_ID)
     .reverse()
     .slice(0, 4);
-  console.log(selectedPostulant[0].firstName);
+
   // const applicationsColumns = [
   //   {
   //     name: 'Job Description',
@@ -70,13 +70,13 @@ function Home() {
 
   return (
     <section className={styles.container}>
-      <h2>{`Hello ${selectedPostulant[0].firstName}`}</h2>
+      <h2 className={styles.title}>{`Hello ${selectedPostulant[0].firstName}`}</h2>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <div className={styles.topContainer}>
-          <div>
-            <h3>Latest Positions</h3>
+          <div className={styles.widget}>
+            <h3 className={styles.widgetTitle}>Latest Positions</h3>
             <Table
               columns={positionsColumns}
               data={lastPositions}
@@ -84,8 +84,8 @@ function Home() {
               actions={[]}
             />
           </div>
-          <div>
-            <h3>Incoming Sessions</h3>
+          <div className={styles.widget}>
+            <h3 className={styles.widgetTitle}>Incoming Sessions</h3>
             <Table
               columns={sessionsColumns}
               data={lastSessions}
