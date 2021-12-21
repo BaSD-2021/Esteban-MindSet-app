@@ -17,7 +17,7 @@ function AdminsForm() {
   const onSubmit = (formValues) => {
     return dispatch(login(formValues)).then((response) => {
       if (response) {
-        history.push('/postulant');
+        history.push('/admin');
       }
     });
   };

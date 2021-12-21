@@ -19,7 +19,8 @@ import {
 export const getAdmins = () => {
   return (dispatch) => {
     dispatch(getAdminsPending());
-    return fetch(`${process.env.REACT_APP_API}/admins`)
+    const token = sessionStorage.getItem('token');
+    return fetch(`${process.env.REACT_APP_API}/admins`, { headers: { token } })
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {

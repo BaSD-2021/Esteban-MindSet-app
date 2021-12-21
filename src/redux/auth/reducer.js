@@ -1,4 +1,10 @@
-import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR, CLEAN_ERROR } from './actions';
+import {
+  LOGIN_PENDING,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  CLEAN_ERROR,
+  SET_AUTHENTICATION
+} from './actions';
 
 const initialState = {
   isLoading: false,
@@ -33,6 +39,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: initialState.error
+      };
+    }
+    case SET_AUTHENTICATION: {
+      return {
+        ...state,
+        authenticated: true
       };
     }
     default: {
