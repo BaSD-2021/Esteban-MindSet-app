@@ -250,31 +250,58 @@ function PostulantForm() {
       });
     }
   };
-  // validations
 
   const validate = (formValues) => {
     const errors = {};
+    // First Name
     if (!formValues.firstName) {
       errors.firstName = 'First Name is required';
     }
+    if (!formValues.firstName?.match(/^[a-zA-Z]+$/)) {
+      errors.firstName = 'First name must contain only letters';
+    }
+    if (formValues.firstName?.length < 2) {
+      errors.firstName = 'First name must be at least 2 letters';
+    }
+    // Last Name
     if (!formValues.lastName) {
       errors.lastName = 'Last Name is required';
     }
+    if (!formValues.lastName?.match(/^[a-zA-Z]+$/)) {
+      errors.lastName = 'Last name must contain only letters';
+    }
+    if (formValues.lastName?.length < 2) {
+      errors.lastName = 'Last name must be at least 2 letters';
+    }
+    // Email
     if (!formValues.email) {
       errors.email = 'Email is required';
     }
+    if (!formValues.email?.match(/^[^@]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
+      errors.email = 'Fill in a valid email format';
+    }
+    // Password
     if (!formValues.password) {
       errors.password = 'Password is required';
     }
+    if (formValues.password?.search(/[0-9]/) < 0 || formValues.password?.search(/[a-zA-Z]/) < 0) {
+      errors.password = 'Password must contain numbers and letters';
+    } else if (formValues.password?.length < 6) {
+      errors.password = 'Password must contain at least 6 characters';
+    }
+    // Address
     if (!formValues.address) {
       errors.address = 'Address is required';
     }
+    // Birthday
     if (!formValues.birthday) {
       errors.birthday = 'Birthday is required';
     }
+    //  Phone
     if (!formValues.phone) {
       errors.phone = 'Phone is required';
     }
+    // Primary Studies
     if (!formValues.primarySD) {
       errors.primarySD = 'Primary studies start date is required';
     }
