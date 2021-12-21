@@ -1,18 +1,18 @@
 import React from 'react';
 import styles from './textarea2.module.css';
 
-function Textarea({ title, id, name, placeholder, rows, cols, ...props }) {
+function Textarea(props) {
+  const hasError = !!(props.meta.touched && props.meta.error);
   return (
     <div className={styles.container}>
-      <label className={styles.labelTitle}>{title}</label>
+      <label className={styles.labelTitle}>{props.title}</label>
       <textarea
-        className={styles.textareaContent}
-        id={id}
-        name={name}
-        placeholder={placeholder}
+        className={`${styles.textareaContent} ${props.style} ${hasError && styles.textareaError}`}
+        name={props.name}
+        placeholder={props.placeholder}
         maxLength={250}
-        rows={rows}
-        cols={cols}
+        rows={props.rows}
+        cols={props.cols}
         {...props.input}
       ></textarea>
     </div>
