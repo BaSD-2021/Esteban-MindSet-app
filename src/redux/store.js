@@ -1,6 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import adminsReducer from './admins/reducer';
 import positionsReducer from './positions/reducer';
 import interviewsReducer from './interviews/reducer';
@@ -9,7 +8,9 @@ import sessionsReducer from './sessions/reducer';
 import profilesReducer from './profiles/reducer';
 import clientsReducer from './clients/reducer';
 import applicationsReducer from './applications/reducer';
+import authReducer from './auth/reducer';
 import { postulantsReducer } from './postulants/reducer';
+import thunk from 'redux-thunk';
 
 const reducers = combineReducers({
   admins: adminsReducer,
@@ -20,9 +21,8 @@ const reducers = combineReducers({
   applications: applicationsReducer,
   positions: positionsReducer,
   interviews: interviewsReducer,
-  postulants: postulantsReducer
+  postulants: postulantsReducer,
+  auth: authReducer
 });
 
-const enhancer = composeWithDevTools(applyMiddleware(thunk));
-
-export const store = createStore(reducers, enhancer);
+export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
