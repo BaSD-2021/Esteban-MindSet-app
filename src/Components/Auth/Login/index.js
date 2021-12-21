@@ -1,18 +1,25 @@
 import { Form, Field } from 'react-final-form';
+import { useHistory } from 'react-router-dom';
 import styles from './login.module.css';
 import Input from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import { /* useDispatch */ useSelector } from 'react-redux';
+import { login } from 'redux/auth/thunks';
+import { cleanError } from 'redux/auth/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 function AdminsForm() {
-  const error = useSelector((store) => store.admins.error);
-  const selectedItem = useSelector((store) => store.admins.selectedItem);
+  const error = useSelector((store) => store.auth.error);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const onSubmit = (formValues) => {
-    console.log('formValues', formValues);
+    return dispatch(login(formValues)).then((response) => {
+      if (response) {
+        history.push('/postulant');
+      }
+    });
   };
 
   const required = (value) => (value ? undefined : 'Required');
@@ -24,13 +31,12 @@ function AdminsForm() {
         title="Error"
         message={error.message || error}
         cancel={{
-          text: 'Close'
-          // callback: () => dispatch(cleanError())
+          text: 'Close',
+          callback: () => dispatch(cleanError())
         }}
       />
       <Form
         onSubmit={onSubmit}
-        initialValues={selectedItem}
         render={(formProps) => (
           <form onSubmit={formProps.handleSubmit} className={styles.container}>
             <h2 className={styles.title}>Login</h2>

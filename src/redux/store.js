@@ -8,6 +8,7 @@ import sessionsReducer from './sessions/reducer';
 import profilesReducer from './profiles/reducer';
 import clientsReducer from './clients/reducer';
 import applicationsReducer from './applications/reducer';
+import authReducer from './auth/reducer';
 import { postulantsReducer } from './postulants/reducer';
 import thunk from 'redux-thunk';
 
@@ -20,7 +21,8 @@ const reducers = combineReducers({
   applications: applicationsReducer,
   positions: positionsReducer,
   interviews: interviewsReducer,
-  postulants: postulantsReducer
+  postulants: postulantsReducer,
+  auth: authReducer
 });
 
 export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
