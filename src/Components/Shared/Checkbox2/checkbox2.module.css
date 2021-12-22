@@ -1,0 +1,40 @@
+.container{
+  display: flex;
+  padding: 12px 2px;
+  align-items: center;
+}
+.label{
+  font-size: 18px;
+  font-weight: 600;
+  color: #002147;
+}
+.checkbox{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-right: 8px;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: #d5d5d5;
+  border-radius: 5px;
+  border: #002147 solid 2px;
+  cursor: pointer;
+}
+.checkbox:after{
+  content:"✔";
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  display: none;
+}
+.checkbox:hover{
+  background-color: #a5a5a5;
+}
+.checkbox:checked{
+  background-color: #fec800;
+  border-color: #fec800;
+}
+.checkbox:checked:after{
+  display: block;
+}
