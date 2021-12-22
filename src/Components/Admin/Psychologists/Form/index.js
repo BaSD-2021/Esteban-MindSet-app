@@ -148,7 +148,6 @@ function PsychologistForm() {
         }
       }
     };
-    console.log(body);
     if (psychologistId) {
       dispatch(updatePsychologist(psychologistId, body)).then((response) => {
         if (response) {
