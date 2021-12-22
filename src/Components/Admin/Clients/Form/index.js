@@ -77,7 +77,7 @@ function clientForm() {
     if (!formValues.name) {
       errors.name = 'Name is required';
     }
-    if (formValues.name?.search(/[0-9]/) > 0) {
+    if (formValues.name?.search(/[0-9%$#"!&/()=?¡]/) > 0) {
       errors.name = 'Name must contain only letters and a space between';
     }
     if (!formValues.phone) {
@@ -101,7 +101,7 @@ function clientForm() {
     if (!value) {
       return 'Field is required';
     }
-    if (value.search(/[0-9]/) > 0) {
+    if (value.search(/[0-9%$#"!&/()=?¡]/) > 0) {
       return 'Must contain only letters';
     }
     return undefined;
