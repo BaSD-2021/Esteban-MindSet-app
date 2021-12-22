@@ -15,6 +15,7 @@ function Textarea(props) {
         cols={props.cols}
         {...props.input}
       ></textarea>
+      <div className={styles.messageError}>{props.meta.touched && props.meta.error}</div>
     </div>
   );
 }
