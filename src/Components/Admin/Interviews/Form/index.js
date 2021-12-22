@@ -126,8 +126,16 @@ function InterviewForm() {
     if (!formValues.date) {
       errors.date = 'Date is required';
     }
-    if (formValues.notes?.length < 3) {
-      errors.notes = 'Notes must be at least 3 characters';
+    if (!formValues.date?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      errors.date = 'Date invalid format';
+    }
+    if (formValues.notes) {
+      if (formValues.notes?.indexOf(' ') === -1) {
+        errors.notes = 'Notes must contain at least one space';
+      }
+      if (formValues.notes?.length < 3) {
+        errors.notes = 'Notes must be at least 3 characters';
+      }
     }
     return errors;
   };
