@@ -293,24 +293,223 @@ function PostulantForm() {
     if (!formValues.address) {
       errors.address = 'Address is required';
     }
+    if (formValues.address?.search(/[a-zA-Z]/) < 0 || formValues.address?.search(/[0-9]/) < 0) {
+      errors.address = 'Address must contain a letters and a numbers';
+    }
+    if (formValues.address?.indexOf(' ') === -1) {
+      errors.address = 'Address must contain at least one space';
+    }
+    if (formValues.address?.length < 6) {
+      errors.address = 'Address must contain at least 6 characters';
+    }
     // Birthday
     if (!formValues.birthday) {
       errors.birthday = 'Birthday is required';
+    }
+    if (!formValues.birthday?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      errors.birthday = 'Birthday invalid format';
     }
     //  Phone
     if (!formValues.phone) {
       errors.phone = 'Phone is required';
     }
+    if (!formValues.phone?.toString().match(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)) {
+      errors.phone = 'Phone format not valid';
+    }
+    if (formValues.phone?.length < 6) {
+      errors.phone = 'Phone must be at least 6 numbers';
+    }
     // Primary Studies
     if (!formValues.primarySD) {
       errors.primarySD = 'Primary studies start date is required';
     }
+    if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      errors.primarySD = 'Elementary start date invalid format';
+    }
     if (!formValues.primaryED) {
       errors.primaryED = 'Primary studies end date is required';
+    }
+    if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      errors.primarySD = 'Elementary end date invalid format';
+    }
+
+    const elementarySD = new Date(formValues.primarySD).getTime() / 1000;
+    const elementaryED = new Date(formValues.primaryED).getTime() / 1000;
+
+    if (elementarySD > elementaryED) {
+      errors.primaryED = 'Primary studies end date should be smaller than start date';
     }
     if (!formValues.primary) {
       errors.primary = 'Primary studies school is required';
     }
+    if (formValues.primary?.indexOf(' ') === -1) {
+      errors.primary = 'Elementary School Name must contain at least one space';
+    }
+    if (formValues.primary?.length < 3) {
+      errors.primary = 'Elementary School Name must contain at least 3 characters';
+    }
+    //  High School
+    if (formValues.secondarySD) {
+      if (!formValues.secondarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.secondarySD = 'High School start date invalid format';
+      }
+    }
+    if (formValues.secondarySD) {
+      if (!formValues.secondaryED?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.secondaryED = 'High School end date invalid format';
+      }
+    }
+    const secondarySD = new Date(formValues.secondarySD).getTime() / 1000;
+    const secondaryED = new Date(formValues.secondaryED).getTime() / 1000;
+
+    if (secondarySD > secondaryED) {
+      errors.secondaryED = 'High School end date should not be smaller than start date';
+    }
+    if (formValues.secondary) {
+      if (formValues.secondary?.indexOf(' ') === -1) {
+        errors.secondary = 'High School Name must contain at least one space';
+      }
+      if (formValues.secondary?.length < 3) {
+        errors.secondary = 'High School Name must contain at least 3 characters';
+      }
+    }
+    //  Superior Studies
+    if (formValues.tertiarySD) {
+      if (!formValues.tertiarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.tertiarySD = 'Superior Studies start date invalid format';
+      }
+    }
+    if (formValues.tertiarySD) {
+      if (!formValues.tertiaryED?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.tertiaryED = 'Superior Studies end date invalid format';
+      }
+    }
+    const tertiarySD = new Date(formValues.tertiarySD).getTime() / 1000;
+    const tertiaryED = new Date(formValues.tertiaryED).getTime() / 1000;
+
+    if (tertiarySD > tertiaryED) {
+      errors.tertiaryED = 'Superior Studies end date should not be smaller than start date';
+    }
+    if (formValues.tertiaryDescription) {
+      if (formValues.tertiaryDescription?.indexOf(' ') === -1) {
+        errors.tertiaryDescription = 'Superior Studies description must contain at least one space';
+      }
+      if (formValues.tertiaryDescription?.length < 3) {
+        errors.tertiaryDescription =
+          'Superior Studies description must contain at least 3 characters';
+      }
+    }
+    if (formValues.tertiary) {
+      if (formValues.tertiary?.indexOf(' ') === -1) {
+        errors.tertiary = 'Superior Studies Name must contain at least one space';
+      }
+      if (formValues.tertiary?.length < 3) {
+        errors.tertiary = 'Superior Studies Name must contain at least 3 characters';
+      }
+    }
+
+    //  university Studies
+    if (formValues.universitySD) {
+      if (!formValues.universitySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.universitySD = 'University Studies start date invalid format';
+      }
+    }
+    if (formValues.universitySD) {
+      if (!formValues.universityED?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.universityED = 'University Studies end date invalid format';
+      }
+    }
+    const universitySD = new Date(formValues.universitySD).getTime() / 1000;
+    const universityED = new Date(formValues.universityED).getTime() / 1000;
+
+    if (universitySD > universityED) {
+      errors.universityED = 'University Studies end date should not be smaller than start date';
+    }
+    if (formValues.universityDescription) {
+      if (formValues.universityDescription?.indexOf(' ') === -1) {
+        errors.universityDescription =
+          'University Studies description must contain at least one space';
+      }
+      if (formValues.universityDescription?.length < 3) {
+        errors.universityDescription =
+          'University Studies description must contain at least 3 characters';
+      }
+    }
+    if (formValues.university) {
+      if (formValues.university?.indexOf(' ') === -1) {
+        errors.university = 'University Studies Name must contain at least one space';
+      }
+      if (formValues.university?.length < 3) {
+        errors.university = 'University Studies Name must contain at least 3 characters';
+      }
+    }
+    //  Informal Studies
+    if (formValues.informalSD) {
+      if (!formValues.informalSD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.informalSD = 'Informal Studies start date invalid format';
+      }
+    }
+    if (formValues.informalSD) {
+      if (!formValues.informalED?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.informalED = 'Informal Studies end date invalid format';
+      }
+    }
+    const informalSD = new Date(formValues.informalSD).getTime() / 1000;
+    const informalED = new Date(formValues.informalED).getTime() / 1000;
+
+    if (informalSD > informalED) {
+      errors.informalED = 'Informal Studies end date should not be smaller than start date';
+    }
+    if (formValues.informalDescription) {
+      if (formValues.informalDescription?.indexOf(' ') === -1) {
+        errors.informalDescription = 'Informal Studies description must contain at least one space';
+      }
+      if (formValues.informalDescription?.length < 3) {
+        errors.informalDescription =
+          'Informal Studies description must contain at least 3 characters';
+      }
+    }
+    if (formValues.informal) {
+      if (formValues.informal?.indexOf(' ') === -1) {
+        errors.informal = 'Informal Studies Name must contain at least one space';
+      }
+      if (formValues.informal?.length < 3) {
+        errors.informal = 'Informal Studies Name must contain at least 3 characters';
+      }
+    }
+    //  Work Experience
+    if (formValues.company) {
+      if (formValues.company?.length < 3) {
+        errors.company = 'Work Experience Name must contain at least 3 characters';
+      }
+    }
+    if (formValues.workExperienceSD) {
+      if (!formValues.workExperienceSD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.workExperienceSD = 'Work Experience start date invalid format';
+      }
+    }
+    if (formValues.workExperienceED) {
+      if (!formValues.workExperienceED?.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        errors.workExperienceED = 'Work Experience end date invalid format';
+      }
+    }
+    const workExperienceSD = new Date(formValues.workExperienceSD).getTime() / 1000;
+    const workExperienceED = new Date(formValues.workExperienceED).getTime() / 1000;
+
+    if (workExperienceSD > workExperienceED) {
+      errors.workExperienceED = 'Work Experience end date should not be smaller than start date';
+    }
+    if (formValues.workExperienceDescription) {
+      if (formValues.workExperienceDescription?.indexOf(' ') === -1) {
+        errors.workExperienceDescription =
+          'Work Experience description must contain at least one space';
+      }
+      if (formValues.workExperienceDescription?.length < 3) {
+        errors.workExperienceDescription =
+          'Work Experience description must contain at least 3 characters';
+      }
+    }
+
     return errors;
   };
 
@@ -424,8 +623,8 @@ function PostulantForm() {
             <Field
               title="Phone"
               name="phone"
-              placeholder="123456789"
-              type="tel"
+              placeholder="(123)-456-7899"
+              type="number"
               component={Input2}
               disabled={formProps.submitting}
               initialValue={phoneValue}

@@ -11,6 +11,7 @@ function Input(props) {
         type={props.type}
         placeholder={props.placeholder}
         disabled={props.disabled}
+        onKeyDown={props.onKeyDown}
         {...props.input}
       />
       <div className={styles.messageError}>{props.meta.touched && props.meta.error}</div>
