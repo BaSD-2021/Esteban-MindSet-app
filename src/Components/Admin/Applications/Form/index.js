@@ -123,8 +123,13 @@ function ApplicationForm() {
     if (!formValues.interview) {
       errors.interview = 'Interview is required';
     }
-    if (formValues.result?.length < 3) {
-      errors.result = 'Result must be at least 3 characters';
+    if (formValues.result) {
+      if (formValues.result?.indexOf(' ') === -1) {
+        errors.workExperienceDescription = 'Result must contain at least one space';
+      }
+      if (formValues.result?.length < 3) {
+        errors.result = 'Result must be at least 3 characters';
+      }
     }
     return errors;
   };
