@@ -97,9 +97,6 @@ function PositionForm() {
     if (!formValues.jobDescription) {
       errors.jobDescription = 'Job Description is required';
     }
-    if (!formValues.jobDescription) {
-      errors.jobDescription = 'Job Description is required';
-    }
     if (!formValues.vacancy) {
       errors.vacancy = 'Vacancy is required';
     }
@@ -157,6 +154,7 @@ function PositionForm() {
               label="Vacancy"
               placeholder="Insert number of vacancies"
               disabled={formProps.submitting}
+              type="number"
               component={Input}
               validate={required}
             />
