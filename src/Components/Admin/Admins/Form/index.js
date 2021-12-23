@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input2 from 'Components/Shared/Input2';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 
@@ -10,14 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createAdmin, getAdminById, updateAdmin } from 'redux/admins/thunks';
 import { cleanError, cleanSelectedAdmin } from 'redux/admins/actions';
 
-function Form() {
-  const [nameValue, setNameValue] = useState('');
-  const [usernameValue, setUsernameValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-
+function AdminsForm() {
   const error = useSelector((store) => store.admins.error);
-  const isLoading = useSelector((store) => store.admins.isFetching);
-  const selectedAdmin = useSelector((store) => store.admins.selectedAdmin);
+  const selectedItem = useSelector((store) => store.admins.selectedAdmin);
 
   const dispatch = useDispatch();
 
@@ -32,44 +28,22 @@ function Form() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(selectedAdmin).length) {
-      setNameValue(selectedAdmin.name);
-      setUsernameValue(selectedAdmin.username);
-      setPasswordValue(selectedAdmin.password);
-    }
-  }, [selectedAdmin]);
-
-  useEffect(() => {
     return () => {
       dispatch(cleanSelectedAdmin());
     };
   }, []);
 
-  const save = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (formValues) => {
     const adminId = query.get('_id');
 
     if (adminId) {
-      dispatch(
-        updateAdmin(adminId, {
-          name: nameValue,
-          username: usernameValue,
-          password: passwordValue
-        })
-      ).then((response) => {
+      dispatch(updateAdmin(adminId, formValues)).then((response) => {
         if (response) {
           history.push('/admin/admins/list');
         }
       });
     } else {
-      dispatch(
-        createAdmin({
-          name: nameValue,
-          username: usernameValue,
-          password: passwordValue
-        })
-      ).then((response) => {
+      dispatch(createAdmin(formValues)).then((response) => {
         if (response) {
           history.push('/admin/admins/list');
         }
@@ -77,52 +51,83 @@ function Form() {
     }
   };
 
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.name) {
+      errors.name = 'Name is required';
+    }
+    if (formValues.name?.length < 3) {
+      errors.name = 'Name must be at least 3 characters';
+    }
+    if (!formValues.username) {
+      errors.username = 'Username is required';
+    }
+    if (formValues.username?.length < 3) {
+      errors.username = 'Username must be at least 3 characters';
+    }
+    if (!formValues.password) {
+      errors.password = 'Password is required';
+    }
+    if (formValues.password?.search(/[0-9]/) < 0 || formValues.password?.search(/[a-zA-Z]/) < 0) {
+      errors.password = 'Password must contain numbers and letters';
+    } else if (formValues.password?.length < 6) {
+      errors.password = 'Password must contain at least 6 characters';
+    }
+    return errors;
+  };
+
   return (
-    <form className={styles.container} onSubmit={save}>
-      <h2 className={styles.title}>Admin</h2>
-      <Input
-        title="Name"
-        disabled={isLoading}
-        type="text"
-        name="name"
-        placeholder="Paul Walker"
-        value={nameValue}
-        onChange={(e) => setNameValue(e.target.value)}
-        required
-      />
-      <Input
-        title="User Name"
-        disabled={isLoading}
-        type="text"
-        name="username"
-        placeholder="paul.walker"
-        value={usernameValue}
-        onChange={(e) => setUsernameValue(e.target.value)}
-        required
-      />
-      <Input
-        title="Password"
-        disabled={isLoading}
-        type="password"
-        name="name"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
-        required
-      />
-      <div className={styles.buttonContainer}>
-        <Button label="Save" disabled={isLoading} type="submit"></Button>
-      </div>
+    <>
       <Modal
-        show={!!error}
+        show={!!error || !!error.message}
         title="Error"
-        message={error}
+        message={error.message || error}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
         }}
       />
-    </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        initialValues={selectedItem}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Admin</h2>
+            <Field
+              name="name"
+              label="Name"
+              placeholder="Insert Name"
+              disabled={formProps.submitting}
+              component={Input2}
+            />
+            <Field
+              name="username"
+              label="Username"
+              placeholder="Insert Username"
+              disabled={formProps.submitting}
+              component={Input2}
+            />
+            <Field
+              name="password"
+              label="Password"
+              placeholder="Insert Password"
+              type="password"
+              disabled={formProps.submitting}
+              component={Input2}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
+    </>
   );
 }
 
-export default Form;
+export default AdminsForm;
