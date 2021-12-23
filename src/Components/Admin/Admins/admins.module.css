@@ -6,31 +6,6 @@
   align-items: center;
 }
 
-.table {
-  margin: 20px;
-}
-
-.thead {
-  background-color: #002147;
-}
-
-.thead th {
-  color: #F0F4F9;
-  font-size: 21px;
-  padding: 5px 40px;
-}
-
-.tableRow {
-  text-align: center;
-  border-bottom: 1px solid #BDBDBD;
-  padding: 5px 40px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
 .loading{
   margin: 15px;
   padding: 8px;
