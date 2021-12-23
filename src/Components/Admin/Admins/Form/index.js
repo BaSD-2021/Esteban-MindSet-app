@@ -56,11 +56,17 @@ function AdminsForm() {
     if (!formValues.name) {
       errors.name = 'Name is required';
     }
+    if (!formValues.name?.match(/^[a-zA-Z\u00C0-\u017F\s]+$/)) {
+      errors.name = 'Name allows only letters and spaces';
+    }
     if (formValues.name?.length < 3) {
       errors.name = 'Name must be at least 3 characters';
     }
     if (!formValues.username) {
       errors.username = 'Username is required';
+    }
+    if (formValues.username?.match(/[^-\s]/)) {
+      errors.username = 'Username do not allow spaces';
     }
     if (formValues.username?.length < 3) {
       errors.username = 'Username must be at least 3 characters';
