@@ -257,8 +257,8 @@ function PostulantForm() {
     if (!formValues.firstName) {
       errors.firstName = 'First Name is required';
     }
-    if (!formValues.firstName?.match(/^[a-zA-Z]+$/)) {
-      errors.firstName = 'First name must contain only letters';
+    if (!formValues.firstName?.match(/^[a-zA-Z\u00C0-\u017F\s]+$/)) {
+      errors.firstName = 'First name must contain only letters and spaces';
     }
     if (formValues.firstName?.length < 2) {
       errors.firstName = 'First name must be at least 2 letters';
@@ -267,18 +267,21 @@ function PostulantForm() {
     if (!formValues.lastName) {
       errors.lastName = 'Last Name is required';
     }
-    if (!formValues.lastName?.match(/^[a-zA-Z]+$/)) {
-      errors.lastName = 'Last name must contain only letters';
+    if (!formValues.lastName?.match(/^[a-zA-Z\u00C0-\u017F\s]+$/)) {
+      errors.lastName = 'Last name must contain only letters and spaces';
     }
     if (formValues.lastName?.length < 2) {
       errors.lastName = 'Last name must be at least 2 letters';
     }
     // Email
-    if (!formValues.email) {
-      errors.email = 'Email is required';
-    }
     if (!formValues.email?.match(/^[^@]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
       errors.email = 'Fill in a valid email format';
+    }
+    if (formValues.email?.match(/\s/g)) {
+      errors.email = 'Email do not allow spaces';
+    }
+    if (!formValues.email) {
+      errors.email = 'Email is required';
     }
     // Password
     if (!formValues.password) {
@@ -293,10 +296,13 @@ function PostulantForm() {
     if (!formValues.address) {
       errors.address = 'Address is required';
     }
-    if (formValues.address?.search(/[a-zA-Z]/) < 0 || formValues.address?.search(/[0-9]/) < 0) {
-      errors.address = 'Address must contain a letters and a numbers';
+    if (
+      !formValues.address?.search(/^[a-zA-Z\u00C0-\u017F/s]+$/) < 0 ||
+      formValues.address?.search(/[0-9]/) < 0
+    ) {
+      errors.address = 'Address must contain letters and numbers';
     }
-    if (formValues.address?.indexOf(' ') === -1) {
+    if (!formValues.address?.match(/\s/g)) {
       errors.address = 'Address must contain at least one space';
     }
     if (formValues.address?.length < 6) {
