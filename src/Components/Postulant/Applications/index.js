@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from 'Components/Shared/Modal';
-import { useHistory } from 'react-router-dom';
-import Table from 'Components/Shared/Table';
+import Table from 'Components/Shared/TableToShow';
 import { useDispatch, useSelector } from 'react-redux';
 import { getApplications } from 'redux/applications/thunks';
 import { cleanError } from 'redux/applications/actions';
 
 function Applications() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const [processedApplications, setProcessedApplications] = useState([]);
   const applications = useSelector((store) => store.applications.list);
@@ -71,12 +69,7 @@ function Applications() {
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
         ) : (
-          <Table
-            columns={columnName}
-            data={processedApplications}
-            onRowClick={(item) => history.push(`/admin/applications/form?_id=${item._id}`)}
-            actions={[]}
-          />
+          <Table columns={columnName} data={processedApplications} actions={[]} />
         )}
       </div>
     </section>
