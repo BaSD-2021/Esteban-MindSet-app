@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './interviews.module.css';
 import Modal from 'Components/Shared/Modal';
-import Table from 'Components/Shared/Table';
+import Table from 'Components/Shared/TableToShow';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInterviews, updateInterview } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/interviews/actions';
@@ -9,7 +9,6 @@ import { cleanError } from 'redux/interviews/actions';
 function Interviews() {
   const [showModal, setShowModal] = useState(false);
   const [selectedIdInterview, setIdInterview] = useState('');
-  const [disableArrayValue, setDisableArrayValue] = useState([]);
   const [interviewsOfOnePostulant, setInterviewsOfOnePostulant] = useState([]);
 
   const dispatch = useDispatch();
@@ -18,22 +17,10 @@ function Interviews() {
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
 
-  let disableArray = [];
-
   useEffect(() => {
     if (!interviews.length) {
       dispatch(getInterviews());
     }
-
-    interviewsOfOnePostulant.map((interview) => {
-      if (interview.status === 'assigned' || interview.status === 'successful') {
-        disableArray.push('false');
-      } else {
-        disableArray.push('true');
-      }
-    });
-
-    setDisableArrayValue(disableArray);
   }, []);
 
   useEffect(() => {
