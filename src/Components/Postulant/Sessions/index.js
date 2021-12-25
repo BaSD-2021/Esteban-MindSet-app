@@ -5,7 +5,7 @@ import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSessions } from 'redux/sessions/thunks';
+import { getSessions, updateSession } from 'redux/sessions/thunks';
 import { cleanError } from 'redux/sessions/actions';
 
 function Sessions() {
@@ -40,6 +40,9 @@ function Sessions() {
       })
     );
   };
+  const hasScheduleSessions = () => {
+    return sessions.filter((session) => session.status === 'assigned').length > 0;
+  };
 
   return (
     <section className={styles.container}>
@@ -65,12 +68,29 @@ function Sessions() {
             ]}
             data={processedSessions}
             onRowClick={(item) => history.push(`/postulant/sessions/form?_id=${item._id}`)}
-            actions={[]}
+            actions={[
+              {
+                text: 'Cancel',
+                callback: (e, item) => {
+                  e.stopPropagation();
+                  dispatch(
+                    updateSession(item._id, {
+                      ...item,
+                      status: 'cancelled'
+                    })
+                  );
+                }
+              }
+            ]}
           />
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <Button label="ADD SESSION" onClick={() => history.push('/postulant/sessions/form')} />
+        <Button
+          disabled={hasScheduleSessions()}
+          label="ADD SESSION"
+          onClick={() => history.push('/postulant/sessions/form')}
+        />
       </div>
     </section>
   );

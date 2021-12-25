@@ -33,3 +33,7 @@
 .secondary:hover {
   cursor: pointer;
 }
+.disabled, .disabled:hover{
+  background-color: #616161;
+  color: #fff;
+}
