@@ -98,6 +98,7 @@ export const updateSession = (id, values) => {
       },
       body: JSON.stringify(values)
     };
+
     return fetch(`${process.env.REACT_APP_API}/sessions/${id}`, options)
       .then((response) => {
         if (response.status !== 200) {
@@ -109,6 +110,7 @@ export const updateSession = (id, values) => {
       })
       .then((response) => {
         dispatch(updateSessionSuccess(response.data));
+        dispatch(getSessions());
         return response.data;
       })
       .catch((error) => {
