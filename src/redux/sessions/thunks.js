@@ -109,6 +109,7 @@ export const updateSession = (id, values) => {
       })
       .then((response) => {
         dispatch(updateSessionSuccess(response.data));
+        dispatch(getSessions());
         return response.data;
       })
       .catch((error) => {
