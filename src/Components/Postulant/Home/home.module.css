@@ -17,7 +17,8 @@
   justify-content: space-around;
 }
 .bottomContainer{
-  width: 45rem;
+  display: flex;
+  /* width: 45rem; */
   margin-bottom: 16px;
 }
 .widgetTitle{

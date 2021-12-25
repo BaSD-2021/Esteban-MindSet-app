@@ -5,8 +5,9 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getApplications } from 'redux/applications/thunks';
 import { getPositions } from 'redux/positions/thunks';
-import { getSessions } from 'redux/sessions/thunks';
+import { getSessions, updateSession } from 'redux/sessions/thunks';
 import { getPostulants } from 'redux/postulants/thunks';
+import { getInterviews, updateInterview } from 'redux/interviews/thunks';
 
 function Home() {
   const history = useHistory();
@@ -15,14 +16,15 @@ function Home() {
   const applications = useSelector((store) => store.applications.list);
   const positions = useSelector((store) => store.positions.list);
   const sessions = useSelector((store) => store.sessions.list);
+  const interviews = useSelector((store) => store.interviews.list);
   const postulants = useSelector((store) => store.postulants.list);
   const isLoading = useSelector((store) => store.applications.isFetching);
 
   useEffect(() => {
-    dispatch(getApplications());
     dispatch(getPositions());
     dispatch(getSessions());
     dispatch(getPostulants());
+    dispatch(getInterviews());
   }, []);
 
   useEffect(() => {
@@ -67,6 +69,11 @@ function Home() {
     .reverse()
     .slice(0, 4);
 
+  const lastInterviews = interviews
+    .filter((interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID)
+    .reverse()
+    .slice(0, 4);
+
   const applicationsColumns = [
     {
       name: 'Job Description',
@@ -90,6 +97,11 @@ function Home() {
     { name: 'Psychologist', value: 'psychologist.lastName' },
     { name: 'Date', value: 'date' },
     { name: 'Status', value: 'status' }
+  ];
+  const interviewsColumns = [
+    { name: 'Client', value: 'client.name' },
+    { name: 'Status', value: 'status' },
+    { name: 'Date', value: 'date' }
   ];
 
   return (
@@ -117,7 +129,20 @@ function Home() {
                 columns={sessionsColumns}
                 data={lastSessions}
                 onRowClick={(item) => history.push(`/postulant/sessions/form?_id=${item._id}`)}
-                actions={[]}
+                actions={[
+                  {
+                    text: 'Cancel',
+                    callback: (e, item) => {
+                      e.stopPropagation();
+                      dispatch(
+                        updateSession(item._id, {
+                          ...item,
+                          status: 'cancelled'
+                        })
+                      );
+                    }
+                  }
+                ]}
               />
             </div>
           </div>
@@ -129,6 +154,28 @@ function Home() {
                 data={lastApplications}
                 onRowClick={(item) => history.push(`/postulant/applications/form?_id=${item._id}`)}
                 actions={[]}
+              />
+            </div>
+            <div className={styles.widget}>
+              <h3 className={styles.widgetTitle}>Incoming Interviews</h3>
+              <Table
+                columns={interviewsColumns}
+                data={lastInterviews}
+                onRowClick={(item) => history.push(`/postulant/interviews/form?_id=${item._id}`)}
+                actions={[
+                  {
+                    text: 'Cancel',
+                    callback: (e, item) => {
+                      e.stopPropagation();
+                      dispatch(
+                        updateInterview(item._id, {
+                          ...item,
+                          status: 'cancelled'
+                        })
+                      );
+                    }
+                  }
+                ]}
               />
             </div>
           </div>
