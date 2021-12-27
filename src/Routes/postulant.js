@@ -12,7 +12,7 @@ const postulantRoutes = [
   { name: 'Home', path: '/postulant' },
   { name: 'Applications', path: '/postulant/applications' },
   { name: 'Interviews', path: '/postulant/interviews/list' },
-  { name: 'Positions', path: '/postulant/positions' },
+  { name: 'Open Positions', path: '/postulant/positions' },
   { name: 'Profile', path: '/postulant/profile' },
   { name: 'Sessions', path: '/postulant/sessions' },
   { name: 'Sign Up', path: '/postulant/signup' }

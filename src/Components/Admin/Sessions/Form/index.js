@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
-import Textarea from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
-import Select from 'Components/Shared/Select';
+import Input from 'Components/Shared/Input2';
+import Select from 'Components/Shared/Select2';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import { getSessionById, createSession, updateSession } from 'redux/sessions/thunks';
 import { getPsychologists } from 'redux/psychologists/thunks';
 import { getPostulants } from 'redux/postulants/thunks';
@@ -21,31 +21,12 @@ function sessionsForm() {
   const [notesValue, setNotesValue] = useState('');
   const [selectPostulant, setSelectPostulant] = useState([]);
   const [selectPsychologist, setSelectPsychologist] = useState([]);
+
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((store) => store.sessions.error);
-  const isLoading = useSelector((store) => store.sessions.isFetching);
   const selectedSession = useSelector((store) => store.sessions.selectedItem);
-
-  const onChangeDateInput = (event) => {
-    setDateValue(event.target.value);
-  };
-
-  const onChangePostulantInput = (event) => {
-    setPostulantValue(event.target.value);
-  };
-
-  const onChangePsychoInput = (event) => {
-    setPsychoValue(event.target.value);
-  };
-
-  const onChangeStatusInput = (event) => {
-    setStatusValue(event.target.value);
-  };
-  const onChangeNotesInput = (event) => {
-    setNotesValue(event.target.value);
-  };
 
   useEffect(() => {
     if (Object.keys(selectedSession).length) {
@@ -86,15 +67,14 @@ function sessionsForm() {
     }
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
-      date: dateValue,
-      postulant: postulantValue,
-      psychologist: psychoValue,
-      status: statusValue,
-      notes: notesValue
+      date: formValues.date,
+      postulant: formValues.postulant,
+      psychologist: formValues.psychologist,
+      status: formValues.status,
+      notes: formValues.notes
     };
 
     if (sessionId) {
@@ -112,6 +92,10 @@ function sessionsForm() {
     }
   };
 
+  const required = (value) => {
+    return value ? undefined : 'Required';
+  };
+
   return (
     <div className={styles.container}>
       <Modal
@@ -123,62 +107,73 @@ function sessionsForm() {
           callback: () => dispatch(cleanError())
         }}
       />
-      <form className={styles.form} onSubmit={onSubmit}>
-        <h2 className={styles.title}>Session</h2>
-        <Select
-          title="Postulant"
-          id="postulant"
-          name="postulant"
-          value={postulantValue}
-          onChange={onChangePostulantInput}
-          arrayToMap={selectPostulant}
-          disabled={isLoading}
-          required
-        />
-        <Select
-          title="Psychologist"
-          id="psychologist"
-          name="psychologist"
-          value={psychoValue}
-          onChange={onChangePsychoInput}
-          arrayToMap={selectPsychologist}
-          disabled={isLoading}
-          required
-        />
-        <Select
-          title="Status"
-          id="status"
-          name="status"
-          value={statusValue}
-          onChange={onChangeStatusInput}
-          arrayToMap={[
-            { value: 'assigned', label: 'Assigned' },
-            { value: 'successful', label: 'Successful' },
-            { value: 'cancelled', label: 'Cancelled' }
-          ]}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Date"
-          name="date"
-          value={dateValue}
-          onChange={onChangeDateInput}
-          type="datetime-local"
-          disabled={isLoading}
-          required
-        />
-        <Textarea
-          title="Notes"
-          name="notes"
-          value={notesValue}
-          onChange={onChangeNotesInput}
-          disabled={isLoading}
-        />
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        initialValues={selectedSession}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Session</h2>
+            <Field
+              name="postulant"
+              title="Select a postulant"
+              disabled={formProps.submitting}
+              component={Select}
+              validate={required}
+              arrayToMap={selectPostulant}
+              initialValue={postulantValue}
+              value={postulantValue}
+            />
+            <Field
+              name="psychologist"
+              title="Select a psychologist"
+              disabled={formProps.submitting}
+              component={Select}
+              validate={required}
+              arrayToMap={selectPsychologist}
+              initialValue={psychoValue}
+              value={psychoValue}
+            />
+            <Field
+              name="status"
+              title="Status"
+              disabled={formProps.submitting}
+              component={Select}
+              validate={required}
+              arrayToMap={[
+                { value: 'assigned', label: 'Assigned' },
+                { value: 'successful', label: 'Successful' },
+                { value: 'cancelled', label: 'Cancelled' }
+              ]}
+              initialValue={statusValue}
+            />
+            <Field
+              name="date"
+              label="Date"
+              type="datetime-local"
+              disabled={formProps.submitting}
+              placeholder="Select a date"
+              component={Input}
+              validate={required}
+              initialValue={dateValue}
+            />
+            <Field
+              name="notes"
+              title="Notes"
+              placeholder="Write here your notes"
+              component={Input}
+              initialValue={notesValue}
+              value={notesValue}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
