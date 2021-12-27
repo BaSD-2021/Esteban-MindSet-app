@@ -1,11 +1,12 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input2 from 'Components/Shared/Input2';
 import Button from 'Components/Shared/Button';
-import Select from 'Components/Shared/Select';
+import Select2 from 'Components/Shared/Select2';
 import Modal from 'Components/Shared/Modal';
 import {
   getApplicationById,
@@ -17,43 +18,28 @@ import { getInterviews } from 'redux/interviews/thunks';
 import { getPostulants } from 'redux/postulants/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/applications/actions';
 
-function applicationForm() {
-  const [positionId, setPositionId] = useState('');
+function ApplicationForm() {
+  const [positionId, setPositionId] = useState(undefined);
   const [postulantId, setPostulantId] = useState('');
   const [date, setDate] = useState('');
   const [result, setResult] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
   const [processedPositions, setProcessedPositions] = useState([]);
   const [processedPostulants, setProcessedPostulants] = useState([]);
   const [processedInterviews, setProcessedInterviews] = useState([]);
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
-  const selectedApplication = useSelector((store) => store.applications.selectedItem);
-  const isLoading = useSelector((store) => store.postulants.isLoading);
+  const selectedItem = useSelector((store) => store.applications.selectedItem);
   const error = useSelector((store) => store.applications.error);
 
-  const onChangePositionId = (event) => {
-    setPositionId(event.target.value);
-  };
-  const onChangePostulantId = (event) => {
-    setPostulantId(event.target.value);
-  };
-  const onChangeDate = (event) => {
-    setDate(event.target.value);
-  };
-  const onChangeResult = (event) => {
-    setResult(event.target.value);
-  };
-
   useEffect(() => {
-    if (Object.keys(selectedApplication).length) {
-      setPositionId(selectedApplication.positions?._id);
-      setPostulantId(selectedApplication.postulants?._id);
-      setDate(selectedApplication.interview?._id);
-      setResult(selectedApplication.result);
+    if (Object.keys(selectedItem).length) {
+      setPositionId(selectedItem.positions?._id);
+      setPostulantId(selectedItem.postulants?._id);
+      setDate(selectedItem.interview?._id);
+      setResult(selectedItem.result);
     }
-  }, [selectedApplication]);
+  }, [selectedItem]);
 
   useEffect(() => {
     return () => {
@@ -101,16 +87,14 @@ function applicationForm() {
     });
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onSubmit = (formValues) => {
     const applicationId = query.get('_id');
 
     const body = {
-      positions: positionId,
-      postulants: postulantId,
-      interview: date,
-      result: result
+      positions: formValues.position,
+      postulants: formValues.postulant,
+      interview: formValues.interview,
+      result: formValues.result
     };
 
     if (applicationId) {
@@ -128,65 +112,103 @@ function applicationForm() {
     }
   };
 
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.position) {
+      errors.position = 'Position is required';
+    }
+    if (!formValues.postulant) {
+      errors.postulant = 'Postulant is required';
+    }
+    if (!formValues.interview) {
+      errors.interview = 'Interview is required';
+    }
+    if (formValues.result) {
+      if (formValues.result?.indexOf(' ') === -1) {
+        errors.workExperienceDescription = 'Result must contain at least one space';
+      }
+      if (formValues.result?.length < 3) {
+        errors.result = 'Result must be at least 3 characters';
+      }
+    }
+    return errors;
+  };
+
+  const required = (value) => {
+    return value ? undefined : 'Required';
+  };
+
   return (
     <div className={styles.container}>
       <Modal
-        show={!!error || !!errorMessage}
+        show={!!error || !!error.message}
         title="Error"
-        message={error || errorMessage}
+        message={error || error.message}
         cancel={{
           text: 'Close',
           callback: () => {
             dispatch(cleanError());
-            setErrorMessage(null);
           }
         }}
       />
-      <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Applications</h2>
-        <Select
-          title="Position"
-          id="positionId"
-          name="positionId"
-          value={positionId}
-          onChange={onChangePositionId}
-          arrayToMap={processedPositions}
-          required
-        />
-        <Select
-          title="Postulant"
-          id="postulantId"
-          name="postulantId"
-          value={postulantId}
-          onChange={onChangePostulantId}
-          arrayToMap={processedPostulants}
-          required
-        />
-        <Select
-          title="Interview"
-          id="interview"
-          name="interview"
-          value={date}
-          onChange={onChangeDate}
-          arrayToMap={processedInterviews}
-          required
-        />
-        <Input
-          title="Result"
-          id="result"
-          name="result"
-          type="text"
-          required
-          value={result}
-          onChange={onChangeResult}
-          disabled={isLoading}
-        />
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Applications</h2>
+            <Field
+              name="position"
+              title={'Select a Position'}
+              component={Select2}
+              disabled={formProps.submitting}
+              validate={required}
+              arrayToMap={processedPositions}
+              initialValue={positionId}
+              value={positionId}
+            />
+            <Field
+              name="postulant"
+              title={'Select a Postulant'}
+              component={Select2}
+              disabled={formProps.submitting}
+              validate={required}
+              arrayToMap={processedPostulants}
+              initialValue={postulantId}
+              value={postulantId}
+            />
+            <Field
+              name="interview"
+              title={'Select an Interview'}
+              component={Select2}
+              disabled={formProps.submitting}
+              validate={required}
+              arrayToMap={processedInterviews}
+              initialValue={date}
+              value={date}
+            />
+            <Field
+              title="Result"
+              name="result"
+              label="Result"
+              type="text"
+              placeholder="Insert Result"
+              disabled={formProps.submitting}
+              component={Input2}
+              validate={(value) => (value ? undefined : 'Required')}
+              initialValue={result}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
-
-export default applicationForm;
+export default ApplicationForm;
