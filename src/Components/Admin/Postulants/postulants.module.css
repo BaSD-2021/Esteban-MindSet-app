@@ -6,36 +6,6 @@
   align-items: center;
 }
 
-.table a {
-  text-decoration: none;
-  color: #002147;
-}
-
-.table a:hover{
-  color: #005cc6;
-  cursor: pointer;
-}
-
-.table {
-  background-color: #F0F4F9;
-  padding: 10px;
-  margin: 25px 10px 30px 10px;
-  border-radius: 10px;
-}
-
-.table tr {
-  color: #002147;
-}
-
-.table td {
-  padding: 0 20px 0 20px;
-}
-
-.showError{
-  margin: 15px;
-  color: #8f0000;
-}
-
 .loading{
   margin: 15px;
   padding: 8px;

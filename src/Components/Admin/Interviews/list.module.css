@@ -7,39 +7,6 @@
   margin-bottom: 30px;
 }
 
-.table {
-  background-color: #F0F4F9;
-  padding: 10px;
-  margin: 25px 10px 30px 10px;
-  border-radius: 2px;
-}
-
-.thead tr {
-  padding: 30px;
-}
-
-.thead td {
-  text-align: center;
-  font-weight: bolder;
-  color: #002147;
-  padding: 10px;
-}
-
-.td {
-  text-align: center;
-  color: #002147;
-}
-
-.tbody tr{
-  cursor: pointer;
-}
-
-.error {
-  color: #f00;
-  font-weight: bold;
-  font-size: 18px;
-}
-
 .title {
   font-weight: bolder;
   font-size: 25px;
