@@ -7,26 +7,27 @@
   margin-bottom: 30px;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: #f00;
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .title {
   font-weight: bolder;
   font-size: 25px;
   color: #002147;
+  text-align: center;
   margin: 10px;
-}
-
-.loading{
-  margin: 15px;
-  padding: 8px;
-  font-size: 20px;
-  color: #2e2c2c;
-  border: 1px solid #BDBDBD;
-  border-radius: 5px;
 }
 
 .buttonContainer{
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin-top: 25px;
 }
-
-

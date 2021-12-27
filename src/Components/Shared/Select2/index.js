@@ -1,4 +1,6 @@
-import styles from './select.module.css';
+import React from 'react';
+import styles from './select2.module.css';
+
 function Select({ title, id, type, required, style, arrayToMap, disabled, ...props }) {
   const hasError = !!(props.meta.touched && props.meta.error);
   return (
@@ -30,4 +32,5 @@ function Select({ title, id, type, required, style, arrayToMap, disabled, ...pro
     </div>
   );
 }
+
 export default Select;
