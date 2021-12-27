@@ -98,6 +98,7 @@ export const updateSession = (id, values) => {
       },
       body: JSON.stringify(values)
     };
+
     return fetch(`${process.env.REACT_APP_API}/sessions/${id}`, options)
       .then((response) => {
         if (response.status !== 200) {
