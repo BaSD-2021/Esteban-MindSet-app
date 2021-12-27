@@ -2,19 +2,20 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input from 'Components/Shared/Input2';
 import Button from 'Components/Shared/Button';
-import Checkbox from 'Components/Shared/Checkbox';
+import Checkbox from 'Components/Shared/Checkbox2';
 import Modal from 'Components/Shared/Modal';
 import { cleanError, cleanSelectedItem } from 'redux/psychologists/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import {
   createPsychologist,
   getPsychologistById,
   updatePsychologist
 } from 'redux/psychologists/thunks';
 
-function Form() {
+function PsychologistForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
@@ -48,7 +49,6 @@ function Form() {
   const history = useHistory();
 
   const error = useSelector((store) => store.psychologists.error);
-  const isLoading = useSelector((store) => store.psychologists.isFetching);
   const selectedItem = useSelector((store) => store.psychologists.selectedItem);
 
   const dispatch = useDispatch();
@@ -99,118 +99,120 @@ function Form() {
     };
   }, []);
 
-  const save = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (formValues) => {
     const psychologistId = query.get('_id');
 
+    const body = {
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      username: formValues.username,
+      password: formValues.password,
+      email: formValues.email,
+      phone: parseInt(formValues.phone),
+      address: formValues.address,
+      availability: {
+        monday: {
+          availability: formValues.monday,
+          from: parseInt(formValues.mondayFrom),
+          to: parseInt(formValues.mondayTo)
+        },
+        tuesday: {
+          availability: formValues.tuesday,
+          from: parseInt(formValues.tuesdayFrom),
+          to: parseInt(formValues.tuesdayTo)
+        },
+        wednesday: {
+          availability: formValues.wednesday,
+          from: parseInt(formValues.wednesdayFrom),
+          to: parseInt(formValues.wednesdayTo)
+        },
+        thursday: {
+          availability: formValues.thursday,
+          from: parseInt(formValues.thursdayFrom),
+          to: parseInt(formValues.thursdayTo)
+        },
+        friday: {
+          availability: formValues.friday,
+          from: parseInt(formValues.fridayFrom),
+          to: parseInt(formValues.fridayTo)
+        },
+        saturday: {
+          availability: formValues.saturday,
+          from: parseInt(formValues.saturdayFrom),
+          to: parseInt(formValues.saturdayTo)
+        },
+        sunday: {
+          availability: formValues.sunday,
+          from: parseInt(formValues.sundayFrom),
+          to: parseInt(formValues.sundayTo)
+        }
+      }
+    };
     if (psychologistId) {
-      dispatch(
-        updatePsychologist(psychologistId, {
-          firstName,
-          lastName,
-          username,
-          password,
-          email,
-          phone,
-          address,
-          availability: {
-            monday: {
-              availability: mondayAvailability,
-              from: mondayFrom,
-              to: mondayTo
-            },
-            tuesday: {
-              availability: tuesdayAvailability,
-              from: tuesdayFrom,
-              to: tuesdayTo
-            },
-            wednesday: {
-              availability: wednesdayAvailability,
-              from: wednesdayFrom,
-              to: wednesdayTo
-            },
-            thursday: {
-              availability: thursdayAvailability,
-              from: thursdayFrom,
-              to: thursdayTo
-            },
-            friday: {
-              availability: fridayAvailability,
-              from: fridayFrom,
-              to: fridayTo
-            },
-            saturday: {
-              availability: saturdayAvailability,
-              from: saturdayFrom,
-              to: saturdayTo
-            },
-            sunday: {
-              availability: sundayAvailability,
-              from: sundayFrom,
-              to: sundayTo
-            }
-          }
-        })
-      ).then((response) => {
+      dispatch(updatePsychologist(psychologistId, body)).then((response) => {
         if (response) {
           history.push('/admin/psychologists/list');
         }
       });
     } else {
-      dispatch(
-        createPsychologist({
-          firstName,
-          lastName,
-          username,
-          password,
-          email,
-          phone,
-          address,
-          availability: {
-            monday: {
-              availability: mondayAvailability,
-              from: mondayFrom,
-              to: mondayTo
-            },
-            tuesday: {
-              availability: tuesdayAvailability,
-              from: tuesdayFrom,
-              to: tuesdayTo
-            },
-            wednesday: {
-              availability: wednesdayAvailability,
-              from: wednesdayFrom,
-              to: wednesdayTo
-            },
-            thursday: {
-              availability: thursdayAvailability,
-              from: thursdayFrom,
-              to: thursdayTo
-            },
-            friday: {
-              availability: fridayAvailability,
-              from: fridayFrom,
-              to: fridayTo
-            },
-            saturday: {
-              availability: saturdayAvailability,
-              from: saturdayFrom,
-              to: saturdayTo
-            },
-            sunday: {
-              availability: sundayAvailability,
-              from: sundayFrom,
-              to: sundayTo
-            }
-          }
-        })
-      ).then((response) => {
+      dispatch(createPsychologist(body)).then((response) => {
         if (response) {
           history.push('/admin/psychologists/list');
         }
       });
     }
+  };
+
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.firstName) {
+      errors.firstName = 'First Name is required';
+    }
+    if (!formValues.firstName?.match(/^[a-zA-Z]+$/)) {
+      errors.firstName = 'First name must contain only letters';
+    }
+    if (formValues.firstName?.length < 3) {
+      errors.firstName = 'First name must be at least 3 letters';
+    }
+    if (!formValues.lastName) {
+      errors.lastName = 'Last Name is required';
+    }
+    if (!formValues.lastName?.match(/^[a-zA-Z]+$/)) {
+      errors.lastName = 'Last name must contain only letters';
+    }
+    if (formValues.lastName?.length < 2) {
+      errors.lastName = 'Last name must be at least 2 letters';
+    }
+    if (!formValues.password) {
+      errors.password = 'Password is required';
+    }
+    if (formValues.password?.search(/[0-9]/) < 0 || formValues.password?.search(/[a-zA-Z]/) < 0) {
+      errors.password = 'Password must contain numbers and letters';
+    } else if (formValues.password?.length < 6) {
+      errors.password = 'Password must contain at least 6 characters';
+    }
+    if (!formValues.phone) {
+      errors.phone = 'Phone number is required';
+    }
+    if (!formValues.email) {
+      errors.email = 'Email is required';
+    }
+    if (!formValues.email?.match(/^[^@]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
+      errors.email = 'Fill in a valid email format';
+    }
+    if (formValues.address?.search(/[0-9]/) < 0 || formValues.address?.search(/[a-zA-Z]/) < 0) {
+      errors.address = 'Address must contain numbers and letters';
+    } else if (formValues.address?.length < 6) {
+      errors.address = 'Address must contain at least 6 characters';
+    }
+    return errors;
+  };
+
+  const validateDays = (value) => {
+    if (parseInt(value) > 1800 || parseInt(value) < 800) {
+      return 'Value must be between 800 and 1800';
+    }
+    return undefined;
   };
 
   return (
@@ -224,266 +226,280 @@ function Form() {
           callback: () => dispatch(cleanError())
         }}
       />
-      <form onSubmit={save} className={styles.form}>
-        <h2 className={styles.title}>Psychologist</h2>
-        <Input
-          title="First Name"
-          id="firstName"
-          name="firstName"
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Last Name"
-          id="lastName"
-          name="lastName"
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Password"
-          id="password"
-          name="password"
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Phone"
-          id="phone"
-          name="phone"
-          type="number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Username"
-          id="username"
-          name="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Address"
-          id="address"
-          name="address"
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Email"
-          id="email"
-          name="email"
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={isLoading}
-        />
-
-        <div>
-          <h3 className={styles.availabilityTitle}>Availability</h3>
-          <Checkbox
-            label="Monday"
-            selected={mondayAvailability}
-            onChange={(e) => setMondayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="mondayFrom"
-            name="mondayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={mondayFrom}
-            onChange={(e) => setMondayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="mondayTo"
-            name="mondayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={mondayTo}
-            onChange={(e) => setMondayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Tuesday"
-            selected={tuesdayAvailability}
-            onChange={(e) => setTuesdayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="tuesdayFrom"
-            name="tuesdayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={tuesdayFrom}
-            onChange={(e) => setTuesdayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="tuesdayTo"
-            name="tuesdayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={tuesdayTo}
-            onChange={(e) => setTuesdayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Wednesday"
-            selected={wednesdayAvailability}
-            onChange={(e) => setWednesdayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="wednesdayFrom"
-            name="wednesdayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={wednesdayFrom}
-            onChange={(e) => setWednesdayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="wednesdayTo"
-            name="wednesdayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={wednesdayTo}
-            onChange={(e) => setWednesdayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Thursday"
-            selected={thursdayAvailability}
-            onChange={(e) => setThursdayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="thursdayFrom"
-            name="thursdayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={thursdayFrom}
-            onChange={(e) => setTuesdayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="thursdayTo"
-            name="thursdayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={thursdayTo}
-            onChange={(e) => setTuesdayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Friday"
-            selected={fridayAvailability}
-            onChange={(e) => setFridayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="fridayFrom"
-            name="fridayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={fridayFrom}
-            onChange={(e) => setFridayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="fridayTo"
-            name="fridayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={fridayTo}
-            onChange={(e) => setFridayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Saturday"
-            selected={saturdayAvailability}
-            onChange={(e) => setSaturdayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="saturdayFrom"
-            name="saturdayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={saturdayFrom}
-            onChange={(e) => setSaturdayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="saturdayTo"
-            name="saturdayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={saturdayTo}
-            onChange={(e) => setSaturdayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <Checkbox
-            label="Sunday"
-            selected={sundayAvailability}
-            onChange={(e) => setSundayAvailability(!!e.target.checked)}
-          />
-          <Input
-            id="sundayFrom"
-            name="sundayFrom"
-            placeholder="Select starting hour"
-            type="number"
-            value={sundayFrom}
-            onChange={(e) => setSundayFrom(e.target.value)}
-            disabled={isLoading}
-          />
-          <Input
-            id="sundayTo"
-            name="sundayTo"
-            placeholder="Select finishing hour"
-            type="number"
-            value={sundayTo}
-            onChange={(e) => setSundayTo(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
-
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.form}>
+            <h2 className={styles.title}>Psychologist</h2>
+            <Field
+              name="firstName"
+              label="First Name"
+              type="text"
+              placeholder="Insert your First Name"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={firstName}
+            />
+            <Field
+              name="lastName"
+              label="Last Name"
+              type="text"
+              placeholder="Insert your last name"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={lastName}
+            />
+            <Field
+              name="password"
+              label="Password"
+              type="text"
+              placeholder="Insert your password"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={password}
+            />
+            <Field
+              name="phone"
+              label="Phone Number"
+              type="number"
+              placeholder="Insert phone number"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={phone}
+            />
+            <Field
+              name="username"
+              label="Username"
+              placeholder="Insert Username"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={username}
+            />
+            <Field
+              name="address"
+              label="Address"
+              placeholder="Insert Address"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={address}
+            />
+            <Field
+              name="email"
+              label="Email"
+              placeholder="Insert Email"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={email}
+            />
+            <div>
+              <h3 className={styles.availabilityTitle}>Availability</h3>
+              <Field
+                name="monday"
+                label="Monday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={mondayAvailability}
+              />
+              <Field
+                name="mondayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={mondayFrom}
+              />
+              <Field
+                name="mondayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={mondayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="tuesday"
+                label="Tuesday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={tuesdayAvailability}
+              />
+              <Field
+                name="tuesdayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={tuesdayFrom}
+              />
+              <Field
+                name="tuesdayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={tuesdayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="wednesday"
+                label="Wednesday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={wednesdayAvailability}
+              />
+              <Field
+                name="wednesdayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={wednesdayFrom}
+              />
+              <Field
+                name="wednesdayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={wednesdayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="thursday"
+                label="Thursday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={thursdayAvailability}
+              />
+              <Field
+                name="thursdayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={thursdayFrom}
+              />
+              <Field
+                name="thursdayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={thursdayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="friday"
+                label="Friday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={fridayAvailability}
+              />
+              <Field
+                name="fridayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={fridayFrom}
+              />
+              <Field
+                name="fridayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={fridayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="saturday"
+                label="Saturday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={saturdayAvailability}
+              />
+              <Field
+                name="saturdayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={saturdayFrom}
+              />
+              <Field
+                name="saturdayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={saturdayTo}
+              />
+            </div>
+            <div>
+              <Field
+                name="sunday"
+                label="Sunday"
+                disabled={formProps.submitting}
+                component={Checkbox}
+                type="checkbox"
+                initialValue={sundayAvailability}
+              />
+              <Field
+                name="sundayFrom"
+                type="number"
+                placeholder="From"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={sundayFrom}
+              />
+              <Field
+                name="sundayTo"
+                type="number"
+                placeholder="To"
+                disabled={formProps.submitting}
+                validate={validateDays}
+                component={Input}
+                initialValue={sundayTo}
+              />
+            </div>
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
-export default Form;
+export default PsychologistForm;

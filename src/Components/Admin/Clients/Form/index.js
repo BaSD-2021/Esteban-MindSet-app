@@ -2,53 +2,24 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
+import Input from 'Components/Shared/Input2';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 import { getClientById, createClient, updateClient } from 'redux/clients/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/clients/actions';
 
-function Form() {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+function clientForm() {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
-  const [logo, setLogo] = useState('');
-  const [description, setDescription] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedClient = useSelector((store) => store.clients.selectedItem);
   const error = useSelector((store) => store.clients.error);
-  const isLoading = useSelector((store) => store.clients.isFetching);
-
-  const onChangeName = (event) => {
-    setName(event.target.value);
-  };
-  const onChangePhone = (event) => {
-    setPhone(event.target.value);
-  };
-  const onChangeCountry = (event) => {
-    setCountry(event.target.value);
-  };
-  const onChangeState = (event) => {
-    setState(event.target.value);
-  };
-  const onChangeCity = (event) => {
-    setCity(event.target.value);
-  };
-  const onChangeAddress = (event) => {
-    setAddress(event.target.value);
-  };
-  const onChangeLogo = (event) => {
-    setLogo(event.target.value);
-  };
-  const onChangeDescription = (event) => {
-    setDescription(event.target.value);
-  };
 
   useEffect(() => {
     const clientId = query.get('_id');
@@ -59,14 +30,10 @@ function Form() {
 
   useEffect(() => {
     if (Object.keys(selectedClient).length) {
-      setName(selectedClient.name);
-      setPhone(selectedClient.phone);
       setCountry(selectedClient.location.country);
       setState(selectedClient.location.state);
       setCity(selectedClient.location.city);
       setAddress(selectedClient.location.address);
-      setLogo(selectedClient.logo);
-      setDescription(selectedClient.description);
     }
   }, [selectedClient]);
 
@@ -76,21 +43,19 @@ function Form() {
     };
   }, []);
 
-  const onSubmit = (event) => {
+  const onSubmit = (formValues) => {
     const clientId = query.get('_id');
-    event.preventDefault();
-    event.stopPropagation();
     const body = {
-      name: name,
-      phone: parseInt(phone),
+      name: formValues.name,
+      phone: parseInt(formValues.phone),
       location: {
-        country: country,
-        state: state,
-        city: city,
-        address: address
+        country: formValues.country,
+        state: formValues.state,
+        city: formValues.city,
+        address: formValues.address
       },
-      logo: logo,
-      description: description
+      logo: formValues.logo,
+      description: formValues.description
     };
     if (clientId) {
       dispatch(updateClient(clientId, body)).then((response) => {
@@ -107,102 +72,137 @@ function Form() {
     }
   };
 
+  const validate = (formValues) => {
+    const errors = {};
+    if (!formValues.name) {
+      errors.name = 'Name is required';
+    }
+    if (formValues.name?.search(/[0-9%$#"!&/()=?¡]/) > 0) {
+      errors.name = 'Name must contain only letters and a space between';
+    }
+    if (!formValues.phone) {
+      errors.phone = 'Phone number is required';
+    }
+    if (`${formValues.phone}`.length < 8) {
+      errors.phone = 'Phone number must have more than 7 digits';
+    }
+    if (!formValues.address) {
+      errors.address = 'Address is required';
+    }
+    if (formValues.address?.search(/[0-9]/) < 0 || formValues.address?.search(/[a-zA-Z]/) < 0) {
+      errors.address = 'Address must contain numbers and letters';
+    } else if (formValues.address?.length < 6) {
+      errors.address = 'Address must contain at least 6 characters';
+    }
+    return errors;
+  };
+
+  const validateLocation = (value) => {
+    if (!value) {
+      return 'Field is required';
+    }
+    if (value.search(/[0-9%$#"!&/()=?¡]/) > 0) {
+      return 'Must contain only letters';
+    }
+    return undefined;
+  };
+
   return (
     <div>
       <Modal
-        show={!!error}
+        show={!!error || !!error.message}
         title="Error"
-        message={error}
+        message={error || !!error.message}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
         }}
       />
-      <form onSubmit={onSubmit} className={styles.container}>
-        <h2 className={styles.title}>Client</h2>
-        <Input
-          title="Name"
-          id="name"
-          name="name"
-          type="text"
-          value={name}
-          onChange={onChangeName}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Phone"
-          id="phone"
-          name="phone"
-          type="number"
-          value={phone}
-          onChange={onChangePhone}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Country"
-          id="country"
-          name="country"
-          type="text"
-          value={country}
-          onChange={onChangeCountry}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="State"
-          id="state"
-          name="state"
-          type="text"
-          value={state}
-          onChange={onChangeState}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="City"
-          id="city"
-          name="city"
-          type="text"
-          value={city}
-          onChange={onChangeCity}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Address"
-          id="address"
-          name="address"
-          type="text"
-          value={address}
-          onChange={onChangeAddress}
-          disabled={isLoading}
-          required
-        />
-        <Input
-          title="Logo"
-          id="logo"
-          name="logo"
-          type="text"
-          value={logo}
-          onChange={onChangeLogo}
-          disabled={isLoading}
-        />
-        <Input
-          title="Description"
-          id="description"
-          name="description"
-          type="text"
-          value={description}
-          onChange={onChangeDescription}
-          disabled={isLoading}
-        />
-        <div className={styles.buttonContainer}>
-          <Button label="SAVE" disabled={isLoading} type="submit"></Button>
-        </div>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        initialValues={selectedClient}
+        render={(formProps) => (
+          <form onSubmit={formProps.handleSubmit} className={styles.container}>
+            <h2 className={styles.title}>Client</h2>
+            <Field
+              name="name"
+              label="Name"
+              placeholder="Insert client name"
+              disabled={formProps.submitting}
+              component={Input}
+            />
+            <Field
+              name="phone"
+              label="Phone"
+              type="number"
+              placeholder="Insert client phone number"
+              disabled={formProps.submitting}
+              component={Input}
+            />
+            <Field
+              name="country"
+              label="Country"
+              type="text"
+              placeholder="Insert country"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={validateLocation}
+              initialValue={country}
+            />
+            <Field
+              name="state"
+              label="State"
+              type="text"
+              placeholder="Insert state"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={validateLocation}
+              initialValue={state}
+            />
+            <Field
+              name="city"
+              label="City"
+              type="text"
+              placeholder="Insert city"
+              disabled={formProps.submitting}
+              component={Input}
+              validate={validateLocation}
+              initialValue={city}
+            />
+            <Field
+              name="address"
+              label="Address"
+              placeholder="Insert address"
+              disabled={formProps.submitting}
+              component={Input}
+              initialValue={address}
+            />
+            <Field
+              name="logo"
+              label="Logo"
+              placeholder="Insert logo"
+              disabled={formProps.submitting}
+              component={Input}
+            />
+            <Field
+              name="description"
+              label="Description"
+              placeholder="Insert description"
+              disabled={formProps.submitting}
+              component={Input}
+            />
+            <div className={styles.buttonContainer}>
+              <Button
+                label="Save"
+                disabled={formProps.submitting || formProps.pristine}
+                type="submit"
+              />
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
-export default Form;
+export default clientForm;

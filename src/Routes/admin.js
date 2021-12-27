@@ -14,6 +14,7 @@ import PostulantsForm from 'Components/Admin/Postulants/Form';
 import Profiles from 'Components/Admin/Profiles';
 import ProfilesForm from 'Components/Admin/Profiles/Form';
 import Psychologists from 'Components/Admin/Psychologists';
+import PsychologistsForm from 'Components/Admin/Psychologists/Form';
 import Sessions from 'Components/Admin/Sessions';
 import SessionsForm from 'Components/Admin/Sessions/Form';
 import Layout from 'Components/Layout';
@@ -49,7 +50,8 @@ const AdminRoutes = () => {
         <Route path={`${url}/postulants/form`} component={PostulantsForm} />
         <Route path={`${url}/profiles/list`} component={Profiles} />
         <Route path={`${url}/profiles/form`} component={ProfilesForm} />
-        <Route path={`${url}/psychologists`} component={Psychologists} />
+        <Route path={`${url}/psychologists/list`} component={Psychologists} />
+        <Route path={`${url}/psychologists/form`} component={PsychologistsForm} />
         <Route path={`${url}/sessions/list`} component={Sessions} />
         <Route path={`${url}/sessions/form`} component={SessionsForm} />
         <Redirect to={`${url}/admins/list`} />
