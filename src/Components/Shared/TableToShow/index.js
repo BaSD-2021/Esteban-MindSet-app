@@ -2,7 +2,7 @@ import styles from './table.module.css';
 import Button from 'Components/Shared/Button';
 import get from 'lodash.get';
 
-function Table(props) {
+function TableToShow(props) {
   return (
     <table className={styles.tableData}>
       <thead className={styles.tableHeader}>
@@ -27,15 +27,7 @@ function Table(props) {
         ) : (
           props.data.map((item) => {
             return (
-              <tr
-                key={item._id}
-                onClick={() => {
-                  if (!props.disableEdit) {
-                    props.onRowClick(item);
-                  }
-                }}
-                className={styles.trStyles}
-              >
+              <tr key={item._id} className={styles.trStyles}>
                 {props.columns.map((column, index) => {
                   return (
                     <td key={`${item[column.value]}-${index}`} className={styles.tdStyles}>
@@ -51,7 +43,6 @@ function Table(props) {
                         label={action.text}
                         style={styles.actionButton}
                         onClick={(e) => action.callback(e, item)}
-                        disabled={action.disableButton}
                       />
                     );
                   })}
@@ -65,4 +56,4 @@ function Table(props) {
   );
 }
 
-export default Table;
+export default TableToShow;

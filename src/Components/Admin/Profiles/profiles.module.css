@@ -8,36 +8,6 @@
   margin-bottom: 30px;
 }
 
-.table {
-  border-collapse: collapse;
-}
-
-.table thead {
-  height: 50px;
-  background: black;
-  color: #fff;
-}
-
-.table thead tr th {
-  text-transform: capitalize;
-  min-width: 200px;
-}
-
-.table tbody tr td {
-  height: 35px;
-  padding-left: 10px;
-  align-content: center;
-  text-transform: capitalize;
-  border: 1px solid rgba(0,0,0,0.1);
-  cursor: pointer;
-}
-
-.error {
-  color: #f00;
-  font-weight: bold;
-  font-size: 18px;
-}
-
 .button {
   margin: 20px;
   height: 56px;
