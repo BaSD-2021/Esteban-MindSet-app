@@ -1,22 +1,23 @@
 import React from 'react';
-import styles from './input2.module.css';
+import styles from './textarea2.module.css';
 
-function Input(props) {
+function Textarea(props) {
   const hasError = !!(props.meta.touched && props.meta.error);
   return (
     <div className={styles.container}>
       <label className={styles.labelTitle}>{props.title}</label>
-      <input
-        className={`${styles.inputContent} ${props.style} ${hasError && styles.inputError}`}
-        type={props.type}
+      <textarea
+        className={`${styles.textareaContent} ${props.style} ${hasError && styles.textareaError}`}
+        name={props.name}
         placeholder={props.placeholder}
-        disabled={props.disabled}
-        onKeyDown={props.onKeyDown}
+        maxLength={250}
+        rows={props.rows}
+        cols={props.cols}
         {...props.input}
-      />
+      ></textarea>
       <div className={styles.messageError}>{props.meta.touched && props.meta.error}</div>
     </div>
   );
 }
 
-export default Input;
+export default Textarea;
