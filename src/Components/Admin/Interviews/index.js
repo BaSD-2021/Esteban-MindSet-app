@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './list.module.css';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import TableV2 from 'Components/Shared/Table';
+import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInterviews, deleteInterview } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/interviews/actions';
@@ -31,7 +31,7 @@ function Interviews() {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <TableV2
+        <Table
           columns={[
             { name: 'Postulant', value: 'postulant.firstName' },
             { name: 'Client', value: 'client.name' },
