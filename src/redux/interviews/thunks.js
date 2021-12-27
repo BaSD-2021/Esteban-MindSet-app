@@ -111,6 +111,7 @@ export const updateInterview = (id, interview) => {
       })
       .then((response) => {
         dispatch(updateInterviewSuccess(response.data));
+        dispatch(getInterviews());
         return response.data;
       })
       .catch((error) => {
