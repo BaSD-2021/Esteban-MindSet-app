@@ -30,9 +30,7 @@ function Table(props) {
               <tr
                 key={item._id}
                 onClick={() => {
-                  if (!props.disableEdit) {
-                    props.onRowClick(item);
-                  }
+                  props.onRowClick(item);
                 }}
                 className={styles.trStyles}
               >
@@ -51,7 +49,7 @@ function Table(props) {
                         label={action.text}
                         style={styles.actionButton}
                         onClick={(e) => action.callback(e, item)}
-                        disabled={action.disableButton}
+                        disabled={action.disabled && action.disabled(item)}
                       />
                     );
                   })}

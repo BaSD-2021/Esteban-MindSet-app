@@ -43,6 +43,7 @@ function TableToShow(props) {
                         label={action.text}
                         style={styles.actionButton}
                         onClick={(e) => action.callback(e, item)}
+                        disabled={action.disabled && action.disabled(item)}
                       />
                     );
                   })}
