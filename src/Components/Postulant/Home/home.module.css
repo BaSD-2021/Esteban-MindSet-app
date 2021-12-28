@@ -12,13 +12,11 @@
 }
 .topContainer{
   display: flex;
-  width: 75%;
   margin: 20px 0;
-  justify-content: space-around;
 }
 .bottomContainer{
   display: flex;
-  /* width: 45rem; */
+
   margin-bottom: 16px;
 }
 .widgetTitle{
