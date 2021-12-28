@@ -68,21 +68,27 @@ function Psychologists() {
           />
         )}
         {showAvailabilityModal && (
-          <ModalAvailability showModal={toggleAvailabilityModal} title="Availability">
+          <ModalAvailability toggleModal={toggleAvailabilityModal} title="Availability">
             <AvailabilityTable availability={psychologistAvailability} />
           </ModalAvailability>
         )}
         {showConfirmModal && (
           <Modal
-            showModal={showConfirmModal}
+            show={showConfirmModal}
             title="Do you want to proceed and delete this psychologist?"
-            onClose={toggleConfirmModal}
             isLoading={isLoading}
-            onConfirm={() => {
-              dispatch(deletePsychologist(idToDelete)).then(() => {
-                setIdToDelete();
-                setShowConfirmModal(false);
-              });
+            confirm={{
+              text: 'Confirm',
+              callback: () => {
+                dispatch(deletePsychologist(idToDelete)).then(() => {
+                  setIdToDelete();
+                  setShowConfirmModal(false);
+                });
+              }
+            }}
+            cancel={{
+              text: 'Cancel',
+              callback: () => setShowConfirmModal(false)
             }}
           />
         )}
