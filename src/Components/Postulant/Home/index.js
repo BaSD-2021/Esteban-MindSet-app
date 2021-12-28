@@ -111,7 +111,7 @@ function Home() {
       ) : (
         <>
           <h2 className={styles.title}>{`Hello ${
-            selectedPostulant.length ? selectedPostulant[0].firstName : null
+            selectedPostulant.length ? selectedPostulant[0].firstName : ''
           }`}</h2>
           <div className={styles.topContainer}>
             <div className={styles.widget}>
@@ -132,6 +132,7 @@ function Home() {
                 actions={[
                   {
                     text: 'Cancel',
+                    disabled: (item) => item.status === 'cancelled',
                     callback: (e, item) => {
                       e.stopPropagation();
                       dispatch(
@@ -165,6 +166,7 @@ function Home() {
                 actions={[
                   {
                     text: 'Cancel',
+                    disabled: (item) => item.status === 'cancelled',
                     callback: (e, item) => {
                       e.stopPropagation();
                       dispatch(
