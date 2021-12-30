@@ -13,7 +13,6 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getPostulantById(postulantId));
   }, []);
-  console.log(selectedPostulant);
 
   return (
     <section className={styles.container}>
