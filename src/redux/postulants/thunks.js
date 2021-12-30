@@ -111,6 +111,7 @@ export const updatePostulant = (postulantId, postulant) => {
       })
       .then((response) => {
         dispatch(updatePostulantsFulfilled(response.data));
+        dispatch(getPostulantById(postulantId));
         return response.data;
       })
       .catch((err) => {
