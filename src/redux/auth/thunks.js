@@ -9,8 +9,10 @@ export const login = (credentials) => {
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(async (response) => {
         const token = await response.user.getIdToken();
-        sessionStorage.setItem('token', token);
-        return dispatch(loginSuccess());
+        const {
+          claims: { role }
+        } = await response.user.getIdTokenResult();
+        return dispatch(loginSuccess({ role, token }));
       })
       .catch((error) => {
         return dispatch(loginError(error.toString()));

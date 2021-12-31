@@ -17,7 +17,14 @@ function AdminsForm() {
   const onSubmit = (formValues) => {
     return dispatch(login(formValues)).then((response) => {
       if (response) {
-        history.push('/admin');
+        switch (response.payload?.role) {
+          case 'POSTULANT':
+            return history.push('/postulant');
+          case 'ADMIN':
+            return history.push('/admin');
+          default:
+            break;
+        }
       }
     });
   };

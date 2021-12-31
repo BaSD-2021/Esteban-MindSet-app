@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 import { tokenListener } from 'helper/firebase';
+import PrivateRoute from 'Routes/PrivateRoute';
 
 const AdminRoutes = lazy(() => import('Routes/admin'));
 const PostulantRoutes = lazy(() => import('Routes/postulant'));
@@ -15,8 +16,8 @@ const Routes = () => {
     <Router>
       <Suspense fallback={<div />}>
         <Switch>
-          <Route path="/postulant" component={PostulantRoutes} />
-          <Route path="/admin" component={AdminRoutes} />
+          <PrivateRoute path="/postulant" role="POSTULANT" component={PostulantRoutes} />
+          <PrivateRoute path="/admin" role="ADMIN" component={AdminRoutes} />
           <Route path="/auth" component={AuthRoutes} />
           <Redirect to="/auth" />
         </Switch>
