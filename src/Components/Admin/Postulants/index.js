@@ -99,11 +99,8 @@ function Postulants() {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <Table actions={actions} columns={columns} data={postulants} onRowClick={redirectUpdate} />
+        <Table actions={[]} columns={columns} data={postulants} onRowClick={redirectUpdate} />
       )}
-      <div className={styles.buttonContainer}>
-        <Button label="ADD POSTULANT" onClick={redirectAdd} />
-      </div>
     </section>
   );
 }
