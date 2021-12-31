@@ -1,4 +1,4 @@
-import { Switch, Redirect, useRouteMatch } from 'react-router-dom';
+import { Switch, Redirect, useRouteMatch, Route } from 'react-router-dom';
 import Admins from 'Components/Admin/Admins';
 import AdminsForm from 'Components/Admin/Admins/Form';
 import Applications from 'Components/Admin/Applications';
@@ -17,7 +17,6 @@ import Psychologists from 'Components/Admin/Psychologists';
 import Sessions from 'Components/Admin/Sessions';
 import SessionsForm from 'Components/Admin/Sessions/Form';
 import Layout from 'Components/Layout';
-import PrivateRoute from 'Routes/PrivateRoute';
 
 const adminsRoutes = [
   { name: 'Admins', path: '/admin/admins/list' },
@@ -36,23 +35,23 @@ const AdminRoutes = () => {
   return (
     <Layout routes={adminsRoutes}>
       <Switch>
-        <PrivateRoute path={`${url}/admins/list`} component={Admins} />
-        <PrivateRoute path={`${url}/admins/form`} component={AdminsForm} />
-        <PrivateRoute path={`${url}/applications/list`} component={Applications} />
-        <PrivateRoute path={`${url}/applications/form`} component={ApplicationsForm} />
-        <PrivateRoute path={`${url}/clients/list`} component={Clients} />
-        <PrivateRoute path={`${url}/clients/form`} component={ClientsForm} />
-        <PrivateRoute path={`${url}/interviews/list`} component={Interviews} />
-        <PrivateRoute path={`${url}/interviews/form`} component={InterviewsForm} />
-        <PrivateRoute path={`${url}/positions/list`} component={Positions} />
-        <PrivateRoute path={`${url}/positions/form`} component={PositionsForm} />
-        <PrivateRoute path={`${url}/postulants/list`} component={Postulants} />
-        <PrivateRoute path={`${url}/postulants/form`} component={PostulantsForm} />
-        <PrivateRoute path={`${url}/profiles/list`} component={Profiles} />
-        <PrivateRoute path={`${url}/profiles/form`} component={ProfilesForm} />
-        <PrivateRoute path={`${url}/psychologists`} component={Psychologists} />
-        <PrivateRoute path={`${url}/sessions/list`} component={Sessions} />
-        <PrivateRoute path={`${url}/sessions/form`} component={SessionsForm} />
+        <Route path={`${url}/admins/list`} component={Admins} />
+        <Route path={`${url}/admins/form`} component={AdminsForm} />
+        <Route path={`${url}/applications/list`} component={Applications} />
+        <Route path={`${url}/applications/form`} component={ApplicationsForm} />
+        <Route path={`${url}/clients/list`} component={Clients} />
+        <Route path={`${url}/clients/form`} component={ClientsForm} />
+        <Route path={`${url}/interviews/list`} component={Interviews} />
+        <Route path={`${url}/interviews/form`} component={InterviewsForm} />
+        <Route path={`${url}/positions/list`} component={Positions} />
+        <Route path={`${url}/positions/form`} component={PositionsForm} />
+        <Route path={`${url}/postulants/list`} component={Postulants} />
+        <Route path={`${url}/postulants/form`} component={PostulantsForm} />
+        <Route path={`${url}/profiles/list`} component={Profiles} />
+        <Route path={`${url}/profiles/form`} component={ProfilesForm} />
+        <Route path={`${url}/psychologists`} component={Psychologists} />
+        <Route path={`${url}/sessions/list`} component={Sessions} />
+        <Route path={`${url}/sessions/form`} component={SessionsForm} />
         <Redirect to={`${url}/admins/list`} />
       </Switch>
     </Layout>

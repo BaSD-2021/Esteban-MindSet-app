@@ -7,8 +7,8 @@ import {
 } from './actions';
 
 const initialState = {
-  isLoading: false,
-  authenticated: false,
+  isLoading: true,
+  authenticated: undefined,
   error: ''
 };
 
@@ -25,7 +25,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        authenticated: true
+        authenticated: action.payload
       };
     }
     case LOGIN_ERROR: {
@@ -44,7 +44,8 @@ const reducer = (state = initialState, action) => {
     case SET_AUTHENTICATION: {
       return {
         ...state,
-        authenticated: true
+        authenticated: action.payload,
+        isFetching: false
       };
     }
     default: {
