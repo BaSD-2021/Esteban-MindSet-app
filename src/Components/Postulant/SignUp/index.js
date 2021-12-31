@@ -225,11 +225,11 @@ function SignUp() {
       phone: formValues.phone,
       profiles: formValues.undefined,
       contactRange: {
-        from: contactFromValue.match(hoursRegEx)
-          ? contactFromValue
+        from: formValues.contactFrom.match(hoursRegEx)
+          ? formValues.contactFrom
           : setShowError('Hours must have HH:MM format'),
-        to: contactToValue.match(hoursRegEx)
-          ? contactToValue
+        to: formValues.contactTo.match(hoursRegEx)
+          ? formValues.contactTo
           : setShowError('Hours must have HH:MM format')
       },
       studies: studiesBodyConstructor(formValues),
@@ -327,13 +327,13 @@ function SignUp() {
     }
     // Primary Studies
     if (!formValues.primarySD) {
-      errors.primarySD = 'Primary studies start date is required';
+      errors.primarySD = 'Elementary studies start date is required';
     }
     if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
       errors.primarySD = 'Elementary start date invalid format';
     }
     if (!formValues.primaryED) {
-      errors.primaryED = 'Primary studies end date is required';
+      errors.primaryED = 'Elementary studies end date is required';
     }
     if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
       errors.primarySD = 'Elementary end date invalid format';
@@ -346,7 +346,7 @@ function SignUp() {
       errors.primaryED = 'Primary studies end date should be smaller than start date';
     }
     if (!formValues.primary) {
-      errors.primary = 'Primary studies school is required';
+      errors.primary = 'Elementary studies school is required';
     }
     if (formValues.primary?.indexOf(' ') === -1) {
       errors.primary = 'Elementary School Name must contain at least one space';
@@ -355,6 +355,9 @@ function SignUp() {
       errors.primary = 'Elementary School Name must contain at least 3 characters';
     }
     //  High School
+    if (!formValues.secondarySD) {
+      errors.secondarySD = 'High School start date is required';
+    }
     if (formValues.secondarySD) {
       if (!formValues.secondarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
         errors.secondarySD = 'High School start date invalid format';
@@ -368,8 +371,14 @@ function SignUp() {
     const secondarySD = new Date(formValues.secondarySD).getTime() / 1000;
     const secondaryED = new Date(formValues.secondaryED).getTime() / 1000;
 
+    if (!formValues.secondaryED) {
+      errors.secondarySD = 'High School finish date is required';
+    }
     if (secondarySD > secondaryED) {
       errors.secondaryED = 'High School end date should not be smaller than start date';
+    }
+    if (!formValues.secondary) {
+      errors.secondary = 'High School studies is required';
     }
     if (formValues.secondary) {
       if (formValues.secondary?.indexOf(' ') === -1) {
