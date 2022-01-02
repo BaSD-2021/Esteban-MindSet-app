@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './input.module.css';
+import styles from './input2.module.css';
 
 function Input(props) {
   const hasError = !!(props.meta.touched && props.meta.error);
   return (
     <div className={styles.container}>
-      <label className={styles.labelTitle}>{props.label}</label>
+      <label className={styles.labelTitle}>{props.title}</label>
       <input
         className={`${styles.inputContent} ${props.style} ${hasError && styles.inputError}`}
         type={props.type}
