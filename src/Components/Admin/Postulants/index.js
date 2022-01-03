@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from 'Components/Shared/Button';
 import styles from './postulants.module.css';
 import Modal from 'Components/Shared/Modal';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
-import { clearPostulant, cleanError } from 'redux/postulants/actions';
-import { getPostulants, deletePostulant } from 'redux/postulants/thunks';
+import { cleanError } from 'redux/postulants/actions';
+import { getPostulants } from 'redux/postulants/thunks';
 
 function Postulants() {
-  const [showModal, setShowModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState('');
   const history = useHistory();
   const columns = [
     {
@@ -34,16 +31,6 @@ function Postulants() {
       value: 'address'
     }
   ];
-  const actions = [
-    {
-      text: 'Delete',
-      callback: (e, item) => {
-        e.stopPropagation();
-        setIdToDelete(item._id);
-        setShowModal(true);
-      }
-    }
-  ];
   const dispatch = useDispatch();
   const postulants = useSelector((store) => store.postulants.list);
   const isLoading = useSelector((store) => store.postulants.isLoading);
@@ -59,33 +46,8 @@ function Postulants() {
     history.push(`/admin/postulants/form?_id=${postulant._id}`);
   };
 
-  const redirectAdd = () => {
-    dispatch(clearPostulant());
-    history.push('/admin/postulants/form');
-  };
-
-  const handleDeletePostulant = () => {
-    dispatch(deletePostulant(idToDelete));
-    setShowModal(false);
-  };
-
   return (
     <section className={styles.container}>
-      <Modal
-        show={showModal}
-        message="Do you want to proceed and delete this Postulant?"
-        title="Delete Postulant"
-        cancel={{
-          text: 'Cancel',
-          disable: false,
-          callback: () => setShowModal(false)
-        }}
-        confirm={{
-          text: 'Confirm',
-          disable: false,
-          callback: handleDeletePostulant
-        }}
-      />
       <Modal
         show={!!error}
         title="Error"
@@ -99,11 +61,8 @@ function Postulants() {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <Table actions={actions} columns={columns} data={postulants} onRowClick={redirectUpdate} />
+        <Table actions={[]} columns={columns} data={postulants} onRowClick={redirectUpdate} />
       )}
-      <div className={styles.buttonContainer}>
-        <Button label="ADD POSTULANT" onClick={redirectAdd} />
-      </div>
     </section>
   );
 }
