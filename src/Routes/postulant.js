@@ -7,7 +7,6 @@ import Positions from 'Components/Postulant/Positions';
 import Sessions from 'Components/Postulant/Sessions';
 import SessionsForm from 'Components/Postulant/Sessions/Form';
 import Profile from 'Components/Postulant/Profile';
-import SignUp from 'Components/MainPage/SignUp';
 
 const postulantRoutes = [
   { name: 'Home', path: '/postulant' },
