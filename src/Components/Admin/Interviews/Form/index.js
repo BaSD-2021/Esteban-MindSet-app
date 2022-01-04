@@ -86,7 +86,7 @@ function InterviewForm() {
 
   const onSubmit = (formValues) => {
     const interviewId = query.get('_id');
-    const body = {
+    const bodyToEdit = {
       postulant: formValues.postulant,
       client: formValues.clients,
       application: formValues.application,
@@ -94,15 +94,23 @@ function InterviewForm() {
       date: formValues.date,
       notes: formValues.notes
     };
+    const bodyToAdd = {
+      postulant: formValues.postulant,
+      client: formValues.clients,
+      application: formValues.application,
+      status: 'assigned',
+      date: formValues.date,
+      notes: formValues.notes
+    };
 
     if (interviewId) {
-      return dispatch(updateInterview(interviewId, body)).then((response) => {
+      return dispatch(updateInterview(interviewId, bodyToEdit)).then((response) => {
         if (response) {
           history.push('/admin/interviews/list');
         }
       });
     }
-    return dispatch(createInterview(body)).then((response) => {
+    return dispatch(createInterview(bodyToAdd)).then((response) => {
       if (response) {
         history.push('/admin/interviews/list');
       }
@@ -184,21 +192,23 @@ function InterviewForm() {
               initialValue={applicationIdValue}
               value={applicationIdValue}
             />
-            <Field
-              name="status"
-              title={'Select a Status'}
-              component={Select2}
-              disabled={formProps.submitting}
-              arrayToMap={[
-                { value: 'successful', label: 'Successful' },
-                { value: 'failed', label: 'Failed' },
-                { value: 'cancelled', label: 'Cancelled' },
-                { value: 'assigned', label: 'Assigned' },
-                { value: 'confirmed', label: 'Confirmed' }
-              ]}
-              initialValue={statusValue}
-              value={statusValue}
-            />
+            {query.get('_id') ? (
+              <Field
+                name="status"
+                title={'Select a Status'}
+                component={Select2}
+                disabled={formProps.submitting}
+                arrayToMap={[
+                  { value: 'successful', label: 'Successful' },
+                  { value: 'failed', label: 'Failed' },
+                  { value: 'cancelled', label: 'Cancelled' },
+                  { value: 'assigned', label: 'Assigned' },
+                  { value: 'confirmed', label: 'Confirmed' }
+                ]}
+                initialValue={statusValue}
+                value={statusValue}
+              />
+            ) : null}
             <Field
               name="date"
               title={'Select a Date'}
