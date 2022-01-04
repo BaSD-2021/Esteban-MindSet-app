@@ -5,6 +5,7 @@ import OpenPositions from 'Components/MainPage/OpenPositions';
 import PositionDetailed from 'Components/MainPage/PositionDetailed';
 import LogIn from 'Components/MainPage/LogIn';
 import SignUp from 'Components/MainPage/SignUp';
+import Contact from 'Components/MainPage/Contact';
 
 const homeRoutes = [
   { name: 'Open Positions', path: '/home/positions' },
@@ -23,6 +24,7 @@ const MainHomeRoutes = () => {
         <Route path={`${url}/position/`} component={PositionDetailed} />
         <Route path={`${url}/login`} component={LogIn} />
         <Route path={`${url}/signup`} component={SignUp} />
+        <Route path={`${url}/contact`} component={Contact} />
         <Redirect to={`${url}`} />
       </Switch>
     </Layout>
