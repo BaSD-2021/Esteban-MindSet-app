@@ -192,7 +192,7 @@ function InterviewForm() {
               initialValue={applicationIdValue}
               value={applicationIdValue}
             />
-            {query.get('_id') ? (
+            {query.get('_id') && (
               <Field
                 name="status"
                 title={'Select a Status'}
@@ -208,7 +208,7 @@ function InterviewForm() {
                 initialValue={statusValue}
                 value={statusValue}
               />
-            ) : null}
+            )}
             <Field
               name="date"
               title={'Select a Date'}
