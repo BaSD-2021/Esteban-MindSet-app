@@ -126,9 +126,6 @@ function InterviewForm() {
     if (!formValues.date) {
       errors.date = 'Date is required';
     }
-    if (!formValues.date?.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      errors.date = 'Date invalid format';
-    }
     if (formValues.notes) {
       if (formValues.notes?.indexOf(' ') === -1) {
         errors.notes = 'Notes must contain at least one space';
@@ -138,6 +135,26 @@ function InterviewForm() {
       }
     }
     return errors;
+  };
+
+  const required = (value) => {
+    return value ? undefined : 'Required';
+  };
+
+  const validateDate = (value) => {
+    if (required(value)) {
+      return 'Required';
+    }
+    let interviewDate = value.split('T');
+    let dateValue = Math.round(new Date(interviewDate[0]).getTime() / 1000);
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1 < 10 ? `0${now.getMonth() + 1}` : now.getMonth() + 1;
+    const date = now.getDate() < 10 ? `0${now.getDate()}` : '';
+
+    let nowValue = Math.round(new Date(`${year}-${month}-${date}`).getTime() / 1000);
+    return dateValue >= nowValue ? undefined : 'Invalid date';
   };
 
   return (
@@ -204,6 +221,8 @@ function InterviewForm() {
               title={'Select a Date'}
               component={Input2}
               type="datetime-local"
+              data-date-format="DD MMMM YYYY"
+              validate={validateDate}
               disabled={formProps.submitting}
               initialValue={dateValue}
               value={dateValue}
