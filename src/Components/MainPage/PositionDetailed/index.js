@@ -30,7 +30,7 @@ function PositionDetailed() {
       <div>
         <h3>{selectedItem.professionalProfile?.name}</h3>
         <p>{selectedItem.client?.name}</p>
-        <p>{selectedItem.createdAt}</p>
+        <p>{selectedItem.createdAt?.slice(0, 10)}</p>
         <p>{selectedItem.jobDescription}</p>
       </div>
       <div>
