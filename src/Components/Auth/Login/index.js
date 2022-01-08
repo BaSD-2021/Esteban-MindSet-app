@@ -67,7 +67,7 @@ function Login() {
             <div className={styles.buttonContainer}>
               <Button
                 label="Login"
-                disabled={formProps.submitting || formProps.pristine}
+                //disabled={formProps.submitting || formProps.pristine}
                 type="submit"
               />
             </div>
