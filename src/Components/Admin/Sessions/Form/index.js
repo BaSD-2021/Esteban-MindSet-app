@@ -97,6 +97,9 @@ function sessionsForm() {
   };
 
   const validateDate = (value) => {
+    if (query.get('_id')) {
+      return undefined;
+    }
     if (required(value)) {
       return 'Required';
     }
@@ -106,7 +109,7 @@ function sessionsForm() {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1 < 10 ? `0${now.getMonth() + 1}` : now.getMonth() + 1;
-    const date = now.getDate() < 10 ? `0${now.getDate()}` : '';
+    const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
 
     let nowValue = Math.round(new Date(`${year}-${month}-${date}`).getTime() / 1000);
     return dateValue >= nowValue ? undefined : 'Invalid date';
