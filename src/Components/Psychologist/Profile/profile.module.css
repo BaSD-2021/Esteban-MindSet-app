@@ -5,6 +5,11 @@
   align-items: center;
   flex-direction: column;
 }
+.flexContainer{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
 .infoContainer{
   display: flex;
   flex-direction: column;
@@ -39,4 +44,11 @@
   padding: 6px;
   font-size: 18px;
   margin: auto;
+}
+.selectorContainer {
+  display: flex;
+  justify-content: space-around;
+}
+.selector {
+  width: 6rem;
 }
