@@ -17,6 +17,7 @@ const Routes = () => {
     <Router>
       <Suspense fallback={<div />}>
         <Switch>
+          <Route path="/home" component={MainHomeRoutes} />
           <PrivateRoute path="/postulant" role="POSTULANT" component={PostulantRoutes} />
           <PrivateRoute path="/admin" role="ADMIN" component={AdminRoutes} />
           <PrivateRoute path="/psychologist" role="PSYCHOLOGIST" component={PsychologistRoutes} />

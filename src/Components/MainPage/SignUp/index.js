@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
-import styles from './form.module.css';
+import styles from './signUp.module.css';
 import Input2 from 'Components/Shared/Input2';
 import Checkbox2 from 'Components/Shared/Checkbox2';
 import Textarea2 from 'Components/Shared/Textarea2';
@@ -12,43 +12,12 @@ import { cleanError } from 'redux/postulants/actions';
 import { addPostulant, updatePostulant, getPostulantById } from 'redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
-function PostulantForm() {
-  const [firstNameValue, setFirstNameValue] = useState('');
-  const [lastNameValue, setLastNameValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const [contactFromValue, setContactFromValue] = useState('');
-  const [contactToValue, setContactToValue] = useState('');
-  const [addressValue, setAddressValue] = useState('');
-  const [birthdayValue, setBirthdayValue] = useState('');
-  const [availableValue, setAvailableValue] = useState('');
-  const [phoneValue, setPhoneValue] = useState('');
-  const [primarySDValue, setPrimarySDValue] = useState('');
-  const [primaryEDValue, setPrimaryEDValue] = useState('');
-  const [primarySchoolValue, setPrimarySchoolValue] = useState('');
-  const [secondarySDValue, setSecondarySDValue] = useState('');
-  const [secondaryEDValue, setSecondaryEDValue] = useState('');
-  const [secondarySchoolValue, setSecondarySchoolValue] = useState('');
-  const [tertiarySDValue, setTertiarySDValue] = useState('');
-  const [tertiaryEDValue, setTertiaryEDValue] = useState('');
-  const [tertiaryDescriptionValue, setTertiaryDescriptionValue] = useState('');
-  const [tertiaryInstituteValue, setTertiaryInstituteValue] = useState('');
-  const [universitySDValue, setUniversitySDValue] = useState('');
-  const [universityEDValue, setUniversityEDValue] = useState('');
-  const [universityDescriptionValue, setUniversityDescriptionValue] = useState('');
-  const [universityInstituteValue, setUniversityInstituteValue] = useState('');
-  const [informalSDValue, setInformalSDValue] = useState('');
-  const [informalEDValue, setInformalEDValue] = useState('');
-  const [informalDescriptionValue, setInformalDescriptionValue] = useState('');
-  const [informalInstituteValue, setInformalInstituteValue] = useState('');
-  const [workExperienceCompanyValue, setWorkExperienceCompanyValue] = useState('');
-  const [workExperienceSDValue, setWorkExperienceSDValue] = useState('');
-  const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
-  const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
+const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+function SignUp() {
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
-  const selectedItem = useSelector((store) => store.postulants.selectedPostulant);
   const error = useSelector((store) => store.sessions.error);
 
   const postulantId = query.get('_id');
@@ -57,96 +26,6 @@ function PostulantForm() {
       dispatch(getPostulantById(postulantId));
     }
   }, []);
-
-  useEffect(() => {
-    autoFill(selectedItem);
-  }, [selectedItem]);
-
-  const autoFill = (data) => {
-    const fillData = data || {};
-    let fillPrimStudy = { startDate: null, endDate: null };
-    if (fillData.studies && fillData.studies.primaryStudies) {
-      fillPrimStudy = fillData.studies.primaryStudies;
-    }
-
-    let fillSecStudy = { startDate: null, endDate: null };
-    if (fillData.studies && fillData.studies.secondaryStudies) {
-      fillSecStudy = fillData.studies.secondaryStudies;
-    }
-
-    let fillTerStudy = { startDate: null, endDate: null };
-    if (fillData.studies && fillData.studies.tertiaryStudies) {
-      fillTerStudy = fillData.studies.tertiaryStudies[0];
-    }
-
-    let fillUniStudies = { startDate: null, endDate: null };
-    if (fillData.studies && fillData.studies.universityStudies) {
-      fillUniStudies = fillData.studies.universityStudies[0];
-    }
-
-    let fillInfStudies = { startDate: null, endDate: null };
-    if (fillData.studies && fillData.studies.informalStudies) {
-      fillInfStudies = fillData.studies.informalStudies[0];
-    }
-
-    let fillWorkExp = { startDate: null, endDate: null };
-    if (fillData.workExperience) {
-      fillWorkExp = fillData.workExperience[0];
-    }
-
-    let contactFrom = { from: null, to: null };
-    if (fillData.contactRange && fillData.contactRange.from) {
-      contactFrom = fillData.contactRange.from;
-    }
-
-    let contactTo = { from: null, to: null };
-    if (fillData.contactRange && fillData.contactRange.to) {
-      contactTo = fillData.contactRange.to;
-    }
-
-    setFirstNameValue(fillData.firstName || '');
-    setLastNameValue(fillData.lastName || '');
-    setEmailValue(fillData.email || '');
-    setPasswordValue(fillData.password || '');
-    setContactFromValue(contactFrom || '');
-    setContactToValue(contactTo || '');
-    setAddressValue(fillData.address || '');
-    setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
-    setAvailableValue(fillData.available ? true : false);
-    setPhoneValue(fillData.phone || '');
-
-    setPrimarySDValue(fillPrimStudy.startDate == null ? '' : fillPrimStudy.startDate.slice(0, 10));
-    setPrimaryEDValue(fillPrimStudy.endDate == null ? '' : fillPrimStudy.endDate.slice(0, 10));
-    setPrimarySchoolValue(fillPrimStudy.school || '');
-
-    setSecondarySDValue(fillSecStudy.startDate == null ? '' : fillSecStudy.startDate.slice(0, 10));
-    setSecondaryEDValue(fillSecStudy.endDate == null ? '' : fillSecStudy.endDate.slice(0, 10));
-    setSecondarySchoolValue(fillSecStudy.school || '');
-
-    setTertiarySDValue(fillTerStudy.startDate == null ? '' : fillTerStudy.startDate.slice(0, 10));
-    setTertiaryEDValue(fillTerStudy.endDate == null ? '' : fillTerStudy.endDate.slice(0, 10));
-    setTertiaryDescriptionValue(fillTerStudy.description || '');
-    setTertiaryInstituteValue(fillTerStudy.institute || '');
-
-    // eslint-disable-next-line prettier/prettier
-    setUniversitySDValue(fillUniStudies.startDate == null ? '' : fillUniStudies.startDate.slice(0, 10));
-    setUniversityEDValue(fillUniStudies.endDate == null ? '' : fillUniStudies.endDate.slice(0, 10));
-    setUniversityDescriptionValue(fillUniStudies.description || '');
-    setUniversityInstituteValue(fillUniStudies.institute || '');
-
-    // eslint-disable-next-line prettier/prettier
-    setInformalSDValue(fillInfStudies.startDate == null ? '' : fillInfStudies.startDate.slice(0, 10));
-    setInformalEDValue(fillInfStudies.endDate == null ? '' : fillInfStudies.endDate.slice(0, 10));
-    setInformalDescriptionValue(fillInfStudies.description || '');
-    setInformalInstituteValue(fillInfStudies.institute || '');
-
-    setWorkExperienceCompanyValue(fillWorkExp.company || '');
-    // eslint-disable-next-line prettier/prettier
-    setWorkExperienceSDValue(fillWorkExp.startDate == null ? '' : fillWorkExp.startDate.slice(0, 10));
-    // eslint-disable-next-line prettier/prettier
-    setWorkExperienceEDValue(fillWorkExp.endDate == null ? '' : fillWorkExp.endDate.slice(0, 10));
-    setWorkExperienceDescriptionValue(fillWorkExp.description || '');
-  };
 
   const studiesBodyConstructor = (formValues) => {
     const primaryStudies = {
@@ -285,6 +164,14 @@ function PostulantForm() {
     } else if (formValues.password?.length < 6) {
       errors.password = 'Password must contain at least 6 characters';
     }
+    // ContactFrom
+    if (!formValues.contactFrom?.toString().match(hoursRegEx)) {
+      errors.contactFrom = 'Hours must have HH:MM format';
+    }
+    //ContactTo
+    if (!formValues.contactTo?.toString().match(hoursRegEx)) {
+      errors.contactTo = 'Hours must have HH:MM format';
+    }
     // Address
     if (!formValues.address) {
       errors.address = 'Address is required';
@@ -320,13 +207,13 @@ function PostulantForm() {
     }
     // Primary Studies
     if (!formValues.primarySD) {
-      errors.primarySD = 'Primary studies start date is required';
+      errors.primarySD = 'Elementary studies start date is required';
     }
     if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
       errors.primarySD = 'Elementary start date invalid format';
     }
     if (!formValues.primaryED) {
-      errors.primaryED = 'Primary studies end date is required';
+      errors.primaryED = 'Elementary studies end date is required';
     }
     if (!formValues.primarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
       errors.primarySD = 'Elementary end date invalid format';
@@ -339,7 +226,7 @@ function PostulantForm() {
       errors.primaryED = 'Primary studies end date should be smaller than start date';
     }
     if (!formValues.primary) {
-      errors.primary = 'Primary studies school is required';
+      errors.primary = 'Elementary studies school is required';
     }
     if (formValues.primary?.indexOf(' ') === -1) {
       errors.primary = 'Elementary School Name must contain at least one space';
@@ -348,6 +235,9 @@ function PostulantForm() {
       errors.primary = 'Elementary School Name must contain at least 3 characters';
     }
     //  High School
+    if (!formValues.secondarySD) {
+      errors.secondarySD = 'High School start date is required';
+    }
     if (formValues.secondarySD) {
       if (!formValues.secondarySD?.match(/^\d{4}-\d{2}-\d{2}$/)) {
         errors.secondarySD = 'High School start date invalid format';
@@ -361,8 +251,17 @@ function PostulantForm() {
     const secondarySD = new Date(formValues.secondarySD).getTime() / 1000;
     const secondaryED = new Date(formValues.secondaryED).getTime() / 1000;
 
+    if (!formValues.secondarySD) {
+      errors.secondarySD = 'High School start date is required';
+    }
+    if (!formValues.secondarySD) {
+      errors.secondaryED = 'High School end date is required';
+    }
     if (secondarySD > secondaryED) {
       errors.secondaryED = 'High School end date should not be smaller than start date';
+    }
+    if (!formValues.secondary) {
+      errors.secondary = 'High School studies is required';
     }
     if (formValues.secondary) {
       if (formValues.secondary?.indexOf(' ') === -1) {
@@ -528,7 +427,7 @@ function PostulantForm() {
         validate={validate}
         render={(formProps) => (
           <form onSubmit={formProps.handleSubmit} className={styles.container}>
-            <h2 className={styles.title}>Postulant</h2>
+            <h2 className={styles.title}>Sign up</h2>
             <Field
               name="firstName"
               title="First Name"
@@ -536,8 +435,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={firstNameValue}
-              value={firstNameValue}
             />
             <Field
               name="lastName"
@@ -546,8 +443,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              value={lastNameValue}
-              initialValue={lastNameValue}
             />
             <Field
               title="E-Mail"
@@ -556,8 +451,6 @@ function PostulantForm() {
               type="email"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={emailValue}
-              value={emailValue}
             />
             <Field
               title="Password"
@@ -566,8 +459,6 @@ function PostulantForm() {
               type="password"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={passwordValue}
-              value={passwordValue}
             />
             <div>
               <Field
@@ -576,8 +467,6 @@ function PostulantForm() {
                 type="time"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={contactFromValue}
-                value={contactFromValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -587,8 +476,6 @@ function PostulantForm() {
                 type="time"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={contactToValue}
-                value={contactToValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -599,8 +486,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={addressValue}
-              value={addressValue}
             />
             <Field
               title="Birthday"
@@ -608,8 +493,6 @@ function PostulantForm() {
               type="date"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={birthdayValue}
-              value={birthdayValue}
             />
             <Field
               label="Availability"
@@ -617,7 +500,6 @@ function PostulantForm() {
               component={Checkbox2}
               type="checkbox"
               disabled={formProps.submitting}
-              initialValue={availableValue}
             />
             <Field
               title="Phone"
@@ -626,8 +508,6 @@ function PostulantForm() {
               type="number"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={phoneValue}
-              value={phoneValue}
             />
             <h3>Elementary Studies</h3>
             <div>
@@ -637,8 +517,6 @@ function PostulantForm() {
                 placeholder="Start Date"
                 type="date"
                 component={Input2}
-                initialValue={primarySDValue}
-                value={primarySDValue}
                 disabled={formProps.submitting}
                 style={styles.doubleInputs}
               />
@@ -649,8 +527,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={primaryEDValue}
-                value={primaryEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -661,8 +537,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={primarySchoolValue}
-              value={primarySchoolValue}
             />
             <h3>High School Studies</h3>
             <div>
@@ -672,8 +546,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={secondarySDValue}
-                value={secondarySDValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -682,8 +554,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={secondaryEDValue}
-                value={secondaryEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -694,8 +564,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={secondarySchoolValue}
-              value={secondarySchoolValue}
             />
             <h3>Superior Studies</h3>
             <div>
@@ -705,8 +573,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={tertiarySDValue}
-                value={tertiarySDValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -715,8 +581,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={tertiaryEDValue}
-                value={tertiaryEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -728,8 +592,6 @@ function PostulantForm() {
               cols="33"
               component={Textarea2}
               disabled={formProps.submitting}
-              initialValue={tertiaryDescriptionValue}
-              value={tertiaryDescriptionValue}
             />
             <Field
               title="Superior Studies Institute Name"
@@ -738,8 +600,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={tertiaryInstituteValue}
-              value={tertiaryInstituteValue}
             />
             <h3>University Studies</h3>
             <div>
@@ -749,8 +609,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={universitySDValue}
-                value={universitySDValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -759,8 +617,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={universityEDValue}
-                value={universityEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -772,8 +628,6 @@ function PostulantForm() {
               cols="33"
               component={Textarea2}
               disabled={formProps.submitting}
-              initialValue={universityDescriptionValue}
-              value={universityDescriptionValue}
             />
             <Field
               title="University Name"
@@ -782,8 +636,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={universityInstituteValue}
-              value={universityInstituteValue}
             />
             <h3>Informal Studies</h3>
             <div>
@@ -793,8 +645,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={informalSDValue}
-                value={informalSDValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -803,8 +653,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={informalEDValue}
-                value={informalEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -816,8 +664,6 @@ function PostulantForm() {
               cols="33"
               component={Textarea2}
               disabled={formProps.submitting}
-              initialValue={informalDescriptionValue}
-              value={informalDescriptionValue}
             />
             <Field
               title="Institute Name"
@@ -826,8 +672,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={informalInstituteValue}
-              value={informalInstituteValue}
             />
             <h3>Work Experience</h3>
             <Field
@@ -837,8 +681,6 @@ function PostulantForm() {
               type="text"
               component={Input2}
               disabled={formProps.submitting}
-              initialValue={workExperienceCompanyValue}
-              value={workExperienceCompanyValue}
             />
             <div>
               <Field
@@ -847,8 +689,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={workExperienceSDValue}
-                value={workExperienceSDValue}
                 style={styles.doubleInputs}
               />
               <Field
@@ -857,8 +697,6 @@ function PostulantForm() {
                 type="date"
                 component={Input2}
                 disabled={formProps.submitting}
-                initialValue={workExperienceEDValue}
-                value={workExperienceEDValue}
                 style={styles.doubleInputs}
               />
             </div>
@@ -870,8 +708,6 @@ function PostulantForm() {
               cols="33"
               component={Textarea2}
               disabled={formProps.submitting}
-              initialValue={workExperienceDescriptionValue}
-              value={workExperienceDescriptionValue}
             />
             <div className={styles.buttonContainer}>
               <Button
@@ -887,4 +723,4 @@ function PostulantForm() {
   );
 }
 
-export default PostulantForm;
+export default SignUp;
