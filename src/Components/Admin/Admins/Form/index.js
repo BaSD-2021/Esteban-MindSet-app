@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input2';
+import Input2 from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 

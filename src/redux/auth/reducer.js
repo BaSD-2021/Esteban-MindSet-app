@@ -7,7 +7,7 @@ import {
 } from './actions';
 
 const initialState = {
-  isLoading: true,
+  isFetching: true,
   authenticated: undefined,
   error: ''
 };

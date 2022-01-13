@@ -1,31 +1,21 @@
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
-import useQuery from 'Hooks/useQuery';
 import styles from './signUp.module.css';
-import Input2 from 'Components/Shared/Input2';
-import Checkbox2 from 'Components/Shared/Checkbox2';
-import Textarea2 from 'Components/Shared/Textarea2';
+import Input2 from 'Components/Shared/Input';
+import Checkbox2 from 'Components/Shared/Checkbox';
+import Textarea2 from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { cleanError } from 'redux/postulants/actions';
-import { addPostulant, updatePostulant, getPostulantById } from 'redux/postulants/thunks';
+import { addPostulant } from 'redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
 const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
 function SignUp() {
-  const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((store) => store.sessions.error);
-
-  const postulantId = query.get('_id');
-  useEffect(() => {
-    if (postulantId) {
-      dispatch(getPostulantById(postulantId));
-    }
-  }, []);
 
   const studiesBodyConstructor = (formValues) => {
     const primaryStudies = {
@@ -108,19 +98,11 @@ function SignUp() {
       workExperience: workExperienceBodyConstructor(formValues)
     };
 
-    if (postulantId) {
-      dispatch(updatePostulant(postulantId, body)).then((response) => {
-        if (response) {
-          history.push('/admin/postulants/list');
-        }
-      });
-    } else {
-      dispatch(addPostulant(body)).then((response) => {
-        if (response) {
-          history.push('admin/postulants/list');
-        }
-      });
-    }
+    return dispatch(addPostulant(body)).then((response) => {
+      if (response) {
+        history.push('/');
+      }
+    });
   };
 
   const validate = (formValues) => {
@@ -430,7 +412,7 @@ function SignUp() {
             <h2 className={styles.title}>Sign up</h2>
             <Field
               name="firstName"
-              title="First Name"
+              title="First Name *"
               placeholder="Boris"
               type="text"
               component={Input2}
@@ -438,14 +420,14 @@ function SignUp() {
             />
             <Field
               name="lastName"
-              title="Last Name"
+              title="Last Name *"
               placeholder="Johnson"
               type="text"
               component={Input2}
               disabled={formProps.submitting}
             />
             <Field
-              title="E-Mail"
+              title="E-Mail *"
               name="email"
               placeholder="bjohnson@gmail.com"
               type="email"
@@ -453,7 +435,7 @@ function SignUp() {
               disabled={formProps.submitting}
             />
             <Field
-              title="Password"
+              title="Password *"
               name="password"
               placeholder="Your password"
               type="password"
@@ -462,7 +444,7 @@ function SignUp() {
             />
             <div>
               <Field
-                title="Contact From"
+                title="Contact From *"
                 name="contactFrom"
                 type="time"
                 component={Input2}
@@ -470,7 +452,7 @@ function SignUp() {
                 style={styles.doubleInputs}
               />
               <Field
-                title="To"
+                title="To *"
                 name="contactTo"
                 placeholder="Contact To"
                 type="time"
@@ -480,7 +462,7 @@ function SignUp() {
               />
             </div>
             <Field
-              title="Address"
+              title="Address *"
               name="address"
               placeholder="Fake Street 123"
               type="text"
@@ -488,7 +470,7 @@ function SignUp() {
               disabled={formProps.submitting}
             />
             <Field
-              title="Birthday"
+              title="Birthday *"
               name="birthday"
               type="date"
               component={Input2}
@@ -502,7 +484,7 @@ function SignUp() {
               disabled={formProps.submitting}
             />
             <Field
-              title="Phone"
+              title="Phone *"
               name="phone"
               placeholder="(123)-456-7899"
               type="number"
@@ -512,7 +494,7 @@ function SignUp() {
             <h3>Elementary Studies</h3>
             <div>
               <Field
-                title="Start Date"
+                title="Start Date *"
                 name="primarySD"
                 placeholder="Start Date"
                 type="date"
@@ -521,7 +503,7 @@ function SignUp() {
                 style={styles.doubleInputs}
               />
               <Field
-                title="Finish Date"
+                title="Finish Date *"
                 name="primaryED"
                 placeholder="End Date"
                 type="date"
@@ -531,7 +513,7 @@ function SignUp() {
               />
             </div>
             <Field
-              title="Elementary School Name"
+              title="Elementary School Name *"
               name="primary"
               placeholder="Coronel O'Higgins"
               type="text"
@@ -541,7 +523,7 @@ function SignUp() {
             <h3>High School Studies</h3>
             <div>
               <Field
-                title="Start Date"
+                title="Start Date *"
                 name="secondarySD"
                 type="date"
                 component={Input2}
@@ -549,7 +531,7 @@ function SignUp() {
                 style={styles.doubleInputs}
               />
               <Field
-                title="Finish Date"
+                title="Finish Date *"
                 name="secondaryED"
                 type="date"
                 component={Input2}
@@ -558,7 +540,7 @@ function SignUp() {
               />
             </div>
             <Field
-              title="High school Name"
+              title="High school Name *"
               name="secondary"
               placeholder="Lake Forest High School"
               type="text"

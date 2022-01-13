@@ -28,6 +28,8 @@ export const tokenListener = () => {
           role
         })
       );
+    } else {
+      store.dispatch(setAuthentication());
     }
   });
 };
