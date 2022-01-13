@@ -7,7 +7,6 @@ import Positions from 'Components/Postulant/Positions';
 import Sessions from 'Components/Postulant/Sessions';
 import SessionsForm from 'Components/Postulant/Sessions/Form';
 import Profile from 'Components/Postulant/Profile';
-import SignUp from 'Components/Postulant/SignUp';
 
 const postulantRoutes = [
   { name: 'Home', path: '/postulant' },
@@ -15,14 +14,13 @@ const postulantRoutes = [
   { name: 'Interviews', path: '/postulant/interviews/list' },
   { name: 'Open Positions', path: '/postulant/positions' },
   { name: 'Profile', path: '/postulant/profile' },
-  { name: 'Sessions', path: '/postulant/sessions' },
-  { name: 'Sign Up', path: '/postulant/signup' }
+  { name: 'Sessions', path: '/postulant/sessions' }
 ];
 
 const PostulantsRoutes = () => {
   const { url } = useRouteMatch();
   return (
-    <Layout routes={postulantRoutes}>
+    <Layout routes={postulantRoutes} logout>
       <Switch>
         <Route exact path={`${url}/`} component={Home} />
         <Route path={`${url}/applications`} component={Applications} />
@@ -31,7 +29,6 @@ const PostulantsRoutes = () => {
         <Route exact path={`${url}/sessions`} component={Sessions} />
         <Route path={`${url}/sessions/form`} component={SessionsForm} />
         <Route path={`${url}/profile`} component={Profile} />
-        <Route path={`${url}/signup`} component={SignUp} />
         <Redirect to={`${url}/`} />
       </Switch>
     </Layout>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input2';
+import Input from 'Components/Shared/Input';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';

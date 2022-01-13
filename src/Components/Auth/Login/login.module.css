@@ -1,0 +1,21 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+  margin: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input2';
+import Input2 from 'Components/Shared/Input';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 
@@ -37,18 +37,18 @@ function AdminsForm() {
     const adminId = query.get('_id');
 
     if (adminId) {
-      dispatch(updateAdmin(adminId, formValues)).then((response) => {
-        if (response) {
-          history.push('/admin/admins/list');
-        }
-      });
-    } else {
-      dispatch(createAdmin(formValues)).then((response) => {
+      return dispatch(updateAdmin(adminId, formValues)).then((response) => {
         if (response) {
           history.push('/admin/admins/list');
         }
       });
     }
+
+    return dispatch(createAdmin(formValues)).then((response) => {
+      if (response) {
+        history.push('/admin/admins/list');
+      }
+    });
   };
 
   const validate = (formValues) => {
@@ -62,14 +62,15 @@ function AdminsForm() {
     if (!formValues.name) {
       errors.name = 'Name is required';
     }
-    if (formValues.username?.length < 3) {
-      errors.username = 'Username must be at least 3 characters';
+    // Email
+    if (!formValues.email?.match(/^[^@]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
+      errors.email = 'Fill in a valid email format';
     }
-    if (formValues.username?.match(/\s/g)) {
-      errors.username = 'Username do not allow spaces';
+    if (formValues.email?.match(/\s/g)) {
+      errors.email = 'Email do not allow spaces';
     }
-    if (!formValues.username) {
-      errors.username = 'Username is required';
+    if (!formValues.email) {
+      errors.email = 'Email is required';
     }
     if (formValues.password?.search(/[0-9]/) < 0 || formValues.password?.search(/[a-zA-Z]/) < 0) {
       errors.password = 'Password must contain numbers and letters';
@@ -108,9 +109,9 @@ function AdminsForm() {
               component={Input2}
             />
             <Field
-              name="username"
-              label="Username"
-              placeholder="Insert Username"
+              name="email"
+              label="Email"
+              placeholder="Insert Email"
               disabled={formProps.submitting}
               component={Input2}
             />
