@@ -1,4 +1,11 @@
-import { loginPending, loginSuccess, loginError } from './actions';
+import {
+  loginPending,
+  loginSuccess,
+  loginError,
+  getMePending,
+  getMeSuccess,
+  getMeError
+} from './actions';
 import firebase from 'helper/firebase';
 
 export const login = (credentials) => {
@@ -16,6 +23,22 @@ export const login = (credentials) => {
       })
       .catch((error) => {
         return dispatch(loginError(error.toString()));
+      });
+  };
+};
+
+export const getMe = () => {
+  return (dispatch) => {
+    dispatch(getMePending());
+    const token = sessionStorage.getItem('token');
+    return fetch(`${process.env.REACT_APP_API}/auth/me`, { headers: { token } })
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch(getMeSuccess(response.data));
+        return response.data;
+      })
+      .catch((error) => {
+        dispatch(getMeError(error.toString()));
       });
   };
 };

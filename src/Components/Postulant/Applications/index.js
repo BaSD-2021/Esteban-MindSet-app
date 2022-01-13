@@ -10,11 +10,12 @@ function Applications() {
   const dispatch = useDispatch();
   const [processedApplications, setProcessedApplications] = useState([]);
   const applications = useSelector((store) => store.applications.list);
+  const postulantId = useSelector((store) => store.auth.user._id);
   const error = useSelector((store) => store.applications.error);
   const isLoading = useSelector((store) => store.applications.isFetching);
 
   const applicationsOfOnePostulant = applications.filter(
-    (application) => application.postulants._id === process.env.REACT_APP_POSTULANT_ID
+    (application) => application.postulants._id === postulantId
   );
 
   const columnName = [
