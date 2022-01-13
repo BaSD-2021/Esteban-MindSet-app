@@ -19,6 +19,7 @@ function Home() {
   const interviews = useSelector((store) => store.interviews.list);
   const postulants = useSelector((store) => store.postulants.list);
   const isLoading = useSelector((store) => store.applications.isFetching);
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   useEffect(() => {
     dispatch(getPositions());
@@ -35,14 +36,12 @@ function Home() {
     }
   }, [applications]);
 
-  const selectedPostulant = postulants.filter(
-    (postulant) => postulant._id === process.env.REACT_APP_POSTULANT_ID
-  );
+  const selectedPostulant = postulants.filter((postulant) => postulant._id === postulantId);
 
   const processApplications = () => {
     setLastApplications(
       applications
-        .filter((application) => application.postulants._id === process.env.REACT_APP_POSTULANT_ID)
+        .filter((application) => application.postulants._id === postulantId)
         .reverse()
         .slice(0, 4)
         .map((application) => {
@@ -65,12 +64,12 @@ function Home() {
     .slice(0, 4);
 
   const lastSessions = sessions
-    .filter((session) => session.postulant._id === process.env.REACT_APP_POSTULANT_ID)
+    .filter((session) => session.postulant._id === postulantId)
     .reverse()
     .slice(0, 4);
 
   const lastInterviews = interviews
-    .filter((interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID)
+    .filter((interview) => interview.postulant._id === postulantId)
     .reverse()
     .slice(0, 4);
 

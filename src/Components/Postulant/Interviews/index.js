@@ -16,6 +16,7 @@ function Interviews() {
   const interviews = useSelector((store) => store.interviews.list);
   const error = useSelector((store) => store.interviews.error);
   const isLoading = useSelector((store) => store.interviews.isFetching);
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   useEffect(() => {
     if (!interviews.length) {
@@ -25,9 +26,7 @@ function Interviews() {
 
   useEffect(() => {
     setInterviewsOfOnePostulant(
-      interviews.filter(
-        (interview) => interview.postulant._id === process.env.REACT_APP_POSTULANT_ID
-      )
+      interviews.filter((interview) => interview.postulant._id === postulantId)
     );
   }, [interviews]);
 

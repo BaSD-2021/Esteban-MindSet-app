@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
-import Select from 'Components/Shared/Select';
+import Input from 'Components/Shared/InputLegacy';
+import Select from 'Components/Shared/SelectLegacy';
 import Modal from 'Components/Shared/Modal';
 import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ function sessionsForm() {
   const error = useSelector((store) => store.sessions.error);
   const isLoading = useSelector((store) => store.sessions.isFetching);
   const selectedSession = useSelector((store) => store.sessions.selectedItem);
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   useEffect(() => {
     if (Object.keys(selectedSession).length) {
@@ -58,7 +59,7 @@ function sessionsForm() {
   const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
-      postulant: process.env.REACT_APP_POSTULANT_ID,
+      postulant: postulantId,
       date: formValues.date,
       psychologist: formValues.psychologist,
       status: formValues.status,

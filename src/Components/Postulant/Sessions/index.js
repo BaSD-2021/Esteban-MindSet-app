@@ -15,11 +15,10 @@ function Sessions() {
   const sessions = useSelector((store) => store.sessions.list);
   const error = useSelector((store) => store.sessions.error);
   const isLoading = useSelector((store) => store.sessions.isFetching);
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   const sessionsOfOnePostulant = useMemo(() => {
-    return sessions.filter(
-      (session) => session.postulant._id === process.env.REACT_APP_POSTULANT_ID
-    );
+    return sessions.filter((session) => session.postulant._id === postulantId);
   }, [sessions]);
 
   useEffect(() => {
