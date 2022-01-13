@@ -22,8 +22,8 @@ const Routes = () => {
           <PrivateRoute path="/postulant" role="POSTULANT" component={PostulantRoutes} />
           <PrivateRoute path="/admin" role="ADMIN" component={AdminRoutes} />
           <PrivateRoute path="/psychologist" role="PSYCHOLOGIST" component={PsychologistRoutes} />
-          <PrivateRoute path="/auth" component={AuthRoutes} />
-          <Redirect to="/auth" />
+          <Route path="/auth" component={AuthRoutes} />
+          <Redirect to="/home" />
         </Switch>
       </Suspense>
     </Router>

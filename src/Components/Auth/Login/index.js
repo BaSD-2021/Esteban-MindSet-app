@@ -22,6 +22,8 @@ function Login() {
             return history.push('/postulant');
           case 'ADMIN':
             return history.push('/admin');
+          case 'PSYCHOLOGIST':
+            return history.push('/psychologist');
           default:
             break;
         }
@@ -67,7 +69,7 @@ function Login() {
             <div className={styles.buttonContainer}>
               <Button
                 label="Login"
-                //disabled={formProps.submitting || formProps.pristine}
+                disabled={formProps.submitting || formProps.pristine}
                 type="submit"
               />
             </div>
