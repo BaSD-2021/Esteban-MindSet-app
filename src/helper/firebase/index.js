@@ -22,12 +22,16 @@ export const tokenListener = () => {
       const {
         claims: { role }
       } = await user.getIdTokenResult();
+      sessionStorage.setItem('token', token);
       store.dispatch(
         setAuthentication({
           token,
           role
         })
       );
+    } else {
+      sessionStorage.removeItem('token');
+      store.dispatch(setAuthentication());
     }
   });
 };

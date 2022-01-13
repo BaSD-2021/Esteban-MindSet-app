@@ -21,7 +21,7 @@ export const getInterviews = () => {
   return (dispatch) => {
     dispatch(getInterviewsPending());
     const token = sessionStorage.getItem('token');
-    return fetch(`${process.env.REACT_APP_API}/interviews`, { headers: token })
+    return fetch(`${process.env.REACT_APP_API}/interviews`, { headers: { token } })
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {

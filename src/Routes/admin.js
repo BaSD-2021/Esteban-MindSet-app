@@ -33,7 +33,7 @@ const adminsRoutes = [
 const AdminRoutes = () => {
   const { url } = useRouteMatch();
   return (
-    <Layout routes={adminsRoutes}>
+    <Layout routes={adminsRoutes} logout>
       <Switch>
         <Route path={`${url}/admins/list`} component={Admins} />
         <Route path={`${url}/admins/form`} component={AdminsForm} />
