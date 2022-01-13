@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/InputLegacy';
-import Select from 'Components/Shared/SelectLegacy';
+import Input from 'Components/Shared/Input';
+import Select from 'Components/Shared/Select';
 import Modal from 'Components/Shared/Modal';
 import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,9 +58,9 @@ function sessionsForm() {
   const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
-      postulant: postulantId,
+      postulant: { _id: postulantId },
       date: formValues.date,
-      psychologist: formValues.psychologist,
+      psychologist: { _id: formValues.psychologist },
       status: formValues.status,
       notes: formValues.notes
     };

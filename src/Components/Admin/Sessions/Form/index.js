@@ -70,9 +70,9 @@ function sessionsForm() {
   const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
+      postulant: { _id: formValues.postulant },
+      psychologist: { _id: formValues.psychologist },
       date: formValues.date,
-      postulant: formValues.postulant,
-      psychologist: formValues.psychologist,
       status: formValues.status,
       notes: formValues.notes
     };
