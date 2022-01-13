@@ -167,7 +167,7 @@ function sessionsForm() {
             />
             <Field
               name="date"
-              label="Date"
+              title="Date"
               type="datetime-local"
               disabled={formProps.submitting}
               placeholder="Select a date"
