@@ -3,16 +3,14 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input2';
-import Checkbox2 from 'Components/Shared/Checkbox2';
-import Textarea2 from 'Components/Shared/Textarea2';
+import Input2 from 'Components/Shared/Input';
+import Checkbox2 from 'Components/Shared/Checkbox';
+import Textarea2 from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { cleanError } from 'redux/postulants/actions';
 import { addPostulant, updatePostulant, getPostulantById } from 'redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
-
-const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
 function PostulantForm() {
   const [firstNameValue, setFirstNameValue] = useState('');
@@ -47,7 +45,6 @@ function PostulantForm() {
   const [workExperienceSDValue, setWorkExperienceSDValue] = useState('');
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
-  const [showError, setShowError] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -225,12 +222,8 @@ function PostulantForm() {
       phone: formValues.phone,
       profiles: formValues.undefined,
       contactRange: {
-        from: contactFromValue.match(hoursRegEx)
-          ? contactFromValue
-          : setShowError('Hours must have HH:MM format'),
-        to: contactToValue.match(hoursRegEx)
-          ? contactToValue
-          : setShowError('Hours must have HH:MM format')
+        from: formValues.contactFrom,
+        to: formValues.contactTo
       },
       studies: studiesBodyConstructor(formValues),
       workExperience: workExperienceBodyConstructor(formValues)

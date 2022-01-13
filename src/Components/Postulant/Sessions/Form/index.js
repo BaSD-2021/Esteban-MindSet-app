@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
-import Textarea from 'Components/Shared/Textarea';
+import Textarea from 'Components/Shared/TextareaLegacy';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input';
-import Select from 'Components/Shared/Select';
+import Input from 'Components/Shared/InputLegacy';
+import Select from 'Components/Shared/SelectLegacy';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionById, createSession, updateSession } from 'redux/sessions/thunks';
@@ -24,6 +24,7 @@ function sessionsForm() {
   const error = useSelector((store) => store.sessions.error);
   const isLoading = useSelector((store) => store.sessions.isFetching);
   const selectedSession = useSelector((store) => store.sessions.selectedItem);
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   const onChangeDateInput = (event) => {
     setDateValue(event.target.value);
@@ -75,7 +76,7 @@ function sessionsForm() {
     const sessionId = query.get('_id');
     const body = {
       date: dateValue,
-      postulant: process.env.REACT_APP_POSTULANT_ID,
+      postulant: postulantId,
       psychologist: psychoValue,
       status: statusValue,
       notes: notesValue

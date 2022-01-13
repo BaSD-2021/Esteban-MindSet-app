@@ -1,0 +1,7 @@
+.container{
+ display: flex;
+ width: 80%;
+ margin: auto;
+ flex-direction: row;
+ flex-wrap:wrap;
+}

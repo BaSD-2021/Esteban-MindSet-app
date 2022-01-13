@@ -1,21 +1,20 @@
 import React from 'react';
-import styles from './select2.module.css';
+import styles from './select.module.css';
 
-function Select({ title, id, type, required, style, arrayToMap, disabled, ...props }) {
-  const hasError = !!(props.meta.touched && props.meta.error);
+function Select({ title, id, name, value, onChange, type, required, style, arrayToMap, disabled }) {
   return (
     <div className={styles.container}>
       <label className={styles.labelTitle}>{title}</label>
       <select
-        className={`${styles.select} ${style} ${hasError && styles.inputError}`}
+        className={`${styles.select} ${style}`}
         title={title}
         id={id}
+        name={name}
         type={type}
+        value={value}
+        onChange={onChange}
         required={required}
         disabled={disabled}
-        name={props.input.name}
-        value={props.input.value}
-        onChange={props.input.onChange}
       >
         <option value={''} disabled>
           Select one
@@ -28,7 +27,6 @@ function Select({ title, id, type, required, style, arrayToMap, disabled, ...pro
           );
         })}
       </select>
-      <div className={styles.messageError}>{props.meta.touched && props.meta.error}</div>
     </div>
   );
 }
