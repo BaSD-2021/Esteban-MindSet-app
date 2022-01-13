@@ -60,7 +60,6 @@ function Positions() {
         <Table
           columns={[
             { name: 'Client', value: 'client.name' },
-            { name: 'Job Description', value: 'jobDescription' },
             { name: 'Vacancy', value: 'vacancy' },
             { name: 'Professional Profile', value: 'professionalProfile.name' },
             { name: 'Is Open', value: 'isOpen' }
