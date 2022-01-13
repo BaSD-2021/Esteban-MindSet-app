@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import useQuery from 'Hooks/useQuery';
 import Button from 'Components/Shared/Button';
 import styles from './form.module.css';
-import Input from 'Components/Shared/Input2';
-import Select from 'Components/Shared/Select2';
+import Input from 'Components/Shared/Input';
+import Select from 'Components/Shared/Select';
 import Modal from 'Components/Shared/Modal';
 import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,15 +55,14 @@ function sessionsForm() {
     }
   }, []);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
-      date: dateValue,
       postulant: process.env.REACT_APP_POSTULANT_ID,
-      psychologist: psychoValue,
-      status: statusValue,
-      notes: notesValue
+      date: formValues.date,
+      psychologist: formValues.psychologist,
+      status: formValues.status,
+      notes: formValues.notes
     };
 
     if (sessionId) {
