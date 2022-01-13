@@ -60,7 +60,7 @@ const Admins = () => {
         <Table
           columns={[
             { name: 'Name', value: 'name' },
-            { name: 'Username', value: 'username' }
+            { name: 'Email', value: 'email' }
           ]}
           data={admins}
           onRowClick={(item) => history.push(`/admin/admins/form?_id=${item._id}`)}

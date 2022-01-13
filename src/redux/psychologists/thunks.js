@@ -20,7 +20,7 @@ export const getPsychologists = () => {
   return (dispatch) => {
     dispatch(getPsychologistFetching());
     const token = sessionStorage.getItem('token');
-    return fetch(`${process.env.REACT_APP_API}/psychologists`, { headers: token })
+    return fetch(`${process.env.REACT_APP_API}/psychologists`, { headers: { token } })
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {

@@ -22,6 +22,7 @@ export const tokenListener = () => {
       const {
         claims: { role }
       } = await user.getIdTokenResult();
+      sessionStorage.setItem('token', token);
       store.dispatch(
         setAuthentication({
           token,
@@ -29,6 +30,7 @@ export const tokenListener = () => {
         })
       );
     } else {
+      sessionStorage.removeItem('token');
       store.dispatch(setAuthentication());
     }
   });
