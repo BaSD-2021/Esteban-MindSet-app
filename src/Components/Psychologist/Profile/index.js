@@ -11,30 +11,40 @@ const Profile = () => {
   const selectedPsychologist = useSelector((store) => store.psychologists.selectedItem);
   const dispatch = useDispatch();
   const psychologistId = process.env.REACT_APP_PSYCHOLOGIST_ID;
-  const [mondayFrom, setMondayFrom] = useState(selectedPsychologist.availability?.monday.from);
-  const [mondayTo, setMondayTo] = useState(selectedPsychologist.availability?.monday.to);
-  const [tuesdayFrom, setTuesdayFrom] = useState(selectedPsychologist.availability?.tuesday.from);
-  const [tuesdayTo, setTuesdayTo] = useState(selectedPsychologist.availability?.tuesday.to);
-  const [wednesdayFrom, setWednesdayFrom] = useState(
-    selectedPsychologist.availability?.wednesday.from
-  );
-  const [wednesdayTo, setWednesdayTo] = useState(selectedPsychologist.availability?.wednesday.to);
-  const [thursdayFrom, setThursdayFrom] = useState(
-    selectedPsychologist.availability?.thursday.from
-  );
-  const [thursdayTo, setThursdayTo] = useState(selectedPsychologist.availability?.thursday.to);
-  const [fridayFrom, setFridayFrom] = useState(selectedPsychologist.availability?.friday.from);
-  const [fridayTo, setFridayTo] = useState(selectedPsychologist.availability?.friday.to);
-  const [saturdayFrom, setSaturdayFrom] = useState(
-    selectedPsychologist.availability?.saturday.from
-  );
-  const [saturdayTo, setSaturdayTo] = useState(selectedPsychologist.availability?.saturday.to);
+  const [mondayFrom, setMondayFrom] = useState(0);
+  const [mondayTo, setMondayTo] = useState(0);
+  const [tuesdayFrom, setTuesdayFrom] = useState(0);
+  const [tuesdayTo, setTuesdayTo] = useState(0);
+  const [wednesdayFrom, setWednesdayFrom] = useState(0);
+  const [wednesdayTo, setWednesdayTo] = useState(0);
+  const [thursdayFrom, setThursdayFrom] = useState(0);
+  const [thursdayTo, setThursdayTo] = useState(0);
+  const [fridayFrom, setFridayFrom] = useState(0);
+  const [fridayTo, setFridayTo] = useState(0);
+  const [saturdayFrom, setSaturdayFrom] = useState(0);
+  const [saturdayTo, setSaturdayTo] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     dispatch(getPsychologistById(psychologistId));
   }, []);
+  useEffect(() => fillAvailability(), [selectedPsychologist.availability]);
+
+  const fillAvailability = () => {
+    setMondayFrom(selectedPsychologist.availability?.monday.from);
+    setMondayTo(selectedPsychologist.availability?.monday.to);
+    setTuesdayFrom(selectedPsychologist.availability?.tuesday.from);
+    setThursdayTo(selectedPsychologist.availability?.tuesday.to);
+    setWednesdayFrom(selectedPsychologist.availability?.wednesday.from);
+    setWednesdayTo(selectedPsychologist.availability?.wednesday.to);
+    setThursdayFrom(selectedPsychologist.availability?.thursday.from);
+    setThursdayTo(selectedPsychologist.availability?.thursday.to);
+    setFridayFrom(selectedPsychologist.availability?.friday.from);
+    setFridayTo(selectedPsychologist.availability?.friday.to);
+    setSaturdayFrom(selectedPsychologist.availability?.saturday.from);
+    setSaturdayTo(selectedPsychologist.availability?.saturday.to);
+  };
 
   const schedule = [
     { value: 800, label: '08:00' },
