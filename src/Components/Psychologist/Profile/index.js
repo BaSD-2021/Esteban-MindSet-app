@@ -10,7 +10,7 @@ const Profile = () => {
   const isLoading = useSelector((store) => store.psychologists.isFetching);
   const selectedPsychologist = useSelector((store) => store.psychologists.selectedItem);
   const dispatch = useDispatch();
-  const psychologistId = process.env.REACT_APP_PSYCHOLOGIST_ID;
+  const psychologistId = useSelector((store) => store.auth.user._id);
   const [mondayFrom, setMondayFrom] = useState(0);
   const [mondayTo, setMondayTo] = useState(0);
   const [tuesdayFrom, setTuesdayFrom] = useState(0);
