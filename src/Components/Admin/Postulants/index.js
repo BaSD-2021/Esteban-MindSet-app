@@ -31,6 +31,7 @@ function Postulants() {
       value: 'address'
     }
   ];
+
   const dispatch = useDispatch();
   const postulants = useSelector((store) => store.postulants.list);
   const isLoading = useSelector((store) => store.postulants.isLoading);

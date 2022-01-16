@@ -1,14 +1,17 @@
 import Switch from 'Components/Shared/Switch';
+import Button from 'Components/Shared/Button';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
 import styles from './profile.module.css';
+import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const isLoading = useSelector((store) => store.postulants.isLoading);
   const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
   const dispatch = useDispatch();
   const postulantId = useSelector((store) => store.auth.user?._id);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(getPostulantById(postulantId));
@@ -20,6 +23,13 @@ const Profile = () => {
         <p className={styles.loading}>On Loading ...</p>
       ) : (
         <div className={styles.flexContainer}>
+          <div className={styles.buttonContainer}>
+            <Button
+              label="EDIT PROFILE"
+              onClick={() => history.push(`/postulant/profile/form?_id=${postulantId}`)}
+            />
+          </div>
+          <div className={styles.buttonContainer}></div>
           <div className={styles.infoContainer}>
             <h2 className={styles.title}>Profile</h2>
             <div className={styles.dataContainer}>
@@ -53,7 +63,7 @@ const Profile = () => {
               </p>
             </div>
             <div className={styles.toggleContainer}>
-              <p className={styles.toggleLabel}>Change Availability</p>
+              <p className={styles.toggleLabel}>Available</p>
               <Switch
                 isToggled={selectedPostulant?.available}
                 onToggle={() =>
