@@ -12,6 +12,7 @@ import {
   createApplication,
   updateApplication
 } from 'redux/applications/thunks';
+import { getPositionById, updatePosition } from 'redux/positions/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/applications/actions';
 
 function ApplicationForm() {
@@ -23,7 +24,10 @@ function ApplicationForm() {
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedItem = useSelector((store) => store.applications.selectedItem);
+  const selectedPosition = useSelector((store) => store.positions.selectedItem);
   const error = useSelector((store) => store.applications.error);
+
+  console.log(selectedPosition);
 
   useEffect(() => {
     if (Object.keys(selectedItem).length) {
@@ -47,24 +51,50 @@ function ApplicationForm() {
     }
   }, []);
 
+  useEffect(() => {
+    const applicationId = query.get('_id');
+    if (applicationId && positionId) {
+      dispatch(getPositionById(positionId));
+    }
+  }, [positionId]);
+
   const onSubmit = (formValues) => {
     const applicationId = query.get('_id');
 
-    const body = {
+    const applicationBody = {
       positions: positionId,
       postulants: postulantId,
       interview: date,
       result: formValues.result
     };
 
+    const positionBody = {
+      client: selectedPosition.client._id,
+      jobDescription: selectedPosition.jobDescription,
+      vacancy: selectedPosition.vacancy - 1,
+      professionalProfile: selectedPosition.professionalProfile._id,
+      isOpen: selectedPosition.isOpen
+    };
+
     if (applicationId) {
-      dispatch(updateApplication(applicationId, body)).then((response) => {
+      if (formValues.result === 'Hired') {
+        dispatch(updatePosition(positionId, positionBody)).then((response) => {
+          if (response) {
+            dispatch(updateApplication(applicationId, applicationBody)).then((response) => {
+              if (response) {
+                history.push('/admin/applications/list');
+              }
+            });
+          }
+        });
+      }
+      dispatch(updateApplication(applicationId, applicationBody)).then((response) => {
         if (response) {
           history.push('/admin/applications/list');
         }
       });
     } else {
-      dispatch(createApplication(body)).then((response) => {
+      dispatch(createApplication(applicationBody)).then((response) => {
         if (response) {
           history.push('/admin/applications/list');
         }
