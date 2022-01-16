@@ -7,6 +7,7 @@ import Positions from 'Components/Postulant/Positions';
 import Sessions from 'Components/Postulant/Sessions';
 import SessionsForm from 'Components/Postulant/Sessions/Form';
 import Profile from 'Components/Postulant/Profile';
+import EditProfileForm from 'Components/Postulant/Profile/Form';
 
 const postulantRoutes = [
   { name: 'Home', path: '/postulant' },
@@ -28,7 +29,8 @@ const PostulantsRoutes = () => {
         <Route path={`${url}/positions`} component={Positions} />
         <Route exact path={`${url}/sessions`} component={Sessions} />
         <Route path={`${url}/sessions/form`} component={SessionsForm} />
-        <Route path={`${url}/profile`} component={Profile} />
+        <Route exact path={`${url}/profile`} component={Profile} />
+        <Route path={`${url}/profile/form`} component={EditProfileForm} />
         <Redirect to={`${url}/`} />
       </Switch>
     </Layout>

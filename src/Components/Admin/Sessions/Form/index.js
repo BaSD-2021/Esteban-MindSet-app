@@ -70,9 +70,9 @@ function sessionsForm() {
   const onSubmit = (formValues) => {
     const sessionId = query.get('_id');
     const body = {
+      postulant: { _id: formValues.postulant },
+      psychologist: { _id: formValues.psychologist },
       date: formValues.date,
-      postulant: formValues.postulant,
-      psychologist: formValues.psychologist,
       status: formValues.status,
       notes: formValues.notes
     };
@@ -94,6 +94,25 @@ function sessionsForm() {
 
   const required = (value) => {
     return value ? undefined : 'Required';
+  };
+
+  const validateDate = (value) => {
+    if (query.get('_id')) {
+      return undefined;
+    }
+    if (required(value)) {
+      return 'Required';
+    }
+    let sessionDate = value.split('T');
+    let dateValue = Math.round(new Date(sessionDate[0]).getTime() / 1000);
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1 < 10 ? `0${now.getMonth() + 1}` : now.getMonth() + 1;
+    const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
+
+    let nowValue = Math.round(new Date(`${year}-${month}-${date}`).getTime() / 1000);
+    return dateValue >= nowValue ? undefined : 'Invalid date';
   };
 
   return (
@@ -148,12 +167,12 @@ function sessionsForm() {
             />
             <Field
               name="date"
-              label="Date"
+              title="Date"
               type="datetime-local"
               disabled={formProps.submitting}
               placeholder="Select a date"
               component={Input}
-              validate={required}
+              validate={validateDate}
               initialValue={dateValue}
             />
             <Field
