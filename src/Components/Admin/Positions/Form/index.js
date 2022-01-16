@@ -143,7 +143,7 @@ function PositionForm() {
             />
             <Field
               name="jobDescription"
-              label="Job Description"
+              title="Job Description"
               placeholder="Insert Job Description"
               disabled={formProps.submitting}
               component={Input}
@@ -151,7 +151,7 @@ function PositionForm() {
             />
             <Field
               name="vacancy"
-              label="Vacancy"
+              title="Vacancy"
               placeholder="Insert number of vacancies"
               disabled={formProps.submitting}
               type="number"
