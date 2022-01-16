@@ -4,12 +4,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
 import styles from './profile.module.css';
+import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const isLoading = useSelector((store) => store.postulants.isLoading);
   const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
   const dispatch = useDispatch();
   const postulantId = useSelector((store) => store.auth.user?._id);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(getPostulantById(postulantId));
