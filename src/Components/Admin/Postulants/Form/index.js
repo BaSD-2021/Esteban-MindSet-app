@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Checkbox2 from 'Components/Shared/Checkbox2';
+import Checkbox from 'Components/Shared/Checkbox';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { cleanError } from 'redux/postulants/actions';
@@ -301,7 +301,7 @@ function PostulantForm() {
             <Field
               label="Available"
               name="available"
-              component={Checkbox2}
+              component={Checkbox}
               type="checkbox"
               disabled={formProps.submitting}
               initialValue={availableValue}
