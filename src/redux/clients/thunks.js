@@ -19,7 +19,8 @@ import {
 export const getClients = () => {
   return (dispatch) => {
     dispatch(getClientsPending());
-    return fetch(`${process.env.REACT_APP_API}/clients`)
+    const token = sessionStorage.getItem('token');
+    return fetch(`${process.env.REACT_APP_API}/clients`, { headers: { token } })
       .then((response) => {
         if (response.status !== 200) {
           return response.json().then(({ message }) => {

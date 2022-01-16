@@ -1,7 +1,6 @@
 import Switch from 'Components/Shared/Switch';
 import Button from 'Components/Shared/Button';
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
 import styles from './profile.module.css';
@@ -10,8 +9,7 @@ const Profile = () => {
   const isLoading = useSelector((store) => store.postulants.isLoading);
   const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const postulantId = process.env.REACT_APP_POSTULANT_ID;
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   useEffect(() => {
     dispatch(getPostulantById(postulantId));

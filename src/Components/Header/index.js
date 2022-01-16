@@ -1,5 +1,7 @@
 import styles from './header.module.css';
 import { Link } from 'react-router-dom';
+import Button from 'Components/Shared/Button';
+import firebase from 'helper/firebase';
 
 function Header(props) {
   return (
@@ -38,6 +40,14 @@ function Header(props) {
             </li>
           ))}
         </ul>
+        {props.logout && (
+          <Button
+            label="Logout"
+            onClick={() => {
+              firebase.auth().signOut();
+            }}
+          />
+        )}
       </nav>
     </header>
   );

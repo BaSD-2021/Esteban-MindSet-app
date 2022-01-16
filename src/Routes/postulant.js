@@ -15,14 +15,13 @@ const postulantRoutes = [
   { name: 'Interviews', path: '/postulant/interviews/list' },
   { name: 'Open Positions', path: '/postulant/positions' },
   { name: 'Profile', path: '/postulant/profile' },
-  { name: 'Sessions', path: '/postulant/sessions' },
-  { name: 'Sign Up', path: '/postulant/signup' }
+  { name: 'Sessions', path: '/postulant/sessions' }
 ];
 
 const PostulantsRoutes = () => {
   const { url } = useRouteMatch();
   return (
-    <Layout routes={postulantRoutes}>
+    <Layout routes={postulantRoutes} logout>
       <Switch>
         <Route exact path={`${url}/`} component={Home} />
         <Route path={`${url}/applications`} component={Applications} />
