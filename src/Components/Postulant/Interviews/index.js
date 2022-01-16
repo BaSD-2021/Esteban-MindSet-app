@@ -3,7 +3,7 @@ import styles from './interviews.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/TableToShow';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInterviews, updateInterview } from 'redux/interviews/thunks';
+import { getInterviews, updateInterview, updateInterviewStatus } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/interviews/actions';
 
 function Interviews() {
@@ -58,6 +58,16 @@ function Interviews() {
                   setShowModal(true);
                 }
               }
+            },
+            {
+              text: 'Confirm',
+              disabled: (item) => item.status !== 'assigned',
+              callback: (e, item) => {
+                e.stopPropagation();
+                if (item.status === 'assigned') {
+                  dispatch(updateInterviewStatus(item._id, 'confirmed'));
+                }
+              }
             }
           ]}
         />
@@ -76,9 +86,9 @@ function Interviews() {
             const interviewToEdit = editInterview(selectedIdInterview);
             dispatch(
               updateInterview(selectedIdInterview, {
-                postulant: interviewToEdit.postulant._id,
-                client: interviewToEdit.client._id,
-                application: interviewToEdit.application._id,
+                postulant: interviewToEdit.postulant,
+                client: interviewToEdit.client,
+                application: interviewToEdit.application,
                 status: 'cancelled',
                 date: interviewToEdit.date,
                 notes: interviewToEdit.notes
