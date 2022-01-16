@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input2';
+import Input2 from 'Components/Shared/Input';
 import Button from 'Components/Shared/Button';
-import Select2 from 'Components/Shared/Select2';
+import Select2 from 'Components/Shared/Select';
 import Modal from 'Components/Shared/Modal';
 import {
   getApplicationById,

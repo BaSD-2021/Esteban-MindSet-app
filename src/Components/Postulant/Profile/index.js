@@ -8,7 +8,7 @@ const Profile = () => {
   const isLoading = useSelector((store) => store.postulants.isLoading);
   const selectedPostulant = useSelector((store) => store.postulants.selectedPostulant);
   const dispatch = useDispatch();
-  const postulantId = process.env.REACT_APP_POSTULANT_ID;
+  const postulantId = useSelector((store) => store.auth.user?._id);
 
   useEffect(() => {
     dispatch(getPostulantById(postulantId));

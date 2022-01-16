@@ -24,3 +24,15 @@
   font-weight: bold;
   margin: 5px 0;
 }
+
+.textareaError {
+  border-color: #F00;
+}
+
+.messageError {
+  display: flex;
+  align-items: center;
+  height: 21px;
+  font-size: 14px;
+  color: #F00;
+}

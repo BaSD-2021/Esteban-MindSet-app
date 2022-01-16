@@ -19,7 +19,8 @@ import {
 export const getPostulants = () => {
   return (dispatch) => {
     dispatch(getPostulantsFetching());
-    return fetch(`${process.env.REACT_APP_API}/postulants`)
+    const token = sessionStorage.getItem('token');
+    return fetch(`${process.env.REACT_APP_API}/postulants`, { headers: { token } })
       .then((response) => response.json())
       .then((response) => {
         dispatch(getPostulantsFulfilled(response.data));

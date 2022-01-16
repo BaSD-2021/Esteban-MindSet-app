@@ -10,8 +10,6 @@ import { cleanError } from 'redux/postulants/actions';
 import { addPostulant, updatePostulant, getPostulantById } from 'redux/postulants/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
-const hoursRegEx = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-
 function PostulantForm() {
   const [firstNameValue, setFirstNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
@@ -44,7 +42,6 @@ function PostulantForm() {
   const [workExperienceSDValue, setWorkExperienceSDValue] = useState('');
   const [workExperienceEDValue, setWorkExperienceEDValue] = useState('');
   const [workExperienceDescriptionValue, setWorkExperienceDescriptionValue] = useState('');
-  const [showError, setShowError] = useState('');
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -221,12 +218,8 @@ function PostulantForm() {
       phone: formValues.phone,
       profiles: formValues.undefined,
       contactRange: {
-        from: contactFromValue.match(hoursRegEx)
-          ? contactFromValue
-          : setShowError('Hours must have HH:MM format'),
-        to: contactToValue.match(hoursRegEx)
-          ? contactToValue
-          : setShowError('Hours must have HH:MM format')
+        from: formValues.contactFrom,
+        to: formValues.contactTo
       },
       studies: studiesBodyConstructor(formValues),
       workExperience: workExperienceBodyConstructor(formValues)
