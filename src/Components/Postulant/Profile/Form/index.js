@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input2';
-import Checkbox2 from 'Components/Shared/Checkbox2';
-import Textarea2 from 'Components/Shared/Textarea2';
+import Input from 'Components/Shared/Input';
+import Checkbox from 'Components/Shared/Checkbox';
+import Textarea from 'Components/Shared/Textarea';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { cleanError } from 'redux/postulants/actions';
@@ -534,7 +534,7 @@ function EditProfileForm() {
               title="First Name"
               placeholder="Boris"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={firstNameValue}
               value={firstNameValue}
@@ -544,7 +544,7 @@ function EditProfileForm() {
               title="Last Name"
               placeholder="Johnson"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               value={lastNameValue}
               initialValue={lastNameValue}
@@ -554,7 +554,7 @@ function EditProfileForm() {
               name="email"
               placeholder="bjohnson@gmail.com"
               type="email"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={emailValue}
               value={emailValue}
@@ -564,7 +564,7 @@ function EditProfileForm() {
               name="password"
               placeholder="Your password"
               type="password"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={passwordValue}
               value={passwordValue}
@@ -574,7 +574,7 @@ function EditProfileForm() {
                 title="Contact From"
                 name="contactFrom"
                 type="time"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={contactFromValue}
                 value={contactFromValue}
@@ -585,7 +585,7 @@ function EditProfileForm() {
                 name="contactTo"
                 placeholder="Contact To"
                 type="time"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={contactToValue}
                 value={contactToValue}
@@ -597,7 +597,7 @@ function EditProfileForm() {
               name="address"
               placeholder="Fake Street 123"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={addressValue}
               value={addressValue}
@@ -606,7 +606,7 @@ function EditProfileForm() {
               title="Birthday"
               name="birthday"
               type="date"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={birthdayValue}
               value={birthdayValue}
@@ -614,7 +614,7 @@ function EditProfileForm() {
             <Field
               label="Availability"
               name="available"
-              component={Checkbox2}
+              component={Checkbox}
               type="checkbox"
               disabled={formProps.submitting}
               initialValue={availableValue}
@@ -624,7 +624,7 @@ function EditProfileForm() {
               name="phone"
               placeholder="(123)-456-7899"
               type="number"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={phoneValue}
               value={phoneValue}
@@ -636,7 +636,7 @@ function EditProfileForm() {
                 name="primarySD"
                 placeholder="Start Date"
                 type="date"
-                component={Input2}
+                component={Input}
                 initialValue={primarySDValue}
                 value={primarySDValue}
                 disabled={formProps.submitting}
@@ -647,7 +647,7 @@ function EditProfileForm() {
                 name="primaryED"
                 placeholder="End Date"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={primaryEDValue}
                 value={primaryEDValue}
@@ -659,7 +659,7 @@ function EditProfileForm() {
               name="primary"
               placeholder="Coronel O'Higgins"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={primarySchoolValue}
               value={primarySchoolValue}
@@ -670,7 +670,7 @@ function EditProfileForm() {
                 title="Start Date"
                 name="secondarySD"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={secondarySDValue}
                 value={secondarySDValue}
@@ -680,7 +680,7 @@ function EditProfileForm() {
                 title="Finish Date"
                 name="secondaryED"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={secondaryEDValue}
                 value={secondaryEDValue}
@@ -692,7 +692,7 @@ function EditProfileForm() {
               name="secondary"
               placeholder="Lake Forest High School"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={secondarySchoolValue}
               value={secondarySchoolValue}
@@ -703,7 +703,7 @@ function EditProfileForm() {
                 title="Start Date"
                 name="tertiarySD"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={tertiarySDValue}
                 value={tertiarySDValue}
@@ -713,7 +713,7 @@ function EditProfileForm() {
                 title="Finish Date"
                 name="tertiaryED"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={tertiaryEDValue}
                 value={tertiaryEDValue}
@@ -726,7 +726,7 @@ function EditProfileForm() {
               placeholder="Your Superior Studies"
               rows="5"
               cols="33"
-              component={Textarea2}
+              component={Textarea}
               disabled={formProps.submitting}
               initialValue={tertiaryDescriptionValue}
               value={tertiaryDescriptionValue}
@@ -736,7 +736,7 @@ function EditProfileForm() {
               name="tertiary"
               placeholder="Lake Smith Institute"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={tertiaryInstituteValue}
               value={tertiaryInstituteValue}
@@ -747,7 +747,7 @@ function EditProfileForm() {
                 title="Start Date"
                 name="universitySD"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={universitySDValue}
                 value={universitySDValue}
@@ -757,7 +757,7 @@ function EditProfileForm() {
                 title="Finish Date"
                 name="universityED"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={universityEDValue}
                 value={universityEDValue}
@@ -770,7 +770,7 @@ function EditProfileForm() {
               placeholder="Your University Studies"
               rows="5"
               cols="33"
-              component={Textarea2}
+              component={Textarea}
               disabled={formProps.submitting}
               initialValue={universityDescriptionValue}
               value={universityDescriptionValue}
@@ -780,7 +780,7 @@ function EditProfileForm() {
               name="university"
               placeholder="Fake University"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={universityInstituteValue}
               value={universityInstituteValue}
@@ -791,7 +791,7 @@ function EditProfileForm() {
                 title="Start Date"
                 name="informalSD"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={informalSDValue}
                 value={informalSDValue}
@@ -801,7 +801,7 @@ function EditProfileForm() {
                 title="End Date"
                 name="informalED"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={informalEDValue}
                 value={informalEDValue}
@@ -814,7 +814,7 @@ function EditProfileForm() {
               placeholder="Informal Studies Description"
               rows="5"
               cols="33"
-              component={Textarea2}
+              component={Textarea}
               disabled={formProps.submitting}
               initialValue={informalDescriptionValue}
               value={informalDescriptionValue}
@@ -824,7 +824,7 @@ function EditProfileForm() {
               name="informal"
               placeholder="Fake Institute"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={informalInstituteValue}
               value={informalInstituteValue}
@@ -835,7 +835,7 @@ function EditProfileForm() {
               name="company"
               placeholder="Fake Company"
               type="text"
-              component={Input2}
+              component={Input}
               disabled={formProps.submitting}
               initialValue={workExperienceCompanyValue}
               value={workExperienceCompanyValue}
@@ -845,7 +845,7 @@ function EditProfileForm() {
                 title="Start Date"
                 name="workExperienceSD"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={workExperienceSDValue}
                 value={workExperienceSDValue}
@@ -855,7 +855,7 @@ function EditProfileForm() {
                 title="End Date"
                 name="workExperienceED"
                 type="date"
-                component={Input2}
+                component={Input}
                 disabled={formProps.submitting}
                 initialValue={workExperienceEDValue}
                 value={workExperienceEDValue}
@@ -868,7 +868,7 @@ function EditProfileForm() {
               placeholder="Your Work Experience Description"
               rows="5"
               cols="33"
-              component={Textarea2}
+              component={Textarea}
               disabled={formProps.submitting}
               initialValue={workExperienceDescriptionValue}
               value={workExperienceDescriptionValue}
