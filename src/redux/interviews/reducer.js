@@ -11,6 +11,9 @@ import {
   UPDATE_INTERVIEW_PENDING,
   UPDATE_INTERVIEW_SUCCESS,
   UPDATE_INTERVIEW_ERROR,
+  UPDATE_INTERVIEW_STATUS_PENDING,
+  UPDATE_INTERVIEW_STATUS_SUCCESS,
+  UPDATE_INTERVIEW_STATUS_ERROR,
   DELETE_INTERVIEW_PENDING,
   DELETE_INTERVIEW_SUCCESS,
   DELETE_INTERVIEW_ERROR,
@@ -111,6 +114,32 @@ const reducer = (state = initialState, action) => {
       };
     }
     case UPDATE_INTERVIEW_ERROR: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    }
+    case UPDATE_INTERVIEW_STATUS_PENDING: {
+      return {
+        ...state,
+        isFetching: true,
+        error: initialState.error
+      };
+    }
+    case UPDATE_INTERVIEW_STATUS_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        list: state.list.map((item) => {
+          if (item._id === action.payload._id) {
+            return action.payload;
+          }
+          return item;
+        })
+      };
+    }
+    case UPDATE_INTERVIEW_STATUS_ERROR: {
       return {
         ...state,
         isFetching: false,

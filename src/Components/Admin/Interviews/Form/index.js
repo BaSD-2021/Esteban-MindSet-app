@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import useQuery from 'Hooks/useQuery';
 import styles from './form.module.css';
-import Input2 from 'Components/Shared/Input';
-import Select2 from 'Components/Shared/Select';
+import Input from 'Components/Shared/Input';
+import Select from 'Components/Shared/Select';
 import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -87,16 +87,16 @@ function InterviewForm() {
   const onSubmit = (formValues) => {
     const interviewId = query.get('_id');
     const bodyToEdit = {
-      postulant: formValues.postulant,
-      client: formValues.clients,
-      application: formValues.application,
+      postulant: formValues.postulant._id,
+      client: formValues.client._id,
+      application: formValues.application._id,
       status: formValues.status,
       date: formValues.date,
       notes: formValues.notes
     };
     const bodyToAdd = {
       postulant: formValues.postulant,
-      client: formValues.clients,
+      client: formValues.client,
       application: formValues.application,
       status: 'assigned',
       date: formValues.date,
@@ -134,9 +134,6 @@ function InterviewForm() {
     if (!formValues.date) {
       errors.date = 'Date is required';
     }
-    if (!formValues.date?.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      errors.date = 'Date invalid format';
-    }
     if (formValues.notes) {
       if (formValues.notes?.indexOf(' ') === -1) {
         errors.notes = 'Notes must contain at least one space';
@@ -148,12 +145,35 @@ function InterviewForm() {
     return errors;
   };
 
+  const required = (value) => {
+    return value ? undefined : 'Required';
+  };
+
+  const validateDate = (value) => {
+    if (query.get('_id')) {
+      return undefined;
+    }
+    if (required(value)) {
+      return 'Required';
+    }
+    let interviewDate = value.split('T');
+    let dateValue = Math.round(new Date(interviewDate[0]).getTime() / 1000);
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1 < 10 ? `0${now.getMonth() + 1}` : now.getMonth() + 1;
+    const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
+
+    let nowValue = Math.round(new Date(`${year}-${month}-${date}`).getTime() / 1000);
+    return dateValue >= nowValue ? undefined : 'Invalid date';
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       <Modal
-        show={!!error || !!error.message}
+        show={!!error}
         title="Error"
-        message={error || error.message}
+        message={error}
         cancel={{
           text: 'Close',
           callback: () => dispatch(cleanError())
@@ -161,14 +181,14 @@ function InterviewForm() {
       />
       <Form
         onSubmit={onSubmit}
-        validate={validate}
         render={(formProps) => (
           <form onSubmit={formProps.handleSubmit} className={styles.container}>
             <h2 className={styles.title}>Interviews</h2>
             <Field
               name="postulant"
               title={'Select a Postulant'}
-              component={Select2}
+              component={Select}
+              validate={required}
               disabled={formProps.submitting}
               arrayToMap={selectPostulant}
               initialValue={postulantIdValue}
@@ -177,7 +197,8 @@ function InterviewForm() {
             <Field
               name="client"
               title={'Select a Client'}
-              component={Select2}
+              component={Select}
+              validate={required}
               disabled={formProps.submitting}
               arrayToMap={selectClient}
               initialValue={clientIdValue}
@@ -186,7 +207,8 @@ function InterviewForm() {
             <Field
               name="application"
               title={'Select an Application'}
-              component={Select2}
+              component={Select}
+              validate={required}
               disabled={formProps.submitting}
               arrayToMap={selectApplication}
               initialValue={applicationIdValue}
@@ -196,7 +218,8 @@ function InterviewForm() {
               <Field
                 name="status"
                 title={'Select a Status'}
-                component={Select2}
+                component={Select}
+                validate={required}
                 disabled={formProps.submitting}
                 arrayToMap={[
                   { value: 'successful', label: 'Successful' },
@@ -212,8 +235,10 @@ function InterviewForm() {
             <Field
               name="date"
               title={'Select a Date'}
-              component={Input2}
+              component={Input}
               type="datetime-local"
+              data-date-format="DD MMMM YYYY"
+              validate={validateDate}
               disabled={formProps.submitting}
               initialValue={dateValue}
               value={dateValue}
@@ -225,7 +250,7 @@ function InterviewForm() {
               type="text"
               placeholder="Insert Notes"
               disabled={formProps.submitting}
-              component={Input2}
+              component={Input}
               initialValue={notesValue}
             />
             <div className={styles.buttonContainer}>

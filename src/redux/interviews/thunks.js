@@ -8,6 +8,9 @@ import {
   updateInterviewPending,
   updateInterviewSuccess,
   updateInterviewError,
+  updateInterviewStatusPending,
+  updateInterviewStatusSuccess,
+  updateInterviewStatusError,
   getInterviewByIdPending,
   getInterviewByIdSuccess,
   getInterviewByIdError,
@@ -117,6 +120,36 @@ export const updateInterview = (id, interview) => {
       })
       .catch((error) => {
         dispatch(updateInterviewError(error.toString()));
+      });
+  };
+};
+
+export const updateInterviewStatus = (id, status) => {
+  return (dispatch) => {
+    dispatch(updateInterviewStatusPending());
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status })
+    };
+    return fetch(`${process.env.REACT_APP_API}/interviews/${id}`, options)
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(updateInterviewStatusSuccess(response.data));
+        dispatch(getInterviews());
+        return response.data;
+      })
+      .catch((error) => {
+        dispatch(updateInterviewStatusError(error.toString()));
       });
   };
 };
