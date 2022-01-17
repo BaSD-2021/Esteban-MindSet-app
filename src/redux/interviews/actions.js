@@ -11,6 +11,9 @@ import {
   UPDATE_INTERVIEW_PENDING,
   UPDATE_INTERVIEW_SUCCESS,
   UPDATE_INTERVIEW_ERROR,
+  UPDATE_INTERVIEW_STATUS_PENDING,
+  UPDATE_INTERVIEW_STATUS_SUCCESS,
+  UPDATE_INTERVIEW_STATUS_ERROR,
   DELETE_INTERVIEW_PENDING,
   DELETE_INTERVIEW_SUCCESS,
   DELETE_INTERVIEW_ERROR,
@@ -95,6 +98,26 @@ export const updateInterviewSuccess = (data) => {
 export const updateInterviewError = (error) => {
   return {
     type: UPDATE_INTERVIEW_ERROR,
+    payload: error
+  };
+};
+
+export const updateInterviewStatusPending = () => {
+  return {
+    type: UPDATE_INTERVIEW_STATUS_PENDING
+  };
+};
+
+export const updateInterviewStatusSuccess = (data) => {
+  return {
+    type: UPDATE_INTERVIEW_STATUS_SUCCESS,
+    payload: data
+  };
+};
+
+export const updateInterviewStatusError = (error) => {
+  return {
+    type: UPDATE_INTERVIEW_STATUS_ERROR,
     payload: error
   };
 };
