@@ -10,8 +10,9 @@ function Modal(props) {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
-        <h3>{props.title}</h3>
+        <h3 className={styles.title}>{props.title}</h3>
         <p>{props.message}</p>
+        <div>{props.children}</div>
         <div className={styles.buttons}>
           {props.confirm && (
             <Button
