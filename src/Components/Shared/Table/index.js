@@ -47,9 +47,10 @@ function Table(props) {
                       <Button
                         key={action.text}
                         label={action.text}
-                        style={styles.actionButton}
+                        style={`${styles.actionButton}`}
                         onClick={(e) => action.callback(e, item)}
                         disabled={action.disabled && action.disabled(item)}
+                        hidden={action.hidden && action.hidden(item)}
                       />
                     );
                   })}
