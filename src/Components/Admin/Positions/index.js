@@ -6,7 +6,9 @@ import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPositions, deletePosition } from 'redux/positions/thunks';
+import { deleteInterview, getInterviews } from 'redux/interviews/thunks';
 import { cleanError } from 'redux/positions/actions';
+import { deleteApplication, getApplications } from 'redux/applications/thunks';
 
 function Positions() {
   const [showModal, setShowModal] = useState(false);
@@ -15,13 +17,30 @@ function Positions() {
   const history = useHistory();
   const dispatch = useDispatch();
   const positions = useSelector((store) => store.positions.list);
+  const applications = useSelector((store) => store.applications.list);
+  const interviews = useSelector((store) => store.interviews.list);
   const error = useSelector((store) => store.positions.error);
   const isLoading = useSelector((store) => store.positions.isFetching);
 
   useEffect(() => {
     if (!positions.length) {
       dispatch(getPositions());
+      dispatch(getApplications());
+      dispatch(getInterviews());
     }
+    positions.forEach((position) => {
+      if (position.vacancy === 0) {
+        const interviewsToDelete = interviews.filter(
+          (interview) => interview.application.positions._id === position._id
+        );
+        interviewsToDelete.forEach((interview) => dispatch(deleteInterview(interview._id)));
+        const applicationsToDelete = applications.filter(
+          (application) => application.positions._id === position._id
+        );
+        applicationsToDelete.forEach((application) => dispatch(deleteApplication(application._id)));
+        dispatch(deletePosition(position._id));
+      }
+    });
   }, [positions]);
 
   return (
