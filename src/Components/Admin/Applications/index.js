@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './applications.module.css';
 import Modal from 'Components/Shared/Modal';
-import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
@@ -99,21 +98,9 @@ function Applications() {
             columns={columnName}
             data={processedApplications}
             onRowClick={(item) => history.push(`/admin/applications/form?_id=${item._id}`)}
-            actions={[
-              {
-                text: 'Delete',
-                callback: (e, item) => {
-                  e.stopPropagation();
-                  setSelectedIdApplication(item._id);
-                  setShowModal(true);
-                }
-              }
-            ]}
+            actions={[]}
           />
         )}
-      </div>
-      <div className={styles.buttonContainer}>
-        <Button label="ADD APPLICATION" onClick={() => history.push('/admin/applications/form')} />
       </div>
     </section>
   );
