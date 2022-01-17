@@ -107,7 +107,9 @@ const reducer = (state = initialState, action) => {
             return action.payload;
           }
           return item;
-        })
+        }),
+        selectedItem:
+          state.selectedItem._id === action.payload._id ? action.payload : state.selectedItem
       };
     }
     case UPDATE_PSYCHOLOGIST_ERROR: {

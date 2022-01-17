@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Modal from 'Components/Shared/Modal';
 import styles from './sessions.module.css';
 import Button from 'Components/Shared/Button';
@@ -17,9 +17,9 @@ function Sessions() {
   const isLoading = useSelector((store) => store.sessions.isFetching);
   const postulantId = useSelector((store) => store.auth.user?._id);
 
-  const sessionsOfOnePostulant = sessions.filter(
-    (session) => session.postulant._id === postulantId
-  );
+  const sessionsOfOnePostulant = useMemo(() => {
+    return sessions.filter((session) => session.postulant._id === postulantId);
+  }, [sessions]);
 
   useEffect(() => {
     if (!sessions.length) {

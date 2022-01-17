@@ -48,31 +48,8 @@
   margin: 10px;
 }
 
-.subtitle{
-  font-weight: bold;
-  font-size: 20px;
-  color: #002147;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
 .buttonContainer{
   display: flex;
   justify-content: center;
   margin: 20px;
-}
-
-.p{
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.informationContainer{
-  display: flex;
-  justify-content: left;
-  flex-direction: column;
-}
-
-.contactRange{
-  display: flex;
 }

@@ -2,6 +2,7 @@ import Button from 'Components/Shared/Button';
 import Modal from 'Components/Shared/Modal';
 import Select from 'Components/Shared/Select';
 import React, { useEffect, useState } from 'react';
+import { Form, Field } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPsychologistById, updatePsychologist } from 'redux/psychologists/thunks';
 import styles from './profile.module.css';
@@ -11,40 +12,11 @@ const Profile = () => {
   const selectedPsychologist = useSelector((store) => store.psychologists.selectedItem);
   const dispatch = useDispatch();
   const psychologistId = useSelector((store) => store.auth.user._id);
-  const [mondayFrom, setMondayFrom] = useState(0);
-  const [mondayTo, setMondayTo] = useState(0);
-  const [tuesdayFrom, setTuesdayFrom] = useState(0);
-  const [tuesdayTo, setTuesdayTo] = useState(0);
-  const [wednesdayFrom, setWednesdayFrom] = useState(0);
-  const [wednesdayTo, setWednesdayTo] = useState(0);
-  const [thursdayFrom, setThursdayFrom] = useState(0);
-  const [thursdayTo, setThursdayTo] = useState(0);
-  const [fridayFrom, setFridayFrom] = useState(0);
-  const [fridayTo, setFridayTo] = useState(0);
-  const [saturdayFrom, setSaturdayFrom] = useState(0);
-  const [saturdayTo, setSaturdayTo] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     dispatch(getPsychologistById(psychologistId));
   }, []);
-  useEffect(() => fillAvailability(), [selectedPsychologist.availability]);
-
-  const fillAvailability = () => {
-    setMondayFrom(selectedPsychologist.availability?.monday.from);
-    setMondayTo(selectedPsychologist.availability?.monday.to);
-    setTuesdayFrom(selectedPsychologist.availability?.tuesday.from);
-    setThursdayTo(selectedPsychologist.availability?.tuesday.to);
-    setWednesdayFrom(selectedPsychologist.availability?.wednesday.from);
-    setWednesdayTo(selectedPsychologist.availability?.wednesday.to);
-    setThursdayFrom(selectedPsychologist.availability?.thursday.from);
-    setThursdayTo(selectedPsychologist.availability?.thursday.to);
-    setFridayFrom(selectedPsychologist.availability?.friday.from);
-    setFridayTo(selectedPsychologist.availability?.friday.to);
-    setSaturdayFrom(selectedPsychologist.availability?.saturday.from);
-    setSaturdayTo(selectedPsychologist.availability?.saturday.to);
-  };
 
   const schedule = [
     { value: 800, label: '08:00' },
@@ -62,38 +34,42 @@ const Profile = () => {
     { value: 2000, label: '20:00' }
   ];
 
-  const updateAvailability = () => {
+  const updateAvailability = (formValues) => {
     dispatch(
       updatePsychologist(selectedPsychologist._id, {
         ...selectedPsychologist,
         availability: {
           monday: {
-            from: parseInt(mondayFrom),
-            to: parseInt(mondayTo)
+            from: parseInt(formValues.mondayFrom),
+            to: parseInt(formValues.mondayTo)
           },
           tuesday: {
-            from: parseInt(tuesdayFrom),
-            to: parseInt(tuesdayTo)
+            from: parseInt(formValues.tuesdayFrom),
+            to: parseInt(formValues.tuesdayTo)
           },
           wednesday: {
-            from: parseInt(wednesdayFrom),
-            to: parseInt(wednesdayTo)
+            from: parseInt(formValues.wednesdayFrom),
+            to: parseInt(formValues.wednesdayTo)
           },
           thursday: {
-            from: parseInt(thursdayFrom),
-            to: parseInt(thursdayTo)
+            from: parseInt(formValues.thursdayFrom),
+            to: parseInt(formValues.thursdayTo)
           },
           friday: {
-            from: parseInt(fridayFrom),
-            to: parseInt(fridayTo)
+            from: parseInt(formValues.fridayFrom),
+            to: parseInt(formValues.fridayTo)
           },
           saturday: {
-            from: parseInt(saturdayFrom),
-            to: parseInt(saturdayTo)
+            from: parseInt(formValues.saturdayFrom),
+            to: parseInt(formValues.saturdayTo)
           }
         }
       })
     );
+  };
+
+  const validateIsBigger = (value, all, previous) => {
+    return parseInt(value) > parseInt(all[previous]) ? undefined : 'Invalid Range';
   };
 
   return (
@@ -101,208 +77,227 @@ const Profile = () => {
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
-        <div className={styles.flexContainer}>
-          <div className={styles.infoContainer}>
-            <h2 className={styles.title}>Profile</h2>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>First Name</p>
-              <p className={styles.info}>{selectedPsychologist?.firstName}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Last Name</p>
-              <p className={styles.info}>{selectedPsychologist?.lastName}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Username</p>
-              <p className={styles.info}>{selectedPsychologist?.username}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Password</p>
-              <p className={styles.info}>{selectedPsychologist?.password}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Address</p>
-              <p className={styles.info}>{selectedPsychologist?.address}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Email</p>
-              <p className={styles.info}>{selectedPsychologist?.email}</p>
-            </div>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Phone</p>
-              <p className={styles.info}>{selectedPsychologist?.phone}</p>
-            </div>
-          </div>
-          <div className={styles.infoContainer}>
-            <h2 className={styles.title}>Availability</h2>
-            <div className={styles.dataContainer}>
-              <p className={styles.label}>Monday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="mondayFrom"
-                  name="mondayFrom"
-                  value={mondayFrom}
-                  onChange={(e) => {
-                    setMondayFrom(e.target.value);
-                    setShowButton(true);
+        <Form
+          onSubmit={updateAvailability}
+          render={(formProps) => (
+            <form onSubmit={formProps.handleSubmit} className={styles.container}>
+              <div className={styles.flexContainer}>
+                <div className={styles.infoContainer}>
+                  <h2 className={styles.title}>Profile</h2>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>First Name</p>
+                    <p className={styles.info}>{selectedPsychologist?.firstName}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Last Name</p>
+                    <p className={styles.info}>{selectedPsychologist?.lastName}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Username</p>
+                    <p className={styles.info}>{selectedPsychologist?.username}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Password</p>
+                    <p className={styles.info}>{selectedPsychologist?.password}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Address</p>
+                    <p className={styles.info}>{selectedPsychologist?.address}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Email</p>
+                    <p className={styles.info}>{selectedPsychologist?.email}</p>
+                  </div>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Phone</p>
+                    <p className={styles.info}>{selectedPsychologist?.phone}</p>
+                  </div>
+                </div>
+                <div className={styles.infoContainer}>
+                  <h2 className={styles.title}>Availability</h2>
+                  <div className={styles.dataContainer}>
+                    <p className={styles.label}>Monday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="mondayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.monday.from}
+                        initialValue={selectedPsychologist.availability?.monday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="To"
+                        name="mondayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.monday.to}
+                        initialValue={selectedPsychologist.availability?.monday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'mondayFrom');
+                        }}
+                      />
+                    </div>
+                    <p className={styles.label}>Tuesday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="tuesdayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.tuesday.from}
+                        initialValue={selectedPsychologist.availability?.tuesday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="To"
+                        name="tuesdayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.tuesday.to}
+                        initialValue={selectedPsychologist.availability?.tuesday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'tuesdayFrom');
+                        }}
+                      />
+                    </div>
+                    <p className={styles.label}>Wednesday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="wednesdayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.wednesday.from}
+                        initialValue={selectedPsychologist.availability?.wednesday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="To"
+                        name="wednesdayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.wednesday.to}
+                        initialValue={selectedPsychologist.availability?.wednesday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'wednesdayFrom');
+                        }}
+                      />
+                    </div>
+                    <p className={styles.label}>Thursday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="thursdayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.thursday.from}
+                        initialValue={selectedPsychologist.availability?.thursday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="To"
+                        name="thursdayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.thursday.to}
+                        initialValue={selectedPsychologist.availability?.thursday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'thursdayFrom');
+                        }}
+                      />
+                    </div>
+                    <p className={styles.label}>Friday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="fridayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.friday.from}
+                        initialValue={selectedPsychologist.availability?.friday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="to"
+                        name="fridayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.friday.to}
+                        initialValue={selectedPsychologist.availability?.friday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'fridayFrom');
+                        }}
+                      />
+                    </div>
+                    <p className={styles.label}>Saturday</p>
+                    <div className={styles.selectorContainer}>
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="From"
+                        name="saturdayFrom"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.saturday.from}
+                        initialValue={selectedPsychologist.availability?.saturday.from}
+                      />
+                      <Field
+                        component={Select}
+                        disabled={formProps.submitting}
+                        title="To"
+                        name="saturdayTo"
+                        arrayToMap={schedule}
+                        style={styles.selector}
+                        value={selectedPsychologist.availability?.saturday.to}
+                        initialValue={selectedPsychologist.availability?.saturday.to}
+                        validate={(value, all) => {
+                          return validateIsBigger(value, all, 'saturdayFrom');
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.buttonContainer}>
+                    <Button
+                      label="Save Changes"
+                      type="submit"
+                      disabled={formProps.submitting || formProps.pristine}
+                    />
+                  </div>
+                </div>
+                <Modal
+                  show={showModal}
+                  title="Change Schedule"
+                  message="Changes made in schedule will be applied from the following week "
+                  cancel={{ text: 'Cancel', callback: () => setShowModal(false) }}
+                  confirm={{
+                    text: 'Confirm',
+                    callback: () => {
+                      updateAvailability();
+                      setShowModal(false);
+                    }
                   }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="mondayTo"
-                  name="mondayTo"
-                  value={mondayTo}
-                  onChange={(e) => {
-                    setMondayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
                 />
               </div>
-              <p className={styles.label}>Tuesday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="tuesdayFrom"
-                  name="tuesdayFrom"
-                  value={tuesdayFrom}
-                  onChange={(e) => {
-                    setTuesdayFrom(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="tuesdayTo"
-                  name="tuesdayTo"
-                  value={tuesdayTo}
-                  onChange={(e) => {
-                    setTuesdayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-              </div>
-              <p className={styles.label}>Wednesday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="wednesdayFrom"
-                  name="wednesdayFrom"
-                  value={wednesdayFrom}
-                  onChange={(e) => {
-                    setWednesdayFrom(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="wednesdayTo"
-                  name="wednesdayTo"
-                  value={wednesdayTo}
-                  onChange={(e) => {
-                    setWednesdayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-              </div>
-              <p className={styles.label}>Thursday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="thursdayFrom"
-                  name="thursdayFrom"
-                  value={thursdayFrom}
-                  onChange={(e) => {
-                    setThursdayFrom(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="thursdayTo"
-                  name="thursdayTo"
-                  value={thursdayTo}
-                  onChange={(e) => {
-                    setThursdayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-              </div>
-              <p className={styles.label}>Friday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="fridayFrom"
-                  name="fridayFrom"
-                  value={fridayFrom}
-                  onChange={(e) => {
-                    setFridayFrom(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="fridayTo"
-                  name="fridayTo"
-                  value={fridayTo}
-                  onChange={(e) => {
-                    setFridayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-              </div>
-              <p className={styles.label}>Saturday</p>
-              <div className={styles.selectorContainer}>
-                <Select
-                  style={styles.selector}
-                  id="saturdayFrom"
-                  name="saturdayFrom"
-                  value={saturdayFrom}
-                  onChange={(e) => {
-                    setSaturdayFrom(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-                <Select
-                  style={styles.selector}
-                  id="saturdayTo"
-                  name="saturdayTo"
-                  value={saturdayTo}
-                  onChange={(e) => {
-                    setSaturdayTo(e.target.value);
-                    setShowButton(true);
-                  }}
-                  arrayToMap={schedule}
-                />
-              </div>
-            </div>
-            {showButton && <Button label="Save Changes" onClick={() => setShowModal(true)} />}
-          </div>
-          <Modal
-            show={showModal}
-            title="Change Schedule"
-            message="Changes made in schedule will be applied from the following week "
-            cancel={{ text: 'Cancel', callback: () => setShowModal(false) }}
-            confirm={{
-              text: 'Confirm',
-              callback: () => {
-                updateAvailability();
-                setShowModal(false);
-              }
-            }}
-          />
-        </div>
+            </form>
+          )}
+        />
       )}
     </section>
   );
