@@ -89,7 +89,6 @@ const Home = () => {
   const incomingSessions = sessions.filter(
     (session) => session.psychologist._id === psychologistId && session.status === 'assigned'
   );
-  console.log(itemOnEdit);
 
   return (
     <section className={styles.container}>
