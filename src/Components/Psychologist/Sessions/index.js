@@ -112,6 +112,12 @@ function Sessions() {
         setShowProfileModal(false);
       }
     });
+    dispatch(
+      updateSession(itemOnEdit._id, {
+        ...itemOnEdit,
+        status: 'closed'
+      })
+    );
   };
 
   return (
@@ -279,7 +285,10 @@ function Sessions() {
               {
                 text: 'Complete',
                 disabled: (item) => item.status !== 'confirmed',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   setItemOnEdit(item);
@@ -289,10 +298,14 @@ function Sessions() {
               {
                 text: 'Profile',
                 disabled: (item) => item.status !== 'successful',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   dispatch(getPostulantById(item.postulant._id));
+                  setItemOnEdit(item);
                   setShowProfileModal(true);
                 }
               }
