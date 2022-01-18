@@ -11,7 +11,7 @@ import { Field, Form } from 'react-final-form';
 import Input from 'Components/Shared/Input';
 import Select from 'Components/Shared/Select';
 import { getProfiles } from 'redux/profiles/thunks';
-import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
+import { getPostulantById, setProfilePostulant } from 'redux/postulants/thunks';
 
 function Sessions() {
   const [processedSessions, setProcessedSessions] = useState([]);
@@ -103,15 +103,17 @@ function Sessions() {
   };
 
   const editProfile = (formValues) => {
-    const body = {
-      ...selectedPostulant,
-      profiles: { _id: formValues.profile }
-    };
-    dispatch(updatePostulant(selectedPostulant._id, body)).then((response) => {
+    dispatch(setProfilePostulant(selectedPostulant._id, formValues.profile)).then((response) => {
       if (response) {
         setShowProfileModal(false);
       }
     });
+    dispatch(
+      updateSession(itemOnEdit._id, {
+        ...itemOnEdit,
+        status: 'closed'
+      })
+    );
   };
 
   return (
@@ -279,7 +281,10 @@ function Sessions() {
               {
                 text: 'Complete',
                 disabled: (item) => item.status !== 'confirmed',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   setItemOnEdit(item);
@@ -289,10 +294,14 @@ function Sessions() {
               {
                 text: 'Profile',
                 disabled: (item) => item.status !== 'successful',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   dispatch(getPostulantById(item.postulant._id));
+                  setItemOnEdit(item);
                   setShowProfileModal(true);
                 }
               }

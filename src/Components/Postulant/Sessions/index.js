@@ -42,7 +42,11 @@ function Sessions() {
     );
   };
   const hasScheduleSessions = () => {
-    return sessions.filter((session) => session.status === 'assigned').length > 0;
+    return (
+      sessionsOfOnePostulant.filter(
+        (session) => session.status === 'assigned' && session.isDeleted === 'false'
+      ).length > 0
+    );
   };
 
   return (

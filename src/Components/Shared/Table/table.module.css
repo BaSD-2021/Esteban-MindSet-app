@@ -59,6 +59,7 @@ tbody .trStyles:hover{
   color: #002147;
   font-size: 16px;
   width: 11rem;
+  max-height: 50px;
   align-self: center;
   overflow: auto;
 }

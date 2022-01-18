@@ -1,9 +1,9 @@
 import Table from 'Components/Shared/Table';
 import styles from './home.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getApplications } from 'redux/applications/thunks';
+import { getApplicationsByPostulant } from 'redux/applications/thunks';
 import { getPositions } from 'redux/positions/thunks';
 import { getSessions, updateSession } from 'redux/sessions/thunks';
 import { getPostulants } from 'redux/postulants/thunks';
@@ -12,7 +12,6 @@ import { getInterviews, updateInterview } from 'redux/interviews/thunks';
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [lastApplications, setLastApplications] = useState([]);
   const applications = useSelector((store) => store.applications.list);
   const positions = useSelector((store) => store.positions.list);
   const sessions = useSelector((store) => store.sessions.list);
@@ -29,34 +28,10 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (!applications.length) {
-      dispatch(getApplications());
-    } else {
-      processApplications();
-    }
-  }, [applications]);
+    dispatch(getApplicationsByPostulant(postulantId));
+  }, []);
 
   const selectedPostulant = postulants.filter((postulant) => postulant._id === postulantId);
-
-  const processApplications = () => {
-    setLastApplications(
-      applications
-        .filter((application) => application.postulants._id === postulantId)
-        .reverse()
-        .slice(0, 4)
-        .map((application) => {
-          return {
-            _id: application._id,
-            positions: application.positions ? application.positions.jobDescription : '-',
-            postulants: application.postulants
-              ? `${application.postulants.firstName} ${application.postulants.lastName}`
-              : '-',
-            interview: application.interview ? application.interview.date : '-',
-            result: application.result
-          };
-        })
-    );
-  };
 
   const lastPositions = positions
     .filter((position) => position.isOpen)
@@ -76,7 +51,7 @@ function Home() {
   const applicationsColumns = [
     {
       name: 'Job Description',
-      value: 'positions'
+      value: 'positions.jobDescription'
     },
     {
       name: 'Interview',
@@ -151,7 +126,7 @@ function Home() {
               <h3 className={styles.widgetTitle}>Latest Applications</h3>
               <Table
                 columns={applicationsColumns}
-                data={lastApplications}
+                data={applications}
                 onRowClick={(item) => history.push(`/postulant/applications/form?_id=${item._id}`)}
                 actions={[]}
               />

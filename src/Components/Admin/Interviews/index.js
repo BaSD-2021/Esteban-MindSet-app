@@ -43,16 +43,7 @@ function Interviews() {
           ]}
           data={interviews}
           onRowClick={(item) => history.push(`/admin/interviews/form?_id=${item._id}`)}
-          actions={[
-            {
-              text: 'Delete',
-              callback: (e, item) => {
-                e.stopPropagation();
-                setIdInterview(item._id);
-                setShowModal(true);
-              }
-            }
-          ]}
+          actions={[]}
         />
       )}
       <Modal

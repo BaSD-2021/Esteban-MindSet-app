@@ -13,7 +13,10 @@ import {
   updatePostulantsRejected,
   deletePostulantsFetching,
   deletePostulantsFulfilled,
-  deletePostulantsRejected
+  deletePostulantsRejected,
+  setProfilePostulantFetching,
+  setProfilePostulantFulfilled,
+  setProfilePostulantRejected
 } from './actions';
 
 export const getPostulants = () => {
@@ -145,6 +148,39 @@ export const deletePostulant = (postulantId) => {
       })
       .catch((err) => {
         dispatch(deletePostulantsRejected(err.toString()));
+      });
+  };
+};
+
+export const setProfilePostulant = (postulantId, profile) => {
+  return (dispatch) => {
+    dispatch(setProfilePostulantFetching());
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ profile }),
+      method: 'PUT'
+    };
+
+    const url = `${process.env.REACT_APP_API}/postulants/profile/${postulantId}`;
+
+    return fetch(url, options)
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(setProfilePostulantFulfilled(response.data));
+        return response.data;
+      })
+      .catch((err) => {
+        dispatch(setProfilePostulantRejected(err.toString()));
       });
   };
 };

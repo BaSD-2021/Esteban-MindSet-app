@@ -5,6 +5,9 @@ import {
   GET_APPLICATION_BY_ID_PENDING,
   GET_APPLICATION_BY_ID_SUCCESS,
   GET_APPLICATION_BY_ID_ERROR,
+  GET_APPLICATION_BY_POSTULANT_PENDING,
+  GET_APPLICATION_BY_POSTULANT_SUCCESS,
+  GET_APPLICATION_BY_POSTULANT_ERROR,
   CREATE_APPLICATION_PENDING,
   CREATE_APPLICATION_SUCCESS,
   CREATE_APPLICATION_ERROR,
@@ -54,6 +57,26 @@ export const getApplicationByIdSuccess = (data) => {
 export const getApplicationByIdError = (error) => {
   return {
     type: GET_APPLICATION_BY_ID_ERROR,
+    payload: error
+  };
+};
+
+export const getApplicationByPostulantPending = () => {
+  return {
+    type: GET_APPLICATION_BY_POSTULANT_PENDING
+  };
+};
+
+export const getApplicationByPostulantSuccess = (data) => {
+  return {
+    type: GET_APPLICATION_BY_POSTULANT_SUCCESS,
+    payload: data
+  };
+};
+
+export const getApplicationByPostulantError = (error) => {
+  return {
+    type: GET_APPLICATION_BY_POSTULANT_ERROR,
     payload: error
   };
 };

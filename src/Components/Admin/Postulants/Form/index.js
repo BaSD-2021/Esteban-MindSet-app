@@ -56,7 +56,9 @@ function PostulantForm() {
   }, []);
 
   useEffect(() => {
-    autoFill(selectedItem);
+    if (selectedItem) {
+      autoFill(selectedItem);
+    }
   }, [selectedItem]);
 
   const autoFill = (data) => {
