@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './applications.module.css';
 import Modal from 'Components/Shared/Modal';
 import Table from 'Components/Shared/TableToShow';
 import { useDispatch, useSelector } from 'react-redux';
-import { getApplications } from 'redux/applications/thunks';
+import { getApplicationsByPostulant } from 'redux/applications/thunks';
 import { cleanError } from 'redux/applications/actions';
 
 function Applications() {
   const dispatch = useDispatch();
-  const [processedApplications, setProcessedApplications] = useState([]);
   const applications = useSelector((store) => store.applications.list);
   const postulantId = useSelector((store) => store.auth.user._id);
   const error = useSelector((store) => store.applications.error);
   const isLoading = useSelector((store) => store.applications.isFetching);
-
-  const applicationsOfOnePostulant = applications.filter(
-    (application) => application.postulants._id === postulantId
-  );
 
   const columnName = [
     {
@@ -34,25 +29,8 @@ function Applications() {
   ];
 
   useEffect(() => {
-    if (!applications.length) {
-      dispatch(getApplications());
-    } else {
-      processApplications();
-    }
-  }, [applications]);
-
-  const processApplications = () => {
-    setProcessedApplications(
-      applicationsOfOnePostulant.map((application) => {
-        return {
-          _id: application._id,
-          positions: application.positions ? application.positions.jobDescription : '-',
-          interview: application.interview ? application.interview.date : '-',
-          result: application.result
-        };
-      })
-    );
-  };
+    dispatch(getApplicationsByPostulant(postulantId));
+  }, []);
 
   return (
     <section className={styles.container}>
@@ -70,7 +48,7 @@ function Applications() {
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
         ) : (
-          <Table columns={columnName} data={processedApplications} actions={[]} />
+          <Table columns={columnName} data={applications} actions={[]} />
         )}
       </div>
     </section>

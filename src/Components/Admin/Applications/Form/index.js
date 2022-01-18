@@ -27,8 +27,6 @@ function ApplicationForm() {
   const selectedPosition = useSelector((store) => store.positions.selectedItem);
   const error = useSelector((store) => store.applications.error);
 
-  console.log(selectedPosition);
-
   useEffect(() => {
     if (Object.keys(selectedItem).length) {
       setPositionId(selectedItem.positions?._id);

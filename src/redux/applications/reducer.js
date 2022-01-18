@@ -5,6 +5,9 @@ import {
   GET_APPLICATION_BY_ID_PENDING,
   GET_APPLICATION_BY_ID_SUCCESS,
   GET_APPLICATION_BY_ID_ERROR,
+  GET_APPLICATION_BY_POSTULANT_PENDING,
+  GET_APPLICATION_BY_POSTULANT_SUCCESS,
+  GET_APPLICATION_BY_POSTULANT_ERROR,
   CREATE_APPLICATION_PENDING,
   CREATE_APPLICATION_SUCCESS,
   CREATE_APPLICATION_ERROR,
@@ -17,6 +20,7 @@ import {
   CLEAN_ERROR,
   CLEAN_SELECTED_ITEM
 } from './constants';
+import { SET_PROFILE_POSTULANT_FULFILLED } from 'redux/postulants/constants';
 
 const initialState = {
   isFetching: false,
@@ -27,6 +31,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_APPLICATION_BY_POSTULANT_PENDING:
     case GET_APPLICATIONS_PENDING: {
       return {
         ...state,
@@ -34,6 +39,8 @@ const reducer = (state = initialState, action) => {
         error: initialState.error
       };
     }
+    case SET_PROFILE_POSTULANT_FULFILLED:
+    case GET_APPLICATION_BY_POSTULANT_SUCCESS:
     case GET_APPLICATIONS_SUCCESS: {
       return {
         ...state,
@@ -63,6 +70,7 @@ const reducer = (state = initialState, action) => {
         selectedItem: action.payload
       };
     }
+    case GET_APPLICATION_BY_POSTULANT_ERROR:
     case GET_APPLICATION_BY_ID_ERROR: {
       return {
         ...state,

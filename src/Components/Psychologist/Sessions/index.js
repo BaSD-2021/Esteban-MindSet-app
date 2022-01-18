@@ -11,7 +11,7 @@ import { Field, Form } from 'react-final-form';
 import Input from 'Components/Shared/Input';
 import Select from 'Components/Shared/Select';
 import { getProfiles } from 'redux/profiles/thunks';
-import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
+import { getPostulantById, setProfilePostulant } from 'redux/postulants/thunks';
 
 function Sessions() {
   const [processedSessions, setProcessedSessions] = useState([]);
@@ -103,11 +103,7 @@ function Sessions() {
   };
 
   const editProfile = (formValues) => {
-    const body = {
-      ...selectedPostulant,
-      profiles: { _id: formValues.profile }
-    };
-    dispatch(updatePostulant(selectedPostulant._id, body)).then((response) => {
+    dispatch(setProfilePostulant(selectedPostulant._id, formValues.profile)).then((response) => {
       if (response) {
         setShowProfileModal(false);
       }

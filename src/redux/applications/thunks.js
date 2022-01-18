@@ -11,6 +11,9 @@ import {
   getApplicationByIdPending,
   getApplicationByIdSuccess,
   getApplicationByIdError,
+  getApplicationByPostulantPending,
+  getApplicationByPostulantSuccess,
+  getApplicationByPostulantError,
   deleteApplicationPending,
   deleteApplicationSuccess,
   deleteApplicationError
@@ -57,6 +60,28 @@ export const getApplicationById = (id) => {
       })
       .catch((error) => {
         dispatch(getApplicationByIdError(error.toString()));
+      });
+  };
+};
+
+export const getApplicationsByPostulant = (postulantId) => {
+  return (dispatch) => {
+    dispatch(getApplicationByPostulantPending());
+    return fetch(`${process.env.REACT_APP_API}/applications?postulants=${postulantId}`)
+      .then((response) => {
+        if (response.status !== 200) {
+          return response.json().then(({ message }) => {
+            throw new Error(message);
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(getApplicationByPostulantSuccess(response.data));
+        return response.data[0];
+      })
+      .catch((error) => {
+        dispatch(getApplicationByPostulantError(error.toString()));
       });
   };
 };
