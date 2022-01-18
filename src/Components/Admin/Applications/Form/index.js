@@ -13,6 +13,7 @@ import {
   updateApplication
 } from 'redux/applications/thunks';
 import { getPositionById, updatePosition } from 'redux/positions/thunks';
+import { getInterviews } from 'redux/interviews/thunks';
 import { cleanError, cleanSelectedItem } from 'redux/applications/actions';
 
 function ApplicationForm() {
@@ -20,14 +21,13 @@ function ApplicationForm() {
   const [postulantId, setPostulantId] = useState('');
   const [date, setDate] = useState('');
   const [result, setResult] = useState('');
+  const [deployedInterviews, setDeployedInterviews] = useState([]);
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
   const selectedItem = useSelector((store) => store.applications.selectedItem);
   const selectedPosition = useSelector((store) => store.positions.selectedItem);
   const error = useSelector((store) => store.applications.error);
-
-  console.log(selectedPosition);
 
   useEffect(() => {
     if (Object.keys(selectedItem).length) {
@@ -49,6 +49,11 @@ function ApplicationForm() {
     if (applicationId) {
       dispatch(getApplicationById(applicationId));
     }
+    dispatch(getInterviews()).then((response) => {
+      return setDeployedInterviews(
+        response.filter((interview) => interview.application?._id === applicationId)
+      );
+    });
   }, []);
 
   useEffect(() => {
@@ -57,6 +62,11 @@ function ApplicationForm() {
       dispatch(getPositionById(positionId));
     }
   }, [positionId]);
+
+  const addInterviewAction = (e) => {
+    e.preventDefault();
+    history.push('/admin/interviews/form');
+  };
 
   const onSubmit = (formValues) => {
     const applicationId = query.get('_id');
@@ -133,6 +143,49 @@ function ApplicationForm() {
                 { value: 'Not selected', label: 'Not Selected' }
               ]}
             />
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {deployedInterviews.length === 0 ? (
+                    <tr>
+                      <td>
+                        <p>There is no data to show. Please create a new interview.</p>
+                      </td>
+                    </tr>
+                  ) : (
+                    deployedInterviews.map((interview) => {
+                      return (
+                        <tr
+                          key={interview._id}
+                          onClick={() =>
+                            history.push(`/admin/interviews/form?_id=${interview._id}`)
+                          }
+                        >
+                          <td>{interview.client.name}</td>
+                          <td>{interview.date.slice(0, 10)}</td>
+                          <td>{interview.status}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+              <Button
+                label="Add Interview"
+                disabled={selectedItem.result === 'Hired'}
+                type="submit"
+                onClick={(e) => {
+                  addInterviewAction(e);
+                }}
+              />
+            </div>
             <div className={styles.buttonContainer}>
               <Button
                 label="Save"

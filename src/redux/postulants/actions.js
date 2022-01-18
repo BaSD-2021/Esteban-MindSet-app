@@ -11,6 +11,9 @@ import {
   UPDATE_POSTULANTS_FETCHING,
   UPDATE_POSTULANTS_FULFILLED,
   UPDATE_POSTULANTS_REJECTED,
+  SET_PROFILE_POSTULANT_FETCHING,
+  SET_PROFILE_POSTULANT_FULFILLED,
+  SET_PROFILE_POSTULANT_REJECTED,
   DELETE_POSTULANTS_FETCHING,
   DELETE_POSTULANTS_FULFILLED,
   DELETE_POSTULANTS_REJECTED,
@@ -71,6 +74,20 @@ export const updatePostulantsFulfilled = (payload) => ({
 
 export const updatePostulantsRejected = (error) => ({
   type: UPDATE_POSTULANTS_REJECTED,
+  error
+});
+
+export const setProfilePostulantFetching = () => ({
+  type: SET_PROFILE_POSTULANT_FETCHING
+});
+
+export const setProfilePostulantFulfilled = (payload) => ({
+  type: SET_PROFILE_POSTULANT_FULFILLED,
+  payload
+});
+
+export const setProfilePostulantRejected = (error) => ({
+  type: SET_PROFILE_POSTULANT_REJECTED,
   error
 });
 

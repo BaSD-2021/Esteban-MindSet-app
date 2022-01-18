@@ -11,7 +11,7 @@ import { Field, Form } from 'react-final-form';
 import Input from 'Components/Shared/Input';
 import Select from 'Components/Shared/Select';
 import { getProfiles } from 'redux/profiles/thunks';
-import { getPostulantById, updatePostulant } from 'redux/postulants/thunks';
+import { getPostulantById, setProfilePostulant } from 'redux/postulants/thunks';
 
 function Sessions() {
   const [processedSessions, setProcessedSessions] = useState([]);
@@ -27,6 +27,7 @@ function Sessions() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showAlertSessionsChange, setShowAlertSessionsChange] = useState(false);
   const [showConfirmSession, setShowConfirmSession] = useState(false);
+  const [showCancelSession, setShowCancelSession] = useState(false);
   const [itemOnEdit, setItemOnEdit] = useState({});
 
   const psychologistSessions = useMemo(() => {
@@ -102,15 +103,17 @@ function Sessions() {
   };
 
   const editProfile = (formValues) => {
-    const body = {
-      ...selectedPostulant,
-      profiles: { _id: formValues.profile }
-    };
-    dispatch(updatePostulant(selectedPostulant._id, body)).then((response) => {
+    dispatch(setProfilePostulant(selectedPostulant._id, formValues.profile)).then((response) => {
       if (response) {
         setShowProfileModal(false);
       }
     });
+    dispatch(
+      updateSession(itemOnEdit._id, {
+        ...itemOnEdit,
+        status: 'closed'
+      })
+    );
   };
 
   return (
@@ -220,6 +223,27 @@ function Sessions() {
           callback: () => setShowConfirmSession(false)
         }}
       />
+      <Modal
+        show={showCancelSession}
+        title="Cancel Session"
+        message="Do you want to cancel this session?"
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(
+              updateSession(itemOnEdit._id, {
+                ...itemOnEdit,
+                status: 'cancelled'
+              })
+            );
+            setShowCancelSession(false);
+          }
+        }}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowCancelSession(false)
+        }}
+      />
       <h2 className={styles.title}>Sessions</h2>
       <div>
         {isLoading ? (
@@ -240,12 +264,8 @@ function Sessions() {
                 hidden: (item) => item.status !== 'cancelled' && item.status !== 'assigned',
                 callback: (e, item) => {
                   e.stopPropagation();
-                  dispatch(
-                    updateSession(item._id, {
-                      ...item,
-                      status: 'cancelled'
-                    })
-                  );
+                  setItemOnEdit(item);
+                  setShowCancelSession(true);
                 }
               },
               {
@@ -261,7 +281,10 @@ function Sessions() {
               {
                 text: 'Complete',
                 disabled: (item) => item.status !== 'confirmed',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   setItemOnEdit(item);
@@ -271,10 +294,14 @@ function Sessions() {
               {
                 text: 'Profile',
                 disabled: (item) => item.status !== 'successful',
-                hidden: (item) => item.status !== 'confirmed' && item.status !== 'successful',
+                hidden: (item) =>
+                  item.status !== 'confirmed' &&
+                  item.status !== 'successful' &&
+                  item.status !== 'closed',
                 callback: (e, item) => {
                   e.stopPropagation();
                   dispatch(getPostulantById(item.postulant._id));
+                  setItemOnEdit(item);
                   setShowProfileModal(true);
                 }
               }
