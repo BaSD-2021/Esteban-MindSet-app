@@ -43,6 +43,22 @@ function Positions() {
     });
   }, [positions]);
 
+  const cascadeDelete = (id) => {
+    const interviewsToDelete = interviews.filter(
+      (interview) => interview.application.positions._id === id
+    );
+    interviewsToDelete.forEach((interview) => dispatch(deleteInterview(interview._id)));
+    const applicationsToDelete = applications.filter(
+      (application) => application.positions._id === id
+    );
+    applicationsToDelete.forEach((application) => dispatch(deleteApplication(application._id)));
+    dispatch(deletePosition(id));
+    dispatch(deletePosition(id)).then(() => {
+      setSelectedIdPosition(undefined);
+      setShowModal(false);
+    });
+  };
+
   return (
     <section className={styles.container}>
       <Modal
@@ -56,10 +72,7 @@ function Positions() {
         confirm={{
           text: 'Confirm',
           callback: () => {
-            dispatch(deletePosition(selectedIdPosition)).then(() => {
-              setSelectedIdPosition(undefined);
-              setShowModal(false);
-            });
+            cascadeDelete(selectedIdPosition);
           }
         }}
       />
