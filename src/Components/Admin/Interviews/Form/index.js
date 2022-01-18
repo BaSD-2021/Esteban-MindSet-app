@@ -78,7 +78,12 @@ function InterviewForm() {
       setSelectApplication(
         response.map((application) => ({
           value: application._id,
-          label: application._id
+          label:
+            application.postulants?.firstName +
+            ' ' +
+            application.positions?.client?.name +
+            ' ' +
+            application.positions?.jobDescription
         }))
       );
     });
