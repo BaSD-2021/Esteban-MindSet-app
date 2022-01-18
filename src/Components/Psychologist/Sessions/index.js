@@ -27,6 +27,7 @@ function Sessions() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showAlertSessionsChange, setShowAlertSessionsChange] = useState(false);
   const [showConfirmSession, setShowConfirmSession] = useState(false);
+  const [showCancelSession, setShowCancelSession] = useState(false);
   const [itemOnEdit, setItemOnEdit] = useState({});
 
   const psychologistSessions = useMemo(() => {
@@ -220,6 +221,27 @@ function Sessions() {
           callback: () => setShowConfirmSession(false)
         }}
       />
+      <Modal
+        show={showCancelSession}
+        title="Cancel Session"
+        message="Do you want to cancel this session?"
+        confirm={{
+          text: 'Confirm',
+          callback: () => {
+            dispatch(
+              updateSession(itemOnEdit._id, {
+                ...itemOnEdit,
+                status: 'cancelled'
+              })
+            );
+            setShowCancelSession(false);
+          }
+        }}
+        cancel={{
+          text: 'Cancel',
+          callback: () => setShowCancelSession(false)
+        }}
+      />
       <h2 className={styles.title}>Sessions</h2>
       <div>
         {isLoading ? (
@@ -240,12 +262,8 @@ function Sessions() {
                 hidden: (item) => item.status !== 'cancelled' && item.status !== 'assigned',
                 callback: (e, item) => {
                   e.stopPropagation();
-                  dispatch(
-                    updateSession(item._id, {
-                      ...item,
-                      status: 'cancelled'
-                    })
-                  );
+                  setItemOnEdit(item);
+                  setShowCancelSession(true);
                 }
               },
               {
