@@ -81,8 +81,10 @@ function InterviewForm() {
           label:
             application.postulants?.firstName +
             ' ' +
+            application.postulants?.lastName +
+            ' - ' +
             application.positions?.client?.name +
-            ' ' +
+            ' - ' +
             application.positions?.jobDescription
         }))
       );
@@ -120,34 +122,6 @@ function InterviewForm() {
         history.push('/admin/interviews/list');
       }
     });
-  };
-
-  const validate = (formValues) => {
-    const errors = {};
-    if (!formValues.postulant) {
-      errors.postulant = 'Postulant is required';
-    }
-    if (!formValues.client) {
-      errors.client = 'Client is required';
-    }
-    if (!formValues.application) {
-      errors.application = 'Application is required';
-    }
-    if (!formValues.status) {
-      errors.status = 'Status is required';
-    }
-    if (!formValues.date) {
-      errors.date = 'Date is required';
-    }
-    if (formValues.notes) {
-      if (formValues.notes?.indexOf(' ') === -1) {
-        errors.notes = 'Notes must contain at least one space';
-      }
-      if (formValues.notes?.length < 3) {
-        errors.notes = 'Notes must be at least 3 characters';
-      }
-    }
-    return errors;
   };
 
   const required = (value) => {
