@@ -10,7 +10,7 @@ const PsychologistRoutes = [
   { name: 'Profile', path: '/psychologist/profile' },
   {
     name: 'Sessions',
-    path: 'psychologist/sessions'
+    path: '/psychologist/sessions'
   }
 ];
 
