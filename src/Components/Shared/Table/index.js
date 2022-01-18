@@ -44,7 +44,6 @@ function Table(props) {
                 {props.actions.length > 0 && (
                   <td className={styles.tdStyles}>
                     {props.actions.map((action) => {
-                      console.log(action);
                       return (
                         <Button
                           key={action.text}
