@@ -32,6 +32,7 @@
   justify-content: space-between;
   padding: 12px;
   font-size: 16px;
+  cursor: pointer;
   border-bottom: 1px #909090 solid
 }
 
@@ -39,20 +40,30 @@
   border: none;
 }
 
+tbody .trStyles:hover{
+  background-color: #ecececde;
+  cursor: pointer;
+}
+
 .thStyles{
   padding: 8px;
-  width: 8rem;
+  width: 13rem;
   font-size: 18px;
   font-weight: 500;
+  color: #002147;
+}
+
+.tBody {
+  width: 100%;
 }
 
 .tdStyles{
   padding: 8px;
   color: #002147;
   font-size: 16px;
-  width: 8rem;
+  width: 11rem;
   align-self: center;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .errorMessage{

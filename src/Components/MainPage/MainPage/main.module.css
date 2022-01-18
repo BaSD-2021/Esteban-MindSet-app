@@ -1,0 +1,39 @@
+.background {
+  background-image: url(home.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  opacity: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.wrapper {
+  background-color: #000000;
+  position: relative;
+  height: 80vh;
+}
+
+.mainPageTitleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.mainPageTitle {
+  color: #ffffff;
+  margin: 15px;
+  font-size: 4rem;
+}
+
+.mainPageSubTitle {
+  color:#ffffff;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}

@@ -54,6 +54,9 @@ const Admins = () => {
         }}
       />
       <h2 className={styles.title}>Admins</h2>
+      <div className={styles.buttonContainer}>
+        <Button label="ADD ADMIN" onClick={() => history.push('/admin/admins/form')} />
+      </div>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -76,9 +79,6 @@ const Admins = () => {
           ]}
         />
       )}
-      <div className={styles.buttonContainer}>
-        <Button label="ADD ADMIN" onClick={() => history.push('/admin/admins/form')} />
-      </div>
     </section>
   );
 };

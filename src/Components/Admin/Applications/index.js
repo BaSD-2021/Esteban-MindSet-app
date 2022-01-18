@@ -60,6 +60,8 @@ function Applications() {
     );
   };
 
+  console.log(processedApplications);
+
   return (
     <section className={styles.container}>
       <Modal

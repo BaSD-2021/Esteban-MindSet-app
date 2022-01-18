@@ -53,6 +53,9 @@ function Profiles() {
         }}
       />
       <h2 className={styles.title}>Profiles</h2>
+      <div className={styles.buttonContainer}>
+        <Button label="ADD PROFILE" onClick={() => history.push('/admin/profiles/form')} />
+      </div>
       <div>
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
@@ -73,9 +76,6 @@ function Profiles() {
             ]}
           />
         )}
-      </div>
-      <div className={styles.buttonContainer}>
-        <Button label="ADD PROFILE" onClick={() => history.push('/admin/profiles/form')} />
       </div>
     </section>
   );

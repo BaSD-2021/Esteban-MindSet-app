@@ -46,14 +46,36 @@
   text-decoration: none;
   text-transform: capitalize;
   color: black;
+  position: relative;
+}
+
+.routes > li > a:after {
+  transition: all 0.5s;
+}
+
+.routes > li > a:after {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  width: 0%;
+  content: '.';
+  color: transparent;
+  background: #FDC800;
+  height: 2px;
+}
+
+.routes > li > a:hover:after {
+  width: 100%;
 }
 
 @media screen and (min-width: 750px) {
   .container {
-    padding: 0 20%;
+    padding: 0 15%;
   }
 
   .navbar {
-    padding: 0 20%;
+    padding: 0 15%;
   }
 }

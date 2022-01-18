@@ -28,6 +28,9 @@ function Interviews() {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>Interviews</h2>
+      <div className={styles.buttonContainer}>
+        <Button label="ADD INTERVIEW" onClick={() => history.push('/admin/interviews/form')} />
+      </div>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -79,9 +82,6 @@ function Interviews() {
           callback: () => dispatch(cleanError())
         }}
       />
-      <div className={styles.buttonContainer}>
-        <Button label="ADD INTERVIEW" onClick={() => history.push('/admin/interviews/form')} />
-      </div>
     </section>
   );
 }

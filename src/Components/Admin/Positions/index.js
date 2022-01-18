@@ -54,6 +54,9 @@ function Positions() {
         }}
       />
       <h2 className={styles.title}>Positions</h2>
+      <div className={styles.buttonContainer}>
+        <Button label="ADD POSITION" onClick={() => history.push('/admin/positions/form')} />
+      </div>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -78,9 +81,6 @@ function Positions() {
           ]}
         />
       )}
-      <div className={styles.buttonContainer}>
-        <Button label="ADD POSITION" onClick={() => history.push('/admin/positions/form')} />
-      </div>
     </section>
   );
 }
