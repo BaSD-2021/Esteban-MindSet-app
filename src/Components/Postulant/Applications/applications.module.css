@@ -29,14 +29,14 @@
 }
 
 .tdStyles{
-  color: #002147;
+  color: #276678;
   font-size: 16px;
 }
 
 .errorMessage{
   margin: 10px auto;
   font-size: 15px;
-  color: #002147;
+  color: #276678;
  }
 
  .loading{
@@ -51,7 +51,7 @@
  .title {
   font-weight: bolder;
   font-size: 25px;
-  color: #002147;
+  color: #276678;
   margin: 30px;
 }
 

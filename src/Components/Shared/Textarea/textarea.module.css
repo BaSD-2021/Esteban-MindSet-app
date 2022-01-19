@@ -9,9 +9,9 @@
   width: 370px;
   border-radius: 3px;
   margin: 5px 0 0 0;
-  border: 2px #002147 solid;
-  border-color: #002147;
-  color: #002147;
+  border: 2px #276678 solid;
+  border-color: #276678;
+  color: #276678;
   resize: none;
   font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -19,7 +19,7 @@
  }
 
  .labelTitle {
-  color: #002147;
+  color: #276678;
   font-size: 18px;
   font-weight: bold;
   margin: 5px 0;

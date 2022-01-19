@@ -10,7 +10,7 @@
   font-size: 20px;
   margin: 40px 3px 0 0;
   font-weight: bold;
-  color: #002147;
+  color: #276678;
 }
 
 .container select {
@@ -19,9 +19,9 @@
   width: 40%;
   border-radius: 3px;
   margin: 5px 0 0 0;
-  border: 2px #002147 solid;
-  border-color: #002147;
-  color: #002147;
+  border: 2px #276678 solid;
+  border-color: #276678;
+  color: #276678;
   font-size: 25px;
   font-weight: bold;
   margin: 30px 0 0 0;
@@ -44,7 +44,7 @@
 .title {
   font-weight: bolder;
   font-size: 25px;
-  color: #002147;
+  color: #276678;
   margin: 30px;
 }
 
