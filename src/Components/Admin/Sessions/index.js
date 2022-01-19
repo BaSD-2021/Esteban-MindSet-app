@@ -6,6 +6,7 @@ import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, deleteSession } from 'redux/sessions/thunks';
 import { cleanError } from 'redux/sessions/actions';
+import Button from 'Components/Shared/Button';
 
 function Sessions() {
   const [showModal, setShowModal] = useState(false);
