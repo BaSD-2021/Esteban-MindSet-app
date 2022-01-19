@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { getPositionById } from 'redux/positions/thunks';
 import { cleanSelectedItem } from 'redux/interviews/actions';
 import { useHistory } from 'react-router-dom';
+import styles from './position-detailed.module.css';
+import Button from 'Components/Shared/Button';
 
 function PositionDetailed() {
   const history = useHistory();
@@ -26,21 +28,22 @@ function PositionDetailed() {
   }, []);
 
   return (
-    <div>
-      <div>
-        <h3>{selectedItem.professionalProfile?.name}</h3>
-        <p>{selectedItem.client?.name}</p>
-        <p>{selectedItem.createdAt?.slice(0, 10)}</p>
-        <p>{selectedItem.jobDescription}</p>
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            history.push('/home/login');
-          }}
-        >
-          Interested? Sign in now
-        </button>
+    <div className={styles.container}>
+      <div className={styles.cardContainer}>
+        <div>
+          <h3 className={styles.cardTitle}>{selectedItem.professionalProfile?.name}</h3>
+          <p className={styles.cardSubTitle}>{selectedItem.client?.name}</p>
+          <p className={styles.cardDate}>{selectedItem.createdAt?.slice(0, 10)}</p>
+          <p className={styles.jobDescription}>{selectedItem.jobDescription}</p>
+        </div>
+        <div className={styles.bttnContainer}>
+          <Button
+            onClick={() => {
+              history.push('/auth/login');
+            }}
+            label="Interested? Sign in now"
+          />
+        </div>
       </div>
     </div>
   );

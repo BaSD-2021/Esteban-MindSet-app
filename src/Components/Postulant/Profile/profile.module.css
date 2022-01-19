@@ -7,8 +7,19 @@
 }
 .flexContainer{
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   width: 90%;
+}
+.buttonContainer{
+  display: flex;
+  align-self: center;
+  margin-top: 30px;
+  margin-right: 20px;
+}
+.infoContainerWrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .infoContainer{
   display: flex;
@@ -17,7 +28,13 @@
   margin: 12px;
   min-width: 30%;
 }
-.title{
+.title {
+  font-weight: bolder;
+  font-size: 25px;
+  color: #002147;
+  margin: 30px;
+}
+.subTitle{
   margin: 12px 4px;
   font-size: 24px;
   font-weight: 600;
@@ -29,6 +46,9 @@
   padding: 6px 8px;
   background-color: #eef5fd;
   border-radius: 5px;
+}
+.dataContainer:hover {
+  background-color: #e3ebf3;
 }
 .labelContainer{
   display: flex;
@@ -62,5 +82,9 @@
 }
 .toggleLabel{
   margin-right: 12px;
+}
+.componentWrapper{
+  display: flex;
+  padding-right: 10px;
 }
 
