@@ -5,6 +5,7 @@ import styles from './form.module.css';
 import Input from 'Components/Shared/Input';
 import Button from 'Components/Shared/Button';
 import Checkbox from 'Components/Shared/Checkbox';
+import Select from 'Components/Shared/Select';
 import Modal from 'Components/Shared/Modal';
 import { cleanError, cleanSelectedItem } from 'redux/psychologists/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,21 +30,18 @@ function PsychologistForm() {
   const [thursdayAvailability, setThursdayAvailability] = useState(false);
   const [fridayAvailability, setFridayAvailability] = useState(false);
   const [saturdayAvailability, setSaturdayAvailability] = useState(false);
-  const [sundayAvailability, setSundayAvailability] = useState(false);
   const [mondayFrom, setMondayFrom] = useState(1200);
   const [tuesdayFrom, setTuesdayFrom] = useState(1200);
   const [wednesdayFrom, setWednesdayFrom] = useState(1200);
   const [thursdayFrom, setThursdayFrom] = useState(1200);
   const [fridayFrom, setFridayFrom] = useState(1200);
   const [saturdayFrom, setSaturdayFrom] = useState(1200);
-  const [sundayFrom, setSundayFrom] = useState(1200);
   const [mondayTo, setMondayTo] = useState(1200);
   const [tuesdayTo, setTuesdayTo] = useState(1200);
   const [wednesdayTo, setWednesdayTo] = useState(1200);
   const [thursdayTo, setThursdayTo] = useState(1200);
   const [fridayTo, setFridayTo] = useState(1200);
   const [saturdayTo, setSaturdayTo] = useState(1200);
-  const [sundayTo, setSundayTo] = useState(1200);
 
   const query = useQuery();
   const history = useHistory();
@@ -52,6 +50,22 @@ function PsychologistForm() {
   const selectedItem = useSelector((store) => store.psychologists.selectedItem);
 
   const dispatch = useDispatch();
+
+  const schedule = [
+    { value: 800, label: '08:00' },
+    { value: 900, label: '09:00' },
+    { value: 1000, label: '10:00' },
+    { value: 1100, label: '11:00' },
+    { value: 1200, label: '12:00' },
+    { value: 1300, label: '13:00' },
+    { value: 1400, label: '14:00' },
+    { value: 1500, label: '15:00' },
+    { value: 1600, label: '16:00' },
+    { value: 1700, label: '17:00' },
+    { value: 1800, label: '18:00' },
+    { value: 1900, label: '19:00' },
+    { value: 2000, label: '20:00' }
+  ];
 
   useEffect(() => {
     const psychologistId = query.get('_id');
@@ -75,21 +89,18 @@ function PsychologistForm() {
       setThursdayAvailability(selectedItem.availability.thursday.availability);
       setFridayAvailability(selectedItem.availability.friday.availability);
       setSaturdayAvailability(selectedItem.availability.saturday.availability);
-      setSundayAvailability(selectedItem.availability.sunday.availability);
       setMondayFrom(selectedItem.availability.monday.from);
       setTuesdayFrom(selectedItem.availability.tuesday.from);
       setWednesdayFrom(selectedItem.availability.wednesday.from);
       setThursdayFrom(selectedItem.availability.thursday.from);
       setFridayFrom(selectedItem.availability.friday.from);
       setSaturdayFrom(selectedItem.availability.saturday.from);
-      setSundayFrom(selectedItem.availability.sunday.from);
       setMondayTo(selectedItem.availability.monday.to);
       setTuesdayTo(selectedItem.availability.tuesday.to);
       setWednesdayTo(selectedItem.availability.wednesday.to);
       setThursdayTo(selectedItem.availability.thursday.to);
       setFridayTo(selectedItem.availability.friday.to);
       setSaturdayTo(selectedItem.availability.saturday.to);
-      setSundayTo(selectedItem.availability.sunday.to);
     }
   }, [selectedItem]);
 
@@ -140,14 +151,10 @@ function PsychologistForm() {
           availability: formValues.saturday,
           from: parseInt(formValues.saturdayFrom),
           to: parseInt(formValues.saturdayTo)
-        },
-        sunday: {
-          availability: formValues.sunday,
-          from: parseInt(formValues.sundayFrom),
-          to: parseInt(formValues.sundayTo)
         }
       }
     };
+    console.log(body);
     if (psychologistId) {
       dispatch(updatePsychologist(psychologistId, body)).then((response) => {
         if (response) {
@@ -208,11 +215,8 @@ function PsychologistForm() {
     return errors;
   };
 
-  const validateDays = (value) => {
-    if (parseInt(value) > 1800 || parseInt(value) < 800) {
-      return 'Value must be between 800 and 1800';
-    }
-    return undefined;
+  const validateIsBigger = (value, all, previous) => {
+    return parseInt(value) > parseInt(all[previous]) ? undefined : 'Invalid Range';
   };
 
   return (
@@ -303,22 +307,27 @@ function PsychologistForm() {
                 initialValue={mondayAvailability}
               />
               <Field
-                name="mondayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="mondayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={mondayFrom}
                 initialValue={mondayFrom}
               />
               <Field
-                name="mondayTo"
-                type="number"
-                placeholder="To"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="To"
+                name="mondayTo"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={mondayTo}
                 initialValue={mondayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'mondayFrom');
+                }}
               />
             </div>
             <div>
@@ -331,22 +340,27 @@ function PsychologistForm() {
                 initialValue={tuesdayAvailability}
               />
               <Field
-                name="tuesdayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="tuesdayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={tuesdayFrom}
                 initialValue={tuesdayFrom}
               />
               <Field
-                name="tuesdayTo"
-                type="number"
-                placeholder="To"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="To"
+                name="tuesdayTo"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={tuesdayTo}
                 initialValue={tuesdayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'tuesdayFrom');
+                }}
               />
             </div>
             <div>
@@ -359,22 +373,27 @@ function PsychologistForm() {
                 initialValue={wednesdayAvailability}
               />
               <Field
-                name="wednesdayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="wednesdayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={wednesdayFrom}
                 initialValue={wednesdayFrom}
               />
               <Field
-                name="wednesdayTo"
-                type="number"
-                placeholder="To"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="To"
+                name="wednesdayTo"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={wednesdayTo}
                 initialValue={wednesdayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'wednesdayFrom');
+                }}
               />
             </div>
             <div>
@@ -387,22 +406,27 @@ function PsychologistForm() {
                 initialValue={thursdayAvailability}
               />
               <Field
-                name="thursdayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="thursdayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={thursdayFrom}
                 initialValue={thursdayFrom}
               />
               <Field
-                name="thursdayTo"
-                type="number"
-                placeholder="To"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="To"
+                name="thursdayTo"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={thursdayTo}
                 initialValue={thursdayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'thursdayFrom');
+                }}
               />
             </div>
             <div>
@@ -415,22 +439,27 @@ function PsychologistForm() {
                 initialValue={fridayAvailability}
               />
               <Field
-                name="fridayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="fridayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={fridayFrom}
                 initialValue={fridayFrom}
               />
               <Field
-                name="fridayTo"
-                type="number"
-                placeholder="To"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="To"
+                name="fridayTo"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={fridayTo}
                 initialValue={fridayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'fridayFrom');
+                }}
               />
             </div>
             <div>
@@ -443,50 +472,27 @@ function PsychologistForm() {
                 initialValue={saturdayAvailability}
               />
               <Field
-                name="saturdayFrom"
-                type="number"
-                placeholder="From"
+                component={Select}
                 disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
+                title="From"
+                name="saturdayFrom"
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={saturdayFrom}
                 initialValue={saturdayFrom}
               />
               <Field
+                component={Select}
+                disabled={formProps.submitting}
+                title="To"
                 name="saturdayTo"
-                type="number"
-                placeholder="To"
-                disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
-                initialValue={saturdayTo}
-              />
-            </div>
-            <div>
-              <Field
-                name="sunday"
-                label="Sunday"
-                disabled={formProps.submitting}
-                component={Checkbox}
-                type="checkbox"
-                initialValue={sundayAvailability}
-              />
-              <Field
-                name="sundayFrom"
-                type="number"
-                placeholder="From"
-                disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
-                initialValue={sundayFrom}
-              />
-              <Field
-                name="sundayTo"
-                type="number"
-                placeholder="To"
-                disabled={formProps.submitting}
-                validate={validateDays}
-                component={Input}
-                initialValue={sundayTo}
+                arrayToMap={schedule}
+                style={styles.selector}
+                value={saturdayTo}
+                initialValue={fridayTo}
+                validate={(value, all) => {
+                  return validateIsBigger(value, all, 'saturdayFrom');
+                }}
               />
             </div>
             <div className={styles.buttonContainer}>

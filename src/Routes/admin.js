@@ -50,7 +50,7 @@ const AdminRoutes = () => {
         <Route path={`${url}/postulants/form`} component={PostulantsForm} />
         <Route path={`${url}/profiles/list`} component={Profiles} />
         <Route path={`${url}/profiles/form`} component={ProfilesForm} />
-        <Route path={`${url}/psychologists`} component={Psychologists} />
+        <Route path={`${url}/psychologists/list`} component={Psychologists} />
         <Route path={`${url}/psychologists/form`} component={PsychologistForm} />
         <Route path={`${url}/sessions/list`} component={Sessions} />
         <Route path={`${url}/sessions/form`} component={SessionsForm} />

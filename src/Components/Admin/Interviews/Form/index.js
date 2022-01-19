@@ -113,13 +113,13 @@ function InterviewForm() {
     if (interviewId) {
       return dispatch(updateInterview(interviewId, bodyToEdit)).then((response) => {
         if (response) {
-          history.push('/admin/interviews/list');
+          history.go(-1);
         }
       });
     }
     return dispatch(createInterview(bodyToAdd)).then((response) => {
       if (response) {
-        history.push('/admin/interviews/list');
+        history.go(-1);
       }
     });
   };
