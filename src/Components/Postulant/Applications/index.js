@@ -5,18 +5,16 @@ import Table from 'Components/Shared/TableToShow';
 import { useDispatch, useSelector } from 'react-redux';
 import { getApplicationsByPostulant } from 'redux/applications/thunks';
 import { cleanError } from 'redux/applications/actions';
-
 function Applications() {
   const dispatch = useDispatch();
   const applications = useSelector((store) => store.applications.list);
   const postulantId = useSelector((store) => store.auth.user._id);
   const error = useSelector((store) => store.applications.error);
   const isLoading = useSelector((store) => store.applications.isFetching);
-
   const columnName = [
     {
       name: 'Job Description',
-      value: 'positions'
+      value: 'positions.jobDescription'
     },
     {
       name: 'Interview',
@@ -27,11 +25,9 @@ function Applications() {
       value: 'result'
     }
   ];
-
   useEffect(() => {
     dispatch(getApplicationsByPostulant(postulantId));
   }, []);
-
   return (
     <section className={styles.container}>
       <Modal
@@ -54,5 +50,4 @@ function Applications() {
     </section>
   );
 }
-
 export default Applications;
