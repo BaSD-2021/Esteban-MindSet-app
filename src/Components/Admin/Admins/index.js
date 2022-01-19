@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdmins, deleteAdmin } from 'redux/admins/thunks';
-import { cleanError } from 'redux/admins/actions';
+import { cleanError, cleanSelectedAdmin } from 'redux/admins/actions';
 
 const Admins = () => {
   const [showModal, setShowModal] = useState(false);
@@ -23,6 +23,12 @@ const Admins = () => {
       dispatch(getAdmins());
     }
   }, [admins]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanSelectedAdmin());
+    };
+  }, []);
 
   return (
     <section className={styles.container}>

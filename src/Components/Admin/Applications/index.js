@@ -27,10 +27,6 @@ function Applications() {
       value: 'postulants'
     },
     {
-      name: 'Interview',
-      value: 'interview'
-    },
-    {
       name: 'Result',
       value: 'result'
     }
@@ -54,7 +50,7 @@ function Applications() {
             ? `${application.postulants.firstName} ${application.postulants.lastName}`
             : '-',
           interview: application.interview ? application.interview.date : '-',
-          result: application.result
+          result: application?.result
         };
       })
     );
