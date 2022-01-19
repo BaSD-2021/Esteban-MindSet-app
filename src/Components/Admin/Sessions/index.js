@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from 'Components/Shared/Modal';
 import styles from './sessions.module.css';
-import Button from 'Components/Shared/Button';
 import { useHistory } from 'react-router-dom';
 import Table from 'Components/Shared/Table';
 import { useDispatch, useSelector } from 'react-redux';

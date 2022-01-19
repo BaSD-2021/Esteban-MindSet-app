@@ -168,8 +168,8 @@ function ApplicationForm() {
                             history.push(`/admin/interviews/form?_id=${interview._id}`)
                           }
                         >
-                          <td>{interview.client.name}</td>
-                          <td>{interview.date.slice(0, 10)}</td>
+                          <td>{interview.client?.name}</td>
+                          <td>{interview.date?.slice(0, 10)}</td>
                           <td>{interview.status}</td>
                         </tr>
                       );

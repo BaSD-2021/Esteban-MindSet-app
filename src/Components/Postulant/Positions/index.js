@@ -45,6 +45,7 @@ function Positions() {
           data={openPositions}
           disableEdit={true}
           actions={[]}
+          onRowClick={() => {}}
         />
       )}
     </section>

@@ -39,12 +39,12 @@ function Home() {
     .slice(0, 4);
 
   const lastSessions = sessions
-    .filter((session) => session.postulant._id === postulantId)
+    .filter((session) => session.postulant?._id === postulantId)
     .reverse()
     .slice(0, 4);
 
   const lastInterviews = interviews
-    .filter((interview) => interview.postulant._id === postulantId)
+    .filter((interview) => interview.postulant?._id === postulantId)
     .reverse()
     .slice(0, 4);
 

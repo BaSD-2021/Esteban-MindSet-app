@@ -26,7 +26,7 @@ function Interviews() {
 
   useEffect(() => {
     setInterviewsOfOnePostulant(
-      interviews.filter((interview) => interview.postulant._id === postulantId)
+      interviews.filter((interview) => interview.postulant?._id === postulantId)
     );
   }, [interviews]);
 

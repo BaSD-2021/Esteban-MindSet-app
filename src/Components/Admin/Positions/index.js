@@ -31,7 +31,7 @@ function Positions() {
     positions.forEach((position) => {
       if (position.vacancy === 0) {
         const interviewsToDelete = interviews.filter(
-          (interview) => interview.application.positions._id === position._id
+          (interview) => interview.application?.positions._id === position._id
         );
         interviewsToDelete.forEach((interview) => dispatch(deleteInterview(interview._id)));
         const applicationsToDelete = applications.filter(

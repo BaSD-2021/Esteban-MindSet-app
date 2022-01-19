@@ -17,6 +17,7 @@ import Psychologists from 'Components/Admin/Psychologists';
 import Sessions from 'Components/Admin/Sessions';
 import SessionsForm from 'Components/Admin/Sessions/Form';
 import Layout from 'Components/Layout';
+import PsychologistForm from 'Components/Admin/Psychologists/Form';
 
 const adminsRoutes = [
   { name: 'Admins', path: '/admin/admins/list' },
@@ -50,6 +51,7 @@ const AdminRoutes = () => {
         <Route path={`${url}/profiles/list`} component={Profiles} />
         <Route path={`${url}/profiles/form`} component={ProfilesForm} />
         <Route path={`${url}/psychologists`} component={Psychologists} />
+        <Route path={`${url}/psychologists/form`} component={PsychologistForm} />
         <Route path={`${url}/sessions/list`} component={Sessions} />
         <Route path={`${url}/sessions/form`} component={SessionsForm} />
         <Redirect to={`${url}/admins/list`} />
