@@ -14,8 +14,6 @@ function PostulantForm() {
   const [firstNameValue, setFirstNameValue] = useState('');
   const [lastNameValue, setLastNameValue] = useState('');
   const [emailValue, setEmailValue] = useState('');
-  const [contactFromValue, setContactFromValue] = useState('');
-  const [contactToValue, setContactToValue] = useState('');
   const [addressValue, setAddressValue] = useState('');
   const [birthdayValue, setBirthdayValue] = useState('');
   const [availableValue, setAvailableValue] = useState('');
@@ -93,21 +91,9 @@ function PostulantForm() {
       fillWorkExp = fillData.workExperience[0];
     }
 
-    let contactFrom = { from: null, to: null };
-    if (fillData.contactRange && fillData.contactRange.from) {
-      contactFrom = fillData.contactRange.from;
-    }
-
-    let contactTo = { from: null, to: null };
-    if (fillData.contactRange && fillData.contactRange.to) {
-      contactTo = fillData.contactRange.to;
-    }
-
     setFirstNameValue(fillData.firstName || '');
     setLastNameValue(fillData.lastName || '');
     setEmailValue(fillData.email || '');
-    setContactFromValue(contactFrom || '');
-    setContactToValue(contactTo || '');
     setAddressValue(fillData.address || '');
     setBirthdayValue(fillData.birthday == null ? '' : fillData.birthday.slice(0, 10));
     setAvailableValue(fillData.available ? true : false);
@@ -259,11 +245,6 @@ function PostulantForm() {
         <p className={styles.p}>First Name: {firstNameValue}</p>
         <p className={styles.p}>Last Name: {lastNameValue}</p>
         <p className={styles.p}>Email: {emailValue}</p>
-        <p className={styles.subtitle}>Contact Range</p>
-        <div className={styles.contactRange}>
-          <p className={styles.p}>From: {contactFromValue}</p>
-          <p className={styles.p}>To: {contactToValue}</p>
-        </div>
         <p className={styles.p}>Address: {addressValue}</p>
         <p className={styles.p}>Birthday: {birthdayValue}</p>
         <p className={styles.p}>Phone: {phoneValue}</p>
