@@ -72,10 +72,10 @@
 
 @media screen and (min-width: 750px) {
   .container {
-    padding: 0 15%;
+    padding: 0 10%;
   }
 
   .navbar {
-    padding: 0 15%;
+    padding: 0 10%;
   }
 }
