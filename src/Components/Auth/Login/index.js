@@ -48,7 +48,7 @@ function Login() {
         onSubmit={onSubmit}
         render={(formProps) => (
           <form onSubmit={formProps.handleSubmit} className={styles.container}>
-            <h2 className={styles.title}>Login</h2>
+            <h2 className={styles.title}>Log In</h2>
             <Field
               name="email"
               label="Email"
@@ -68,7 +68,7 @@ function Login() {
             />
             <div className={styles.buttonContainer}>
               <Button
-                label="Login"
+                label="Log In"
                 disabled={formProps.submitting || formProps.pristine}
                 type="submit"
               />

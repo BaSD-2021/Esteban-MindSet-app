@@ -18,9 +18,15 @@
   min-width: 60%;
 }
 .title{
-  margin: 12px 4px;
-  font-size: 24px;
-  font-weight: 600;
+  margin: 30px 0;
+  font-size: 25px;
+  color: #002147;
+  font-weight: bolder;
+}
+.subTitle {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px;
 }
 .dataContainer {
   display: flex;

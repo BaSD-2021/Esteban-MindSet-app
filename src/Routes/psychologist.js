@@ -17,7 +17,7 @@ const PsychologistRoutes = [
 const PsychologistsRoutes = () => {
   const { url } = useRouteMatch();
   return (
-    <Layout routes={PsychologistRoutes}>
+    <Layout routes={PsychologistRoutes} logout>
       <Switch>
         <Route exact path={`${url}/`} component={Home} />
         <Route path={`${url}/profile`} component={Profile} />

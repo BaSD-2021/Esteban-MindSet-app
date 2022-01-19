@@ -42,7 +42,7 @@ function Table(props) {
                   );
                 })}
                 {props.actions.length > 0 && (
-                  <td className={styles.tdStyles}>
+                  <td className={styles.tdActions}>
                     {props.actions.map((action) => {
                       return (
                         <Button

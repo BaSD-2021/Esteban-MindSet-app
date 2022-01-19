@@ -62,6 +62,7 @@ tbody .trStyles:hover{
   max-height: 50px;
   align-self: center;
   overflow: auto;
+  /* display: flex; */
 }
 
 .errorMessage{
@@ -69,6 +70,10 @@ tbody .trStyles:hover{
   font-size: 15px;
   color: #002147;
  }
+
+ .tdActions {
+  display: flex;
+  }
 
  .actionButton {
    margin: 0 5px;

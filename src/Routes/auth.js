@@ -4,7 +4,7 @@ import Layout from 'Components/Layout';
 import NotAllowed from 'Components/Auth/NotAllowed';
 import SignUp from 'Components/Auth/SignUp';
 
-const authRoutes = [{ name: 'Login', path: '/auth/login' }];
+const authRoutes = [{ name: 'Log In', path: '/auth/login' }];
 
 const AuthRoutes = () => {
   const { url } = useRouteMatch();

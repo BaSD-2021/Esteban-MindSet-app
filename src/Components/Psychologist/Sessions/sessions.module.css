@@ -6,12 +6,11 @@
   align-items: center;
   flex-direction: column;
 }
-.title {
-  font-weight: bolder;
+.title{
+  margin: 30px 0;
   font-size: 25px;
   color: #002147;
-  text-align: center;
-  margin: 10px;
+  font-weight: bolder;
 }
 .buttonContainer{
   display: flex;
