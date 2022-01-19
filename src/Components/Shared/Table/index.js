@@ -17,7 +17,7 @@ function Table(props) {
           {props.actions.length ? <th className={styles.thStyles}>Actions</th> : null}
         </tr>
       </thead>
-      <tbody>
+      <tbody className={styles.tBody}>
         {props.data.length === 0 ? (
           <tr>
             <td>
@@ -41,20 +41,22 @@ function Table(props) {
                     </td>
                   );
                 })}
-                <td className={styles.tdActions}>
-                  {props.actions.map((action) => {
-                    return (
-                      <Button
-                        key={action.text}
-                        label={action.text}
-                        style={`${styles.actionButton}`}
-                        onClick={(e) => action.callback(e, item)}
-                        disabled={action.disabled && action.disabled(item)}
-                        hidden={action.hidden && action.hidden(item)}
-                      />
-                    );
-                  })}
-                </td>
+                {props.actions.length > 0 && (
+                  <td className={styles.tdStyles}>
+                    {props.actions.map((action) => {
+                      return (
+                        <Button
+                          key={action.text}
+                          label={action.text}
+                          style={`${styles.actionButton}`}
+                          onClick={(e) => action.callback(e, item)}
+                          disabled={action.disabled && action.disabled(item)}
+                          hidden={action.hidden && action.hidden(item)}
+                        />
+                      );
+                    })}
+                  </td>
+                )}
               </tr>
             );
           })

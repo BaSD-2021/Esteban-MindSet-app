@@ -4,9 +4,9 @@ import styles from './tableHeader.module.css';
 const TableHeader = ({ headers }) => {
   return (
     <thead>
-      <tr>
+      <tr className={styles.trStyles}>
         {headers.map((header) => (
-          <th key={header} className={styles.headerItem}>
+          <th key={header} className={styles.thStyles}>
             {header}
           </th>
         ))}

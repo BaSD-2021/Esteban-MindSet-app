@@ -57,6 +57,13 @@ function Sessions() {
         }}
       />
       <h2 className={styles.title}>Sessions</h2>
+      <div className={styles.buttonContainer}>
+        <Button
+          disabled={hasScheduleSessions()}
+          label="ADD SESSION"
+          onClick={() => history.push('/postulant/sessions/form')}
+        />
+      </div>
       <div>
         {isLoading ? (
           <p className={styles.loading}>On Loading ...</p>
@@ -85,13 +92,6 @@ function Sessions() {
             ]}
           />
         )}
-      </div>
-      <div className={styles.buttonContainer}>
-        <Button
-          disabled={hasScheduleSessions()}
-          label="ADD SESSION"
-          onClick={() => history.push('/postulant/sessions/form')}
-        />
       </div>
     </section>
   );

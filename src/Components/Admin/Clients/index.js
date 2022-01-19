@@ -53,6 +53,9 @@ function Clients() {
         }}
       />
       <h2 className={styles.title}>Clients</h2>
+      <div className={styles.buttonContainer}>
+        <Button label="ADD CLIENT" onClick={() => history.push('/admin/clients/form')} />
+      </div>
       {isLoading ? (
         <p className={styles.loading}>On Loading ...</p>
       ) : (
@@ -76,9 +79,6 @@ function Clients() {
         />
       )}
       <div className={styles.errorMessage}>{error}</div>
-      <div className={styles.buttonContainer}>
-        <Button label="ADD CLIENT" onClick={() => history.push('/admin/clients/form')} />
-      </div>
     </section>
   );
 }

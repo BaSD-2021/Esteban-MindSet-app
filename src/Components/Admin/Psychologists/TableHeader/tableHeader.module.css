@@ -1,4 +1,14 @@
-.headerItem{
-  color: #383838;
-  padding-bottom: 6px;
+.trStyles{
+  padding: 20px 8px;
+  font-size: 16px;
+  border-bottom: 1px #d3d3d3 solid;
+  height: 58px;
+}
+
+.thStyles{
+  padding: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #002147;
+  vertical-align: middle;
 }

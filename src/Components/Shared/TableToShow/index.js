@@ -17,7 +17,7 @@ function TableToShow(props) {
           {props.actions.length ? <th className={styles.thStyles}>Actions</th> : null}
         </tr>
       </thead>
-      <tbody>
+      <tbody className={styles.tBody}>
         {props.data.length === 0 ? (
           <tr>
             <td>

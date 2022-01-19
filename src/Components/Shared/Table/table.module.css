@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   margin: 12px;
-  border: 1px #909090 solid;
+  border: 1px #d1cece solid;
   border-radius: 5px;
   padding: 12px;
   text-align: center;
@@ -24,16 +24,18 @@
 
 .tableHeader {
   font-size: 16px;
-  border-bottom: 2px #909090 solid;
+  border-bottom: 2px #979595 solid;
 }
 
 .trStyles{
-  display: flex;
-  justify-content: space-between;
   padding: 12px;
   font-size: 16px;
+  border-bottom: 1px #d3d3d3 solid
+}
+
+tbody .trStyles:hover{
+  background-color: #ecececde;
   cursor: pointer;
-  border-bottom: 1px #909090 solid
 }
 
 .trStyles:last-child{
@@ -41,29 +43,31 @@
 }
 
 .thStyles{
-  width: 10rem;
+  padding: 20px 8px;
+  width: 11rem;
   font-size: 18px;
   font-weight: 500;
+  color: #002147;
+}
+
+.tBody {
+  width: 100%;
 }
 
 .tdStyles{
-  padding: 8px;
+  padding: 20px 8px;
   color: #002147;
   font-size: 16px;
-  width: 10rem;
+  width: 11rem;
   max-height: 50px;
   align-self: center;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .errorMessage{
   margin: 10px auto;
   font-size: 15px;
   color: #002147;
- }
-
- .tdActions {
-   display: flex;
  }
 
  .actionButton {
