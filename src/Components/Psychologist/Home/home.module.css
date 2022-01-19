@@ -6,9 +6,10 @@
   flex-direction: column;
 }
 .title{
-  margin-top:20px;
-  font-size: 24px;
-  font-weight: 600;
+  margin: 30px 0;
+  font-size: 25px;
+  color: #276678;
+  font-weight: bolder;
 }
 .flexContainer{
   display: flex;

@@ -7,6 +7,7 @@ import styles from './form.module.css';
 import Button from 'Components/Shared/Button';
 import Select from 'Components/Shared/Select';
 import Modal from 'Components/Shared/Modal';
+import Table from 'Components/Shared/Table';
 import {
   getApplicationById,
   createApplication,
@@ -28,6 +29,7 @@ function ApplicationForm() {
   const selectedItem = useSelector((store) => store.applications.selectedItem);
   const selectedPosition = useSelector((store) => store.positions.selectedItem);
   const error = useSelector((store) => store.applications.error);
+  const isLoading = useSelector((store) => store.applications.isFetching);
 
   useEffect(() => {
     if (Object.keys(selectedItem).length) {
@@ -143,48 +145,38 @@ function ApplicationForm() {
                 { value: 'Not selected', label: 'Not Selected' }
               ]}
             />
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Client</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {deployedInterviews.length === 0 ? (
-                    <tr>
-                      <td>
-                        <p>There is no data to show. Please create a new interview.</p>
-                      </td>
-                    </tr>
-                  ) : (
-                    deployedInterviews.map((interview) => {
-                      return (
-                        <tr
-                          key={interview._id}
-                          onClick={() =>
-                            history.push(`/admin/interviews/form?_id=${interview._id}`)
-                          }
-                        >
-                          <td>{interview.client?.name}</td>
-                          <td>{interview.date?.slice(0, 10)}</td>
-                          <td>{interview.status}</td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-              <Button
-                label="Add Interview"
-                disabled={selectedItem.result === 'Hired'}
-                type="submit"
-                onClick={(e) => {
-                  addInterviewAction(e);
-                }}
-              />
+            <div className={styles.wrapper}>
+              <div className={styles.buttonContainer}>
+                <Button
+                  label="Add Interview"
+                  disabled={selectedItem.result === 'Hired'}
+                  type="submit"
+                  onClick={(e) => {
+                    addInterviewAction(e);
+                  }}
+                />
+              </div>
+              {isLoading ? (
+                <p className={styles.loading}>On Loading ...</p>
+              ) : (
+                <Table
+                  columns={[
+                    { name: 'Client', value: 'client' },
+                    { name: 'Date', value: 'date' },
+                    { name: 'Status', value: 'status' }
+                  ]}
+                  data={deployedInterviews.map((interview) => {
+                    return {
+                      ...interview,
+                      client: interview.client.name
+                    };
+                  })}
+                  onRowClick={(interview) =>
+                    history.push(`/admin/interviews/form?_id=${interview._id}`)
+                  }
+                  actions={[]}
+                />
+              )}
             </div>
             <div className={styles.buttonContainer}>
               <Button

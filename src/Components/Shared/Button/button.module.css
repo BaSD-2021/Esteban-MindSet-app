@@ -1,7 +1,7 @@
 .primary {
   border-radius: 4px;
-  background-color: #FDC800;
-  color: #002147;
+  background-color: #f89646;
+  color: white;
   border: none;
   font-weight: 18px;
   font-size: 16px;
@@ -13,15 +13,15 @@
 
 .primary:hover {
   cursor: pointer;
-  background-color: #ffd027;
+  background-color: #C06014;
 }
 
 .secondary {
   border-radius: 4px;
   background-color: ivory;
-  color: #002147;
+  color: #276678;
   border-style:solid;
-  border-color:#FDC800;
+  border-color:#C06014;
   font-weight: 18px;
   font-size: 16px;
   padding: 4px 33px;

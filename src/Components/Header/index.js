@@ -42,7 +42,7 @@ function Header(props) {
         </ul>
         {props.logout && (
           <Button
-            label="Logout"
+            label="Log Out"
             onClick={() => {
               firebase.auth().signOut();
             }}

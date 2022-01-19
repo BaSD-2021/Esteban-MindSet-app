@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #002147;
+  background-color: #276678;
 }
 
 .main {
@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
-  width: 90%;
+  width: 80%;
   height: 250px;
 }
 
@@ -43,7 +43,7 @@
   height: 50px;
   width: 90%;
   padding: 0 20px;
-  background-color: #FDC800;
+  background-color: #D3E0EA;
 }
 
 .copyright {
@@ -57,12 +57,11 @@
 
 @media screen and (min-width: 750px) {
   .main {
-    padding: 0 20%;
-    width: unset;
+    padding: 0 10%;
   }
 
   .license {
-    padding: 0 20px;
+    padding: 0 10%;
     width: calc(60% - 40px);
   }
 

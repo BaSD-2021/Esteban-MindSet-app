@@ -47,7 +47,7 @@ tbody .trStyles:hover{
   width: 11rem;
   font-size: 18px;
   font-weight: 500;
-  color: #002147;
+  color: #276678;
 }
 
 .tBody {
@@ -56,9 +56,9 @@ tbody .trStyles:hover{
 
 .tdStyles{
   padding: 20px 8px;
-  color: #002147;
+  color: #276678;
   font-size: 16px;
-  width: 11rem;
+  width: 10rem;
   max-height: 50px;
   align-self: center;
   overflow: auto;
@@ -67,8 +67,12 @@ tbody .trStyles:hover{
 .errorMessage{
   margin: 10px auto;
   font-size: 15px;
-  color: #002147;
+  color: #276678;
  }
+
+ .tdActions {
+  display: flex;
+  }
 
  .actionButton {
    margin: 0 5px;

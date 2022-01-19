@@ -30,7 +30,7 @@
   transition: 0.4s;
 }
 input:checked + .slider {
-  background-color: #fec800;
+  background-color: #C06014;
 }
 
 input:checked + .slider:before{

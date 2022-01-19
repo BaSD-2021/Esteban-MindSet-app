@@ -4,7 +4,7 @@
   align-items: center;
   padding: 0 5%;
   height: 50px;
-  background-color: #FDC800;
+  background-color: #D3E0EA;
 }
 
 .brand {
@@ -29,7 +29,7 @@
   font-size: 2rem;
   font-weight: bold;
   text-decoration: none;
-  color: black;
+  color: #f89646;
 }
 
 .routes {
@@ -45,7 +45,7 @@
   font-weight: 600;
   text-decoration: none;
   text-transform: capitalize;
-  color: black;
+  color:#276678;
   position: relative;
 }
 
@@ -62,7 +62,7 @@
   width: 0%;
   content: '.';
   color: transparent;
-  background: #FDC800;
+  background: #f89646;
   height: 2px;
 }
 
@@ -72,10 +72,10 @@
 
 @media screen and (min-width: 750px) {
   .container {
-    padding: 0 15%;
+    padding: 0 10%;
   }
 
   .navbar {
-    padding: 0 15%;
+    padding: 0 10%;
   }
 }

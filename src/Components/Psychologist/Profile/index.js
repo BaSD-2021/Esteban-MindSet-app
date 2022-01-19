@@ -81,9 +81,10 @@ const Profile = () => {
           onSubmit={updateAvailability}
           render={(formProps) => (
             <form onSubmit={formProps.handleSubmit} className={styles.container}>
+              <h2 className={styles.title}>Profile</h2>
               <div className={styles.flexContainer}>
                 <div className={styles.infoContainer}>
-                  <h2 className={styles.title}>Profile</h2>
+                  <h3 className={styles.subTitle}>Personal Information</h3>
                   <div className={styles.dataContainer}>
                     <p className={styles.label}>First Name</p>
                     <p className={styles.info}>{selectedPsychologist?.firstName}</p>
@@ -114,7 +115,7 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className={styles.infoContainer}>
-                  <h2 className={styles.title}>Availability</h2>
+                  <h3 className={styles.subTitle}>Availability</h3>
                   <div className={styles.dataContainer}>
                     <p className={styles.label}>Monday</p>
                     <div className={styles.selectorContainer}>
