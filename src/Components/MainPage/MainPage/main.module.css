@@ -4,14 +4,13 @@
   background-position: center;
   height: 100%;
   width: 100%;
-  opacity: 50%;
   position: absolute;
   top: 0;
   left: 0;
 }
 
 .wrapper {
-  background-color: #000000;
+  background-color: #000000c7;
   position: relative;
   height: 80vh;
 }
